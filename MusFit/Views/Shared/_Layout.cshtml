@@ -1,0 +1,115 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor hca
+@{
+    string userName = hca.HttpContext.Session.GetString("Manager") ?? "Coach";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - 後臺管理系統</title>
+    <link rel="icon" href="~/Images/MusFit_logo.png"  sizes="50x50">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/ManageIndex.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://kit.fontawesome.com/08ba26884c.js"/>
+</head>
+
+<body>
+    <div class="container">
+
+            @* ---------------------------------side-bar--------------------------------------*@
+
+        <div class="side-bar">
+            <div class="identity">
+                <i class='fab fa-maxcdn'></i>
+                    @{
+                        if(userName == "Coach"){ <span style="color: #fff">教練 @TempData.Peek("name")</span>}
+                    else{ <span style="color: #fff">管理員 @TempData.Peek("name")</span>}
+                    }
+                <a id="logout" asp-area="" asp-controller="Manage" asp-action="Logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+            </div>
+            <hr />
+            <div class="close-btn">
+                <i class="fas fa-times"></i>
+            </div>
+
+            <div class="menu">
+                @{                                     
+                     if (userName == "Coach"){
+                            <div class="item"><a href="#"><i class='fas fa-user-cog'></i>編輯個人資料</a></div>
+                            <div class="item"><a href="#"><i class="fa-solid fa-landmark"></i>教室管理</a></div>
+                            <div class="item"><a href="#"><i class='far fa-edit'></i>課程紀錄查詢</a></div>
+                            <div class="item"><a href="/Manage/InBodyRecordQuery"><i class='fas fa-dumbbell'></i>InBody紀錄查詢</a></div>
+                            <div class="item"><a  href="/Manage/CoachSchedule/@TempData.Peek("eId")"><i class="fa-regular fa-calendar-days"></i>我的班表</a></div>
+                            <p id="copyright_coach">Copyright © 2023 MusFit. All rights reserved.</p>
+                    }
+                    else{
+                            <div class="item">
+                                <a class="sub-btn" href="#"><i class='fas fa-user-cog'></i>會員管理<i class="fas fa-angle-right dropdown"></i></a>
+                                <div class="sub-menu">
+                                    <a href="#" class="sub-item">查詢會員</a>
+                                    <a href="#" class="sub-item">新增會員</a>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <a class="sub-btn" href="#"><i class="fa-sharp fa-solid fa-book"></i>課程管理<i class="fas fa-angle-right dropdown"></i></a>
+                                <div class="sub-menu">
+                                    <a href="#" class="sub-item">查詢(報名)課程</a>
+                                    <a href="#" class="sub-item">新增課程</a>
+                                    <a href="#" class="sub-item">購課會員清單</a>
+                                </div>         
+                             </div>
+                            <div class="item"><a href="#"><i class="fa-solid fa-landmark"></i>教室管理</a> </div>
+                            <div class="item"><a href="#"><i class='far fa-edit'></i>課程紀錄查詢</a> </div>
+                            <div class="item"><a href="/Manage/InBodyRecordQuery"><i class='fas fa-dumbbell'></i>InBody紀錄查詢</a></div>
+                            <div class="item">
+                                <a class="sub-btn" href="#"><i class='fas fa-id-badge'></i>員工管理<i class="fas fa-angle-right dropdown"></i></a>
+                                <div class="sub-menu">
+                                    <a href="#" class="sub-item">查詢員工</a>
+                                    <a href="#" class="sub-item">新增員工</a>
+                                </div>                    
+                            </div>
+                            <div class="item"><a href="/Manage/CoachScheduleQuery"><i class="fa-regular fa-calendar-days"></i>員工班表</a> </div>
+                            <div class="item"><a href="/Manage/VisitorInfo"><i class='far fa-address-card'></i>訪客資料</a> </div>
+                            <div class="item"><a href="#"><i class='far fa-bell'></i>最新消息</a> </div>
+                            <div class="item"><a href="#"><i class="fa-solid fa-heart"></i>課程介紹</a> </div>
+                            <div class="item"><a href="#"><i class="fa-solid fa-lightbulb"></i>知識專欄</a></div>
+                            <p id="copyright">Copyright © 2023 MusFit. All rights reserved.</p>
+                    }
+                }
+               
+                
+            </div>
+        </div>
+
+
+        @* ---------------------------------logo-area--------------------------------------*@
+
+        <div class="logo-area">
+            <a href="/Manage/Index?name=@TempData.Peek("name")&eId=@TempData.Peek("eId")" class="logo">MusFit - 後台管理系統</a>
+            <div class="menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+
+
+        @* ---------------------------------content--------------------------------------*@ 
+        <div class="container content"> 
+            @RenderBody()
+        </div>
+           
+
+    </div>
+
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

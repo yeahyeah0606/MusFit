@@ -1,0 +1,143 @@
+﻿@{
+    ViewData["Title"] = "InBody個人歷史紀錄";
+}
+
+<link rel="stylesheet" href="~/css/InBodyPersonalRecords.css" />
+<div class="myContent">
+
+    <h3>InBody紀錄查詢</h3>
+
+    <div class="searcharea">
+        <select id="dateQuery" onchange="selectDateRecord()">
+            <option value="none" selected hidden disabled>請選擇時間範圍...</option>
+            <option value="3">近3個月內</option>
+            <option value="6">近6個月內</option>
+            <option value="12">近1年內</option>
+        </select>
+        <button id="btnShowAll">顯示全部記錄</button>
+    </div>
+
+    <table id="myTable">
+        <tr class="title">
+            <th>日期</th>
+            <th>項目</th>
+            <th>健身評分</th>
+            <th>操作</th>
+        </tr>
+
+    </table>
+</div>
+
+@*delete Visitor Information*@
+<div id="deleteModal" class="modal">
+
+    <div class="modal-content">
+        <span class="close" onclick="closeModel()">&times;</span>
+        <p>確定刪除此筆紀錄?</p>
+        <input type="hidden" id="inBodyId" />
+        <div>
+            <input type="button" id="btnconfirmdelete" value="確定" />
+            <button class="cancel" onclick="closeModel()">取消</button>
+        </div>
+
+    </div>
+
+</div>
+
+@*success operation*@
+<div id="successMessage" class="modal">
+
+    <div id="successModal" class="modal-content">
+        <span class="close" onclick="closeSuccessModel()">&times;</span>
+        <p>已存檔</p>
+        <button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
+    </div>
+
+</div>
+
+
+@section Scripts{
+    <script>
+        var deleteModal = document.getElementById("deleteModal");
+
+        //close success message
+        function closeSuccessModel(){
+            $('#successMessage').css("display","none");
+            location.reload();
+        }
+
+        //delete inbody
+        $('#btnconfirmdelete').click(function () {
+            var inBodyId = $('#inBodyId').val();
+
+            $.ajax({
+                type: "delete",
+                url: "/api/inbodies/" + inBodyId,
+                success: function (e) {
+                    $('#deleteModal').css("display", "none");
+                    $('#successMessage').css("display", "block");
+                }
+            })
+        })
+
+        //show all records
+        $('#btnShowAll').click(function () {
+            location.reload();
+        })
+
+        //open delete modal
+        function opendeleteModel(ID) {
+            $('#inBodyId').val(ID);
+            deleteModal.style.display = "block";
+        }
+
+        //close modal
+        function closeModel() {
+            deleteModal.style.display = "none";
+        }
+
+        $.ajax({
+            type: "get",
+            url: "/api/InBodies/sId/" + @ViewBag.Id,
+            success: function (data) {
+                data.forEach(function (x) {
+                        var date = new Date(x.date).toLocaleDateString();
+                        var tableRow = `<tr class="inBodyResult">
+                                                       <td>${date}</td>
+                                                       <td>InBody 270 Body Composition Analyzer</td>
+                                                       <td>${x.inBodyScore}</td>
+                                                               <td><button class="edit" onclick="location.href='/Manage/InBodyRecords/${x.inBodyId}'">查看</button>
+                                                       <button class="delete" onclick="opendeleteModel(${x.inBodyId})">刪除</button>
+                                                       </td>
+                                                  </tr>`;
+                        $('#myTable').append(tableRow);
+                    })
+               }
+        })
+
+       function selectDateRecord(x){
+           var term = $('#dateQuery').val();
+           
+           $.ajax({
+               type:"get",
+                url: `/api/inbodies/sId/${@ViewBag.Id}/${term}`,               
+                success: function(data){
+                    $('.inBodyResult').remove();
+                    data.forEach(function(i){                  
+                        var date = new Date(i.date).toLocaleDateString();
+                        var tableRow = `<tr class="inBodyResult">
+                                                       <td>${date}</td>
+                                                       <td>InBody 270 Body Composition Analyzer</td>
+                                                       <td>${i.inBodyScore}</td>
+                                                       <td><button class="edit" onclick="location.href='/Manage/CreateInBodyRecord/${i.inBodyId}'">查看</button>
+                                                       <button class="delete" onclick="opendeleteModel(${i.inBodyId})">刪除</button>
+                                                       </td>
+                                                  </tr>`;
+                        $('#myTable').append(tableRow);
+                    })
+                }
+           })
+       }
+    </script>
+}
+

@@ -1,0 +1,136 @@
+﻿@{
+    ViewData["Title"] = "InBody紀錄";
+}
+
+<link rel="stylesheet" href="~/css/InBodyRecordQuery.css" />
+
+<div class="queryform">
+    <h4>InBody紀錄</h4>
+
+    <form id="querycontent" class="querycontent">
+        <h6>請輸入下列任一資訊進行查詢</h6>
+        <div class="form1">
+            <label for="studentID">學員編號</label>
+            <input type="text" id="sId" />
+            <label for="studentName">學員姓名</label>
+            <input type="text" id="name" />
+            <label for="studentAccount">學員帳號</label>
+            <input type="text" id="account" />
+            <button type="button" id="query" />查詢
+            <button id="reset">清除</button>
+        </div>
+    </form>
+
+</div>
+
+@*show error message *@
+<div id="errorMessage" class="modal">
+
+    <div id="errorModal" class="modal-content">
+        <span class="close" onclick="closeModel()">&times;</span>
+        <p>請輸入查詢條件!!</p>
+        <button id="btnConfirmMessage" class="btnConfirmMessage" onclick="closeModel()">確定</button>
+    </div>
+
+</div>
+
+@*query No Data*@
+<div id="showNoDataModal" class="modal">
+
+    <div id="noDataModal" class="modal-content">
+        <span class="close" onclick="closeModel()">&times;</span>
+        <p>查無相關紀錄</p>
+        <button id="btnNoData" class="btnConfirmMessage" onclick="closeModel()">確定</button>
+    </div>
+
+</div>
+
+@*query No Data*@
+<div id="showNoStudentModal" class="modal">
+
+    <div id="noStudentModal" class="modal-content">
+        <span class="close" onclick="closeModel()">&times;</span>
+        <p>查無此學員</p>
+        <button id="btnNoStudent" class="btnConfirmMessage" onclick="closeModel()">確定</button>
+    </div>
+
+</div>
+
+
+@section Scripts{
+    <script>
+        //add keypress event
+        function addKeyPress(id,btn) {
+            document.getElementById(id).addEventListener("keypress", function (event) {
+            if (event.key === "Enter") { event.preventDefault(); document.getElementById(btn).click();}
+            });
+        }
+        addKeyPress("querycontent", "query");
+
+        //close no data message
+        function closeModel() {
+            $('#showNoDataModal').css("display", "none");
+            $('#errorMessage').css("display","none");
+            $('#showNoStudentModal').css("display", "none");
+        }
+
+        //reset form
+        $('#reset').click(function () {
+            $('input[type=text]').val('');
+        })
+
+        //query
+        $('#query').click(function(){
+            var name = $('#name').val();
+            var id = $('#sId').val();
+            var account = $('#account').val();
+            var flag = false;
+
+            if(name == "" && id == "" && account == ""){
+                $('#errorMessage').css("display", "block");
+                $('#btnConfirmMessage').focus();
+            }
+            else{
+                $.ajax({
+                    type: "get",
+                    url: "/api/students/",
+                    success: function (e) {
+                        e.forEach(function (s) {
+                            if(s.sAccount != ""){
+                                // find visitor
+                                if (s.sName == name || s.sNumber == id || s.sAccount == account) {                                
+                                var sId = s.sId;
+                                flag = true;
+                                // find inBody
+                                $.ajax({
+                                    type: "get",
+                                    url: "/api/inbodies/sId/" + sId,
+                                    success: function (e){
+
+                                        // no inBody record
+                                        if(e.length == 0){
+                                            $('#showNoDataModal').css("display","block");             
+                                            $('#btnNoData').focus();
+                                        }
+                                        // turn to records page
+                                        else{
+                                            window.location.href = '@Url.Action("InBodyPersonalRecords","Manage")?id=' + sId;
+                                        }
+                                    }
+                                })
+                                }
+                            }       
+                        })  
+                        if(flag == false){
+                             $('#showNoStudentModal').css("display", "block");
+                             $('#btnNoStudent').focus();
+                        }
+                    }
+                })
+            }
+        })
+
+    </script>
+}
+
+

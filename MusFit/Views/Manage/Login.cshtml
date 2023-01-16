@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>登入 - 後台管理系統</title>
+    <link rel="icon" href="~/Images/MusFit_logo.png" type=image/png sizes="100x100">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/ManageLogin.css" />
+</head>
+<body>
+<div class="container">
+
+        @*-----------------title-----------------*@
+        <div class=logo-area>
+            <a href="#" class="logo">MusFit - 後台管理系統</a>
+        </div>
+        @*-----------------content-----------------*@
+        <div class="content">      
+            <div class="login-container">
+
+            <div class="login-content">
+                <h3>登入 Login</h3>
+            </div>      
+
+            @{
+                     if (ViewBag.Message != null) {
+                    <div id="popupdiv" style="color:red; display: none;">
+                        @ViewBag.Message
+                    </div>
+                }
+            }
+               
+
+            <div class="login-form">
+            <form action="/Manage/Login" method="post">
+                <input type="text" id="username" name="username" placeholder="請輸入帳號" required>
+                <input type="password" id="password" name="password" placeholder="請輸入密碼" required>
+                <input type="submit" id="submit" value="登入" class="submit">
+            </form>
+        </div>
+</div>
+        </div>
+
+
+</div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/08ba26884c.js" crossorigin="anonymous"></script>
+
+        <script>
+                $(document).ready(function () {
+            if ($('#popupdiv').html() != '') {
+                $("#popupdiv").show();
+            }
+        });
+        </script>
+
+</body>
+</html>
+
+
+
+
+
+

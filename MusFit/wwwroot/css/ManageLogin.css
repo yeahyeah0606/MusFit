@@ -1,0 +1,89 @@
+﻿@import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
+
+body {
+    font-family: ‘cwTeXYen’, sans-serif !important;
+}
+
+.logo {
+    font-family: FreeMono, monospace;
+}
+
+.container {
+    max-width: 1280px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+
+/*title area*/
+.logo-area {
+    padding: 20px 30px;
+    background-color: #bcbbbb;
+    position: fixed;
+    z-index: 1;
+    width: 1280px;
+}
+
+.logo {
+    text-decoration: none;
+    font-size: 30px;
+    color: #5d5757;
+}
+
+.logo:hover {
+    color: #f7f6f6;
+    text-decoration: none;
+}
+
+
+/*login area*/
+#username, #password, h3 {
+    width: 200px;
+    height: 40px;
+    margin: 10px;
+    color: #8a8a8d;
+}
+
+
+.login-container {
+    text-align: center;
+    padding: 30px;
+    width: 350px;
+    height: 280px;
+    background-color: white;
+    border-radius: 5px;
+    border-top: 10px solid #8a8a8d;
+    box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin: auto;
+    top: 150px;
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+#popupdiv {
+    margin-left:50px;
+}
+
+.submit {
+    color: white;
+    background: #8a8a8d;
+    width: 200px;
+    height: 30px;
+    margin: auto;
+    padding: 3px;
+    border-radius: 5px;
+    border: 0px;
+}
+
+.submit:hover {
+    background: #626161;
+}
+
+input {
+    padding: 5px;
+    outline:none;
+    border: solid 1px #ccc;
+    border-radius: 5px;
+}

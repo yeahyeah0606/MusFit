@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "教練班表";
+}
+
+<link rel="stylesheet" href="~/css/CoachSchedule.css" />
+
+
+<div><h3><span id="eName"></span></h3></div>
+<div id="calendar">
+</div>
+
+<div id="myModal" class="modal">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <div id="classTitle"></div>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div id="classInfo"></div>
+        </div>
+        <div class="modal-footer">
+            <button id="btnconfirm" onclick="closeModal()">確認</button>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.1/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.1/package.json"></script>
+
+    <script>
+        var events = [];
+        $.ajax({
+            type: "GET",
+            url: "/api/vwcoachschedule/" + @ViewBag.eId,
+            success: function (data) {
+                $.each(data, function (i, v) {
+                    events.push({
+                        title: v.classTitle,
+                        id: v.classId,
+                        start: v.classStart,
+                        end: v.classEnd,
+                        classNames: [v.roomNumber, v.className, v.weekday, v.classLession, v.studentNumber],
+                        color: v.color
+                    });
+                    $('#eName').text(v.coachName+"的班表");
+                })
+                GenerateCalender(events);
+            }
+        })
+
+        function GenerateCalender(events) {
+            const calendarEl = document.getElementById('calendar')
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'zh-tw',
+                buttonText: { today: '今天'},
+                selectable: true,
+                selectHelper: true,
+                dayMaxEvents: true,
+                events: events,
+                eventClick: function (info) {
+                    var date = new Date(info.event.startStr).toLocaleDateString();
+                    $('#classTitle').html(`<strong>${info.event.title}</strong>`);
+                    $('#classInfo').html(`上課日期 : ${date}(${info.event.classNames[2].substring(2)})<br>課程代號 : ${info.event.id}<br>課程名稱 : ${info.event.classNames[1]}<br>課程堂數 : ${info.event.classNames[3]}<br>上課教室 : ${info.event.classNames[0]}<br>課程時間 : ${info.event.startStr.substring(11, 16)} ~ ${info.event.endStr.substring(11, 16)}<br>課程人數 : ${info.event.classNames[4]}人`);
+                    $('.modal').css('display', 'block');
+                }
+            })
+            calendar.render()
+        }
+
+        var Modal = document.getElementById("myModal");
+
+        function closeModal() {
+            Modal.style.display = "none";
+        }
+
+
+    </script>
+}
+
+

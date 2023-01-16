@@ -1,0 +1,218 @@
+﻿.myContent {
+    padding: 40px 10px;
+}
+
+table {
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #625e5e;
+    margin: 0px auto;
+}
+
+.title {
+    background-color: #a5c0e4;
+}
+
+th, td {
+    text-align: center;
+    padding: 16px;
+}
+
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+h3 {
+    color: #434040;
+    text-align: center;
+}
+
+.searchArea {
+    margin-left: 0;
+}
+
+.createArea {
+    position:absolute;
+    right: 20px;
+}
+
+button {
+    color: #fff;
+    padding: 5px 10px;
+    margin: 0px 0px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+}
+
+button:hover {
+        opacity: 0.9;
+}
+
+#btnQuery, #btnShowAll {
+    background-color: #8a8a8d;
+}
+
+.edit {
+    background-color: #96ba9a;
+    outline: none;
+}
+
+.delete {
+    background-color: #ce7b7b;
+    outline: none;
+}
+
+#btncreate {
+    background-color: #6c92ba;
+    outline: none;
+}
+
+#btncreateReserve {
+    background-color: #b86035;
+    outline: none;
+}
+
+
+.cancel {
+    background-color: #c0bcbc;
+    color: #fff;
+    padding: 8px 10px;
+    margin: 0px 5px;
+    border: none;
+    border-radius: 3px;
+}
+
+.cancel:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+/*create visitor information*/
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 3;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+}
+
+.row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+    grid-gap: 0px 10px;
+    margin: 20px auto;
+    padding: 0px 20px;
+}
+
+
+input[type=text], select {
+    border: solid 1px #a4a1a1;
+    border-radius: 5px;
+    padding: 2px 5px;
+    outline: none;
+}
+
+select{
+    width: 60%;
+}
+
+#classDate, #new_classDate {
+    width: 70%;
+}
+
+input[type=radio] {
+        margin: auto 25px;
+}
+
+form input[type=text]:focus, select:focus {
+    background-color: #ddd;
+}
+
+
+.IsPresent {
+    text-align: left;
+    padding-left: 60px;
+}
+
+form a {
+    display: flex;
+    float: right;
+    position: relative;
+    bottom: 35px;
+}
+
+#btnCreateConfirm, #btnEditConfirm, #btnconfirmdelete, #btnCreateReserveConfirm {
+    color: #fff;
+    background: #a764b2;
+    padding: 5px 10px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+}
+
+
+#btnconfirm:hover, #btnconfirmdelete:hover, #btncanceldelete, #btnCreateReserveConfirm:hover,
+#btnCreateConfirm:hover{
+    opacity: 0.9;
+}
+
+.close {
+    color: #aaaaaa;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btnConfirmMessage {
+    width: 20%;
+    margin: auto;
+    background-color: #8a8a8d;
+}
+
+ .btnConfirmMessage:focus{
+    outline:none;
+}
+
+    .star {
+        color: red;
+        font-size: 16px;
+    }
+
+#validationModal, #valPhoneModal, #valMailModal, #deleteContent, #valVisitorModal,
+#noDataModal, #errorModal, #successModal {
+    width: 30%;
+}
+
+
+.pagination .active a {
+    background-color: #8a8a8d !important;
+    border:none;
+}
+
+

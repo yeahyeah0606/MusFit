@@ -1,0 +1,244 @@
+﻿@import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
+
+body {
+    font-family: ‘cwTeXYen’, sans-serif !important;
+}
+
+
+.logo {
+    font-family: FreeMono, monospace;
+}
+
+.container {
+    max-width: 1280px;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin: inherit;
+}
+
+.side-bar::-webkit-scrollbar {
+    display: none;
+}
+
+body::-webkit-scrollbar {
+    width: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    background-color: #9a9797;
+}
+
+ body::-webkit-scrollbar-track {
+    background-color: #ccc6c6;
+}
+
+
+.logo-area {
+    height: 15%;
+    width: 80%;
+    position: fixed;
+    background-color: #bcbbbb;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.15);
+    padding: 18px 30px;
+    margin-left: 20%;
+    top: 0%;
+    z-index: 1;
+}
+
+.content {
+    margin-left: 20%;
+    position:absolute;
+    top: 15%;
+    width: 80%;
+}
+
+
+/*side-bar*/
+.side-bar {
+    background-color: #8a8a8d;
+    backdrop-filter: blur(15);
+    width: 20%;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+    transition: 0.6s ease;
+    transition-property: left;
+    z-index: 2;
+}
+
+.side-bar .menu {
+    width: 100%;
+    margin-top: 0px;
+}
+
+.side-bar .menu .item {
+    position: relative;
+    cursor: pointer;
+}
+.side-bar .menu .item i{
+    margin-right: 10px;
+}
+
+.side-bar .menu .item a {
+        color: #fff;
+        font-size: 15px;
+        text-decoration: none;
+        padding: 5px 30px;
+        display: block;
+        line-height: 30px;
+}
+
+.side-bar .menu .item a:hover {
+        background-color: #626161;
+        transition: 0.3s ease;
+}
+
+
+.side-bar .menu .item a .dropdown {
+    position: absolute;
+    right: 20px;
+    margin: 7px;
+    transition: 0.3s ease;
+}
+
+.side-bar .menu .item .sub-menu {
+        background-color: #a4a1a1;
+        display: none;
+}
+
+.active {
+    background-color: #626161;
+}
+
+.side-bar .menu .item .sub-menu a {
+    font-size: 15px;
+    padding-left: 50px;
+}
+
+.rotate {
+    transform: rotate(90deg);
+}
+
+.close-btn {
+    position: absolute;
+    color: #fff;
+    font-size: 20px;
+    right: 40px;
+    margin-top: -60px;
+    cursor: pointer;
+    display: none;
+}
+
+.close-btn:hover {
+    color: #626161;
+}
+
+.menu-btn {
+    float: right;
+    margin-top: 1px;
+    color: #5f5e5e;
+    font-size: 28px;
+    cursor: pointer;
+    display: none;
+}
+
+.menu-btn:hover {
+        color: #8a8a8d;
+}
+
+.fa-maxcdn{
+    color: #fff;
+}
+
+.menu i {
+    font-size: 14px;
+}
+
+.identity {
+    padding:28px 25px;
+    margin:auto;
+}
+
+#logout {
+    background-color: #626161;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+hr{
+    margin: 0px 10px;
+    border-color: #4a4949;
+    border-radius: 2%;
+}
+
+#logout:hover {
+    background-color: #b3b1b1;
+    color: #514f4f;
+    opacity: 0.9;
+}
+
+#logout:focus{
+    outline:none;
+}
+
+
+/*logo-area*/
+.logo {
+    text-decoration: none;
+    font-size: 30px;
+    color: #5d5757;
+    position:relative;
+    top: 0px;
+}
+
+.logo:hover {
+        color: #f7f6f6;
+        text-decoration: none;
+}
+
+.imgArea {
+   text-align:center;
+}
+
+.imgArea img {
+    width: 480px;
+}
+
+#copyright {
+    font-size: 8px;
+    color: #edebeb;
+    position: absolute;
+    left:10px;
+    margin: 25px 0px;
+}
+
+#copyright_coach {
+    font-size: 8px;
+    color: #edebeb;
+    position: absolute;
+    left: 10px;
+    bottom: 0px;
+}
+
+
+@media(max-width:800px) {
+    .side-bar {
+        left: -100%;
+    }
+
+    .content, .logo-area {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+}

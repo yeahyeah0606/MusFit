@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "查詢員工班表";
+}
+
+<link rel="stylesheet" href="~/css/CoachScheduleQuery.css" />
+
+<div class="queryform">
+    <h4>員工班表查詢</h4>
+
+    <div class="querycontent">
+        <h6>請輸入下列任一資訊進行查詢</h6>
+        <form id="querycontent" class="form1">
+            <label for="employeeID">員工編號</label>
+            <input type="text" id="eId" value="" />
+            <label for="employeeName">員工姓名</label>
+            <input type="text" id="name" value="" />
+            <label for="employeeAccount">員工帳號</label>
+            <input type="text" id="account" value="" />
+            <button type="button" onclick="query()" id="query">查詢</button>
+            <button id="reset">清除</button>
+        </form>
+    </div>
+
+</div>
+
+@*show error message *@
+<div id="errorMessage" class="modal">
+
+    <div id="errorModal" class="modal-content">
+        <span class="close" onclick="closeModel()">&times;</span>
+        <p>請輸入查詢條件!!</p>
+        <button id="btnConfirmMessage" class="btnConfirmMessage" onclick="closeModel()">確定</button>
+    </div>
+
+</div>
+
+@*query No Data*@
+<div id="showNoDataModal" class="modal">
+
+    <div id="noDataModal" class="modal-content">
+        <span class="close" onclick="closeModel()">&times;</span>
+        <p>查無此員工</p>
+        <button id="btnNoData" class="btnConfirmMessage" onclick="closeModel()">確定</button>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script>
+        //add keypress event
+        function addKeyPress(id,btn) {
+            document.getElementById(id).addEventListener("keypress", function (event) {
+            if (event.key === "Enter") { event.preventDefault(); document.getElementById(btn).click();}
+            });
+        }
+        addKeyPress("querycontent", "query");
+
+        //close no data message
+        function closeModel() {
+            $('#showNoDataModal').css("display", "none");
+            $('#errorMessage').css("display","none");
+        }
+
+        //reset form
+        $('#reset').click(function () {
+            $('input[type=text]').val('');
+        })
+
+        //query
+        $('#query').click(function(){
+            var name = $('#name').val();
+            var id = $('#eId').val();
+            var account = $('#account').val();
+
+            var flag = false;
+            if (name == "" && id == "" && account == "") {
+                $('#errorMessage').css("display", "block");
+                $('#btnConfirmMessage').focus();
+            }
+            else {
+                $.ajax({
+                    type: "get",
+                    url: "/api/employees/",
+                    success: function (data) {
+                        data.forEach(function (e) {
+                            if (e.eIsCoach == true) {
+                                if (e.eNumber == id || e.eName == name || e.eAccount == account) {
+                                    flag = true;
+                                    var eId = e.eId;
+                                    console.log(eId);
+                                    window.location.href = '@Url.Action("CoachSchedule","Manage")?id=' + eId;
+                                }
+                            }
+                        })
+                        if (flag == false) {
+                            $('#showNoDataModal').css("display", "block");
+                            $('#btnNoData').focus();
+                        }
+                    }
+                })
+            }
+        })
+
+    </script>
+    }
+

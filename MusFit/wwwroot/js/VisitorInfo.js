@@ -1,9 +1,4 @@
-﻿        function IsEmail(email) {
-            var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-            if (!regex.test(email)) {return false;} else {return true; }
-        }
-
-        var createModal = document.getElementById("createModal");
+﻿        var createModal = document.getElementById("createModal");
         var createReserveModal = document.getElementById("createReserveModal");
         var editModal = document.getElementById("editModal");
         var deleteModal = document.getElementById("deleteModal");
@@ -45,7 +40,6 @@
         //add keypress events
         function addKeyPress(formID, btn) {
             document.getElementById(formID).addEventListener("keydown", function (event) {
-                console.log(event.target);
                 if (event.key === "Enter") {
                     event.preventDefault(); document.getElementById(btn).click();
                 }
@@ -73,6 +67,12 @@
         function closeSuccessModel() {
             $('#messageModal').css("display", "none");
             location.reload();
+}
+
+        //email format validation
+        function IsEmail(email) {
+            var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            if (!regex.test(email)) { return false; } else { return true; }
         }
 
         //ajax type
@@ -97,12 +97,10 @@
         //info pagination
         function pagination(jsonData, nowPage) {
 
-            console.log(nowPage);
             const dataTotal = jsonData.length;
 
             const perpage = 4;
             const pageTotal = Math.ceil(dataTotal / perpage);
-            console.log(`全部資料:${dataTotal} 每一頁顯示:${perpage}筆 總頁數:${pageTotal}`);
 
             let currentPage = nowPage;
             if (currentPage > pageTotal) { currentPage = pageTotal; }
@@ -194,11 +192,12 @@
 
         //query reservation
         var queryData = [];
-        var flag = false;
+        var flag;
         var queryInput;     
         var queryStartDate;
         var queryEndDate;
         $('#btnQuery').click(function () {
+            flag = false;
             queryInput = $('#queryinfo').val();
             queryStartDate = $('#startDate').val();
             queryEndDate = $('#endDate').val();
@@ -303,7 +302,6 @@
             else {
                 $('#new_orderStatus').val('體驗');
                 $('#new_orderTime').val(new Date().toJSON().slice(0, 19));
-                console.log(GetFormData($('#createOrder')));
                 myAJAX(AjaxType.POST, "/api/classorders/", showMessage("已存檔"),"application/json", JSON.stringify(GetFormData($('#createOrder'))))
             }
         })
@@ -397,7 +395,6 @@
                 var orderId = $('#orderId').val();
                 $('#orderTime').val(new Date().toJSON().slice(0, 19));
                 // edit reservation order
-                console.log(GetFormData($('#editOrder')));
                 myAJAX(AjaxType.PUT, "/api/classorders/" + orderId, null, "application/json", JSON.stringify(GetFormData($('#editOrder'))))
 
                 //edit visitor information

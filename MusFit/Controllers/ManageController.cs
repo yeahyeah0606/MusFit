@@ -45,6 +45,7 @@ namespace MusFit.Controllers
             byte[] crypto = sha256.ComputeHash(source);
             return crypto;
         }
+
         [HttpPost]
         public ActionResult Login(string username, string password)
         {
@@ -87,7 +88,8 @@ namespace MusFit.Controllers
 
             return RedirectToAction("Login");
         }
-        //[Authentication]
+
+        [Authentication]
         public IActionResult CoachScheduleQuery()
         {
             return View();
@@ -98,12 +100,14 @@ namespace MusFit.Controllers
             ViewBag.eId = id;
             return View();
         }
-        //[Authentication]
+
+        [Authentication]
         public IActionResult VisitorInfo()
         {
             return View();
         }
-        // [Authentication]
+
+        [Authentication]
         public IActionResult InBodyRecords(long? id = 1)
         {
             ViewBag.Id = id;
@@ -115,7 +119,8 @@ namespace MusFit.Controllers
             ViewBag.Id = id;
             return View();
         }
-        //[Authentication]
+
+        [Authentication]
         public IActionResult InBodyRecordQuery()
         {
             return View();

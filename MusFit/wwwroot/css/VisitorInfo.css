@@ -146,10 +146,19 @@ form input[type=text]:focus, select:focus {
 }
 
 
-.IsPresent {
-    text-align: left;
-    padding-left: 60px;
+#queryinfo {
+    width: 24%;
 }
+
+input[type="date"]:not(.has-value):before {
+    color: lightgray;
+    content: attr(placeholder);
+}
+
+input[type=date]{
+    width:24%;
+}
+
 
 form a {
     display: flex;

@@ -43,7 +43,7 @@
                 if (event.key === "Enter") {
                     event.preventDefault(); document.getElementById(btn).click();
                 }
-            });
+        });
 }
 
         addKeyPress("createOrder", "btnCreateReserveConfirm");
@@ -198,7 +198,7 @@
         var queryEndDate;
         $('#btnQuery').click(function () {
             flag = false;
-            queryInput = $('#queryinfo').val();
+            queryInput = $('#queryinfo').val().trim();
             queryStartDate = $('#startDate').val();
             queryEndDate = $('#endDate').val();
             if (queryInput == "" && queryStartDate == "" && queryEndDate == "") {
@@ -242,6 +242,14 @@
                 $('#confirmNoData').focus();
             }
         }
+
+        //query start date select end date together 
+        function queryStartDateChange(x) {
+            var date = x.value;
+            $('#endDate').val(date);
+            $('#endDate').addClass("has-value");
+        }
+
 
         //show all reservations
         $('#btnShowAll').click(function () {
@@ -475,12 +483,6 @@
             $('#classTimeId').val(t[0].classTimeId);
             $('#new_classTimeId').val(t[0].classTimeId);
         }
-
-        function queryStartDateChange(x) {
-            var date = x.value;
-            $('#endDate').val(date);
-        }
-
 
         //convert form data to JSON
         function GetFormData($form) {

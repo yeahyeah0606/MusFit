@@ -68,9 +68,9 @@
 
         //query
         $('#query').click(function(){
-            var name = $('#name').val();
-            var id = $('#eId').val();
-            var account = $('#account').val();
+            var name = $('#name').val().trim();
+            var id = $('#eId').val().trim();
+            var account = $('#account').val().trim();
 
             var flag = false;
             if (name == "" && id == "" && account == "") {

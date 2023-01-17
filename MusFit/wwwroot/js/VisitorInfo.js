@@ -476,6 +476,12 @@
             $('#new_classTimeId').val(t[0].classTimeId);
         }
 
+        function queryStartDateChange(x) {
+            var date = x.value;
+            $('#endDate').val(date);
+        }
+
+
         //convert form data to JSON
         function GetFormData($form) {
             var unindexd_array = $form.serializeArray();

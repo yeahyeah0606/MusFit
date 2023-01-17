@@ -2,8 +2,83 @@
 @{
     ViewData["Title"] = "首頁";
 }
-<div class="imgArea"><img src="~/Images/MusFit_large.jpg"/></div>
+@*<div class="imgArea"><img src="~/Images/MusFit_large.jpg"/></div>*@
     
 
 
+    <div class="row" >
+        <div class="col-sm-4">
+            <fieldset>
+            <legend id="member">會員數</legend>
+            <h2 id="studentNumber"></h2>
+        </fieldset>
+        </div>
+    <div class="col-sm-4">
+            <fieldset>
+                <legend id="visitor">訪客數</legend>
+                <h2 id="visitorNumber"></h2>
+            </fieldset>
+    </div>
+        <div class="col-sm-4">
+            <fieldset>
+                <legend id="operation">開班率</legend>
+                 <h2 id="operationPercentage"></h2>
+             </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+        <fieldset>
+            <legend id="className" class="signedup"></legend>
+            <h2 id="signedNumber"></h2>
+        </fieldset>
+        </div>
+    </div>
+
+@section Scripts{
+    <script>
+
+        //get student number
+        $.ajax({
+            type: "get",
+            url: "/api/students/studentNumber/",
+            success:function(n){
+                $('#studentNumber').text(`${n} 人`);
+            }
+        })
+
+        //get visitor number
+        $.ajax({
+            type: "get",
+            url: "/api/students/VisitorNumber/",
+            success:function(n){
+                $('#visitorNumber').text(`${n} 人`);
+            }
+        })
+
+        //get operation percetage
+        $.ajax({
+            type: "get",
+            url: "/api/classes/operationPercentage/",
+            success:function(n){
+                $('#operationPercentage').text(`${n.toFixed(1)}%`);
+            }
+        })
+
+        //get signedup number
+        $.ajax({
+            type: "get",
+            url: "/api/classes/signedNumber/",
+            success:function(n){
+                $('#className').text(n[0].className);
+                $('#signedNumber').text(`報名 ${n[0].actualNumber} 人`);
+            }
+        })
+
+
+
+
+
+    </script>
+}
 

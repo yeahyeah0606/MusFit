@@ -36,6 +36,24 @@ namespace MusFit.Controllers
             return await guests.ToListAsync();
         }
 
+        [HttpGet("studentNumber/")]
+        public IActionResult GetStudentNumber()
+        {
+            var students = from s in _context.Students where s.SIsStudentOrNot == true select s;
+            var number = students.Count();
+            return Ok(number);
+        }
+
+        [HttpGet("visitorNumber/")]
+        public IActionResult GetVisitorNumber()
+        {
+            var visitor = from s in _context.Students where s.SIsStudentOrNot == false select s;
+            var number = visitor.Count();
+            return Ok(number);
+        }
+
+
+
         // GET: api/Students/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(int id)

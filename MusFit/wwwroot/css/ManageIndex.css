@@ -227,6 +227,35 @@ hr{
     bottom: 0px;
 }
 
+/*main content*/
+.row {
+    width: 80%;
+    margin: 40px auto auto auto;
+    text-align:center;
+}
+
+legend {
+    width: 40%;
+    /*border-radius: 5px;*/
+    font-size: 22px;
+    padding: 3px 5px;
+    color: #fff;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.15);
+    background-color: #9e9b9b;
+}
+
+fieldset {
+    border: solid 1px;
+    border-radius: 5px;
+}
+
+
+.signedup {
+    width: 80%;
+    font-size: 18px;
+    padding: 5px 5px;
+}
+
 
 @media(max-width:800px) {
     .side-bar {

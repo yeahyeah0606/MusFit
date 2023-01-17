@@ -278,9 +278,13 @@
 
         //create visitor
         $('#btnCreateConfirm').click(function () {
-            var name = $('#CreateName').val();
-            var phone = $('#CreatePhone').val();
-            var mail = $('#CreateMail').val();
+            var name = $('#CreateName').val().trim();
+            var phone = $('#CreatePhone').val().trim();
+            var mail = $('#CreateMail').val().trim();
+            $('#CreateName').val(name);
+            $('#CreatePhone').val(phone);
+            $('#CreateMail').val(mail);
+
             if (name == "" || phone == "" || mail == "" || $('input:radio[name=sGender]:checked').val() == 0) {
                 validationMessage.style.display = "block"; $('#confirmValidation').focus(); }
             else if (!reg.test(phone)) { valPhoneMessage.style.display = "block"; $('#confirmValPhone').focus(); }
@@ -301,7 +305,6 @@
 
         //create reservation
         $('#btnCreateReserveConfirm').click(function () {
-            var visitorName = $('#visitorName');
             var new_className = $('#new_className').val();
             var new_classDate = $('#new_classDate').val();
 
@@ -387,9 +390,12 @@
 
         //edit reservation information
         $('#btnEditConfirm').click(function () {       
-            var name = $('#name').val();
-            var phone = $('#phone').val();
-            var mail = $('#mail').val();
+            var name = $('#name').val().trim();
+            var phone = $('#phone').val().trim();
+            var mail = $('#mail').val().trim();
+            $('#name').val(name);
+            $('#phone').val(phone);
+            $('#mail').val(mail);
             var className = $('#className').val();
             var classDate = $('#classDate').val();
 
@@ -420,7 +426,6 @@
 
         //select visitor
         function visitorSelect() {
-            var visitorPhone = $('#visitorPhone').val();
             $('#visitorName').val("");
             $('#new_sID').val("");
             myAJAX(AjaxType.GET, "/api/students/guests/",showVisitorNameFromVisitorPhone)
@@ -429,7 +434,7 @@
             var option;
             $('#visitorName').children("option").filter("[value != none]").remove();
             data.forEach(function (g) {
-                if (g.sPhone == $('#visitorPhone').val()) {
+                if (g.sPhone == $('#visitorPhone').val().trim()) {
                     option = `<option value="${g.sId}">${g.sName}</option>`;
                     $('#visitorName').append(option);
                 }

@@ -2,6 +2,7 @@
 
 body {
     font-family: ‘cwTeXYen’, sans-serif !important;
+    overflow-x:hidden;
 }
 
 

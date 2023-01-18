@@ -239,12 +239,17 @@ hr{
 
 
 legend {
-    width: 75%;
+    height: 55px;
+    width: 80%;
     font-size: 20px;
+    border-radius: 5px;
     padding: 3px 5px;
     color: #fff;
     box-shadow: 5px 5px 5px rgba(0,0,0,0.15);
     background-color: #9e9b9b;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
 fieldset {
@@ -255,12 +260,19 @@ fieldset {
 }
 
 .odd {
-    background-image: linear-gradient(to top right, #dbbc66, #f2ef5f);
+    background-image: linear-gradient(to top right, #f2ed73, #d3ce61);
 }
 
 .even {
-   /* background-image: linear-gradient(to top right, #75a9ba, #88ecea);*/
     background-image: linear-gradient(to top right, #9a9797, #dfd9d9);
+}
+
+.golden_crown {
+    width: 20%;
+}
+
+.white_crown{
+    width: 14%;
 }
 
 

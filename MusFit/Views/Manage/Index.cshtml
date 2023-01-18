@@ -9,19 +9,27 @@
     <div class="row" >
         <div class="col-sm-4">
             <fieldset>
-            <legend id="memberOfThisYear" class="odd"></legend>
+            <legend id="memberOfThisYear" class="odd">
+                <img class="golden_crown" src="~/Images/golden_crown.png"/>
+            </legend>
             <h2 id="studentNumberOfThisYear"></h2>
         </fieldset>
         </div>
     <div class="col-sm-4">
             <fieldset>
-                <legend class="even">會員總人數</legend>
+                <legend class="even">
+                    <img class="white_crown" src="~/Images/white_crown.png"/>
+                    <div>&nbsp;會員總人數</div>
+                </legend>
                 <h2 id="studentNumber"></h2>
             </fieldset>
     </div>
         <div class="col-sm-4">
             <fieldset>
-                <legend class="odd">會員增幅</legend>
+                <legend class="odd"> 
+                    <img class="golden_crown" src="~/Images/golden_crown.png"/>
+                    <div>會員增幅</div>
+                </legend>
                  <h2 id="increasePercentage"></h2>
              </fieldset>
         </div>
@@ -29,19 +37,27 @@
     <div class="row">
         <div class="col-sm-4">
             <fieldset>
-                <legend class="even">招生率</legend>
+                <legend class="even">
+                    <img class="white_crown" src="~/Images/white_crown.png"/>
+                    <div>&nbsp;招生率</div>
+                </legend>
                  <h2 id="operationPercentage"></h2>
              </fieldset>
         </div>
         <div class="col-sm-4">
             <fieldset>
-                <legend id="classOrders" class="odd"></legend>
+                <legend id="classOrders" class="odd">
+                    <img class="golden_crown" src="~/Images/golden_crown.png"/>
+                </legend>
                  <h2 id="classOrderNumber"></h2>
              </fieldset>
         </div>
         <div class="col-sm-4">
             <fieldset>
-                <legend class="even">訪客總人數</legend>
+                <legend class="even">
+                    <img class="white_crown" src="~/Images/white_crown.png"/>
+                    <div>&nbsp;訪客總人數</div>
+                </legend>
                  <h2 id="visitorNumber"></h2>
              </fieldset>
         </div>
@@ -56,7 +72,7 @@
             success:function(n){
                 var date = new Date();
                 var year = date.getFullYear();
-                $('#memberOfThisYear').text(`${year}年會員數`);
+                $('#memberOfThisYear').append(`<div>${year}年會員數</div>`);
                 $('#studentNumberOfThisYear').text(`${n} 人`);
             }
         })
@@ -96,7 +112,7 @@
             success:function(n){
                 var date = new Date();
                 var year = date.getFullYear();
-                $('#classOrders').text(`${year}年購課堂數`);
+                $('#classOrders').append(`<div>${year}年購課堂數</div>`);
                 $('#classOrderNumber').text(`${n} 堂`);
             }
         })

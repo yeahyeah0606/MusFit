@@ -228,16 +228,19 @@ hr{
 }
 
 /*main content*/
+.myData{
+    margin-top: 60px;
+}
 .row {
     width: 80%;
-    margin: 40px auto auto auto;
+    margin: 30px auto;
     text-align:center;
 }
 
+
 legend {
-    width: 40%;
-    /*border-radius: 5px;*/
-    font-size: 22px;
+    width: 75%;
+    font-size: 20px;
     padding: 3px 5px;
     color: #fff;
     box-shadow: 5px 5px 5px rgba(0,0,0,0.15);
@@ -247,13 +250,17 @@ legend {
 fieldset {
     border: solid 1px;
     border-radius: 5px;
+    margin: 30px auto;
+    border-color: #a4a1a1;
 }
 
+.odd {
+    background-image: linear-gradient(to top right, #dbbc66, #f2ef5f);
+}
 
-.signedup {
-    width: 80%;
-    font-size: 18px;
-    padding: 5px 5px;
+.even {
+   /* background-image: linear-gradient(to top right, #75a9ba, #88ecea);*/
+    background-image: linear-gradient(to top right, #9a9797, #dfd9d9);
 }
 
 

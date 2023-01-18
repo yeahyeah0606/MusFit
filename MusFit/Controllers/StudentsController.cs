@@ -44,7 +44,28 @@ namespace MusFit.Controllers
             return Ok(number);
         }
 
-        [HttpGet("visitorNumber/")]
+		[HttpGet("studentNumber/thisyear/")]
+		public IActionResult GetTStudentNumberOfThisYear()
+		{
+			var studentsOfThisYear = from s in _context.Students where s.SIsStudentOrNot == true && s.SJoinDate.Value.Year == DateTime.Today.Year select s;
+			var number = studentsOfThisYear.Count();
+			return Ok(number);
+		}
+
+		[HttpGet("studentNumber/increasePercentage/")]
+		public IActionResult GetInceasePercentageOfStudentNumber()
+		{
+			var studentsOfThisYear = from s in _context.Students where s.SIsStudentOrNot == true && s.SJoinDate.Value.Year == DateTime.Today.Year select s;
+			var allStudents = from s in _context.Students where s.SIsStudentOrNot == true select s;
+			var numberOfThisYear = studentsOfThisYear.Count();
+			var numberOfAll = allStudents.Count();
+            var difference = numberOfAll - numberOfThisYear;
+            double increasePercentage = (double)numberOfThisYear / difference * 100.0;
+			return Ok(increasePercentage);
+		}
+
+
+		[HttpGet("visitorNumber/")]
         public IActionResult GetVisitorNumber()
         {
             var visitor = from s in _context.Students where s.SIsStudentOrNot == false select s;

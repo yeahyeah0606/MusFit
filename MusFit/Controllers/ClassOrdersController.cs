@@ -93,8 +93,17 @@ namespace MusFit.Controllers
         }
 
 
-        //GET: api/ClassOrders/5
-        [HttpGet("{id}")]
+		[HttpGet("orderNumberOfThisYear/")]
+		public IActionResult GetOrderNumberOfThisYear()
+        {
+            var orders = from o in _context.ClassOrders where o.OrderTime.Year == DateTime.Now.Year 
+                         && o.OrderStatus == "已付款" select o;
+            var orderNumber = orders.Count();
+            return Ok(orderNumber);
+        }
+
+		//GET: api/ClassOrders/5
+		[HttpGet("{id}")]
         public async Task<ActionResult<dynamic>> GetClassOrder(int id)
         {
             var obj = from o in _context.ClassOrders

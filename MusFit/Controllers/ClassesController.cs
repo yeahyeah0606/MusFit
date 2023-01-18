@@ -38,27 +38,6 @@ namespace MusFit.Controllers
             return Ok(operationPercentage);
         }
 
-        [HttpGet("signedNumber/")]
-        public async Task<ActionResult<IEnumerable<dynamic>>> GetSignedNumber()
-        {
-            var actualNumber = from c in _context.Classes
-                               join ct in _context.ClassTimes on c.CId equals ct.CId
-                               join l in _context.LessionCategories on c.LcId equals l.LcId
-                               where ct.CtDate > DateTime.UtcNow && ct.CtLession == 1
-                               select new
-                               {
-                                   cID = c.CId,
-                                   classNumber = c.CNumber,
-                                   className = c.CName,
-                                   actualNumber = c.CActual,
-                                   color = l.LcThemeColor,
-                                   date = ct.CtDate
-                               };
-
-            return await actualNumber.ToListAsync();
-        }
-
-
 
         // GET: api/Classes/5
         [HttpGet("{id}")]

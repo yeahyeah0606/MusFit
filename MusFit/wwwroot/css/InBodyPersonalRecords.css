@@ -129,12 +129,12 @@ input {
     font-weight: bold;
 }
 
-    .close:hover,
-    .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-    }
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 
 .btnConfirmMessage {
@@ -145,4 +145,13 @@ input {
 
 #successModal {
     width: 30%;
+}
+
+select{
+    font-size: 16px;
+    padding: 5px 2px;
+}
+
+select option{
+    font-size: 18px;
 }

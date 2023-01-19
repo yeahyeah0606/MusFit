@@ -20,6 +20,7 @@ namespace MusFit.Models
         public string ENumber { get; set; }
         public string EName { get; set; }
         public string EEngName { get; set; }
+        public string EIdentityNumber { get; set; }
         public string EMail { get; set; }
         public bool EGender { get; set; }
         public DateTime EBirth { get; set; }
@@ -28,7 +29,7 @@ namespace MusFit.Models
         public byte[] EPassword { get; set; }
         public string EContactor { get; set; }
         public string EContactorPhone { get; set; }
-        public byte[] EPhoto { get; set; }
+        public string EPhoto { get; set; }
         public string EAddress { get; set; }
         public DateTime? EEnrollDate { get; set; }
         public DateTime? EResignDate { get; set; }

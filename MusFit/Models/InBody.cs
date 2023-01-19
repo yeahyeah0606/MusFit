@@ -55,6 +55,41 @@ namespace MusFit.Models
         public byte Whrlevel { get; set; }
         public string MuscleControl { get; set; }
         public string FatControl { get; set; }
+        public double UpperRightMuscle { get; set; }
+        public double UpperLeftMuscle { get; set; }
+        public double CenterMuscle { get; set; }
+        public double BottomRightMuscle { get; set; }
+        public double BottomLeftMuscle { get; set; }
+        public byte UpperRightMuscleLevel { get; set; }
+        public byte UpperLeftMuscleLevel { get; set; }
+        public byte CenterMuscleLevel { get; set; }
+        public byte BottomRightMuscleLevel { get; set; }
+        public byte BottomLeftMuscleLevel { get; set; }
+        public double UpperRightFatPercentage { get; set; }
+        public double UpperRightFat { get; set; }
+        public double UpperLeftFatPercentage { get; set; }
+        public double UpperLeftFat { get; set; }
+        public double CenterFatPercentage { get; set; }
+        public double CenterFat { get; set; }
+        public double BottomLeftFatPercentage { get; set; }
+        public double BottomLeftFat { get; set; }
+        public double BottomRightFatPercentage { get; set; }
+        public double BottomRightFat { get; set; }
+        public byte UpperRightFatLevel { get; set; }
+        public byte UpperLeftFatLevel { get; set; }
+        public byte CenterFatLevel { get; set; }
+        public byte BottomRightFatLevel { get; set; }
+        public byte BottomLeftFatLevel { get; set; }
+        public double EI20kHzRightArm { get; set; }
+        public double EI20kHzLefttArm { get; set; }
+        public double EI20kHzBody { get; set; }
+        public double EI20kHzRightLeg { get; set; }
+        public double EI20kHzLefttLeg { get; set; }
+        public double EI100kHzRightArm { get; set; }
+        public double EI100kHzLeftArm { get; set; }
+        public double EI100kHzBody { get; set; }
+        public double EI100kHzRightLeg { get; set; }
+        public double EI100kHzLeftLeg { get; set; }
         public short InBodyScore { get; set; }
 
         public virtual Student SIdNavigation { get; set; }

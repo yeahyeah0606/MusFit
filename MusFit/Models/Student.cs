@@ -22,7 +22,7 @@ namespace MusFit.Models
         public bool SGender { get; set; }
         public string SContactor { get; set; }
         public string SContactPhone { get; set; }
-        public byte[] SPhoto { get; set; }
+        public string SPhoto { get; set; }
         public string SAddress { get; set; }
         public string SPhone { get; set; }
         public string SAccount { get; set; }

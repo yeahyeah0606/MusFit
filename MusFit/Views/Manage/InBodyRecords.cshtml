@@ -322,85 +322,17 @@
                 $('#fatControl').text(e.fatControl);
                 $('#inBodyScore').text(e.inBodyScore);
 
-                if (e.proteinLevel == 1) {
-                    $('input[name=proteinLevel]')[0].checked = true;
-                }
-                else {
-                    $('input[name=proteinLevel]')[1].checked = true;
-                }
-
-                if (e.boneMineralLevel == 1) {
-                    $('input[name=mineralLevel]')[0].checked = true;
-                }
-                else {
-                    $('input[name=mineralLevel]')[1].checked = true;
-                }
-
-                if (e.bodyFatMassLevel == 1) {
-                    $('input[name=bodyfatLevel]')[0].checked = true;
-                }
-                else if (e.bodyFatMassLevel == 0) {
-                    $('input[name=bodyfatLevel]')[1].checked = true;
-                }
-                else {
-                    $('input[name=bodyfatLevel]')[2].checked = true;
-                }
-
-                if (e.weightLevel == 1) {
-                    $('input[name=weightLevel]')[0].checked = true;
-                }
-                else if (e.weightLevel == 0) {
-                    $('input[name=weightLevel]')[1].checked = true;
-                }
-                else {
-                    $('input[name=weightLevel]')[2].checked = true;
-                }
-
-                if (e.smmlevel == 1) {
-                    $('input[name=smmlevel]')[0].checked = true;
-                }
-                else if (e.smmlevel == 0) {
-                    $('input[name=smmlevel]')[1].checked = true;
-                }
-                else {
-                    $('input[name=smmlevel]')[2].checked = true;
-                }
-
-                if (e.bmilevel == 1) {
-                    $('input[name=bmilevel]')[0].checked = true;
-                }
-                else if (e.bmilevel == 0) {
-                    $('input[name=bmilevel]')[1].checked = true;
-                }
-                else if (e.bmilevel == 2) {
-                    $('input[name=bmilevel]')[2].checked = true;
-                }
-                else {
-                    $('input[name=bmilevel]')[3].checked = true;
-                }
-
-                if (e.pbflevel == 1) {
-                    $('input[name=pbflevel]')[0].checked = true;
-                }
-                else if (e.pbflevel == 0) {
-                    $('input[name=pbflevel]')[1].checked = true;
-                }
-                else {
-                    $('input[name=pbflevel]')[2].checked = true;
-                }
-
-                if (e.whrlevel == 1) {
-                    $('input[name=whrlevel]')[0].checked = true;
-                }
-                else if (e.whrlevel == 0) {
-                    $('input[name=whrlevel]')[1].checked = true;
-                }
-                else {
-                    $('input[name=whrlevel]')[2].checked = true;
-                }
+                checkBoxesTwo(e.proteinLevel, 'input[name=proteinLevel]');
+                checkBoxesTwo(e.boneMineralLevel, 'input[name=mineralLevel]');
+                checkBoxesThree(e.bodyFatMassLevel, 'input[name=bodyfatLevel]');
+                checkBoxesThree(e.weightLevel, 'input[name=weightLevel]');
+                checkBoxesThree(e.smmlevel, 'input[name=smmlevel]');
+                checkBoxesFour(e.bmilevel, 'input[name=bmilevel]');
+                checkBoxesThree(e.pbflevel, 'input[name=pbflevel]');
+                checkBoxesThree(e.whrlevel, 'input[name=whrlevel]');
 
                 var cancelBtn = `<button id = "btndelete" onclick = "openDeleteModal(${e.inBodyId})"> 刪除 </button>
-                            <button onclick="goBack(${e.sId})"> 返回 </button>`;
+                                            <button onclick="goBack(${e.sId})"> 返回 </button>`;
                 $('#cancelArea').append(cancelBtn);
 
                 $('#sId').val(e.sId);
@@ -414,13 +346,44 @@
                         else { $('#gender').text('男'); }
                     }
                 })
-
-            },
-            error: function (error) {
-                alert('failed');
             }
         })
 
+                function checkBoxesTwo(value,checkBox){
+                    if (value == 1) {
+                        $(checkBox)[0].checked = true;
+                    }
+                    else {
+                        $(checkBox)[1].checked = true;
+                    }
+                }
+
+                function checkBoxesThree(value,checkBox){
+                    if (value == 1) {
+                        $(checkBox)[0].checked = true;
+                    }
+                    else if(value == 0){
+                        $(checkBox)[1].checked = true;
+                    }
+                    else {
+                        $(checkBox)[2].checked = true;
+                    }
+                }
+
+                function checkBoxesFour(value,checkBox){
+                if (value == 1) {
+                $(checkBox)[0].checked = true;
+                }
+                else if (value == 0) {
+                    $(checkBox)[1].checked = true;
+                }
+                else if (value == 2) {
+                    $(checkBox)[2].checked = true;
+                }
+                else {
+                    $(checkBox)[3].checked = true;
+                }
+                }
 
     </script>
 }

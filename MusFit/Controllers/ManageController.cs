@@ -125,12 +125,7 @@ namespace MusFit.Controllers
         {
             return View();
         }
-        [Authentication]
-        public IActionResult CoachIndex(string identity)
-        {
-            ViewBag.identity = identity;
-            return View();
-        }
+
 
         public IActionResult News()
         {

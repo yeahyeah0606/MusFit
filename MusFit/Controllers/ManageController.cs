@@ -131,5 +131,21 @@ namespace MusFit.Controllers
             ViewBag.identity = identity;
             return View();
         }
+
+        public IActionResult News()
+        {
+            var myquery2 = (from myemployee1 in _context.Employees select myemployee1).ToList();
+            var myquery = (from Mynews in _context.News select Mynews.NId).ToList();
+            ViewBag.querydata = myquery2;
+            ViewBag.Myquerydata = myquery;
+
+
+
+
+
+            var viewModel = _context.News.ToList();
+
+            return View(viewModel);
+        }
     }
 }

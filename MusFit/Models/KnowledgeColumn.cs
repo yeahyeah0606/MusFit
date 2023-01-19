@@ -12,7 +12,7 @@ namespace MusFit.Models
         public string KContent { get; set; }
         public string KAuthor { get; set; }
         public DateTime KDate { get; set; }
-        public byte[] KPhoto1 { get; set; }
-        public byte[] KPhoto2 { get; set; }
+        public string KPhoto1 { get; set; }
+        public string KPhoto2 { get; set; }
     }
 }

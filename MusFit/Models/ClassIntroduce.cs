@@ -11,7 +11,7 @@ namespace MusFit.Models
         public string InTitle { get; set; }
         public string InContent { get; set; }
         public string InCategory { get; set; }
-        public byte[] InPhoto { get; set; }
+        public string InPhoto { get; set; }
         public DateTime InDate { get; set; }
         public int EId { get; set; }
         public int CId { get; set; }

@@ -1,0 +1,1709 @@
+﻿@model List<News>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="~/css/News.css">
+@*<script src="https://cdn.ckeditor.com/4.20.1/standard-all/ckeditor.js"></script>*@
+
+@{
+    ViewBag.Title = "News";
+
+}
+
+<div class="mycontain">
+    <div class="contentheader">
+        <h4>最新消息列表</h4>
+    </div>
+    <div>
+        <button class="btn" id="addbtn" type="button" data-target="#addModal" data-toggle="modal">
+            新增文章
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <br>
+    @* add modal*@
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> 最新消息-新增</h5>
+                </div>
+                <div class="modal-body">
+                    @*                    <div class="showwrong" hidden>
+                    <span class="wrongmsg"></span>
+                    </div>*@
+                    <form name="addform">
+                        @*                       <div class="row">
+                        <div class="col-12">
+
+                        </div>
+                        </div>*@
+                        <div class="row" style="width:95%; margin-left:1%;">
+                            <div class="col-3">
+                                <label id="addModallabel" for="addModalCategory">分類</label>
+                                <select id="addModalCategory" name="nCategory" class="Categoryselect" size="1">
+                                    <option class="CategoryOption">最新消息</option>
+                                    <option class="CategoryOption">課程公告</option>
+                                    <option class="CategoryOption">活動消息</option>
+                                    <option class="CategoryOption">其他</option>
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <label for="">發布日期</label>
+                                <input type="date" name="nPostdate" class="postdate" id="addPostDate" disabled />
+                            </div>
+                            <div class="col-2">
+                                <label for="">下架日期</label>
+                                <input type="date" name="nTakeDownTime" class="takedowndate" disabled />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="addModalTitle" id="addtitlelabel" class="titlelabel">
+                                    標題
+                                </label>
+                            </div>
+                            <div class="col-12">
+                                <input type="text" id="addModalTitle" name="nTitle" class="titleinput" placeholder="請輸入標題(必填)" maxlength="20">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row" style="width:95%; margin-left:2%;">
+                            <label for="editor1">內容</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="contenteditorbar">
+                                    <label class="uploadlabel" for="adduploadfile">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                                            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                            <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
+                                        </svg>
+                                    </label>
+                                    <input type="file" class="form-control-file btn " id="adduploadfile" name="nPhoto" accept=".png, .jpg, .jpeg" onchange="imageUploaded()" style="display:none">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+
+                            <div class="col-12">
+                                <div style=" width: 100%; ">
+
+                                    <div class="divtextarea">
+                                        <img id="addformphoto" class="imagebox">
+                                        <textarea name="nContent" id="editor1" rows="11" placeholder="請輸入內容(必填)" maxlength="500"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <select id="addEId" class="Employeeselect" name="employee" size="1">
+                                    @foreach (var item in ViewBag.querydata)
+                                    {
+                                        <option class="EmployeeOption" value="@item.EId">@item.EName-@item.EId</option>
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn">取消</button>
+                    <button class="btn addbtn" onclick="addform1()">確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div id="divnavlink">
+            <ul id="ulnavlink">
+
+                <li @*class="nav-item" role="presentation" *@>
+                    @*<button class="nav-link active" id="nav-news-tab" data-target="#nav-news" data-toggle="tab" aria-controls="nav-news" role="tab" aria-select="true">最新消息</button>*@
+                    <button class="navButton" onclick="allnew('news')">最新消息</button>
+
+                </li>
+                <li @*class="nav-item" role="presentation" *@>
+                    @*<button class="nav-link" id="nav-lessions-tab" data-target="#nav-lessions" data-toggle="tab" role="tab" aria-controls="nav-lessions" aria-select="false">課程公告</button>*@
+                    <button class="navButton" onclick="allnew('lessions')">課程公告</button>
+                </li>
+                <li @*class="nav-item" role="presentation" *@>
+                    @*<button class="nav-link" id="nav-activity-tab" data-toggle="tab" data-target="#nav-activity" role="tab" aria-controls="nav-activity" aria-select="false">活動消息</button>*@
+                    <button class="navButton" onclick="allnew('activity')">活動消息</button>
+                </li>
+                <li @*class="nav-item" role="presentation" *@>
+                    @*<button class="nav-link" id="nav-other-tab" data-toggle="tab" data-target="#nav-other" role="tab" aria-controls="nav-other" aria-select="false">其他</button>*@
+                    <button class="navButton" onclick="allnew('other')">其他</button>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+
+    <!-- 最新消息 -->
+    @*  <div class="tab-pane fade show active" role="tabpanel" id="nav-news" aria-labelledby="nav-news-tab"></div>*@
+    <div class="allnews" id="news">
+        <div class="searchdiv justify-content-end" style="margin-left:85%;">
+            <label for="checkuntake">未下架</label>
+            <input type="checkbox" id="checkuntake" onclick="checkuntake()">
+
+            <label for="checktake">已下架</label>
+            <input type="checkbox" id="checktake" onclick="checktaken()">
+
+
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        <input type="checkbox">
+                    </th>
+                    <th scope="col">標題</th>
+                    <th scope="col">發布時間</th>
+                    <th scope="col">下架時間</th>
+                    <th scope="col" style="text-align:center;">操作</th>
+                    <th>下架</th>
+                </tr>
+            </thead>
+            <tbody id="newsbody">
+                @{
+
+
+
+                    var newlist = 0;
+                    var query1 = from mynews in Model
+                                 where mynews.NCategory == "最新消息"
+                                 select mynews;
+                    foreach (var item in query1)
+                    {
+                        newlist++;
+
+                        @if (item.NTakeDownTime != null)
+                        {
+                            var result = DateTime.Compare(@item.NTakeDownTime.Value, DateTime.Today);
+                            @if (result < 0)
+                            {
+                                <tr class="trtaken">
+                                    <th>@item.NId</th>
+                                    <td>
+                                        @item.NTitle
+                                    </td>
+                                    <td>@item.NPostDate</td>
+                                    <td class="showTakeDown">@item.NTakeDownTime</td>
+
+                                    <td style="padding-left:5%;">
+                                        <button id="@item.NId" onclick="newEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#newEditModal" data-toggle="modal">編輯</button>
+
+
+                                        <button id="newsdeletebtn" class="btnDelete btn" onclick="newsdelete(@item.NId)" data-target="#newDeleteModal" data-toggle="modal">刪除</button>
+
+
+                                    </td>
+
+                                    <td style="">
+                                        <input id="@item.NId" class="tdcheckbox" name="checkdata" type="checkbox" value="on" checked>
+
+                                    </td>
+
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr class="truntaken">
+                                    <th>@item.NId</th>
+                                    <td>
+                                        @item.NTitle
+                                    </td>
+                                    <td>@item.NPostDate</td>
+                                    <td class="showTakeDown">@item.NTakeDownTime</td>
+
+                                    <td style="padding-left:5%;">
+                                        <button id="@item.NId" onclick="newEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#newEditModal" data-toggle="modal">編輯</button>
+
+
+                                        <button id="newsdeletebtn" class="btnDelete btn" onclick="newsdelete(@item.NId)" data-target="#newDeleteModal" data-toggle="modal" disabled>刪除</button>
+
+
+                                    </td>
+
+                                    <td style="">
+                                        <input id="@item.NId" class="tdcheckbox" name="checkdata" type="checkbox">
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr class="truntaken">
+                                <th>@item.NId</th>
+                                <td>
+                                    @item.NTitle
+                                </td>
+                                <td>@item.NPostDate</td>
+                                <td class="showTakeDown">@item.NTakeDownTime</td>
+
+                                <td style="padding-left:5%;">
+                                    <button id="@item.NId" onclick="newEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#newEditModal" data-toggle="modal">編輯</button>
+
+
+                                    <button id="newsdeletebtn" class="btnDelete btn" onclick="newsdelete(@item.NId)" data-target="#newDeleteModal" data-toggle="modal" disabled>刪除</button>
+
+
+                                </td>
+
+                                <td style="">
+                                    <input id="@item.NId" class="tdcheckbox" name="checkdata" type="checkbox">
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+
+                    <tr hidden>
+                        <td hidden class="newscount"> @newlist</td>
+                    </tr>
+
+                }
+
+
+
+            </tbody>
+        </table>
+        <div class="modal fade" id="newEditModal" tabindex="-1" aria-labelledby="newEditModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"> 最新消息-編輯</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form　id ="newsform">
+                            <div>
+                                <input type="hidden" class="ModalID">
+                            </div>
+                            @*                            <div class="row">
+                            <div class="col-12">
+                            <label for="newsModalTitle">標題</label>
+
+                            </div>
+                            </div>*@
+                            <div class="row" style="width:95%; margin-left:1%;">
+                                <div class="col-3">
+                                    <label id="newsModallabel" for="newsModalCategory">分類</label>
+                                    <select id="newsModalCategory" class="Categoryselect" size="1">
+                                        <option class="CategoryOption">最新消息</option>
+                                        <option class="CategoryOption">課程公告</option>
+                                        <option class="CategoryOption">活動消息</option>
+                                        <option class="CategoryOption">其他</option>
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <label for="">發布日期</label>
+                                    <input type="date" class="postdate" value="" disabled />
+
+                                </div>
+                                <div class="col-2">
+                                    <label for="">下架日期</label>
+                                    <input type="date" class="takedowndate" />
+                                </div>
+                                <div class="col-2">
+                                    <input type="checkbox" class="takedowncheck" hidden>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="newsModalTitle" id="newstitlelabel" class="titlelabel">
+                                        標題
+                                    </label>
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" class="titleinput" id="newsModalTitle" placeholder="請輸入標題(必填)">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row" style="width:95%; margin-left:2%;">
+                                <label for="editor2">內容</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="contenteditorbar">
+                                        <label class="uploadlabel" for="newsuploadfile">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
+                                            </svg>
+                                        </label>
+                                        <input type="file" class="form-control-file btn uploadbtn" id="newsuploadfile" name="nPhoto" onchange="putimageUploaded()" accept=".png, .jpg, .jpeg" style="display:none;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div style=" width: 100%; ">
+                                        <div class="divtextarea">
+
+                                            <img class="imagebox" id="newformphoto">
+                                            <textarea name="editor2" id="editor2" rows="11" placeholder="請輸入內容(必填)"></textarea>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <select id="newsEId" class="Employeeselect" size="1">
+                                        @foreach (var item in ViewBag.querydata)
+                                        {
+                                            <option class="EmployeeOption" value="@item.EId">@item.EName-@item.EId</option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn">取消</button>
+                        <button class="btn Surebtn" onclick="okbutton()">確定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- 課程活動 -->
+    @* <div class="tab-pane fade" role="tabpanel" id="nav-lessions" aria-labelledby="nav-lessions-tab" tabindex="0"></div>*@
+    <div class="allnews" id="lessions" style="display:none">
+
+
+        <div class="searchdiv justify-content-end" style="margin-left:85%;">
+            <label for="lessioncheckuntake">未下架</label>
+            <input type="checkbox" id="lessioncheckuntake" onclick="lessioncheckuntake()">
+
+            <label for="lessionchecktake">已下架</label>
+            <input type="checkbox" id="lessionchecktake" onclick="lessionchecktake()">
+
+
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col"> <input type="checkbox"></th>
+                    <th scope="col">標題</th>
+                    <th scope="col">發布時間</th>
+                    <th scope="col">下架時間</th>
+                    <th scope="col" style="text-align:center">操作</th>
+                    <th scope="col">下架</th>
+
+                </tr>
+            </thead>
+            <tbody id="lessionbody">
+                @{
+
+                    var lessionlist = 0;
+                    var query2 = from mynews in Model
+                                 where mynews.NCategory == "課程公告"
+                                 select mynews;
+                    foreach (var item in query2)
+                    {
+                        lessionlist++;
+                        @if (item.NTakeDownTime != null)
+                        {
+                            var result = DateTime.Compare(@item.NTakeDownTime.Value, DateTime.Today);
+                            @if (result < 0)
+                            {
+
+                                <tr class="lessiontrtaken">
+                                    <th>@item.NId</th>
+                                    <td>
+                                        @item.NTitle
+                                    </td>
+                                    <td>@item.NPostDate</td>
+                                    <td class="showTakeDown">@item.NTakeDownTime</td>
+
+                                    <td style="padding-left:5%;">
+                                        <button id="@item.NId" onclick="lessionEdit(@item.NId)" class="btnEdit btn" onclick="newEdit(@item.NId)" type="button" data-target="#lessionEditModal" data-toggle="modal">編輯</button>
+                                        <button id="lessionsDeletebtn" class="btnDelete btn" onclick="lessionsdelete(@item.NId)">刪除</button>
+
+                                    </td>
+
+                                    <td style="">
+
+                                        <input id="@item.NId" class="lessionscheckbox" name="checkdata" type="checkbox" checked>
+
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr class="lessiontruntaken">
+                                    <th>@item.NId</th>
+                                    <td>
+                                        @item.NTitle
+                                    </td>
+                                    <td>@item.NPostDate</td>
+                                    <td class="showTakeDown">@item.NTakeDownTime</td>
+
+                                    <td style="padding-left:5%;">
+                                        <button id="@item.NId" onclick="lessionEdit(@item.NId)" class="btnEdit btn" onclick="newEdit(@item.NId)" type="button" data-target="#lessionEditModal" data-toggle="modal">編輯</button>
+                                        <button id="lessionsDeletebtn" class="btnDelete btn" onclick="lessionsdelete(@item.NId)" disabled>刪除</button>
+
+                                    </td>
+
+                                    <td style="">
+
+                                        <input id="@item.NId" class="lessionscheckbox" name="checkdata" type="checkbox">
+
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+                        else
+                        {
+                            <tr class="lessiontruntaken">
+                                <th>@item.NId</th>
+                                <td>
+                                    @item.NTitle
+                                </td>
+                                <td>@item.NPostDate</td>
+                                <td class="showTakeDown">@item.NTakeDownTime</td>
+
+                                <td style="padding-left:5%;">
+                                    <button id="@item.NId" onclick="lessionEdit(@item.NId)" class="btnEdit btn" onclick="newEdit(@item.NId)" type="button" data-target="#lessionEditModal" data-toggle="modal">編輯</button>
+                                    <button id="lessionsDeletebtn" class="btnDelete btn" onclick="lessionsdelete(@item.NId)" disabled>刪除</button>
+
+                                </td>
+
+                                <td style="">
+
+                                    <input id="@item.NId" class="lessionscheckbox" name="checkdata" type="checkbox">
+
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                    <tr hidden>
+                        <td hidden class="lessioncount"> @lessionlist</td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+        <div class="modal fade" id="lessionEditModal" tabindex="-1" aria-labelledby="lessionEditModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"> 最新消息-新增</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div>
+                                <input type="hidden" class="ModalID">
+                            </div>
+                            @*                            <div class="row">
+                            <div class="col-12">
+                            <label for="lessionModalTitle">標題</label>
+                            <input type="text" class="titleinput" id="lessionModalTitle" style="width:100%">
+                            </div>
+                            </div>*@
+                            <div class="row" style="width:95%; margin-left:1%;">
+                                <div class="col-3">
+                                    <label for="lessionsModalCategory">分類</label>
+                                    <select id="lessionsModalCategory" class="Categoryselect" size="1">
+                                        <option class="CategoryOption">最新消息</option>
+                                        <option class="CategoryOption">課程公告</option>
+                                        <option class="CategoryOption">活動消息</option>
+                                        <option class="CategoryOption">其他</option>
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <label for="">發布日期</label>
+                                    <input type="date" class="postdate" disabled />
+                                </div>
+                                <div class="col-2">
+                                    <label for="">下架日期</label>
+                                    <input type="date" class="takedowndate" />
+                                </div>
+                                <div class="col-2">
+                                    <input type="checkbox" class="takedowncheck" hidden>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="lessionModalTitle" id="lessiontitlelabel" class="titlelabel">
+                                        標題
+                                    </label>
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" id="lessionModalTitle" name="nTitle" class="titleinput" placeholder="請輸入標題(必填)">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row" style="width:95%; margin-left:2%;">
+                                <label for="editor3">內容</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="contenteditorbar">
+                                        <label class="uploadlabel" for="lessionuploadfile">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
+                                            </svg>
+                                        </label>
+                                        <input type="file" class="form-control-file btn uploadbtn" id="lessionuploadfile" name="nPhoto" onchange="lessionimageUploaded()" accept=".png, .jpg, .jpeg" style="display:none;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div style=" width: 100%; ">
+                                        <div class="divtextarea">
+                                            <img class="imagebox" id="lessionformphoto">
+                                            <textarea id="editor3" name="editor3" rows="11" placeholder="內容"></textarea>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <select id="lessionsEId" class="Employeeselect" size="1">
+                                        @foreach (var item in ViewBag.querydata)
+                                        {
+                                            <option class="EmployeeOption" value="@item.EId">@item.EName-@item.EId</option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn">取消</button>
+                        <button class="btn" onclick="okbutton1()">確定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- 活動消息 -->
+    @* <div class="tab-pane fade" role="tabpanel" id="nav-activity" aria-labelledby="nav-activity-tab" tabindex="0"></div>*@
+    <div class="allnews" id="activity" style="display:none">
+
+        <div class="searchdiv justify-content-end" style="margin-left:85%;">
+            <label for="activitycheckuntake">未下架</label>
+            <input type="checkbox" id="activitycheckuntake" onclick="activitycheckuntake()">
+
+            <label for="activitychecktake">已下架</label>
+            <input type="checkbox" id="activitychecktake" onchange="activitychecktake()">
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        <input type="checkbox">
+                    </th>
+                    <th scope="col">標題</th>
+                    <th scope="col">發布時間</th>
+                    <th scope="col">下架時間</th>
+                    <th scope="col" style="text-align:center;">操作</th>
+                    <th scope="col">下架</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var activitylist = 0;
+                    var query3 = from myactivity in Model
+                                 where myactivity.NCategory == "活動消息"
+                                 select myactivity;
+                    foreach (var item in query3)
+                    {
+                        activitylist++;
+
+                        @if (item.NTakeDownTime != null)
+                        {
+                            var result = DateTime.Compare(@item.NTakeDownTime.Value, DateTime.Today);
+                            @if (result < 0)
+                            {
+                                <tr class="activitytrtake">
+                                    <th>@item.NId</th>
+                                    <td>
+                                        @item.NTitle
+                                    </td>
+                                    <td>@item.NPostDate</td>
+                                    <td id="activityTakeDown" class="showTakeDown">@item.NTakeDownTime</td>
+
+                                    <td style="padding-left:5%;">
+                                        <button onclick="activityEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#activityEditModal" data-toggle="modal">編輯</button>
+
+
+                                        <button class="btnDelete btn" onclick="activitydelete(@item.NId)">刪除</button>
+
+
+                                    </td>
+
+                                    <td style="">
+
+                                        <input id="@item.NId" class="activitycheckbox" name="checkdata" type="checkbox" checked>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr class="activitytruntake">
+                                    <th>@item.NId</th>
+                                    <td>
+                                        @item.NTitle
+                                    </td>
+                                    <td>@item.NPostDate</td>
+                                    <td id="activityTakeDown" class="showTakeDown">@item.NTakeDownTime</td>
+
+                                    <td style="padding-left:5%;">
+                                        <button onclick="activityEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#activityEditModal" data-toggle="modal">編輯</button>
+
+
+                                        <button class="btnDelete btn" onclick="activitydelete(@item.NId)" disabled>刪除</button>
+
+
+                                    </td>
+
+                                    <td style="">
+
+                                        <input id="@item.NId" class="activitycheckbox" name="checkdata" type="checkbox">
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr class="activitytruntake">
+                                <th>@item.NId</th>
+                                <td>
+                                    @item.NTitle
+                                </td>
+                                <td>@item.NPostDate</td>
+                                <td id="activityTakeDown" class="showTakeDown">@item.NTakeDownTime</td>
+
+                                <td style="padding-left:5%;">
+                                    <button onclick="activityEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#activityEditModal" data-toggle="modal">編輯</button>
+
+
+                                    <button class="btnDelete btn" onclick="activitydelete(@item.NId)" disabled>刪除</button>
+
+
+                                </td>
+
+                                <td style="">
+
+                                    <input id="@item.NId" class="activitycheckbox" name="checkdata" type="checkbox">
+                                </td>
+                            </tr>
+                        }
+                    }
+                    <tr hidden>
+                        <td class="activitycount" hidden>@activitylist</td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+        <div class="modal fade" id="activityEditModal" tabindex="-1" aria-labelledby="activityEditModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"> 活動消息-編輯</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div>
+                                <input type="hidden" class="ModalID">
+                            </div>
+                            @*                   <div class="row">
+                            <div class="col-12">
+                            <label for="activityModalTitle">標題</label>
+                            <input type="text" class="titleinput" id="activityModalTitle" style="width:100%">
+                            </div>
+                            </div>*@
+                            <div class="row" style="width:95%; margin-left:1%;">
+                                <div class="col-3">
+                                    <label for="activityModalCategory">分類</label>
+                                    <select id="activityModalCategory" class="Categoryselect" size="1">
+                                        <option class="CategoryOption">最新消息</option>
+                                        <option class="CategoryOption">課程公告</option>
+                                        <option class="CategoryOption">活動消息</option>
+                                        <option class="CategoryOption">其他</option>
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <label for="">發布日期</label>
+                                    <input type="date" class="postdate" disabled />
+                                </div>
+                                <div class="col-2">
+                                    <label for="">下架日期</label>
+                                    <input type="date" class="takedowndate" />
+                                </div>
+                                <div class="col-2">
+                                    <input type="checkbox" class="takedowncheck" hidden>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="activityModalTitle" id="activitytitlelabel" class="titlelabel">
+                                        標題
+                                    </label>
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" class="titleinput" id="activityModalTitle" placeholder="請輸入標題(必填)">
+
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="row" style="width:95%; margin-left:2%;">
+                                <label for="editor3">內容</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="contenteditorbar">
+                                        <label class="uploadlabel" for="activityuploadfile">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
+                                            </svg>
+                                        </label>
+                                        <input type="file" class="form-control-file btn uploadbtn" id="activityuploadfile" name="nPhoto" onchange="activityimageUploaded()" accept=".png, .jpg, .jpeg" style="display:none;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div style=" width: 100%; ">
+
+                                        <div class="divtextarea">
+
+                                            <img class="imagebox" id="activityformphoto">
+                                            <textarea id="editor4" name="editor4" rows="11" placeholder="內容"></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <select id="activityEId" class="Employeeselect" size="1">
+                                        @foreach (var item in ViewBag.querydata)
+                                        {
+                                            <option class="Employeeselect" value="@item.EId">@item.EName-@item.EId</option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn">取消</button>
+                        <button class="btn" onclick="okbutton2()">確定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 其他 -->
+    @* <div class="tab-pane fade" role="tabpanel" id="nav-other" aria-labelledby="nav-other-tab" tabindex="0"></div>*@
+    <div class="allnews" id="other" style="display:none">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col"> <input type="checkbox"></th>
+                    <th scope="col">標題</th>
+                    <th scope="col">發布時間</th>
+                    <th scope="col">下架時間</th>
+                    <th scope="col" style="text-align:center;">操作</th>
+                </tr>
+            </thead>
+            <tbody id="newstbody">
+                @{
+                    var query4 = from mynews in Model
+                                 where mynews.NCategory == "其他"
+                                 select mynews;
+                    foreach (var item in query4)
+                    {
+
+                        <tr>
+                            <th>@item.NCategory</th>
+                            <td>
+                                @item.NTitle
+                            </td>
+                            <td>@item.NPostDate</td>
+                            <td id="otherTakeDown" class="showTakeDown">@item.NTakeDownTime</td>
+                            <td style="padding-left:5%;">
+                                <button id="@item.NId" onclick="newEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#newEditModal" data-toggle="modal">編輯</button>
+                                <button id="newDelete" class="btnDelete btn">刪除</button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <div class="modal fade" id="otherEditModal" tabindex="-1" aria-labelledby="otherEditModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"> 最新消息-新增</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-8">
+                                    <label for="otherModalTitle">標題</label>
+                                    <input type="text" id="otherModalTitle" class="titleinput" style="width:100%">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <label for="otherModalCategory">分類</label>
+                                    <select id="otherModalCategory" class="Categoryselect" style="width:100%; height:30px;">
+                                        <option class="CategoryOption">最新消息</option>
+                                        <option class="CategoryOption">課程公告</option>
+                                        <option class="CategoryOption">活動消息</option>
+                                        <option class="CategoryOption">其他</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-12">
+                                    <form id="form5" runat="server">
+                                        <div style=" width: 100%; ">
+                                            <textarea style="width:100%" id="editor5" name="editor5" rows="15"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" onclick="okbutton()">取消</button>
+                        <button class="btn ">確定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+    </div>
+
+
+
+</div>
+
+
+@*小分頁*@
+<script>
+    function allnew(newname) {
+        var i;
+        var x = document.getElementsByClassName("allnews")
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        document.getElementById(newname).style.display = "block"
+    }
+
+</script>
+
+
+@*圖片上傳*@
+<script>
+
+    //新增的圖片上傳
+    let base64String = "";
+    var file;
+    function imageUploaded() {
+
+        file = document.getElementById('adduploadfile').files[0]
+
+        var reader = new FileReader();
+        console.log("next");
+        console.log(file);
+
+
+        reader.onload = function () {
+            base64String = reader.result.replace("data:", "")
+                .replace(/^.+,/, "");
+
+            var addPhoto = document.getElementById("addformphoto");
+            addPhoto.src = `data:${file.type};base64,${base64String}`;
+            addPhoto.style = "width:30%; height:40%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:1%; ";
+
+
+
+
+            imageBase64Stringsep = base64String;
+
+
+            console.log(`data:${file.type};base64,${base64String}`);
+        }
+        reader.readAsDataURL(file);
+    }
+
+
+    //最新消息的圖片上傳
+    let putbase64String = "";
+    var putfile;
+    function putimageUploaded() {
+        putfile = document.getElementById('newsuploadfile').files[0];
+
+        var putreader = new FileReader();
+        console.log("next");
+
+        putreader.onload = function () {
+            putbase64String = putreader.result.replace("data:", "")
+                .replace(/^.+,/, "");
+
+            imageBase64Stringsep1 = putbase64String;
+            var newPhoto = document.getElementById("newformphoto");
+            newPhoto.src = `data:${putfile.type};base64,${putbase64String}`;
+            newPhoto.style = "width:30%; height:40%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:1%; ";
+            // alert(imageBase64Stringsep);
+            console.log(`data:${putfile.type};base64,${putbase64String}`);
+        }
+        putreader.readAsDataURL(putfile);
+    }
+
+    //課程公告的圖片上傳
+    let lessionbase64String = "";
+    var lessionfile;
+    function lessionimageUploaded() {
+        lessionfile = document.getElementById('lessionuploadfile').files[0];
+
+        var lessionreader = new FileReader();
+        console.log("next");
+
+        lessionreader.onload = function () {
+            lessionbase64String = lessionreader.result.replace("data:", "")
+                .replace(/^.+,/, "");
+
+            var lessionPhoto = document.getElementById("lessionformphoto");
+            lessionPhoto.src = `data:${lessionfile.type};base64,${lessionbase64String}`;
+            lessionPhoto.style = "width:30%; height:40%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:1%; ";
+
+        }
+        lessionreader.readAsDataURL(lessionfile);
+    }
+
+    //活動消息的圖片上傳
+    let activitybase64String = "";
+    var activityfile;
+    function activityimageUploaded() {
+        activityfile = document.getElementById('activityuploadfile').files[0];
+
+        var activityreader = new FileReader();
+        console.log("next");
+
+        activityreader.onload = function () {
+            activitybase64String = activityreader.result.replace("data:", "")
+                .replace(/^.+,/, "");
+
+            var activityPhoto = document.getElementById("lessionformphoto");
+            activityPhoto.src = `data:${activityfile.type};base64,${activitybase64String}`;
+
+            activityPhoto.style = "width:30%; height:40%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:1%; border:none; ";
+        }
+        activityreader.readAsDataURL(activityfile);
+    }
+
+</script>
+
+@*Get*@
+<script>
+    //最新消息Modal 顯示 get
+    var newsdata;
+    function newEdit(newsid) {
+        console.log(newsid)
+
+        $.ajax({
+            type: "Get",
+            url: "/api/News/" + newsid,
+            success: function (data) {
+                newsdata = data;
+                console.log(new Date(data.nPostDate))
+
+                var newsTakeDown;
+                if (data.nTakeDownTime != null) {
+
+                    newsTakeDown = data.nTakeDownTime.replace("T00:00:00", "")
+                    $("#newEditModal .takedowncheck").attr("checked", true)
+
+                }
+                else {
+                    newsTakeDown = data.nTakeDownTime
+                    $("#newEditModal .takedowncheck").attr("checked", false)
+
+                }
+
+
+
+                $("#newEditModal .ModalID").val(data.nId)
+                $("#newEditModal .titleinput").val(data.nTitle)
+                $("#newEditModal .Categoryselect").val(data.nCategory)
+                $("#newEditModal #editor2").val(data.nContent)
+                $("#newEditModal .takedowndate").val(newsTakeDown)
+                $("#newEditModal .postdate").val(data.nPostDate.replace("T00:00:00", ""))
+                if (data.nPhoto != null) {
+                    $("#newformphoto").attr("hidden", false)
+
+                    $("#newEditModal .imagebox").attr("src", data.nPhoto)
+                    $("#newEditModal .imagebox").attr("style", "width:30%; height:40%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:1%; border:none; ")
+
+
+                } else {
+                    $("#newformphoto").attr("hidden", true)
+                }
+
+                $("#newEditModal #newsEId ").val(data["eId"])
+
+                console.log(data.nPhoto)
+
+            }
+        });
+    }
+
+    var lessiondata;
+
+    function lessionEdit(lessionsid) {
+        console.log(lessionsid)
+
+
+
+        $.ajax({
+            type: "Get",
+            url: "/api/News/" + lessionsid,
+            success: function (data) {
+
+                lessiondata = data;
+                var lessionTakeDown;
+                if (data.nTakeDownTime != null) {
+
+                    lessionTakeDown = data.nTakeDownTime.replace("T00:00:00", "")
+                    $("#lessionEditModal .takedowncheck").attr("checked", true)
+
+                }
+                else {
+                    lessionTakeDown = data.nTakeDownTime
+                    $("#lessionEditModal .takedowncheck").attr("checked", false)
+
+                }
+
+
+                $("#lessionEditModal .ModalID").val(data.nId)
+                $("#lessionEditModal .titleinput").val(data.nTitle)
+                $("#lessionEditModal .Categoryselect").val(data.nCategory)
+                $("#lessionEditModal #editor3").val(data.nContent)
+                $("#lessionEditModal .takedowndate").val(lessionTakeDown)
+                $("#lessionEditModal .postdate").val(data.nPostDate.replace("T00:00:00", ""))
+
+                if (data.nPhoto != null) {
+                    $("#lessionformphoto").attr("hidden", false)
+
+                    $("#lessionEditModal .imagebox").attr("src", data.nPhoto)
+                    $("#lessionEditModal .imagebox").attr("style", "width:30%; height:40%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:1%; border:none; ")
+
+
+                } else {
+                    $("#lessionformphoto").attr("hidden", true)
+                }
+
+                $("#lessionEditModal #lessionsEId").val(data["eId"])
+            }
+        })
+
+    }
+
+
+    var activitydata;
+    function activityEdit(activityid) {
+        console.log(activityid)
+
+        $.ajax({
+            type: "Get",
+            url: "/api/News/" + activityid,
+            success: function (data) {
+
+                activitydata = data
+
+                var activtiyTakeDown;
+                if (data.nTakeDownTime != null) {
+
+                    activtiyTakeDown = data.nTakeDownTime.replace("T00:00:00", "")
+                    $("#activityEditModal .takedowncheck").attr("checked", true)
+
+
+                }
+                else {
+                    activtiyTakeDown = data.nTakeDownTime
+                    $("#activityEditModal .takedowncheck").attr("checked", false)
+
+                }
+
+                $("#activityEditModal .ModalID").val(data.nId)
+                $("#activityEditModal .titleinput").val(data.nTitle)
+                $("#activityEditModal .Categoryselect").val(data.nCategory)
+                $("#activityEditModal #editor4").val(data.nContent)
+                $("#activityEditModal .takedowndate").val(activtiyTakeDown)
+                $("#activityEditModal .postdate").val(data.nPostDate.replace("T00:00:00", ""))
+
+                if (data.nPhoto != null) {
+                    $("#activityformphoto").attr("hidden", false)
+
+                    $("#activityEditModal .imagebox").attr("src", data.nPhoto)
+                    $("#activityEditModal .imagebox").attr("style", "width:30%; height:40%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:1%; border:none; ")
+
+
+                } else {
+                    $("#activityformphoto").attr("hidden", true)
+                }
+
+
+                $("#activityEditModal #activityEId").val(data["eId"])
+            }
+        })
+
+    }
+
+</script>
+
+@*put*@
+<script>
+
+    //最新消息的編輯 Put
+
+    function okbutton() {
+        console.log()
+        var myPostdate = new Date($("#newEditModal .postdate").val())
+        var myTakeDownDate = new Date($("#newEditModal .takedowndate").val())
+        var myphoto;
+        if (putbase64String == "") {
+            myphoto = $("#newEditModal .imagebox").attr('src');
+        } else {
+            myphoto = `data:${putfile.type}; base64, ${putbase64String} `;
+        }
+
+        var updatedData = {
+            nId: parseInt($("#newEditModal .ModalID").val()),
+            nTitle: $("#newEditModal .titleinput").val(),
+            nCategory: $("#newEditModal .Categoryselect").val(),
+            nContent: $("#newEditModal #editor2").val(),
+            nPhoto: myphoto,
+            nPostDate: myPostdate,
+            nTakeDownTime: myTakeDownDate,
+            eId: parseInt($("#newEditModal #newsEId").val()),
+            eIdNavigation: null
+        };
+
+
+        if ($("#newEditModal .takedowncheck").is(":checked")) {
+            alert("此消息已下架，無法編輯")
+        } else {
+            if ($("#newEditModal .takedowndate").val() != "") {
+
+                if (confirm("確定要下架嗎? 下架日期為" + $("#newEditModal .takedowndate").val())) {
+                    $.ajax({
+                        type: "PUT",
+                        url: "/api/News/" + newsdata["nId"],
+                        dataType: "json",
+                        contentType: "application/json",
+                        data: JSON.stringify(updatedData),
+                        success: function () {
+
+                            window.location = "/Manage/News"
+                            console.log(updatedData)
+                        },
+
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.log('Error in Operation')
+                            console.log(updatedData)
+                            console.log(typeof (updatedData.nPhoto))
+
+                        }
+                    });
+
+                } else {
+
+                }
+            } else {
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/News/" + newsdata["nId"],
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(updatedData),
+                    success: function () {
+
+                        window.location = "/Manage/News"
+                        console.log(updatedData)
+                    },
+
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error in Operation')
+                        console.log(updatedData)
+                        console.log(typeof (updatedData.nPhoto))
+
+                    }
+                });
+            }
+
+        }
+
+    }
+
+
+    //課程公告的編輯put
+    function okbutton1() {
+        var myPostdate1 = new Date($("#lessionEditModal .postdate").val())
+        var myTakeDownDate1 = new Date($("#lessionEditModal .takedowndate").val())
+
+        var myphoto1;
+        if (lessionbase64String == "") {
+            myphoto1 = $("#lessionEditModal .imagebox").attr('src');
+        } else {
+            myphoto1 = `data:${lessionfile.type}; base64, ${lessionbase64String} `;
+        }
+
+
+        var updatedData = {
+            nId: parseInt($("#lessionEditModal .ModalID").val()),
+            nTitle: $("#lessionEditModal .titleinput").val(),
+            nCategory: $("#lessionEditModal .Categoryselect").val(),
+            nContent: $("#lessionEditModal #editor3").val(),
+            nPhoto: myphoto1,
+            nPostDate: myPostdate1,
+            nTakeDownTime: myTakeDownDate1,
+            eId: parseInt($("#lessionEditModal #lessionsEId").val()),
+            eIdNavigation: null
+        };
+
+
+
+        if ($("#lessionEditModal .takedowncheck").is(":checked")) {
+            alert("此消息已下架，無法編輯")
+        } else {
+            if ($("#lessionEditModal .takedowndate").val() != "") {
+
+                if (confirm("確定要下架嗎? 下架日期為" + $("#lessionEditModal .takedowndate").val())) {
+                    $.ajax({
+                        type: "PUT",
+                        url: "/api/News/" + lessiondata["nId"],
+                        dataType: "json",
+                        contentType: "application/json",
+                        data: JSON.stringify(updatedData),
+                        success: function () {
+
+                            window.location = "/Manage/News"
+                        },
+
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.log('Error in Operation')
+                            console.log(updatedData)
+                            console.log(typeof (updatedData["nPostDate"]))
+
+                        }
+                    });
+
+                } else {
+
+
+                }
+            } else {
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/News/" + lessiondata["nId"],
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(updatedData),
+                    success: function () {
+
+                        window.location = "/Manage/News"
+                    },
+
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error in Operation')
+                        console.log(updatedData)
+                        console.log(typeof (updatedData["nPostDate"]))
+
+                    }
+                });
+            }
+
+        }
+
+    }
+
+
+    //活動消息的編輯 Put
+    function okbutton2() {
+        console.log()
+        var myPostdate2 = new Date($("#activityEditModal .postdate").val())
+        var myTakeDownDate2 = new Date($("#activityEditModal .takedowndate").val())
+
+        var myphoto2;
+        if (activitybase64String == "") {
+            myphoto2 = $("#activityEditModal .imagebox").attr('src');
+        } else {
+            myphoto2 = `data:${activityfile.type}; base64, ${activitybase64String} `;
+        }
+
+        var updatedData = {
+            nId: parseInt($("#activityEditModal .ModalID").val()),
+            nTitle: $("#activityEditModal .titleinput").val(),
+            nCategory: $("#activityEditModal .Categoryselect").val(),
+            nContent: $("#activityEditModal #editor4").val(),
+            nPhoto: myphoto2,
+            nPostDate: myPostdate2,
+            nTakeDownTime: myTakeDownDate2,
+            eId: parseInt($("#activityEditModal #activityEId").val()),
+            eIdNavigation: null
+        };
+
+
+
+        if ($("#activityEditModal .takedowncheck").is(":checked")) {
+            alert("此消息已下架，無法編輯")
+        } else {
+            if ($("#activityEditModal .takedowndate").val() != "") {
+
+                if (confirm("確定要下架嗎? 下架日期為" + $("#activityEditModal .takedowndate").val())) {
+                    $.ajax({
+                        type: "PUT",
+                        url: "/api/News/" + activitydata["nId"],
+                        dataType: "json",
+                        contentType: "application/json",
+                        data: JSON.stringify(updatedData),
+                        success: function () {
+                            console.log(updatedData)
+                            window.location = "/Manage/News"
+                        },
+
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.log('Error in Operation')
+                            console.log(updatedData)
+                            console.log(typeof (updatedData["nPostDate"]))
+
+                        }
+                    });
+                } else { }
+
+            } else {
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/News/" + activitydata["nId"],
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(updatedData),
+                    success: function () {
+                        console.log(updatedData)
+                        window.location = "/Manage/News"
+                    },
+
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error in Operation')
+                        console.log(updatedData)
+                        console.log(typeof (updatedData["nPostDate"]))
+
+                    }
+                });
+            }
+
+
+        }
+    }
+</script>
+
+@*Post*@
+<script>
+    document.getElementById('addPostDate').valueAsDate = new Date();
+
+
+    function addform1() {
+
+        var addPostdate = new Date($("#addModal .postdate").val())
+
+        var myaddphoto;
+        if (base64String == "") {
+            myaddphoto = null
+        } else {
+            myaddphoto = `data:${file.type};base64,${base64String}`
+        }
+
+        var addData = {
+
+            nTitle: $("#addModal .titleinput").val(),
+            nCategory: $("#addModal .Categoryselect").val(),
+            nContent: $("#addModal #editor1").val(),
+            nPhoto: myaddphoto,
+            nPostDate: addPostdate,
+            nTakeDownTime: null,
+            eId: parseInt($("#addModal #addEId").val()),
+            eIdNavigation: null
+        };
+
+        console.log(parseInt($("#addModal #addEId").val()))
+
+
+        var addtitle = $("#addModal .titleinput").val();
+        var addcontent = $("#addModal #editor1").val();
+        if (addtitle == "") {
+            alert("標題不可為空")
+            //$('#addModal .wrongmsg').text('標題不可為空')
+        } else if (addcontent == "") { alert("內容不可為空") }
+        else {
+            $.ajax({
+                type: "Post",
+                url: "/api/News",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(addData),
+                success: function () {
+
+                    window.location = "/Manage/News"
+                },
+
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation')
+                    console.log(addData)
+
+                }
+            });
+        }
+
+
+    }
+</script>
+
+@*Delete*@
+<script>
+    //最新消息
+    function newsdelete(newsdeleteid) {
+
+        if (confirm('確定要刪除此筆資料嗎?')) {
+            $.ajax({
+                type: "Delete",
+                url: "/api/News/" + newsdeleteid,
+                success: function (data) {
+                    console.log('ok')
+                    window.location = "/Manage/News"
+                },
+                error: function () {
+                    console.log("error")
+                }
+            });
+        }
+
+    }
+
+    //課程公告
+    function lessionsdelete(lessionsdeleteid) {
+        if (confirm('確定要刪除此筆資料嗎?')) {
+            $.ajax({
+                type: "Delete",
+                url: "/api/News/" + lessionsdeleteid,
+                success: function (data) {
+                    console.log('ok')
+                    window.location = "/Manage/News"
+                },
+                error: function () {
+                    console.log("error")
+                }
+            });
+        }
+    }
+
+    //活動消息
+    function activitydelete(activitydeleteid) {
+        if (confirm('確定要刪除此筆資料嗎?')) {
+            $.ajax({
+                type: "Delete",
+                url: "/api/News/" + activitydeleteid,
+                success: function (data) {
+                    console.log('ok')
+                    window.location = "/Manage/News"
+                },
+                error: function () {
+                    console.log("error")
+                }
+            });
+        }
+    }
+</script>
+
+
+<script>
+
+    //news未下架
+    function checkuntake() {
+
+        if ($('#checkuntake').is(":checked")) {
+            var newscount = parseInt($('.newscount').text())
+            var check = $('.tdcheckbox');
+            for (var i = 0; i < newscount; i++) {
+                if (check[i].checked) {
+                    $('.trtaken').hide()
+                    console.log("ok")
+                } else {
+                    console.log("no")
+                    console.log(newscount)
+                }
+            }
+        } else {
+            $('.trtaken').show()
+
+        }
+
+
+    }
+
+    //news已下架
+    function checktaken() {
+
+        if ($('#checktake').is(":checked")) {
+            var newscount = parseInt($('.newscount').text())
+            var check = $('.tdcheckbox');
+            for (var i = 0; i < newscount; i++) {
+                if (check[i].checked) {
+
+                    console.log("ok")
+                } else {
+                    console.log("no")
+                    $('.truntaken').hide()
+                }
+            }
+        } else {
+            $('.truntaken').show()
+
+        }
+    }
+
+    //lessions未下架
+    function lessioncheckuntake() {
+
+        if ($('#lessioncheckuntake').is(":checked")) {
+            var lessioncount = parseInt($('.lessioncount').text())
+            var check = $('.lessionscheckbox');
+            for (var i = 0; i < lessioncount; i++) {
+                if (check[i].checked) {
+                    $('.lessiontrtaken').hide()
+                    console.log("ok")
+                } else {
+                    console.log("no")
+
+                }
+            }
+        } else {
+            $('.lessiontrtaken').show()
+
+        }
+
+    }
+
+    //lession 已下架
+    function  lessionchecktake() {
+
+        if ($('#lessionchecktake').is(":checked")) {
+            var lessioncount = parseInt($('.lessioncount').text())
+            var check = $('.lessionscheckbox');
+            for (var i = 0; i < lessioncount; i++) {
+                if (check[i].checked) {
+
+                    console.log("ok")
+                } else {
+                    console.log("no")
+                    $('.lessiontruntaken').hide()
+                }
+            }
+        } else {
+            $('.lessiontruntaken').show()
+
+        }
+    }
+
+    //activtiy未下架
+    function activitycheckuntake() {
+
+        if ($('#activitycheckuntake').is(":checked")) {
+            var activitycount = parseInt($('.activitycount').text())
+            var check = $('.activitycheckbox');
+            for (var i = 0; i < activitycount; i++) {
+                if (check[i].checked) {
+                    $('.activitytrtake').hide()
+                    console.log("ok")
+                } else {
+                    console.log("no")
+
+                }
+            }
+        } else {
+            $('.activitytrtake').show()
+
+        }
+
+    }
+
+    //activity 已下架
+    function activitychecktake() {
+
+        if ($('#activitychecktake').is(":checked")) {
+            var activitycount = parseInt($('.activitycount').text())
+            var check = $('.activitycheckbox');
+            for (var i = 0; i < activitycount; i++) {
+                if (check[i].checked) {
+
+                    console.log("ok")
+                } else {
+                    console.log("no")
+                    $('.activitytruntake').hide()
+                }
+            }
+        } else {
+            $('.activitytruntake').show()
+
+        }
+    }
+
+</script>
+
+
+
+

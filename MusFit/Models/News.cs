@@ -12,7 +12,7 @@ namespace MusFit.Models
         public string NContent { get; set; }
         public string NCategory { get; set; }
         public DateTime NPostDate { get; set; }
-        public byte[] NPhoto { get; set; }
+        public string NPhoto { get; set; }
         public int EId { get; set; }
         public DateTime? NTakeDownTime { get; set; }
 

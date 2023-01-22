@@ -147,5 +147,12 @@ namespace MusFit.Controllers
 
             return View(viewModel);
         }
+
+        public IActionResult KnowledgeColumn()
+        {
+            var viewModel = _context.KnowledgeColumns.ToList();
+
+            return View(viewModel);
+        }
     }
 }

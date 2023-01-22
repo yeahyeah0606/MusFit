@@ -35,7 +35,7 @@ namespace MusFit.Models
         public virtual DbSet<VwCoachSchedule> VwCoachSchedules { get; set; }
         public virtual DbSet<VwInBody> VwInBodies { get; set; }
 
-     
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Chinese_Taiwan_Stroke_CI_AS");
@@ -316,6 +316,11 @@ namespace MusFit.Models
 
                 entity.Property(e => e.EGender).HasColumnName("eGender");
 
+                entity.Property(e => e.EIdentityNumber)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .HasColumnName("eIdentityNumber");
+
                 entity.Property(e => e.EIsCoach).HasColumnName("eIsCoach");
 
                 entity.Property(e => e.EMail)
@@ -345,7 +350,9 @@ namespace MusFit.Models
                     .IsUnicode(false)
                     .HasColumnName("ePhone");
 
-                entity.Property(e => e.EPhoto).HasColumnName("ePhoto");
+                entity.Property(e => e.EPhoto)
+                    .IsUnicode(false)
+                    .HasColumnName("ePhoto");
 
                 entity.Property(e => e.EResignDate)
                     .HasColumnType("datetime")
@@ -390,9 +397,59 @@ namespace MusFit.Models
 
                 entity.Property(e => e.BoneMineralLevel).HasColumnName("boneMineralLevel");
 
+                entity.Property(e => e.BottomLeftFat).HasColumnName("bottomLeftFat");
+
+                entity.Property(e => e.BottomLeftFatLevel).HasColumnName("bottomLeftFatLevel");
+
+                entity.Property(e => e.BottomLeftFatPercentage).HasColumnName("bottomLeftFatPercentage");
+
+                entity.Property(e => e.BottomLeftMuscle).HasColumnName("bottomLeftMuscle");
+
+                entity.Property(e => e.BottomLeftMuscleLevel).HasColumnName("bottomLeftMuscleLevel");
+
+                entity.Property(e => e.BottomRightFat).HasColumnName("bottomRightFat");
+
+                entity.Property(e => e.BottomRightFatLevel).HasColumnName("bottomRightFatLevel");
+
+                entity.Property(e => e.BottomRightFatPercentage).HasColumnName("bottomRightFatPercentage");
+
+                entity.Property(e => e.BottomRightMuscle).HasColumnName("bottomRightMuscle");
+
+                entity.Property(e => e.BottomRightMuscleLevel).HasColumnName("bottomRightMuscleLevel");
+
+                entity.Property(e => e.CenterFat).HasColumnName("centerFat");
+
+                entity.Property(e => e.CenterFatLevel).HasColumnName("centerFatLevel");
+
+                entity.Property(e => e.CenterFatPercentage).HasColumnName("centerFatPercentage");
+
+                entity.Property(e => e.CenterMuscle).HasColumnName("centerMuscle");
+
+                entity.Property(e => e.CenterMuscleLevel).HasColumnName("centerMuscleLevel");
+
                 entity.Property(e => e.Date)
                     .HasColumnType("datetime")
                     .HasColumnName("date");
+
+                entity.Property(e => e.EI100kHzBody).HasColumnName("eI100kHzBody");
+
+                entity.Property(e => e.EI100kHzLeftArm).HasColumnName("eI100kHzLeftArm");
+
+                entity.Property(e => e.EI100kHzLeftLeg).HasColumnName("eI100kHzLeftLeg");
+
+                entity.Property(e => e.EI100kHzRightArm).HasColumnName("eI100kHzRightArm");
+
+                entity.Property(e => e.EI100kHzRightLeg).HasColumnName("eI100kHzRightLeg");
+
+                entity.Property(e => e.EI20kHzBody).HasColumnName("eI20kHzBody");
+
+                entity.Property(e => e.EI20kHzLefttArm).HasColumnName("eI20kHzLefttArm");
+
+                entity.Property(e => e.EI20kHzLefttLeg).HasColumnName("eI20kHzLefttLeg");
+
+                entity.Property(e => e.EI20kHzRightArm).HasColumnName("eI20kHzRightArm");
+
+                entity.Property(e => e.EI20kHzRightLeg).HasColumnName("eI20kHzRightLeg");
 
                 entity.Property(e => e.FatControl)
                     .IsRequired()
@@ -451,6 +508,26 @@ namespace MusFit.Models
                 entity.Property(e => e.TotalBodyWaterMaxRange).HasColumnName("totalBodyWaterMaxRange");
 
                 entity.Property(e => e.TotalBodyWaterMinRange).HasColumnName("totalBodyWaterMinRange");
+
+                entity.Property(e => e.UpperLeftFat).HasColumnName("upperLeftFat");
+
+                entity.Property(e => e.UpperLeftFatLevel).HasColumnName("upperLeftFatLevel");
+
+                entity.Property(e => e.UpperLeftFatPercentage).HasColumnName("upperLeftFatPercentage");
+
+                entity.Property(e => e.UpperLeftMuscle).HasColumnName("upperLeftMuscle");
+
+                entity.Property(e => e.UpperLeftMuscleLevel).HasColumnName("upperLeftMuscleLevel");
+
+                entity.Property(e => e.UpperRightFat).HasColumnName("upperRightFat");
+
+                entity.Property(e => e.UpperRightFatLevel).HasColumnName("upperRightFatLevel");
+
+                entity.Property(e => e.UpperRightFatPercentage).HasColumnName("upperRightFatPercentage");
+
+                entity.Property(e => e.UpperRightMuscle).HasColumnName("upperRightMuscle");
+
+                entity.Property(e => e.UpperRightMuscleLevel).HasColumnName("upperRightMuscleLevel");
 
                 entity.Property(e => e.Weight).HasColumnName("weight");
 
@@ -677,7 +754,9 @@ namespace MusFit.Models
                     .IsUnicode(false)
                     .HasColumnName("sPhone");
 
-                entity.Property(e => e.SPhoto).HasColumnName("sPhoto");
+                entity.Property(e => e.SPhoto)
+                    .IsUnicode(false)
+                    .HasColumnName("sPhoto");
 
                 entity.Property(e => e.SToken)
                     .HasMaxLength(36)
@@ -689,7 +768,7 @@ namespace MusFit.Models
             modelBuilder.Entity<Term>(entity =>
             {
                 entity.HasKey(e => e.TId)
-                    .HasName("PK__Term__DC1157076C8C2B51");
+                    .HasName("PK__Term__DC115707E6ED16FC");
 
                 entity.ToTable("Term");
 
@@ -780,9 +859,59 @@ namespace MusFit.Models
 
                 entity.Property(e => e.BoneMineralLevel).HasColumnName("boneMineralLevel");
 
+                entity.Property(e => e.BottomLeftFat).HasColumnName("bottomLeftFat");
+
+                entity.Property(e => e.BottomLeftFatLevel).HasColumnName("bottomLeftFatLevel");
+
+                entity.Property(e => e.BottomLeftFatPercentage).HasColumnName("bottomLeftFatPercentage");
+
+                entity.Property(e => e.BottomLeftMuscle).HasColumnName("bottomLeftMuscle");
+
+                entity.Property(e => e.BottomLeftMuscleLevel).HasColumnName("bottomLeftMuscleLevel");
+
+                entity.Property(e => e.BottomRightFat).HasColumnName("bottomRightFat");
+
+                entity.Property(e => e.BottomRightFatLevel).HasColumnName("bottomRightFatLevel");
+
+                entity.Property(e => e.BottomRightFatPercentage).HasColumnName("bottomRightFatPercentage");
+
+                entity.Property(e => e.BottomRightMuscle).HasColumnName("bottomRightMuscle");
+
+                entity.Property(e => e.BottomRightMuscleLevel).HasColumnName("bottomRightMuscleLevel");
+
+                entity.Property(e => e.CenterFat).HasColumnName("centerFat");
+
+                entity.Property(e => e.CenterFatLevel).HasColumnName("centerFatLevel");
+
+                entity.Property(e => e.CenterFatPercentage).HasColumnName("centerFatPercentage");
+
+                entity.Property(e => e.CenterMuscle).HasColumnName("centerMuscle");
+
+                entity.Property(e => e.CenterMuscleLevel).HasColumnName("centerMuscleLevel");
+
                 entity.Property(e => e.Date)
                     .HasColumnType("datetime")
                     .HasColumnName("date");
+
+                entity.Property(e => e.EI100kHzBody).HasColumnName("eI100kHzBody");
+
+                entity.Property(e => e.EI100kHzLeftArm).HasColumnName("eI100kHzLeftArm");
+
+                entity.Property(e => e.EI100kHzLeftLeg).HasColumnName("eI100kHzLeftLeg");
+
+                entity.Property(e => e.EI100kHzRightArm).HasColumnName("eI100kHzRightArm");
+
+                entity.Property(e => e.EI100kHzRightLeg).HasColumnName("eI100kHzRightLeg");
+
+                entity.Property(e => e.EI20kHzBody).HasColumnName("eI20kHzBody");
+
+                entity.Property(e => e.EI20kHzLefttArm).HasColumnName("eI20kHzLefttArm");
+
+                entity.Property(e => e.EI20kHzLefttLeg).HasColumnName("eI20kHzLefttLeg");
+
+                entity.Property(e => e.EI20kHzRightArm).HasColumnName("eI20kHzRightArm");
+
+                entity.Property(e => e.EI20kHzRightLeg).HasColumnName("eI20kHzRightLeg");
 
                 entity.Property(e => e.FatControl)
                     .IsRequired()
@@ -828,6 +957,8 @@ namespace MusFit.Models
 
                 entity.Property(e => e.ProteinMinRange).HasColumnName("proteinMinRange");
 
+                entity.Property(e => e.SGender).HasColumnName("sGender");
+
                 entity.Property(e => e.SId).HasColumnName("sID");
 
                 entity.Property(e => e.SName)
@@ -848,6 +979,26 @@ namespace MusFit.Models
                 entity.Property(e => e.TotalBodyWaterMaxRange).HasColumnName("totalBodyWaterMaxRange");
 
                 entity.Property(e => e.TotalBodyWaterMinRange).HasColumnName("totalBodyWaterMinRange");
+
+                entity.Property(e => e.UpperLeftFat).HasColumnName("upperLeftFat");
+
+                entity.Property(e => e.UpperLeftFatLevel).HasColumnName("upperLeftFatLevel");
+
+                entity.Property(e => e.UpperLeftFatPercentage).HasColumnName("upperLeftFatPercentage");
+
+                entity.Property(e => e.UpperLeftMuscle).HasColumnName("upperLeftMuscle");
+
+                entity.Property(e => e.UpperLeftMuscleLevel).HasColumnName("upperLeftMuscleLevel");
+
+                entity.Property(e => e.UpperRightFat).HasColumnName("upperRightFat");
+
+                entity.Property(e => e.UpperRightFatLevel).HasColumnName("upperRightFatLevel");
+
+                entity.Property(e => e.UpperRightFatPercentage).HasColumnName("upperRightFatPercentage");
+
+                entity.Property(e => e.UpperRightMuscle).HasColumnName("upperRightMuscle");
+
+                entity.Property(e => e.UpperRightMuscleLevel).HasColumnName("upperRightMuscleLevel");
 
                 entity.Property(e => e.Weight).HasColumnName("weight");
 

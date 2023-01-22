@@ -37,9 +37,10 @@
                
 
             <div class="login-form">
-            <form action="/Manage/Login" method="post">
+             <form action="/Manage/Login" method="post" onsubmit="return Encryption();">
                 <input type="text" id="username" name="username" placeholder="請輸入帳號" required>
                 <input type="password" id="password" name="password" placeholder="請輸入密碼" required>
+                <input type="hidden" id="encryptedPassword" name="encryptedPassword">
                 <input type="submit" id="submit" value="登入" class="submit">
             </form>
         </div>
@@ -53,13 +54,28 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://kit.fontawesome.com/08ba26884c.js" crossorigin="anonymous"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
         <script>
-                $(document).ready(function () {
-            if ($('#popupdiv').html() != '') {
-                $("#popupdiv").show();
-            }
-        });
+         $(document).ready(function () {
+             if ($('#popupdiv').html() != '') {
+                 $("#popupdiv").show();
+             }
+         });
+
+        // AES Encrypted Password
+        function Encryption() {
+            var password = $('#password').val();
+            var key = CryptoJS.enc.Utf8.parse('7061737323313233');
+            var iv = CryptoJS.enc.Utf8.parse('7061737323313233');
+            var encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(password), key,
+                {
+                    keySize: 128 / 8,
+                    iv: iv,
+                    mode: CryptoJS.mode.CBC,
+                    padding: CryptoJS.pad.Pkcs7
+                });
+            $('#encryptedPassword').val(encrypted);
+        }
         </script>
 
 </body>

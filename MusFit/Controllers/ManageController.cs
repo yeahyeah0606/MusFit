@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MusFit.EncryptPassword;
 using MusFit.Models;
 using MusFit.Utilities;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.IO;
+using System;
+using System.Collections.Generic;
 
 namespace MusFit.Controllers
 {
@@ -47,8 +51,10 @@ namespace MusFit.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(string username, string password)
+        public ActionResult Login(string username, string encryptedPassword)
         {
+            Decryption decryption = new Decryption();
+            var password = decryption.DecryptStringAES(encryptedPassword);
             byte[] password_SHA256 = StringToSHA256(password);
 
             if (HttpContext.Session.GetString("Manager") == null && HttpContext.Session.GetString("Coach") == null)
@@ -125,12 +131,7 @@ namespace MusFit.Controllers
         {
             return View();
         }
-        [Authentication]
-        public IActionResult CoachIndex(string identity)
-        {
-            ViewBag.identity = identity;
-            return View();
-        }
+
 
         public IActionResult News()
         {

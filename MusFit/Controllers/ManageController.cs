@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MusFit.EncryptPassword;
 using MusFit.Models;
 using MusFit.Utilities;
 using MusFit.ViewModels;
@@ -57,8 +58,10 @@ namespace MusFit.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(string username, string password)
+        public ActionResult Login(string username, string encryptedPassword)
         {
+            Decryption decryption = new Decryption();
+            var password = decryption.DecryptStringAES(encryptedPassword);
             byte[] password_SHA256 = StringToSHA256(password);
 
             if (HttpContext.Session.GetString("Manager") == null && HttpContext.Session.GetString("Coach") == null)
@@ -152,6 +155,7 @@ namespace MusFit.Controllers
 
             return View(viewModel);
         }
+
 
       
         public IActionResult StudentQuery()
@@ -1196,11 +1200,11 @@ namespace MusFit.Controllers
 
 
 
+        public IActionResult KnowledgeColumn()
+        {
+            var viewModel = _context.KnowledgeColumns.ToList();
 
-
-
-
-
-
+            return View(viewModel);
+        }
     }
 }

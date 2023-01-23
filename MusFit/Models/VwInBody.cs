@@ -92,5 +92,6 @@ namespace MusFit.Models
         public double EI100kHzRightLeg { get; set; }
         public double EI100kHzLeftLeg { get; set; }
         public short InBodyScore { get; set; }
+        public bool SGender { get; set; }
     }
 }

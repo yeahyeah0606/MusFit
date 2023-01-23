@@ -35,6 +35,7 @@ namespace MusFit.Models
         public virtual DbSet<VwCoachSchedule> VwCoachSchedules { get; set; }
         public virtual DbSet<VwInBody> VwInBodies { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Chinese_Taiwan_Stroke_CI_AS");
@@ -767,7 +768,7 @@ namespace MusFit.Models
             modelBuilder.Entity<Term>(entity =>
             {
                 entity.HasKey(e => e.TId)
-                    .HasName("PK__Term__DC1157071FE4935B");
+                    .HasName("PK__Term__DC115707E6ED16FC");
 
                 entity.ToTable("Term");
 
@@ -955,6 +956,8 @@ namespace MusFit.Models
                 entity.Property(e => e.ProteinMaxRange).HasColumnName("proteinMaxRange");
 
                 entity.Property(e => e.ProteinMinRange).HasColumnName("proteinMinRange");
+
+                entity.Property(e => e.SGender).HasColumnName("sGender");
 
                 entity.Property(e => e.SId).HasColumnName("sID");
 

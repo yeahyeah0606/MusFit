@@ -1,0 +1,150 @@
+﻿@model MusFit.ViewModels.StudentViewModel
+@{
+    ViewData["Title"] = "會員資料";
+
+}
+
+<link rel="stylesheet" href="~/css/StudentSelect.css">
+
+<main class="student-select-content justify-content-center">
+    <div class="container-fluid justify-content-center">
+        <div class="d-flex pt-4 pl-4">
+            <h4>會員資料</h4>
+        </div>
+
+        <form class="student-select-form justify-content-center" method="get" action="@Url.Action("StudentSelect","Manage")">
+            <div class="card mb-6">
+                <div class="card-body text-center">
+ 
+                <img src="@string.Format("data:image/png;base64,{0}", Model.SPhoto)"  alt=""  class="img-fluid rounded-circle mb-2" width="180" height="200">
+                     
+                </div>
+                <hr class="my-0" />
+
+                <div class="card-body">
+                    <div class="row student-select-form mx-sm-3 mb-2 form-inline"
+                         name="student-select-form" method="get" action="">
+                        <div class="col-6 student-select-form-left">
+                            <div class="from-group mb-4">
+                                <label asp-for="SNumber">會員編號</label>
+                                <input asp-for="SNumber" class="form-control w-65" type="text"
+                                       name="SNumber" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="SName">會員姓名 </label>
+                                <input asp-for="SName" class="form-control" type="text"
+                                       name="SName" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="SGender">性別</label>
+                                @{
+                                    if (Model.SGender == false)
+                                    {
+                                        <input asp-for="SGender" class="form-control" type="text"
+                                       name="SGender" value="女" disabled>
+                                    }
+                                    else
+                                    {
+                                        <input asp-for="SGender" class="form-control" type="text"
+                                       name="SGender" value="男" disabled>
+                                    }
+                                }
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="SBirth">生日</label>
+                                <input asp-for="SBirth" class="form-control" type="date"
+                                       name="SBirth" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="SPhone">手機號碼</label>
+                                <input asp-for="SPhone" class="form-control" type="tel"
+                                       name="SPhone" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="SMail">電子郵件</label>
+                                <input asp-for="SMail" class="form-control" type="email"
+                                       name="SMail" disabled>
+                            </div>
+                        </div>
+
+                        <div class="col-6 student-select-form-right">
+                            <div class="from-group mb-4">
+                                <label asp-for="SJoinDate">入會日期</label>
+                                <input asp-for="SJoinDate" class="form-control w-50" type="date"
+                                       name="SJoinDate" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="SAddress">地址</label>
+                                <input asp-for="SAddress" class="form-control" type="text"
+                                       name="SAddress" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="SAccount">帳號</label>
+                                <input asp-for="SAccount" class="form-control" type="text"
+                                       name="SAccount" disabled>
+                            </div>
+
+                            <div class="from-group mb-4">
+                                <label asp-for="SContactor">緊急聯絡人</label>
+                                <input asp-for="SContactor" class="form-control" type="text"
+                                       name="SContactor" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="SContactPhone">緊急連絡人電話</label>
+                                <input asp-for="SContactPhone" class="form-control" type="tel"
+                                       name="SContactPhone" disabled>
+                            </div>
+                            <div class="row from-group mb-4 btnDiv">
+                                <div class="col-6">
+                                    <a id="btnEdit" type="button" name="edit" onclick="EditStudent()">編輯</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="@Url.Action("StudentSearch","Manage")" id="btnReturn" type="button" name="return">返回</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</main>
+@section Scripts{
+    <script>
+        function EditStudent() {
+
+            window.location.href = '@Url.Action("SEdit", "Manage")?SNumber=' + $('input[name="SNumber"]').val();
+
+        }
+
+        function imgUploadCheck() {
+            //當檔案改變後，做一些事
+            readURL(this);   // this代表<input id="imgInp">
+        };
+
+        var base64String = "";
+        var file;
+        function readURL(input) {
+            //因為單選的關係，所以有檔案一定是在第0個
+            file = document.getElementById("SPhoto").files[0];
+
+            //預覽
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                base64String = e.target.result;//目標結果存入字串
+
+                var addPhoto = document.getElementById("myPhoto");
+                addPhoto.src = base64String;
+
+            }
+            //給URL
+            reader.readAsDataURL(file);
+        }
+
+
+
+    </script>
+}

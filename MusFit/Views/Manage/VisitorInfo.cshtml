@@ -101,7 +101,7 @@
             </div>
             <input type="button" id="btnEditConfirm" value="確定" />
             <span class="cancel" onclick="closeModal()">取消</span>
-            <div><a href="#">填寫詳細資訊...</a></div>
+            <div><a type="button" onclick="AddStudent()">填寫詳細資訊...</a></div>
         </form>
     </div>
 
@@ -298,5 +298,15 @@
 
 @section Scripts{
     <script src="~/js/VisitorInfo.js"></script>
+
+    <script>
+        function AddStudent() {
+            var student = $('#sNumber').val();
+            window.location.href = '@Url.Action("SAdd", "Manage")?SNumber=' + student;
+
+        }
+
+    </script>
+       
 }
 

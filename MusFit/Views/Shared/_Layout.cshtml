@@ -40,7 +40,13 @@
             <div class="menu">
                 @{                                     
                      if (userName == "Coach"){
-                            <div class="item"><a href="#"><i class='fas fa-user-cog'></i>編輯個人資料</a></div>
+                            <div class="item">
+                                <a class="sub-btn" href="#"><i class='fas fa-user-cog'></i>個人管理<i class="fas fa-angle-right dropdown"></i></a>
+                                <div class="sub-menu">
+                                    <a href="/Manage/CoachEdit/@TempData.Peek("eId")" class="sub-item">編輯個人資料</a>
+                                    <a href="/Manage/CoachPasswordEdit/@TempData.Peek("eId")" class="sub-item">編輯個人密碼</a>
+                                </div>
+                            </div>
                             <div class="item"><a href="#"><i class="fa-solid fa-landmark"></i>教室管理</a></div>
                             <div class="item"><a href="#"><i class='far fa-edit'></i>課程紀錄查詢</a></div>
                             <div class="item"><a href="/Manage/InBodyRecordQuery"><i class='fas fa-dumbbell'></i>InBody紀錄查詢</a></div>
@@ -51,8 +57,8 @@
                             <div class="item">
                                 <a class="sub-btn" href="#"><i class='fas fa-user-cog'></i>會員管理<i class="fas fa-angle-right dropdown"></i></a>
                                 <div class="sub-menu">
-                                    <a href="#" class="sub-item">查詢會員</a>
-                                    <a href="#" class="sub-item">新增會員</a>
+                                    <a href="/Manage/StudentQuery" class="sub-item">查詢會員</a>
+                                    <a href="/Manage/StudentAdd" class="sub-item">新增會員</a>
                                 </div>
                             </div>
                             <div class="item">
@@ -69,8 +75,9 @@
                             <div class="item">
                                 <a class="sub-btn" href="#"><i class='fas fa-id-badge'></i>員工管理<i class="fas fa-angle-right dropdown"></i></a>
                                 <div class="sub-menu">
-                                    <a href="#" class="sub-item">查詢員工</a>
-                                    <a href="#" class="sub-item">新增員工</a>
+                                    <a href="/Manage/EmployeeQuery" class="sub-item">查詢員工</a>
+                                    <a href="/Manage/EmployeeAdd" class="sub-item">新增員工</a>
+                                    <a href="/Manage/EditPassword" class="sub-item">修改密碼</a>
                                 </div>                    
                             </div>
                             <div class="item"><a href="/Manage/CoachScheduleQuery"><i class="fa-regular fa-calendar-days"></i>員工班表</a> </div>

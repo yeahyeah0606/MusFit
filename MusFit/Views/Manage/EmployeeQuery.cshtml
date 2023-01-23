@@ -1,0 +1,79 @@
+﻿@model MusFit.Models.Employee
+@{
+    ViewData["Title"] = "查詢員工";
+    var message = (string)ViewData["error"] ?? string.Empty;
+}
+
+<link rel="stylesheet" href="~/css/EmployeeQuery.css">
+
+<main role="main">
+    <div class="d-flex justify-content-center pt-3 pr-3">
+        <h4>查詢員工</h4>
+    </div>
+
+    <div class="row employee-content justify-content-center">
+        <div class="employee-form" name="employee-form" method="get" action="@Url.Action("EmployeeQuery","Manage")">
+            <div class="from-group mb-4">
+                <label asp-for="ENumber">員工編號</label><br>
+                <input asp-for="ENumber" class="form-control" type="text" name="ENumber" value="">
+            </div>
+            <div class="from-group mb-4">
+                <label asp-for="EName">員工姓名</label><br>
+                <input asp-for="EName" class="form-control" type="text" name="EName" value="">
+            </div>
+            <div class="from-group mb-4">
+                <label asp-for="EAccount">帳號</label><br>
+                <input asp-for="EAccount" class="form-control" type="text" name="EAccount" value="">
+                @{
+                    if (message != "")
+                    {
+                        <p id="error" style="color: #FF88C1"><b>@ViewData["error"]</b></p>
+
+                    }
+                    else
+                    {
+                        <p id="success" style="color:rgb(14, 34, 62);"><b>*請輸入任一資訊進行查詢</b></p>
+
+                    }
+                }
+            </div>
+            <div class="from-group mb-4">
+                <button id="query" class="btn btn-info" type="button" onclick="QueryEmployee()">查詢</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts{
+
+    <script>
+
+        function QueryEmployee() {
+            var number = $('input[name="ENumber"]').val();
+            var name = $('input[name="EName"]').val();
+            var account = $('input[name="EAccount"]').val();
+            var result = "";
+
+            //若符合一個或多值時
+            if (number != "") {
+                result += 'ENumber=' + number + '&';
+            }
+
+            if (name != "") {
+                result += 'EName=' + name + '&';
+            }
+
+            if (account != "") {
+                result += 'EAccount=' + account + '&';
+            }
+
+
+            window.location.href = '@Url.Action("EmployeeSearch", "Manage")?' + result;
+        }
+
+
+    </script>
+
+
+
+}

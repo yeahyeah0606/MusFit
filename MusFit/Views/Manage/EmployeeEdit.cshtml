@@ -1,0 +1,222 @@
+﻿@model MusFit.ViewModels.EmployeeViewModel
+@{
+	ViewData["Title"] = "員工編輯";
+
+}
+
+<link rel="stylesheet" href="~/css/EmployeeEdit.css">
+
+<main class="employee-edit-content justify-content-center">
+	<div class="container-fluid justify-content-center">
+		<div class="d-flex pt-4 pl-4">
+			<h4>員工編輯</h4>
+		</div>
+
+		<form class="employee-edit-form justify-content-center" method="post" action="@Url.Action("EEdit","Manage")" enctype="multipart/form-data">
+			<div class="card mb-6">
+				<div class="card-body text-center">
+					<img src="@string.Format("data:image/png;base64,{0}", Model.EPhoto)" class="img-fluid rounded-circle" id="myPhoto" width="180" height="200">
+					<div class="form-group photoFile">
+						<input type="file" class="w-100" asp-for="EPhoto" id="EPhoto" accept=".png, .jpg, .jpeg" onchange='imgUploadCheck(this)' />
+					</div>
+				</div>
+				<hr class="my-0" />
+
+				<div class="card-body">
+					<div class="row employee-edit-form mx-sm-3 mb-2 form-inline"
+                          name="employee-edit-form" method="get" action="">
+						<div class="col-6 employee-edit-form-left">
+							<div class="form-group mb-4">
+								<label asp-for="ENumber">員工編號</label>
+								<input asp-for="ENumber" class="form-control w-65" type="text" readonly>
+							</div>
+							<div class="form-group mb-4">
+								<label asp-for="EAccount">帳號</label>
+								<input asp-for="EAccount" class="form-control" type="text"><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EAccount"
+									  data-valmsg-replace="true" asp-validation-for="EAccount"></span>
+							</div>
+							<div class="form-group mb-4">
+								<label asp-for="EName">員工姓名 </label>
+								<input asp-for="EName" class="form-control" type="text"><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EName"
+									  data-valmsg-replace="true" asp-validation-for="EName"></span>
+							</div>
+							<div class="form-group mb-4">
+								<label asp-for="EEngName">員工英文名 </label>
+								<input asp-for="EEngName" class="form-control" type="text"><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EEngName"
+									  data-valmsg-replace="true" asp-validation-for="EEngName"></span>
+							</div>
+							<div class="form-group mb-4">
+								<label asp-for="EGender">性別</label>
+								<label class="form-check-label" id="EGender">
+									<input asp-for="EGender" class="form-check-input" type="radio" value="false">女
+								</label>
+
+								<label class="form-check-label" id="EGender">
+									<input asp-for="EGender" class="form-check-input" type="radio" value="true">男
+								</label><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EGender"
+									  data-valmsg-replace="true" asp-validation-for="EGender"></span>
+							</div>
+							<div class="form-group mb-4">
+								<label asp-for="EBirth">生日</label>
+								<input asp-for="EBirth" class="form-control" type="date"><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EBirth"
+									  data-valmsg-replace="true" asp-validation-for="EBirth"></span>
+							</div>
+							<div class="from-group mb-4">
+                                <label asp-for="EIdentityNumber">身分證</label>
+								<input asp-for="EIdentityNumber" class="form-control" type="text"
+									   name="EIdentityNumber"><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EIdentityNumber"
+									  data-valmsg-replace="true" asp-validation-for="EIdentityNumber"></span>
+                            </div>
+							<div class="form-group mb-4">
+								<label asp-for="EPhone">手機號碼</label>
+								<input asp-for="EPhone" class="form-control" type="tel"><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EPhone"
+									  data-valmsg-replace="true" asp-validation-for="EPhone"></span>
+							</div>
+							<div class="form-group mb-4">
+								<label asp-for="EMail">電子郵件</label>
+								<input asp-for="EMail" class="form-control" type="email"><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EMail"
+									  data-valmsg-replace="true" asp-validation-for="EMail"></span>
+							</div>
+							<div class="form-group mb-4">
+								<label asp-for="EAddress">地址</label><br>
+								<input asp-for="EAddress" class="form-control" type="text">
+								<span class="field-validation-valid text-danger" data-valmsg-for="EAddress"
+									  data-valmsg-replace="true" asp-validation-for="EAddress"></span>
+							</div>
+							<div class="form-group ">
+							</div>
+						</div>
+
+						<div class="col-6 employee-edit-form-right">
+							<div class="form-group mb-4">
+								<label asp-for="EIsCoach">職位</label>
+								<label class="form-check-label" id="EGender">
+									<input asp-for="EIsCoach" class="form-check-input" type="radio" value="false">行政人員
+								</label>
+
+								<label class="form-check-label" id="EGender">
+									<input asp-for="EIsCoach" class="form-check-input" type="radio" value="true">教練
+								</label><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EIsCoach"
+									  data-valmsg-replace="true" asp-validation-for="EIsCoach"></span>
+							</div>
+							<div class="form-group mb-4">
+								@using (Html.BeginForm("EEdit", "Manage"))
+                                {
+                                    foreach (var item in Model.AvailableLession)
+                                    {
+                                        <div class="checkbox" asp-for="AvailableLession">
+                                            <label>
+                                                <input type="checkbox" name="SelectedLession" value="@item.Value"
+                                                       @if(Model.SelectedLession.Contains(item.Value))
+                                                       {
+                                                            <text> checked </text>
+                                                       }
+                                                 /> @item.Text
+                                            </label>
+                                        </div>
+                                    }
+                                }
+                            </div>
+							<div class="form-group mb-4">
+								<label asp-for="EEnrollDate">入職日期</label>
+								<input asp-for="EEnrollDate" class="form-control" type="date"><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EEnrollDate"
+									  data-valmsg-replace="true" asp-validation-for="EEnrollDate"></span>
+							</div>
+							<div class="form-group mb-4">
+								<label asp-for="EResignDate">離職日期</label>
+								<input asp-for="EResignDate" class="form-control" type="date"><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EResignDate"
+									  data-valmsg-replace="true" asp-validation-for="EResignDate"></span>
+							</div>
+							<div class="form-group mb-4">
+								<label asp-for="EContactor">緊急聯絡人</label>
+								<input asp-for="EContactor" class="form-control" type="text"><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EContactor"
+									  data-valmsg-replace="true" asp-validation-for="EContactor"></span>
+							</div>
+							<div class="form-group mb-4">
+								<label asp-for="EContactorPhone">緊急連絡人電話</label>
+								<input asp-for="EContactorPhone" class="form-control" type="tel"><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EContactorPhone"
+									  data-valmsg-replace="true" asp-validation-for="EContactorPhone"></span>
+							</div>
+							<div class="form-group mb-4">
+								<label asp-for="EExplain" class="label-style">風格描述</label>
+								<textarea asp-for="EExplain" class="form-control" rows="5" cols="22"></textarea><br>
+								<span class="field-validation-valid text-danger" data-valmsg-for="EExplain"
+									  data-valmsg-replace="true" asp-validation-for="EExplain"></span>
+							</div>
+							<div class="row form-group mb-0">
+								<div class="col-6 btn-edit">
+									<button id="btnSave" type="submit" name="save">儲存</button>
+								</div>
+								<div class="col-6 btn-cancel">
+									<a href="@Url.Action("EmployeeQuery","Manage")" id="btnCanael" type="button" name="cancel">取消</a>
+								</div>
+							</div>
+							
+						</div>
+						<hr class="my-0" />
+						<div>
+							<div>
+								<h5>密碼重設</h5>
+							</div>
+							<div class="form-group mb-4">
+								<label asp-for="EPassword">密碼</label>
+								<input asp-for="EPassword" class="form-control w-25" type="text" value="" readonly>
+							</div>
+							<div class="form-group mb-0">
+								<div class=" btn-edit">
+									<button id="btnSave" type="button" name="save" class="w-100" onclick="ResetPassword()">密碼重設</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</main>
+
+@section Scripts{
+	<script>
+		function ResetPassword() {
+			$('input[id="EPassword"]').val('abcd1234');
+		}
+
+		function imgUploadCheck() {
+			//當檔案改變後，做一些事
+			readURL(this);   // this代表<input id="imgInp">
+		};
+
+		var base64String = "";
+		var file;
+		function readURL(input) {
+			//因為單選的關係，所以有檔案一定是在第0個
+			file = document.getElementById("EPhoto").files[0];
+
+			//預覽
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				base64String = e.target.result;//目標結果存入字串
+
+				var addPhoto = document.getElementById("myPhoto");
+				addPhoto.src = base64String;
+
+			}
+			//給URL
+			reader.readAsDataURL(file);
+		}
+	</script>
+}

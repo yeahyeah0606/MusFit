@@ -1,0 +1,177 @@
+﻿@model MusFit.ViewModels.EmployeeViewModel
+@{
+    ViewData["Title"] = "員工資料";
+}
+
+<link rel="stylesheet" href="~/css/EmployeeSelect.css">
+
+<main class="employee-select-content justify-content-center">
+    <div class="container-fluid justify-content-center">
+        <div class="d-flex pt-4 pl-4">
+            <h4>員工資料</h4>
+        </div>
+
+        <form class="employee-select-form justify-content-center" method="get" action="@Url.Action("EmployeeSelect","Manage")" enctype="multipart/form-data">
+            <div class="card mb-6">
+                <div class="card-body text-center">
+                    <img src="@string.Format("data:image/png;base64,{0}", Model.EPhoto)" class="img-fluid rounded-circle mb-2" width="180" height="200">
+                </div>
+                <hr class="my-0" />
+
+                <div class="card-body">
+                    <div class="row employee-select-form mx-sm-3 mb-2 form-inline"
+                          name="employee-select-form" method="get" action="">
+                        <div class="col-6 employee-select-form-left">
+                            <div class="from-group mb-4">
+                                <label asp-for="ENumber">員工編號</label>
+                                <input asp-for="ENumber" class="form-control" type="text"
+                                       name="ENumber" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="EAccount">帳號</label>
+                                <input asp-for="EAccount" class="form-control" type="text"
+                                       name="EAccount" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="EName">員工姓名 </label>
+                                <input asp-for="EName" class="form-control" type="text"
+                                       name="EName" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="EEngName">員工英文名 </label>
+                                <input asp-for="EEngName" class="form-control" type="text"
+                                       name="EEngName" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="EGender">性別</label>
+                                @{
+                                    if (Model.EGender == false)
+                                    {
+                                                <input asp-for="EGender" class="form-control" type="text"
+                                       name="EGender" value="女" disabled>
+                                    }
+                                    else
+                                    {
+                                                <input asp-for="EGender" class="form-control" type="text"
+                                       name="EGender" value="男" disabled>
+                                    }
+                                }
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="EBirth">生日</label>
+                                <input asp-for="EBirth" class="form-control" type="date"
+                                       name="EBirth" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="EIdentityNumber">身分證</label>
+                                <input asp-for="EIdentityNumber" class="form-control" type="text"
+                                       name="EIdentityNumber" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="EPhone">手機號碼</label>
+                                <input asp-for="EPhone" class="form-control" type="tel"
+                                       name="Ephone" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="EMail">電子郵件</label>
+                                <input asp-for="EMail" class="form-control" type="email"
+                                       name="EMail" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="EAddress">地址</label>
+                                <input asp-for="EAddress" class="form-control" type="text"
+                                       name="EAddress" disabled>
+                            </div>
+                            <div class="from-group ">
+                            </div>
+                        </div>
+
+                        <div class="col-6 employee-select-form-right">
+                            <div class="from-group mb-4">
+                                <label asp-for="EIsCoach">職位</label>
+                                @{
+                                    if (Model.EIsCoach == true)
+                                    {
+                                                <input asp-for="EIsCoach" class="form-control" type="text"
+                                       name="EIsCoach" value="教練" disabled>
+                                    }
+                                    else
+                                    {
+                                                <input asp-for="EIsCoach" class="form-control" type="text"
+                                       name="EIsCoach" value="行政人員" disabled>
+                                    }
+                                }
+
+                            </div>
+                            <div class="from-group mb-4">
+                                <label>課程項目</label>
+                                @using (Html.BeginForm("EmployeeSelect", "Manage"))
+                                {
+
+                                    foreach (var item in Model.AvailableLession)
+                                    {
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" name="SelectedLession" value="@item.Value" disabled
+                                                       @if(Model.SelectedLession.Contains(item.Value))
+                                                       {
+                                                            <text> checked </text>
+                                                       }
+                                                 /> @item.Text
+                                                    </label>
+                                                </div>
+                                    }
+                                }
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="EEnrollDate">入職日期</label>
+                                <input asp-for="EEnrollDate" class="form-control" type="date"
+                                       name="EEnrollDate" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="EResignDate">離職日期</label>
+                                <input asp-for="EResignDate" class="form-control" type="date"
+                                       name="EResignDate" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="EContactor">緊急聯絡人</label>
+                                <input asp-for="EContactor" class="form-control" type="text"
+                                       name="EContactor" disabled>
+                            </div>
+                            <div class="from-group mb-4">
+                                <label asp-for="EContactorPhone">緊急連絡人電話</label>
+                                <input asp-for="EContactorPhone" class="form-control" type="tel"
+                                       name="EContactorPhone" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EExplain" class="label-style">風格描述</label>
+                                <textarea asp-for="EExplain" class="form-control" rows="5" cols="20" disabled>
+                                    </textarea>
+                            </div>
+                            <div class="row from-group mb-4 btnDiv">
+                                <div class="col-6">
+                                    <a id="btnEdit" type="button" name="edit" onclick="EditEmployee()">編輯</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="@Url.Action("EmployeeQuery","Manage")" id="btnReturn" type="button" name="return">返回</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</main>
+
+@section Scripts{
+        <script>
+            function EditEmployee() {
+
+                window.location.href = '@Url.Action("EEdit", "Manage")?ENumber=' + $('input[name="ENumber"]').val();
+
+            }
+
+        </script>
+}

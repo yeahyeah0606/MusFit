@@ -141,7 +141,7 @@
                                         <td>${date}(${o.weekday.substring(2)})</td>
                                         <td>
                                         <button class="edit" onclick=openEditModel(${o.sID},${o.orderID})> 編輯 </button>
-                                        <button class="delete" onclick = "opendeleteModel(${o.orderID})" > 刪除 </button>
+                                        <button class="delete" onclick = "opendeleteModel(${o.orderID},${o.classRecordID})" > 刪除 </button>
                                         </td>
                                     </tr>`; 
             })
@@ -324,7 +324,9 @@
         //delete reservation
         $('#btnconfirmdelete').click(function () {
             var orderID = $('#delOrderID').val();
-            myAJAX(AjaxType.DELETE, "/api/classorders/"+orderID,showMessage("已刪除"))
+            var classRecordID = $('#delClassRecordID').val();
+            myAJAX(AjaxType.DELETE, "/api/classrecords/" + classRecordID);
+            myAJAX(AjaxType.DELETE, "/api/classorders/" + orderID, showMessage("已刪除"));
         })
 
         //open edit modal
@@ -443,8 +445,9 @@
         })
 
         //open delete modal
-        function opendeleteModel(orderID) {
+        function opendeleteModel(orderID, classRecordID) {
             $('#delOrderID').val(orderID);
+            $('#delClassRecordID').val(classRecordID);
             deleteModal.style.display = "block";
             $('#btnconfirmdelete').focus();
         }

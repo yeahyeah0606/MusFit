@@ -48,15 +48,6 @@ namespace MusFit.Controllers
             }
         }
 
-        private byte[] StringToSHA256(string str)
-        {
-            StringBuilder builder = new StringBuilder();
-            SHA256 sha256 = new SHA256CryptoServiceProvider();
-            byte[] source = Encoding.Default.GetBytes(str);
-            byte[] crypto = sha256.ComputeHash(source);
-            return crypto;
-        }
-
         [HttpPost]
         public ActionResult Login(string username, string encryptedPassword)
         {
@@ -94,6 +85,14 @@ namespace MusFit.Controllers
             return View();
         }
 
+        private byte[] StringToSHA256(string str)
+        {
+            StringBuilder builder = new StringBuilder();
+            SHA256 sha256 = new SHA256CryptoServiceProvider();
+            byte[] source = Encoding.Default.GetBytes(str);
+            byte[] crypto = sha256.ComputeHash(source);
+            return crypto;
+        }
         public ActionResult Logout()
         {
             HttpContext.Session.Clear();

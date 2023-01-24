@@ -250,7 +250,6 @@
             $('#endDate').addClass("has-value");
         }
 
-
         //show all reservations
         $('#btnShowAll').click(function () {
             location.reload();
@@ -533,11 +532,6 @@
             return indexed_array;
 }
 
-
-        function AddStudent() {
-            var student = $('#sNumber').val();
-            window.location.href = '@Url.Action("SAdd", "Manage")?SNumber=' + student;
-        }
 
 
 

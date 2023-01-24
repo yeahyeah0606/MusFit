@@ -298,5 +298,11 @@
 
 @section Scripts{
     <script src="~/js/VisitorInfo.js"></script>
+    <script>
+        function AddStudent() {
+            var student = $('#sNumber').val();
+            window.location.href = '@Url.Action("SAdd", "Manage")?SNumber=' + student;
+        }
+    </script>
 }
 

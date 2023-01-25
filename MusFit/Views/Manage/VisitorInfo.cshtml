@@ -101,7 +101,7 @@
             </div>
             <input type="button" id="btnEditConfirm" value="確定" />
             <span class="cancel" onclick="closeModal()">取消</span>
-            <div><a type="button" onclick="AddStudent()">填寫詳細資訊...</a></div>
+            <div><a id="moreDetail" onclick="AddStudent()">填寫詳細資訊...</a></div>
         </form>
     </div>
 
@@ -212,6 +212,7 @@
         <div>
             <form id="deleteForm">
                 <input type="hidden" id="delOrderID" />
+                <input type="hidden" id="delClassRecordID" />
                 <input type="button" id="btnconfirmdelete" value="確定">
                 <span class="cancel" onclick="closeModal()">取消</span>
             </form>
@@ -298,15 +299,12 @@
 
 @section Scripts{
     <script src="~/js/VisitorInfo.js"></script>
-
     <script>
         function AddStudent() {
             var student = $('#phone').val();
             window.location.href = '@Url.Action("SAdd", "Manage")?SPhone=' + student;
 
-        }
 
     </script>
-       
 }
 

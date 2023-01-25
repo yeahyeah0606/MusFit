@@ -1,0 +1,276 @@
+.myContent {
+    padding: 40px 10px;
+}
+
+/* 日期選擇器 樣式 */
+.dateStart, .dateEnd {
+    width: 150px;
+    height: 35px;
+    padding: 5px;
+}
+
+/*  下拉式選單 樣式 */
+.lession-select {
+    width: 150px;
+    height: 35px;
+    padding: 5px;
+}
+
+/* 會員編號 樣式 */
+.sName {
+    width:120px;
+    height: 35px;
+    padding: 5px;
+}
+/* 堂數 樣式 */ 
+.ctLession{
+    width: 80px;
+    height: 35px;
+    padding: 5px;
+}
+
+    .ctLession:focus, .sName:focus {
+        border-color: #66afe9;
+        outline: 0;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+
+/* 查詢 button 樣式 */
+.button {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #f4511e;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+    width: 80px;
+    height: 32px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 1px;
+}
+
+    .button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+    }
+
+        .button span:after {
+            content: '»';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
+
+    .button:hover span {
+        padding-right: 25px;
+    }
+
+        .button:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+.edit {
+    background-color: #96ba9a;
+    outline: none;
+}
+
+.delete {
+    background-color: #ce7b7b;
+    outline: none;
+}
+/* table 樣式 */
+.record {
+    width: 90%;
+    padding-left: 5%;
+}
+
+table {
+    overflow: hidden;
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+    font-family: 'Oswald', sans-serif;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #0080FF;
+    color: #ffffff;
+    width: 25vw;
+    height: 75px;
+    text-align: center;
+}
+
+td {
+    background-color: #ffffff;
+    width: 25vw;
+    height: 50px;
+    text-align: center;
+}
+
+tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+    tr:last-of-type {
+        border-bottom: 2px solid #0080FF;
+    }
+
+    tr:nth-of-type(even) td {
+        background-color: #f3f3f3;
+    }
+
+/* 總人數 置右 樣式 */
+.total-member {
+    text-align: right;
+    font-size: 18px;
+    padding-right: 4%;
+}
+/* 上一頁 下一頁 樣式 */
+.page-ul {
+    text-align: center;
+}
+
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+    ul.pagination li {
+        display: inline;
+    }
+
+        ul.pagination li a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+            border: 1px solid #ddd;
+        }
+
+            ul.pagination li a.active {
+                background-color: #66afe9;
+                color: white;
+                border: 1px solid #4da6f0;
+            }
+
+            ul.pagination li a:hover:not(.active) {
+                background-color: #4da6f0;
+            }
+
+/* 彈跳視窗 */
+/*create visitor information*/
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 3;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+}
+
+.row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+    grid-gap: 0px 10px;
+    margin: 20px auto;
+    padding: 0px 20px;
+}
+
+
+input[type=text], select {
+    border: solid 1px #a4a1a1;
+    border-radius: 5px;
+    padding: 2px 5px;
+    outline: none;
+}
+
+select {
+    width: 60%;
+}
+
+input[type=radio] {
+    margin: auto 25px;
+}
+
+form input[type=text]:focus, select:focus {
+    background-color: #ddd;
+}
+
+
+.IsPresent {
+    text-align: left;
+    padding-left: 60px;
+}
+
+form a {
+    display: flex;
+    float: right;
+    position: relative;
+    bottom: 35px;
+}
+
+#btnCreateConfirm, #btnEditConfirm, #btnconfirmdelete, #btnCreateReserveConfirm {
+    color: #fff;
+    background: #a764b2;
+    padding: 5px 10px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+}
+
+
+    #btnconfirm:hover, #btnconfirmdelete:hover, #btncanceldelete, #btnCreateReserveConfirm:hover,
+    #btnCreateConfirm:hover {
+        opacity: 0.9;
+    }
+
+.close {
+    color: #aaaaaa;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close:hover, .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+#noDataModal, #errorModal, #successModal {
+    width: 30%;
+}
+
+.btnConfirmMessage {
+    width: 20%;
+    margin: auto;
+    background-color: #8a8a8d;
+}

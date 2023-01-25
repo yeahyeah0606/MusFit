@@ -1,0 +1,296 @@
+﻿.myForm {
+    width: 100%;
+    padding: 30px 30px;
+    text-align: center;
+}
+
+
+h3 {
+    color: #434040;
+}
+
+
+form {
+    width: 100%;
+    margin: 0px auto 0 auto;
+    position: relative;
+    padding: 20px 20px;
+}
+
+.row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+    grid-gap: 20px 30px;
+    margin: 40px auto;
+    padding: 0px 20px;
+}
+
+
+.level-row {
+    text-align: left;
+    margin: 5px auto;
+    width: 90%;
+    /*padding: 5px 10px;*/
+}
+
+.nutrition {
+    background-color: #9f9acc;
+    border-radius: 5px;
+}
+
+.mybody {
+    background-color: #92b17f;
+    border-radius: 5px;
+}
+
+.danger {
+    background-color: #b26262;
+    border-radius: 5px;
+}
+
+.wieghtmanage {
+    background-color: #6ba9ca;
+    border-radius: 5px;
+}
+
+.fatlevel {
+    background-color: #e0c05d;
+    border-radius: 5px;
+}
+
+.totalcontrol {
+    background-color: #d47149;
+    border-radius: 5px;
+}
+
+
+/*input[type=date] {*/
+/* width: 70%;
+    margin-left: 20px;*/
+/*position: relative;
+    left: -190px;
+}*/
+
+#date {
+    position: relative;
+    left: -95px;
+}
+
+input[type=text], select, input[type=date]{
+    width: 30%;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1.2px solid #808080;
+    margin-top: 5px;
+    outline: none;
+}
+
+.column {
+    display: flex;
+}
+
+.date-block {
+    background-color: bisque;
+    margin-left: 60px;
+    margin-right: 60px;
+}
+
+.space-style, p {
+    margin: auto;
+}
+
+.date-span {
+    position: relative;
+    margin-left: 40px;
+}
+
+
+legend {
+    text-align: center;
+    width: 20%;
+    background-color: black;
+    color: #fff;
+    padding: 3px 6px;
+    font-size: 18px;
+}
+
+fieldset {
+    border: solid 1px black;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 10px 10px 10px rgba(0,0,0,0.15);
+}
+
+.control input {
+    width: 20%;
+}
+
+.control-row {
+    text-align: center;
+    margin: 30px auto;
+    width: 40%;
+    padding: 5px 10px;
+}
+
+input[type=radio] {
+    margin: auto 8px;
+    zoom: 1.2;
+}
+
+input[type=checkbox] {
+    margin: auto 8px;
+    zoom: 1.2;
+}
+
+
+button {
+    color: #fff;
+    background-color: #c0bcbc;
+    outline: none;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 20px;
+    border-radius: 3px;
+}
+
+    button:hover {
+        opacity: 0.9;
+    }
+
+input[type="submit"] {
+    color: #fff;
+    background-color: #a764b2;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 20px;
+    border-radius: 3px;
+}
+
+    input[type="submit"]:hover {
+        opacity: 0.9;
+    }
+
+.form-control {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.2rem;
+    color: #495057;
+    display: block;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 0.3rem 0.85rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    width: 100%;
+}
+/*懸浮視窗  visitor information*/
+/*-----------------------------------------------------------------*/
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 3;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+}
+
+.row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+    grid-gap: 0px 10px;
+    margin: 20px auto;
+    padding: 0px 20px;
+}
+
+
+input[type=text], select {
+    border: solid 1px #a4a1a1;
+    border-radius: 5px;
+    padding: 2px 5px;
+    outline: none;
+}
+
+select {
+    width: 60%;
+}
+
+input[type=radio] {
+    margin: auto 25px;
+}
+
+form input[type=text]:focus, select:focus {
+    background-color: #ddd;
+}
+
+
+.IsPresent {
+    text-align: left;
+    padding-left: 60px;
+}
+
+form a {
+    display: flex;
+    float: right;
+    position: relative;
+    bottom: 35px;
+}
+
+#btnCreateConfirm, #btnSignupConfirm, #btnconfirmdelete, #btnCreateReserveConfirm {
+    color: #fff;
+    background: #a764b2;
+    padding: 5px 10px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+}
+
+
+    #btnconfirm:hover, #btnconfirmdelete:hover, #btncanceldelete, #btnCreateReserveConfirm:hover,
+    #btnCreateConfirm:hover {
+        opacity: 0.9;
+    }
+
+.close {
+    color: #aaaaaa;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close:hover, .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+#noDataModal, #errorModal, #successModal {
+    width: 30%;
+}
+
+.btnConfirmMessage {
+    width: 20%;
+    margin: auto;
+    background-color: #8a8a8d;
+}

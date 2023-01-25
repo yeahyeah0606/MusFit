@@ -141,7 +141,7 @@
                                         <td>${date}(${o.weekday.substring(2)})</td>
                                         <td>
                                         <button class="edit" onclick=openEditModel(${o.sID},${o.orderID})> 編輯 </button>
-                                        <button class="delete" onclick = "opendeleteModel(${o.orderID})" > 刪除 </button>
+                                        <button class="delete" onclick = "opendeleteModel(${o.orderID},${o.classRecordID})" > 刪除 </button>
                                         </td>
                                     </tr>`; 
             })
@@ -250,7 +250,6 @@
             $('#endDate').addClass("has-value");
         }
 
-
         //show all reservations
         $('#btnShowAll').click(function () {
             location.reload();
@@ -307,12 +306,17 @@
         $('#btnCreateReserveConfirm').click(function () {
             var new_className = $('#new_className').val();
             var new_classDate = $('#new_classDate').val();
+            var classRecords = { sId: $('#new_sID').val(), classTimeId: $('#new_classTimeId').val() };
 
             if ($('#new_sID').val() == "") { valVisitorMessage.style.display = "block"; $('#confirmValVisitor').focus(); }
             else if (new_className == null || new_classDate == null) { validationMessage.style.display = "block"; $('#confirmValidation').focus(); }
             else {
                 $('#new_orderStatus').val('體驗');
+
                 $('#new_orderTime').val(new Date().toJSON().slice(0, 19));
+                // create classrecords
+                myAJAX(AjaxType.POST, "/api/classrecords/", null, "application/json", JSON.stringify(classRecords));
+                // create reservations
                 myAJAX(AjaxType.POST, "/api/classorders/", showMessage("已存檔"),"application/json", JSON.stringify(GetFormData($('#createOrder'))))
             }
         })
@@ -320,20 +324,29 @@
         //delete reservation
         $('#btnconfirmdelete').click(function () {
             var orderID = $('#delOrderID').val();
-            myAJAX(AjaxType.DELETE, "/api/classorders/"+orderID,showMessage("已刪除"))
+            var classRecordID = $('#delClassRecordID').val();
+            myAJAX(AjaxType.DELETE, "/api/classrecords/" + classRecordID);
+            myAJAX(AjaxType.DELETE, "/api/classorders/" + orderID, showMessage("已刪除"));
         })
 
         //open edit modal
         function openEditModel(sID, orderID) {
+
+            $('#sId').val(sID);
             //get visitor personal info
-            myAJAX(AjaxType.GET, "/api/students/" + sID, getVisitorPersonalInfo)
+            myAJAX(AjaxType.GET, "/api/students/" + sID, getVisitorPersonalInfo);
 
             //get visitor reservation info
             myAJAX(AjaxType.GET, "/api/classorders/" + orderID, getVisitorReservationsInfo);
             editModal.style.display = "block";
         }
+     
         var classID;
         var classTimeID;
+        var sID = $('#sId').val();
+        var crAttendance;
+        var crContent;
+        var crID;
         function getVisitorPersonalInfo(e){
              $('#sId').val(e.sId);
              $('#name').val(e.sName);
@@ -362,8 +375,12 @@
             $('#sID').val(x[0].sID);
             classID = x[0].cID;
             classTimeID = x[0].timeID;
-            myAJAX(AjaxType.GET,"/api/classes/",getVisitorReserveClassName);
+            // get reserve classname
+            myAJAX(AjaxType.GET, "/api/classes/", getVisitorReserveClassName);
+            // get reserve classdate
             myAJAX(AjaxType.GET, "/api/classTimes/term/", getVisitorReserveClassDate);
+            // get reservation classrecords
+            myAJAX(AjaxType.GET, "/api/classrecords/sId/classTimeID/" + x[0].sID + "/" + x[0].timeID, getVisitorReserveClassRecords);
         }
         function getVisitorReserveClassName(data){
             $('#className').empty();
@@ -386,6 +403,11 @@
                   }
                  $('#classDate').append(option);
              })
+}
+        function getVisitorReserveClassRecords(data) {
+            crID = data[0].crId;
+            crAttendance = data[0].crAttendance;
+            crContent = data[0].crContent;
         }
 
         //edit reservation information
@@ -398,6 +420,7 @@
             $('#mail').val(mail);
             var className = $('#className').val();
             var classDate = $('#classDate').val();
+            var classRecords = { crId: crID, sId: $('#sId').val(), classTimeId: $('#classTimeId').val(), crAttendance: crAttendance, crContent: crContent };
 
             if (name == "" || phone == "" || mail == "" || $('input:radio[name=sGender]:checked').val() == 0
                 || className == null || classDate == null) {
@@ -408,18 +431,23 @@
             else {
                 var orderId = $('#orderId').val();
                 $('#orderTime').val(new Date().toJSON().slice(0, 19));
+
                 // edit reservation order
                 myAJAX(AjaxType.PUT, "/api/classorders/" + orderId, null, "application/json", JSON.stringify(GetFormData($('#editOrder'))))
 
-                //edit visitor information
+                // edit classorder's classtimeID
+                myAJAX(AjaxType.PUT, "/api/classrecords/" + crID, null, "application/json", JSON.stringify(classRecords));
+
+                // edit visitor information
                 var sId = $('#sId').val();
                 myAJAX(AjaxType.PUT, "/api/students/" + sId, showMessage("已存檔"), "application/json", JSON.stringify(GetFormData($('#editForm'))))
             }
         })
 
         //open delete modal
-        function opendeleteModel(orderID) {
+        function opendeleteModel(orderID, classRecordID) {
             $('#delOrderID').val(orderID);
+            $('#delClassRecordID').val(classRecordID);
             deleteModal.style.display = "block";
             $('#btnconfirmdelete').focus();
         }
@@ -505,7 +533,8 @@
                 indexed_array[n['name']] = n['value'];
             });
             return indexed_array;
-        }
+}
+
 
 
 

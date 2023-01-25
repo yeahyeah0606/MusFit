@@ -29,6 +29,7 @@ namespace MusFit.Controllers
                       join t in _context.ClassTimes on o.ClassTimeId equals t.ClassTimeId
                       join c in _context.Classes on t.CId equals c.CId
                       join ct in _context.Terms on t.TId equals ct.TId
+                      join cr in _context.ClassRecords on o.SId equals cr.SId
                       where s.SIsStudentOrNot == false
                       orderby o.OrderTime descending
                       select new
@@ -48,7 +49,8 @@ namespace MusFit.Controllers
                           startTime = ct.TStartTime.ToString().Substring(0, 5),
                           endTime = ct.TEndTime.ToString().Substring(0, 5),
                           orderStatus = o.OrderStatus,
-                          orderTime = o.OrderTime
+                          orderTime = o.OrderTime,
+                          classRecordID = cr.CrId
                       };
             return await obj.ToListAsync();
         }

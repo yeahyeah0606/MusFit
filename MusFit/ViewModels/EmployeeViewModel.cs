@@ -10,9 +10,6 @@ namespace MusFit.ViewModels
     {
         public int EId { get; set; }
 
-        [Display(Name = "員工編號", Prompt = "ex.E0030")]
-        [Required(ErrorMessage = "您需要輸入員工編號")]
-        [RegularExpression(@"^E[0-9]{4}$", ErrorMessage = "請輸入正確員工編號格式!")]
         public string ENumber { get; set; }
 
         [Display(Name = "真實姓名", Prompt = "ex.陳小美")]

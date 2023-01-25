@@ -28,13 +28,13 @@
                             <div class="row">
                                 <p id="error" style="color:red;" hidden>員工已存在!</p>
                                 <div class="col-3 from-group mt-2">
-                                    <label asp-for="ENumber">員工編號</label>
+                                    <label asp-for="EIdentityNumber">身分證</label>
                                 </div>
                                 <div class="col-9 from-group mb-4">
-                                    <input asp-for="ENumber" class="form-control" type="text"
+                                    <input asp-for="EIdentityNumber" class="form-control" type="text"
                                            onchange="GetEmployeeData()">
-                                    <span class="field-validation-valid text-danger" data-valmsg-for="ENumber"
-                                          data-valmsg-replace="true" asp-validation-for="ENumber"></span>
+                                    <span class="field-validation-valid text-danger" data-valmsg-for="EIdentityNumber"
+                                          data-valmsg-replace="true" asp-validation-for="EIdentityNumber"></span>
                                 </div>
 
                                 <div class="col-3 from-group mt-2">
@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="col-9 from-group mb-4">
                                     <input asp-for="EPassword" class="form-control" type="text"
-                                           value="abcd1234" readonly>
+                                           value="預設為生日" readonly>
                                 </div>
 
                                 <div class="col-3 from-group mt-2">
@@ -97,15 +97,6 @@
                                     <span class="field-validation-valid text-danger" data-valmsg-for="EBirth"
                                           data-valmsg-replace="true" asp-validation-for="EBirth"></span>
                                 </div>
-                                <div class="col-3 from-group mt-2">
-                                    <label asp-for="EIdentityNumber" for="EIdentityNumber">身分證</label>
-                                </div>
-                                <div class="col-9 from-group mb-4">
-                                    <input asp-for="EIdentityNumber" class="form-control" type="text">
-                                    <span class="field-validation-valid text-danger" data-valmsg-for="EIdentityNumber"
-									  data-valmsg-replace="true" asp-validation-for="EIdentityNumber"></span>
-                                </div>
-
                                 <div class="col-3 from-group mt-2">
                                     <label asp-for="EPhone" for="employeePhone">手機號碼</label>
                                 </div>
@@ -240,7 +231,7 @@
         function GetEmployeeData() {
             //宣告一個json格式的viewmodel傳過去GetStudentData
             var viewModel = {
-                "ENumber": $('input[id="ENumber"]').val()
+                "EIdentityNumber": $('input[id="EIdentityNumber"]').val()
             }
             $.ajax({
                 type: "post",

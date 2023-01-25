@@ -155,7 +155,8 @@
 @section Scripts{
     <script>
 		function ResetPassword() {
-			$('input[id="SPassword"]').val('abcd1234');
+			var password = $('input[id="SBirth"]').val().replace('-', '').replace('-', '');
+			$('input[id="SPassword"]').val(password);
         }
 
 

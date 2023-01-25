@@ -28,11 +28,11 @@
                             <div class="from-group mb-4">
 
                                 <p id="error" style="color:red;" hidden>會員已存在!</p>
-                                <label asp-for="SNumber">會員編號</label>
-                                <input asp-for="SNumber" class="form-control" type="text"
-                                       name="SNumber" onchange="GetStudentData()"><br>
-                                <span class="field-validation-valid text-danger" data-valmsg-for="SNumber"
-									  data-valmsg-replace="true" asp-validation-for="SNumber"></span>
+                                <label asp-for="SPhone">手機號碼</label>
+                                <input asp-for="SPhone" class="form-control" type="text"
+                                       name="SPhone" onchange="GetStudentData()"><br>
+                                <span class="field-validation-valid text-danger" data-valmsg-for="SPhone"
+                                      data-valmsg-replace="true" asp-validation-for="SPhone"></span>
                             </div>
                             <div class="from-group mb-4">
                                 <label asp-for="SName">會員姓名 </label>
@@ -64,18 +64,16 @@
                                       data-valmsg-replace="true" asp-validation-for="SBirth"></span>
                             </div>
                             <div class="from-group mb-4">
-                                <label asp-for="SPhone">手機號碼</label>
-                                <input asp-for="SPhone" class="form-control" type="tel"
-                                       name="SPhone"><br>
-                                <span class="field-validation-valid text-danger" data-valmsg-for="SPhone"
-                                      data-valmsg-replace="true" asp-validation-for="SPhone"></span>
-                            </div>
-                            <div class="from-group mb-4">
                                 <label asp-for="SMail">電子郵件</label>
                                 <input asp-for="SMail" class="form-control" type="email"
                                        name="SMail"><br>
                                 <span class="field-validation-valid text-danger" data-valmsg-for="SMail"
                                       data-valmsg-replace="true" asp-validation-for="SMail"></span>
+                            </div>
+                            <div class="col-3 from-group mt-2">
+                                <label asp-for="SPassword">密碼</label>
+                                <input asp-for="SPassword" class="form-control" type="text"
+                                       value="預設為生日" readonly>
                             </div>
                         </div>
 
@@ -134,7 +132,7 @@
         function GetStudentData() {
             //宣告一個json格式的viewmodel傳過去GetStudentData
             var viewModel = {
-                "SNumber": $('input[id="SNumber"]').val()
+                "SPhone": $('input[id="SPhone"]').val()
             }
             $.ajax({
                 type: "post",
@@ -150,7 +148,6 @@
                         if (jsonData.SIsStudentOrNot == true) {
                             $('#error').removeAttr('hidden');
                             $('input[id="SName"]').val('');
-                            $('input[id="SPhone"]').val('');
                             $('input[id="SMail"]').val('');
                             $("input[name=SGender][value='false']").prop('checked', false);
                             $("input[name=SGender][value='true']").prop('checked', false);
@@ -160,7 +157,6 @@
                         else if (jsonData.SIsStudentOrNot == false) {
                             $('#error').attr("hidden", true);
                             $('input[id="SName"]').val(jsonData.SName);
-                            $('input[id="SPhone"]').val(jsonData.SPhone);
                             $('input[id="SMail"]').val(jsonData.SMail);
                             $('input[id="SJoinDate"]').val(date.toISOString().split('T')[0]);
                             if (jsonData.SGender == false) {
@@ -176,7 +172,6 @@
                         $('#error').attr("hidden", true);
                         $('input[id="SName"]').val('');
                         $('input[id="SBirth"]').val('');
-                        $('input[id="SPhone"]').val('');
                         $('input[id="SMail"]').val('');
                         $('input[id="SAddress"]').val('');
                         $('input[id="SAccount"]').val('');

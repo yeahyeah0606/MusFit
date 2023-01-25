@@ -8,9 +8,6 @@ namespace MusFit.ViewModels
     {
         public int SId { get; set; }
 
-        [Display(Name = "會員編號", Prompt = "ex.S0030")]
-        [Required(ErrorMessage = "您需要輸入會員編號")]
-        [RegularExpression(@"^S[0-9]{4}$", ErrorMessage = "請輸入正確會員編號格式!")]
         public string SNumber { get; set; }
         [Display(Name = "真實姓名", Prompt = "ex.陳小美")]
         [Required(ErrorMessage = "您必須填入真實姓名")]

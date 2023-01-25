@@ -204,7 +204,7 @@ namespace MusFit.Controllers
             try
             {
                 var json = "";
-                var studentResult =  _context.Students.FirstOrDefault(u => u.SNumber == student.SNumber);
+                var studentResult =  _context.Students.FirstOrDefault(u => u.SPhone == student.SPhone);
 
                 if (studentResult != null)
                 {
@@ -386,10 +386,10 @@ namespace MusFit.Controllers
             return View();
         }
 
-        public async Task<IActionResult> SAdd(string SNumber)
+        public async Task<IActionResult> SAdd(string SPhone)
         {
             var guestResult = await(from s in _context.Students
-                               where s.SNumber == SNumber && s.SIsStudentOrNot == false
+                               where s.SPhone == SPhone && s.SIsStudentOrNot == false
                                select new StudentViewModel()
                                {
                                    SNumber = s.SNumber,
@@ -417,7 +417,19 @@ namespace MusFit.Controllers
         {
             if (ModelState.IsValid)
             {
-                Student student = new Student() 
+                //是否為訪客資料
+                var guestResult = await _context.Students.FirstOrDefaultAsync(x => x.SPhone == studentViewModel.SPhone);
+            
+
+                //轉換 password -> sha2_256 比較
+                string sPassword = studentViewModel.SBirth.ToString().Replace("-","").Replace("-","");
+                byte[] data = Encoding.GetEncoding(1252).GetBytes(sPassword);
+                var sha = new SHA256Managed();
+                byte[] bytesEncode = sha.ComputeHash(data);
+
+               
+                
+                Student student = new Student()
                 {
                     SNumber = studentViewModel.SNumber,
                     SName = studentViewModel.SName,
@@ -431,25 +443,63 @@ namespace MusFit.Controllers
                     SContactPhone = studentViewModel.SContactPhone,
                     SAddress = studentViewModel.SAddress,
                     SJoinDate = studentViewModel.SJoinDate,
-                    SIsStudentOrNot = studentViewModel.SIsStudentOrNot
+                    SIsStudentOrNot = true,
+                    SPassword = bytesEncode
                 };
 
-                await _context.Students.AddAsync(student);
                 studentViewModel.SIsStudentOrNot = true;
-
-                if (SPhoto != null && SPhoto.Length > 0)
+                //不是訪客
+                if (guestResult == null)
                 {
-                    using (var ms = new MemoryStream())
+                    if (SPhoto != null && SPhoto.Length > 0)
                     {
-                        SPhoto.CopyTo(ms);
-                        var fileBytes = ms.ToArray();
-                        studentViewModel.SPhoto = Convert.ToBase64String(fileBytes);
+                        using (var ms = new MemoryStream())
+                        {
+                            SPhoto.CopyTo(ms);
+                            var fileBytes = ms.ToArray();
+                            studentViewModel.SPhoto = Convert.ToBase64String(fileBytes);
+                        }
                     }
+                    await _context.Students.AddAsync(student);
+                    await _context.SaveChangesAsync();
+                    studentViewModel.SNumber =  _context.Students.FirstOrDefault(x => x.SPhone == studentViewModel.SPhone).SNumber;
+                    return View("StudentSelect", studentViewModel);
+
+                }
+                else
+                {
+                    if (SPhoto != null && SPhoto.Length > 0)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            SPhoto.CopyTo(ms);
+                            var fileBytes = ms.ToArray();
+                            studentViewModel.SPhoto = Convert.ToBase64String(fileBytes);
+                        }
+                    }
+
+
+                    studentViewModel.SNumber = guestResult.SNumber;
+                    guestResult.SName = studentViewModel.SName;
+                    guestResult.SMail = studentViewModel.SMail;
+                    guestResult.SBirth = studentViewModel.SBirth;
+                    guestResult.SGender = (bool)studentViewModel.SGender;
+                    guestResult.SContactor = studentViewModel.SContactor;
+                    guestResult.SContactPhone = studentViewModel.SContactPhone;
+                    guestResult.SAddress = studentViewModel.SAddress;
+                    guestResult.SPhone = studentViewModel.SPhone;
+                    guestResult.SAccount = studentViewModel.SAccount;
+                    guestResult.SJoinDate = studentViewModel.SJoinDate;
+                    guestResult.SPhoto = studentViewModel.SPhoto;
+                    guestResult.SIsStudentOrNot = studentViewModel.SIsStudentOrNot;
+
+
+                    await _context.SaveChangesAsync();
+                    return View("StudentSelect", studentViewModel);
+
                 }
 
-                await _context.SaveChangesAsync();
 
-                return View("StudentSelect", studentViewModel);
             }
             else
             {
@@ -720,7 +770,7 @@ namespace MusFit.Controllers
             var employeeResult = await (from e in _context.Employees
                                         join cs in _context.CoachSpecials on e.EId equals cs.EId into esc
                                         from cs in esc.DefaultIfEmpty()
-                                        where e.ENumber == employee.ENumber
+                                        where e.EIdentityNumber == employee.EIdentityNumber
                                         select cs).FirstOrDefaultAsync();
 
             if (employeeResult != null)
@@ -736,9 +786,9 @@ namespace MusFit.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EmployeeAdd(EmployeeViewModel employee, [FromForm(Name = "EPhoto")] IFormFile EPhoto)
+        public async Task<IActionResult> EmployeeAdd(EmployeeViewModel employeeViewModel, [FromForm(Name = "EPhoto")] IFormFile EPhoto)
         {
-            var isExistEmployee = await _context.Employees.FirstOrDefaultAsync(u => u.ENumber == employee.ENumber);
+            var isExistEmployee = await _context.Employees.FirstOrDefaultAsync(u => u.EIdentityNumber == employeeViewModel.EIdentityNumber);
             //若員工已存在
             if (isExistEmployee != null)
             {
@@ -758,61 +808,65 @@ namespace MusFit.Controllers
                 {
 
                     // 轉換 password -> sha2_256 比較
-                    byte[] data = Encoding.GetEncoding(1252).GetBytes(employee.EPassword);
+                    string ePassword = employeeViewModel.EBirth.ToString().Replace("-", "").Replace("-", "");
+                    byte[] data = Encoding.GetEncoding(1252).GetBytes(ePassword);
                     var sha = new SHA256Managed();
                     byte[] bytesEncode = sha.ComputeHash(data);
 
-                    if (EPhoto != null && EPhoto.Length > 0 )
-                    {
-                        using (var ms = new MemoryStream())
-                        {
-                            EPhoto.CopyTo(ms);
-                            var fileBytes = ms.ToArray();
-                            employee.EPhoto = Convert.ToBase64String(fileBytes);
-                        }
-                    }
+                    
 
                     Employee emp = new Employee()
                     {
-                        ENumber = employee.ENumber,
-                        EName = employee.EName,
-                        EEngName = employee.EEngName,
-                        EGender = (bool)employee.EGender,
-                        EBirth = (DateTime)employee.EBirth,
-                        EIdentityNumber = employee.EIdentityNumber,
-                        EPhone = employee.EPhone,
-                        EMail = employee.EMail,
-                        EAccount = employee.EAccount,
+                        ENumber = employeeViewModel.ENumber,
+                        EName = employeeViewModel.EName,
+                        EEngName = employeeViewModel.EEngName,
+                        EGender = (bool)employeeViewModel.EGender,
+                        EBirth = (DateTime)employeeViewModel.EBirth,
+                        EIdentityNumber = employeeViewModel.EIdentityNumber,
+                        EPhone = employeeViewModel.EPhone,
+                        EMail = employeeViewModel.EMail,
+                        EAccount = employeeViewModel.EAccount,
                         EPassword = bytesEncode,
-                        EContactor = employee.EContactor,
-                        EContactorPhone = employee.EContactorPhone,
-                        EAddress = employee.EAddress,
-                        EEnrollDate = employee.EEnrollDate,
-                        EResignDate = employee.EResignDate,
-                        EIsCoach = (bool)employee.EIsCoach,
-                        EExplain = employee.EExplain,
-                        EPhoto = employee.EPhoto,
+                        EContactor = employeeViewModel.EContactor,
+                        EContactorPhone = employeeViewModel.EContactorPhone,
+                        EAddress = employeeViewModel.EAddress,
+                        EEnrollDate = employeeViewModel.EEnrollDate,
+                        EResignDate = employeeViewModel.EResignDate,
+                        EIsCoach = (bool)employeeViewModel.EIsCoach,
+                        EExplain = employeeViewModel.EExplain,
+                        EPhoto = employeeViewModel.EPhoto,
                     };
 
                     _context.Employees.Add(emp);
                     _context.SaveChanges();
 
+                    if (EPhoto != null && EPhoto.Length > 0)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            EPhoto.CopyTo(ms);
+                            var fileBytes = ms.ToArray();
+                            employeeViewModel.EPhoto = Convert.ToBase64String(fileBytes);
+                        }
+                    }
+
                     //搜尋剛剛新增員工的id
-                    var employeeResult = await _context.Employees.FirstOrDefaultAsync(u => u.ENumber == employee.ENumber);
+                    var employeeResult = await _context.Employees.FirstOrDefaultAsync(u => u.EIdentityNumber == employeeViewModel.EIdentityNumber);
                     var NewCoachSpecials = new List<CoachSpecial>();
 
-                    foreach (var item in employee.SelectedLession)
+                    foreach (var item in employeeViewModel.SelectedLession)
                     {
                         NewCoachSpecials.Add(new CoachSpecial() { EId = employeeResult.EId, LcId = int.Parse(item) });
                     }
 
+                    employeeViewModel.ENumber = _context.Employees.FirstOrDefault(u => u.EIdentityNumber == employeeViewModel.EIdentityNumber).ENumber;
                     _context.CoachSpecials.AddRange(NewCoachSpecials);
                     _context.SaveChanges();
                 }
             }
 
-            employee.AvailableLession = GetLession();
-            return View("EmployeeSelect", employee);
+            employeeViewModel.AvailableLession = GetLession();
+            return View("EmployeeSelect", employeeViewModel);
         }
 
         [Authentication]

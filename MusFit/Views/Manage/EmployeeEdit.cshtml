@@ -192,7 +192,8 @@
 @section Scripts{
 	<script>
 		function ResetPassword() {
-			$('input[id="EPassword"]').val('abcd1234');
+			var password = $('input[id="EBirth"]').val().replace('-', '').replace('-', '');
+			$('input[id="EPassword"]').val(password);
 		}
 
 		function imgUploadCheck() {

@@ -87,10 +87,29 @@ namespace MusFit.Controllers
 
             return classTime;
         }
+		//--------------------------------------------------------- 君 START ------------------------------------------------------------
+		#region 單一課程相關資訊
+		// GET: api/ClassTimes/endDate/1
+		[HttpGet("endDate/{id}")]
+		public async Task<ActionResult<IEnumerable<dynamic>>> GetEndDate(int id)
+		{
+			var obj = from c in _context.Classes
+					  join ct in _context.ClassTimes on c.CId equals ct.CId
+					  where ct.CtLession == c.CTotalLession & c.CId == id
+					  select new
+					  {
+						  cID = id,
+                          endDate = ct.CtDate
+					  };
+			return await obj.ToListAsync();
+		}
+		#endregion
 
-        // PUT: api/ClassTimes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+		//---------------------------------------------------------  君 END  ------------------------------------------------------------
+
+		// PUT: api/ClassTimes/5
+		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+		[HttpPut("{id}")]
         public async Task<IActionResult> PutClassTime(int id, ClassTime classTime)
         {
             if (id != classTime.ClassTimeId)

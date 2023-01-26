@@ -24,35 +24,36 @@ namespace MusFit.Controllers
         [HttpGet("guestorders/")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetGuestOrders()
         {
-            var obj = from o in _context.ClassOrders
-                      join s in _context.Students on o.SId equals s.SId
-                      join t in _context.ClassTimes on o.ClassTimeId equals t.ClassTimeId
-                      join c in _context.Classes on t.CId equals c.CId
-                      join ct in _context.Terms on t.TId equals ct.TId
-                      join cr in _context.ClassRecords on o.SId equals cr.SId
-                      where s.SIsStudentOrNot == false
-                      orderby o.OrderTime descending
-                      select new
-                      {
-                          orderID = o.OrderId,
-                          sID = s.SId,
-                          name = s.SName,
-                          gender = s.SGender,
-                          phone = s.SPhone,
-                          mail = s.SMail,
-                          cID = c.CId,
-                          timeID = t.ClassTimeId,
-                          className = c.CName,
-                          eID = o.EId,
-                          date = t.CtDate,
-                          weekday = t.Weekday,
-                          startTime = ct.TStartTime.ToString().Substring(0, 5),
-                          endTime = ct.TEndTime.ToString().Substring(0, 5),
-                          orderStatus = o.OrderStatus,
-                          orderTime = o.OrderTime,
-                          classRecordID = cr.CrId
-                      };
-            return await obj.ToListAsync();
+            var query = from o in _context.ClassOrders
+                        from cr in _context.ClassRecords
+                        where o.SId == cr.SId && o.ClassTimeId == cr.ClassTimeId
+                        join s in _context.Students on o.SId equals s.SId
+                        join t in _context.ClassTimes on o.ClassTimeId equals t.ClassTimeId
+                        join c in _context.Classes on t.CId equals c.CId
+                        join ct in _context.Terms on t.TId equals ct.TId
+                        where s.SIsStudentOrNot == false
+                        orderby o.OrderTime descending
+                        select new
+                        {
+                            orderID = o.OrderId,
+                            sID = o.SId,
+                            name = s.SName,
+                            gender = s.SGender,
+                            phone = s.SPhone,
+                            mail = s.SMail,
+                            cID = c.CId,
+                            timeID = cr.ClassTimeId,
+                            className = c.CName,
+                            eID = o.EId,
+                            date = t.CtDate,
+                            weekday = t.Weekday,
+                            startTime = ct.TStartTime.ToString().Substring(0, 5),
+                            endTime = ct.TEndTime.ToString().Substring(0, 5),
+                            orderStatus = o.OrderStatus,
+                            orderTime = o.OrderTime,
+                            classRecordID = cr.CrId
+                        };
+            return await query.ToListAsync();
         }
 
         [HttpGet("guestorders/datequery/{start}/{end}")]

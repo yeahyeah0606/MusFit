@@ -1,0 +1,536 @@
+﻿@model IEnumerable<MusFit.Models.ClassRecord>
+
+@{
+	ViewData["Title"] = "課程紀錄 查詢";
+}
+<link rel="stylesheet" href="~/css/QueryClassRecord.css" />
+<script src="~/jquery/jquery.min.js"></script>
+
+<div class="myContent">
+	<h1>&nbsp;&nbsp;&nbsp;課程紀錄 查詢</h1>
+	<hr>
+	<input type="hidden" id="editcrID" name="editcrID" />
+	<input type="hidden" id="editcID" name="editcID" />
+	<input type="hidden" id="editsID" name="editsID" />
+	<input type="hidden" id="editctID" name="editctID" />
+
+	<br>
+	&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;
+	<label for="cID">課程名稱: </label>&nbsp;
+	<select id="cID" name="cID" class="lession-select">
+		<option value="none" selected disabled hidden>請選擇</option>
+	</select>
+	&nbsp; ( 必填 ) &nbsp;&nbsp;&nbsp;
+		<br><br>
+	&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;
+	<label for="sName">會員姓名: </label>&nbsp;
+	<input type="text" class="sName" id="sName" placeholder="輸入姓名">
+	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+	<label for="ctLession">&nbsp;&nbsp;堂&nbsp;&nbsp;&nbsp;&nbsp;數: &nbsp; </label>&nbsp;
+	<input type="text" class="ctLession" id="ctLession" placeholder="輸入堂數">
+
+	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+	<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+	<br>
+	<br>
+
+
+	<div class="record">
+		<table style="width:100%">
+			<thead>
+				<tr>
+					<th>會員編號</th>
+					<th>姓名</th>
+					<th>日期</th>
+					<th>課程類型</th>
+					<th>課程名稱</th>
+					<th>時段</th>
+					<th>堂數</th>
+					<th>出缺席</th>
+					<th>課程內容</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody id="crbody">
+			</tbody>
+		</table>
+		<br />
+@*		<p class="total-member">共 15 人</p>*@
+		<div class="page-ul">
+			<ul class="pagination">
+				<li><a href="#">«</a></li>
+				<li><a href="#">1</a></li>
+				<li><a class="active" href="#">2</a></li>
+				<li><a href="#">3</a></li>
+				<li><a href="#">4</a></li>
+				<li><a href="#">5</a></li>
+				<li><a href="#">6</a></li>
+				<li><a href="#">7</a></li>
+				<li><a href="#">»</a></li>
+			</ul>
+		</div>
+
+	</div>
+</div>
+
+@*編輯 information*@
+<div id="editModal" class="modal">
+
+	<div class="modal-content">
+		<span class="close" id="leaveCreate">&times;</span>
+		<form id="editForm">
+			<h3>課程紀錄 編輯</h3>
+			<hr />
+			@*要加一些藏的資料*@
+			<div class="row">
+				<div class="column">
+					<label for="editNumber">編&emsp;號</label>
+					<input type="text" id="editNumber" readonly="readonly" />
+				</div>
+				<div class="column">
+					<label for="editName">姓&emsp;名</label>
+					<input type="text" id="editName" readonly="readonly" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="column">
+					<label for="editDate">日&emsp;期</label>
+					<input type="text" id="editDate" readonly="readonly" />
+				</div>
+				<div class="column">
+					<label for="editCName">課程名稱</label>
+					<input type="text" id="editCName" readonly="readonly" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="column">
+					<label for="editTotalLession">堂&emsp;數</label>
+					<input type="text" id="editTotalLession" readonly="readonly" />
+				</div>
+				<div class="column">
+					<label for="editAttend">出缺席</label>
+					<input type="radio" id="Attend" name="editAttend" required />出席
+					<input type="radio" id="noAttend" name="editAttend" />缺席
+				</div>
+			</div>
+			<div class="row">
+				<div class="column ">
+					<label for="editContent">課程內容</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="column ">
+					<textarea name="editContent" id="editContent"
+							  rows="3" cols="80"
+							  minlength="5" maxlength="50">請教練填寫...</textarea>
+				</div>
+			</div>
+			<br>
+			<input type="button" id="btnEditConfirm"  value="確定" />
+			<button class="cancel" id="cancelCreate">取消</button>
+		</form>
+	</div>
+
+</div>
+
+
+
+@*query No Data*@
+<div id="showNoDataModal" class="modal">
+
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>查無此訪客資料</p>
+		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+
+</div>
+
+
+
+@*show error message *@
+<div id="errorMessage" class="modal">
+
+	<div id="errorModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>請輸入查詢條件!!</p>
+		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+
+</div>
+
+@*success operation*@
+<div id="successMessage" class="modal">
+
+	<div id="successModal" class="modal-content">
+		<span class="close" onclick="closeSuccessModel()">&times;</span>
+		<p>已存檔</p>
+		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
+	</div>
+
+</div>
+
+
+@section Scripts{
+		<script>
+			var SingleCrID;
+
+			function FormClear() {
+				document.getElementById("editForm").reset();
+			}
+
+			//var editModal = document.getElementById("editModal");
+			//var errorMessage = document.getElementById('errorMessage');
+
+			document.getElementById('cancelCreate').addEventListener('click', closeModel);
+			document.getElementById('leaveCreate').addEventListener('click', closeModel);
+			document.getElementById('leaveCreate').addEventListener('click', FormClear);
+
+			//cancel-action
+			function closeModel() {
+				editModal.style.display = "none";
+				errorMessage.style.display = "none";
+			}
+
+			function closeSuccessModel() {
+				$('#successMessage').css("display", "none");
+				location.reload();
+			}
+
+			// 取消
+			document.getElementById('cancelCreate').addEventListener('click', closeModel);
+
+			// 取出所有的課程名稱
+			$.ajax({
+				type: "get",
+				// GET: api/Classes/classList
+				url: "/api/Classes/classList",
+				success: (function (data) {
+					var option;
+					$('#cID').children("option").filter("[value != none]").remove();
+					data.forEach(function (x) {
+						console.log("名稱: " + x.cName);
+						option = `<option value="${x.cID}">${x.cName}</option>`;
+						$('#cID').append(option);
+					})
+				})
+			})
+
+			//  全部show
+			var dataList = [ ] ;
+			$.ajax({
+				type: "get",
+				url: "/api/ClassRecords/allRecords/",
+				success: function (e) {
+					$("#crbody").empty();
+					dataList = e;
+					dataList.forEach(function (x) {
+						//alert(x.cName);
+						var term, attendance, content;
+						if (x.crAttendance == true) { attendance = "Y"; } else { attendance = "N"; }
+						if (x.crContent == null) { content = ""; } else { content = x.crContent; }
+						switch (x.tId) {
+							case 9:
+								term = "09:00 ~ 10:00";
+								break;
+							case 10:
+								term = "10:00 ~ 11:00";
+								break;
+							case 11:
+								term = "11:00 ~ 12:00";
+								break;
+							case 13:
+								term = "13:00 ~ 14:00";
+								break;
+							case 14:
+								term = "14:00 ~ 15:00";
+								break;
+							case 15:
+								term = "15:00 ~ 16:00";
+								break;
+							case 16:
+								term = "16:00 ~ 17:00";
+								break;
+							case 17:
+								term = "17:00 ~ 18:00";
+								break;
+							case 18:
+								term = "18:00 ~ 19:00";
+								break;
+							case 19:
+								term = "19:00 ~ 20:00";
+								break;
+							case 20:
+								term = "20: 00 ~21: 00";
+								break;
+							case 21:
+								term = "21:00 ~ 22:00";
+								break;
+							default:
+								term = typeof (x.tId);
+						}
+						var date = new Date(x.ctDate).toLocaleDateString();
+						var template =
+							`
+											<tr class="result">
+												<td>${x.sNumber}</td>
+												<td>${x.sName}</td>
+												<td>${date}</td>
+												<td>${x.lcType}</td>
+												<td>${x.cName}</td>
+												<td>${term}</td>
+												<td>${x.ctLession}</td>
+												<td>${attendance}</td>
+												<td>${content}</td>
+												<td>
+													<button class="button" style="vertical-align:middle"  onclick=openEditModel(${x.crID}) >
+													<span>編輯</span>
+													</button>
+												 </td>
+											</tr>
+											`;
+						$("#crbody").append(template);
+					})
+					//console.log(dataList);
+				}
+			})
+
+			// 查詢 
+			var mycID, myctLession, mysName, count;
+			$('#btnQuery').click(function () {
+				count = 0;
+				mycID = $('#cID').val();
+				myctLession = $('#ctLession').val();
+				mysName = $('#sName').val();
+
+				if (mycID == null) mycID = 9999;
+				if (mysName == "") mysName = "沒填姓名";
+				if (myctLession == "") myctLession = 99;
+				console.log("mycID: " + mycID);
+				console.log("mysName: " + mysName);
+				console.log("myctLession: " + myctLession);
+
+				if ( mycID == 9999 ) {
+					//$('#errorMessage').css("display", "block");
+					alert("請設定查詢條件，至少需要填寫【課程名稱】");
+				}
+				else {
+						$.ajax({
+							type: "get",
+							// GET: /api/ClassRecords/RecordQuery/1/鄧紫棋/1
+							url: "/api/ClassRecords/RecordQuery/" + mycID + "/" + mysName + "/" + myctLession ,
+							success: function (e) {
+								//alert("ok");
+								$("#crbody").empty();
+								dataList = e;
+								dataList.forEach(function (x) {
+									//alert(x.cName);
+									var term, attendance, content;
+									if (x.crAttendance == true) { attendance = "Y"; } else { attendance = "N"; }
+									if (x.crContent == null) { content = ""; } else { content = x.crContent; }
+									switch (x.tId) {
+										case 9:
+											term = "09:00 ~ 10:00";
+											break;
+										case 10:
+											term = "10:00 ~ 11:00";
+											break;
+										case 11:
+											term = "11:00 ~ 12:00";
+											break;
+										case 13:
+											term = "13:00 ~ 14:00";
+											break;
+										case 14:
+											term = "14:00 ~ 15:00";
+											break;
+										case 15:
+											term = "15:00 ~ 16:00";
+											break;
+										case 16:
+											term = "16:00 ~ 17:00";
+											break;
+										case 17:
+											term = "17:00 ~ 18:00";
+											break;
+										case 18:
+											term = "18:00 ~ 19:00";
+											break;
+										case 19:
+											term = "19:00 ~ 20:00";
+											break;
+										case 20:
+											term = "20: 00 ~21: 00";
+											break;
+										case 21:
+											term = "21:00 ~ 22:00";
+											break;
+										default:
+											term = typeof (x.tId);
+									}
+									var date = new Date(x.ctDate).toLocaleDateString();
+									var template =
+										`
+													<tr class="result">
+														<td>${x.sNumber}</td>
+														<td>${x.sName}</td>
+														<td>${date}</td>
+														<td>${x.lcType}</td>
+														<td>${x.cName}</td>
+														<td>${term}</td>
+														<td>${x.ctLession}</td>
+														<td>${attendance}</td>
+														<td>${content}</td>
+														<td>
+															<button class="button" style="vertical-align:middle"  onclick=openEditModel(${x.crID}) >
+															<span>編輯</span>
+															</button>
+														 </td>
+													</tr>
+													`;
+									$("#crbody").append(template);
+									count++;
+								})
+								console.log("count: " + count);
+								//沒有查到資料
+								if (count == 0) {
+									alert("沒有查到相關資料");
+									//$('#showNoDataModal').css("display", "block");
+								}
+							}
+						})
+					}
+				
+			})
+
+			// editform 打開  orID的紀錄
+			function openEditModel(crID) {
+				SingleCrID = crID;
+				$.ajax({
+					type: "get",
+					// GET: api/ClassRecords/crID/1
+					url: "/api/ClassRecords/crID/" + crID,
+					success: function (data) {
+						//alert("ok");
+						console.log(data);
+						data.forEach(function (x) {
+							var date = new Date(x.ctDate).toLocaleDateString();
+							//console.log(Status);
+							if (x.crAttendance == true) {
+								$('input[name="editAttend"]')[0].checked = true;
+							} else {
+								$('input[name="editAttend"]')[1].checked = true;
+							}
+							$('#editNumber').val(x.sNumber);
+							$('#editName').val(x.sName);
+							$('#editDate').val(date);
+							$('#editCName').val(x.cName);
+							$('#editTotalLession').val(x.ctLession);
+							$('#editContent').val(x.crContent);
+							$('#editcrID').val(crID);
+							$('#editsID').val(x.sID);
+							$('#editctID').val(x.classTimeId);
+
+						})
+
+					}
+				})
+				editModal.style.display = "block";
+			}
+
+			//確定編輯
+			$('#btnEditConfirm').click(function (SingleCrID) {
+				console.log("確定編輯");
+				var Attend1 = $('input[name=editAttend]')[0].checked;
+				var Attend2 = $('input[name=editAttend]')[1].checked;
+				if (Attend1 || Attend2) {
+					var UpdatecrID = parseInt($('#editcrID').val() );
+					var UpdatectID = parseInt($('#editctID').val());
+					var UpdateSid = parseInt($('#editsID').val());
+					var UpdateContent = $('#editContent').val();
+					console.log(UpdatecrID);
+					console.log(UpdatectID);
+					console.log(UpdateSid);
+					console.log(UpdateContent);
+
+					var UpdateAttend;
+					if (Attend1) { UpdateAttend = true; } else { UpdateAttend = false; }
+					console.log(UpdateAttend);
+
+					var updateData = {
+						crId: UpdatecrID,
+						classTimeId: UpdatectID,
+						sId: UpdateSid,
+						crAttendance: UpdateAttend,
+						crContent:  UpdateContent
+					};
+
+					$.ajax({
+						type: "PUT",
+						//PUT: api/ClassRecords/1
+						url: "/api/ClassRecords/" + UpdatecrID,
+						dataType: "json",
+						contentType: "application/json",
+						data: JSON.stringify(updateData),
+						success: function (data) {
+							$('#editModal').css("display", "none");
+							alert("有成功更改");
+						}
+					})
+
+				}
+			})
+
+			function moveToEnd() {
+				document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
+			}
+
+			//不能用...
+			function switchFun(tID) {
+				switch (tID) {
+					case 9:
+						term = "09:00 ~ 10:00";
+						break;
+					case 10:
+						term = "10:00 ~ 11:00";
+						break;
+					case 11:
+						term = "11:00 ~ 12:00";
+						break;
+					case 13:
+						term = "13:00 ~ 14:00";
+						break;
+					case 14:
+						term = "14:00 ~ 15:00";
+						break;
+					case 15:
+						term = "15:00 ~ 16:00";
+						break;
+					case 16:
+						term = "16:00 ~ 17:00";
+						break;
+					case 17:
+						term = "17:00 ~ 18:00";
+						break;
+					case 18:
+						term = "18:00 ~ 19:00";
+						break;
+					case 19:
+						term = "19:00 ~ 20:00";
+						break;
+					case 20:
+						term = "20: 00 ~21: 00";
+						break;
+					case 21:
+						term = "21:00 ~ 22:00";
+						break;
+					default:
+
+				}
+			}
+		</script>
+
+
+}

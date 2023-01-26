@@ -1,0 +1,133 @@
+﻿@model ContainerTest.ViewModels.AddClassViewModel
+
+@{
+    ViewData["Title"] = "課程管理 新增";
+}
+
+<link rel="stylesheet" href="~/css/AddClassManage1.css" />
+
+
+<div class="myForm">
+    <h3>課程管理 新增</h3>
+
+    <form name="add-class" method="post" action="@Url.Action("AddClassManage1","Manage")">
+        <fieldset>
+            <div class="row">
+                <div class="column">
+                    <label class="space-style" for="lcID">課程項目</label>
+                    <select asp-for="lcID" onchange="coachSelect()" required>
+                        <option value="none" selected disabled hidden>請選擇</option>
+                        <option value="1">&emsp;飛輪&emsp;</option>
+                        <option value="2">&emsp;有氧泰拳&nbsp;</option>
+                        <option value="3">&emsp;有氧拳擊&nbsp;</option>
+                        <option value="4">&emsp;瑜珈&nbsp;</option>
+                        <option value="5">&emsp;空中瑜珈&nbsp;</option>
+                        <option value="6">&emsp;皮拉提斯&nbsp;</option>
+                    </select>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="lcID"
+                          data-valmsg-replace="true" asp-validation-for="lcID"></span>
+                    <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+                </div>
+                <div class="column">
+                    <label class="space-style" for="cName">課程名稱</label>
+                    <input type="text" asp-for="cName" maxlength="10" placeholder="ex: 瑜珈-初學班" required />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="cName"
+                          data-valmsg-replace="true" asp-validation-for="cName"></span>
+                    <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label class="space-style" for="tID">課程時段</label>
+                    <select asp-for="tID" required>
+                        <option value="none" selected disabled hidden>請選擇</option>
+                        <option value="9">&emsp;09:00 ~ 10:00&emsp;</option>
+                        <option value="10">&emsp;10:00 ~ 11:00&nbsp;</option>
+                        <option value="11">&emsp;11:00 ~ 12:00&nbsp;</option>
+                        <option value="13">&emsp;13:00 ~ 14:00&nbsp;</option>
+                        <option value="14">&emsp;14:00 ~ 15:00&nbsp;</option>
+                        <option value="15">&emsp;15:00 ~ 16:00&nbsp;</option>
+                        <option value="16">&emsp;16:00 ~ 17:00&nbsp;</option>
+                        <option value="17">&emsp;17:00 ~ 18:00&nbsp;</option>
+                        <option value="18">&emsp;18:00 ~ 19:00&nbsp;</option>
+                        <option value="19">&emsp;19:00 ~ 20:00&nbsp;</option>
+                        <option value="20">&emsp;20:00 ~ 21:00&nbsp;</option>
+                        <option value="21">&emsp;21:00 ~ 22:00&nbsp;</option>
+                    </select>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="tID"
+                          data-valmsg-replace="true" asp-validation-for="tID"></span>
+                    <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+                </div>
+                <div class="column">
+                    <label class="space-style" for="cTotalLession">堂&emsp;數&emsp;</label>
+                    <input type="number" asp-for="cTotalLession" min="5" max="15" placeholder="5 ~ 15" required />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="cTotalLession"
+                          data-valmsg-replace="true" asp-validation-for="cTotalLession"></span>
+                    <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label class="space-style" for="eID">教&emsp;練&emsp;</label>
+                    <select asp-for="eID" name="eID" class="lession-select" required>
+                        <option value="none" selected disabled hidden>請選擇</option>
+                    </select>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="eID"
+                          data-valmsg-replace="true" asp-validation-for="eID"></span>
+                    <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+                </div>
+                <div class="column">
+                    <label class="space-style" for="cprice">價&emsp;錢&emsp;</label>
+                    <input type="number" asp-for="cprice" min="3000" max="20000" placeholder="3000~20000" required />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="cprice"
+                          data-valmsg-replace="true" asp-validation-for="cprice"></span>
+                    <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label class="space-style" for="cExcept">預計人數</label>
+                    <input type="number" asp-for="cExcept" maxlength="2" min="5" max="30" placeholder="5 ~ 30" required />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="cExcept"
+                          data-valmsg-replace="true" asp-validation-for="cName"></span>
+                    <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+                </div>
+                <div class="column">
+                </div>
+            </div>
+        </fieldset>
+
+        <button class="btnNext" id="btnNextPage" type="submit">下一頁</button>
+        <button>取消</button>
+    </form>
+</div>
+
+@section Scripts{
+    <script>
+
+        //onchange coach
+        var mylcID, mylcName;
+        function coachSelect() {
+            mylcID = $('#lcID').val();
+            $('#eID').val("");
+            $('#cName').val("");
+            $.ajax({
+                type: "get",
+                // GET: api/CoachSpecials/lcCoach/5
+                url: "/api/CoachSpecials/lcCoach/" + mylcID,
+                success: (function (data) {
+                    var option;
+                    $('#eID').children("option").filter("[value != none]").remove();
+                    data.forEach(function (x) {
+                        //console.log("教練: "+x.coach);
+                        option = `<option value="${x.eID}">${x.coach}</option>`;
+                        $('#eID').append(option);
+                        mylcName = x.lcName;
+                    })
+                    $('#cName').val((mylcName + "-"));
+                })
+            })
+        }
+
+    </script>
+}

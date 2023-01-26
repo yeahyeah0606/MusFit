@@ -53,9 +53,460 @@ namespace MusFit.Controllers
             return @class;
         }
 
-        // PUT: api/Classes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+		//--------------------------------------------------------- 君 START ------------------------------------------------------------
+
+		#region 全部可報名的課程
+		// GET: api/Classes/classList
+		[HttpGet("classList/")]
+		public async Task<ActionResult<IEnumerable<dynamic>>> GetClassList()
+		{
+			var obj = from c in _context.Classes
+					  join ct in _context.ClassTimes on c.CId equals ct.CId
+					  join t in _context.Terms on ct.TId equals t.TId
+					  join e in _context.Employees on c.EId equals e.EId
+					  join r in _context.Rooms on c.RoomId equals r.RoomId
+					  join lc in _context.LessionCategories on c.LcId equals lc.LcId
+					  where ct.CtLession == 1
+					  orderby ct.CtDate descending
+					  select new
+					  {
+						  cID = c.CId,
+						  //cClassTimeId = ct.ClassTimeId,
+						  cNumber = c.CNumber,
+						  cName = c.CName,
+						  ctDate = ct.CtDate,
+						  tID = t.TId,
+						  eEngName = e.EEngName,
+						  roomName = r.RoomName,
+						  cTotalLession = c.CTotalLession,
+						  cExpect = c.CExpect,
+						  cActual = c.CActual
+					  };
+			return await obj.ToListAsync();
+		}
+		#endregion
+
+		#region 單一課程相關資訊
+		// GET: api/Classes/classList/1
+		[HttpGet("classList/{id}")]
+		public async Task<ActionResult<IEnumerable<dynamic>>> GetClassList(int id)
+		{
+			var obj = from c in _context.Classes
+					  join ct in _context.ClassTimes on c.CId equals ct.CId
+					  join t in _context.Terms on ct.TId equals t.TId
+					  join e in _context.Employees on c.EId equals e.EId
+					  join r in _context.Rooms on c.RoomId equals r.RoomId
+					  join lc in _context.LessionCategories on c.LcId equals lc.LcId
+					  where ct.CtLession == 1 & c.CId == id
+					  select new
+					  {
+						  cID = id,
+						  cNumber = c.CNumber,
+						  cName = c.CName,
+						  ctDate = ct.CtDate,
+						  tID = t.TId,
+						  eEngName = e.EEngName,
+						  eID = e.EId,
+						  roomName = r.RoomName,
+						  cTotalLession = c.CTotalLession,
+						  cExpect = c.CExpect,
+						  cActual = c.CActual,
+						  lcName = lc.LcName,
+						  cPrice = c.Cprice
+					  };
+			return await obj.ToListAsync();
+		}
+		#endregion
+
+		#region 綜合查詢 可報名課程
+		// GET: api/Classes/ClassQuery/2023-12-01/2023-02-01/1/1
+		[HttpGet("ClassQuery/{dateStart}/{dateEnd}/{lcID}/{eID}")]
+		public async Task<ActionResult<IEnumerable<dynamic>>> ClassQuery(string dateStart, string dateEnd, int lcID, int eID)
+		{
+			var date_start = Convert.ToDateTime(dateStart);
+			var date_end = Convert.ToDateTime(dateEnd);
+			if (dateStart != "2999-12-31" && dateEnd != "2999-12-31" && lcID != 99 && eID != 99)
+			{
+				// 日期 + 課程項目 + 教練 
+				var obj = from c in _context.Classes
+						  join ct in _context.ClassTimes on c.CId equals ct.CId
+						  join t in _context.Terms on ct.TId equals t.TId
+						  join e in _context.Employees on c.EId equals e.EId
+						  join r in _context.Rooms on c.RoomId equals r.RoomId
+						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
+						  where ct.CtLession == 1 && ct.CtDate >= date_start
+								  && ct.CtDate <= date_end && lc.LcId == lcID && e.EId == eID
+						  orderby c.CNumber ascending
+						  select new
+						  {
+							  cID = c.CId,
+							  cNumber = c.CNumber,
+							  cName = c.CName,
+							  ctDate = ct.CtDate,
+							  tID = t.TId,
+							  eEngName = e.EEngName,
+							  roomName = r.RoomName,
+							  cTotalLession = c.CTotalLession,
+							  cExpect = c.CExpect,
+							  cActual = c.CActual
+						  };
+				return await obj.ToListAsync();
+			}
+			else if (dateStart != "2999-12-31" && dateEnd != "2999-12-31" && lcID != 99)
+			{
+				// 日期 + 課程項目
+				var obj = from c in _context.Classes
+						  join ct in _context.ClassTimes on c.CId equals ct.CId
+						  join t in _context.Terms on ct.TId equals t.TId
+						  join e in _context.Employees on c.EId equals e.EId
+						  join r in _context.Rooms on c.RoomId equals r.RoomId
+						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
+						  where ct.CtLession == 1 && ct.CtDate >= date_start
+								&& ct.CtDate <= date_end && lc.LcId == lcID
+						  orderby c.CNumber ascending
+						  select new
+						  {
+							  cID = c.CId,
+							  cNumber = c.CNumber,
+							  cName = c.CName,
+							  ctDate = ct.CtDate,
+							  tID = t.TId,
+							  eEngName = e.EEngName,
+							  roomName = r.RoomName,
+							  cTotalLession = c.CTotalLession,
+							  cExpect = c.CExpect,
+							  cActual = c.CActual
+						  };
+				return await obj.ToListAsync();
+			}
+			else if (dateStart != "2999-12-31" && dateEnd != "2999-12-31" && eID != 99)
+			{
+				// 日期 + 教練
+				var obj = from c in _context.Classes
+						  join ct in _context.ClassTimes on c.CId equals ct.CId
+						  join t in _context.Terms on ct.TId equals t.TId
+						  join e in _context.Employees on c.EId equals e.EId
+						  join r in _context.Rooms on c.RoomId equals r.RoomId
+						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
+						  where ct.CtLession == 1 && ct.CtDate >= date_start
+									&& ct.CtDate <= date_end && e.EId == eID
+						  orderby c.CNumber ascending
+						  select new
+						  {
+							  cID = c.CId,
+							  cNumber = c.CNumber,
+							  cName = c.CName,
+							  ctDate = ct.CtDate,
+							  tID = t.TId,
+							  eEngName = e.EEngName,
+							  roomName = r.RoomName,
+							  cTotalLession = c.CTotalLession,
+							  cExpect = c.CExpect,
+							  cActual = c.CActual
+						  };
+				return await obj.ToListAsync();
+			}
+			else if (dateStart != "2999-12-31" && dateEnd != "2999-12-31")
+			{
+				// 日期
+				var obj = from c in _context.Classes
+						  join ct in _context.ClassTimes on c.CId equals ct.CId
+						  join t in _context.Terms on ct.TId equals t.TId
+						  join e in _context.Employees on c.EId equals e.EId
+						  join r in _context.Rooms on c.RoomId equals r.RoomId
+						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
+						  where ct.CtLession == 1 && ct.CtDate >= date_start
+									&& ct.CtDate <= date_end
+						  orderby c.CNumber ascending
+						  select new
+						  {
+							  cID = c.CId,
+							  cNumber = c.CNumber,
+							  cName = c.CName,
+							  ctDate = ct.CtDate,
+							  tID = t.TId,
+							  eEngName = e.EEngName,
+							  roomName = r.RoomName,
+							  cTotalLession = c.CTotalLession,
+							  cExpect = c.CExpect,
+							  cActual = c.CActual
+						  };
+				return await obj.ToListAsync();
+			}
+			else if (lcID != 99 && eID != 99)
+			{
+				//  課程項目 + 教練
+				var obj = from c in _context.Classes
+						  join ct in _context.ClassTimes on c.CId equals ct.CId
+						  join t in _context.Terms on ct.TId equals t.TId
+						  join e in _context.Employees on c.EId equals e.EId
+						  join r in _context.Rooms on c.RoomId equals r.RoomId
+						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
+						  where ct.CtLession == 1 && e.EId == eID && lc.LcId == lcID
+						  orderby c.CNumber ascending
+						  select new
+						  {
+							  cID = c.CId,
+							  cNumber = c.CNumber,
+							  cName = c.CName,
+							  ctDate = ct.CtDate,
+							  tID = t.TId,
+							  eEngName = e.EEngName,
+							  roomName = r.RoomName,
+							  cTotalLession = c.CTotalLession,
+							  cExpect = c.CExpect,
+							  cActual = c.CActual
+						  };
+				return await obj.ToListAsync();
+			}
+			else if (lcID != 99)
+			{
+				//  課程項目
+				var obj = from c in _context.Classes
+						  join ct in _context.ClassTimes on c.CId equals ct.CId
+						  join t in _context.Terms on ct.TId equals t.TId
+						  join e in _context.Employees on c.EId equals e.EId
+						  join r in _context.Rooms on c.RoomId equals r.RoomId
+						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
+						  where ct.CtLession == 1 && lc.LcId == lcID
+						  orderby c.CNumber ascending
+						  select new
+						  {
+							  cID = c.CId,
+							  cNumber = c.CNumber,
+							  cName = c.CName,
+							  ctDate = ct.CtDate,
+							  tID = t.TId,
+							  eEngName = e.EEngName,
+							  roomName = r.RoomName,
+							  cTotalLession = c.CTotalLession,
+							  cExpect = c.CExpect,
+							  cActual = c.CActual
+						  };
+				return await obj.ToListAsync();
+			}
+			else
+			{
+				// 教練
+				var obj = from c in _context.Classes
+						  join ct in _context.ClassTimes on c.CId equals ct.CId
+						  join t in _context.Terms on ct.TId equals t.TId
+						  join e in _context.Employees on c.EId equals e.EId
+						  join r in _context.Rooms on c.RoomId equals r.RoomId
+						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
+						  where ct.CtLession == 1 && e.EId == eID
+						  orderby c.CNumber ascending
+						  select new
+						  {
+							  cID = c.CId,
+							  cNumber = c.CNumber,
+							  cName = c.CName,
+							  ctDate = ct.CtDate,
+							  tID = t.TId,
+							  eEngName = e.EEngName,
+							  roomName = r.RoomName,
+							  cTotalLession = c.CTotalLession,
+							  cExpect = c.CExpect,
+							  cActual = c.CActual
+						  };
+				return await obj.ToListAsync();
+			}
+
+		}
+		#endregion
+
+		#region 課程 只有塞選日期
+		// GET: api/Classes/date/2023-01-01/2023-02-01
+		[HttpGet("date/{dateStart}/{dateEnd}")]
+		public async Task<ActionResult<IEnumerable<dynamic>>> GetClassQuery1(string dateStart, string dateEnd)
+		{
+			var date_start = Convert.ToDateTime(dateStart);
+			var date_end = Convert.ToDateTime(dateEnd);
+
+			var obj = from c in _context.Classes
+					  join ct in _context.ClassTimes on c.CId equals ct.CId
+					  join t in _context.Terms on ct.TId equals t.TId
+					  join e in _context.Employees on c.EId equals e.EId
+					  join r in _context.Rooms on c.RoomId equals r.RoomId
+					  join lc in _context.LessionCategories on c.LcId equals lc.LcId
+					  where ct.CtLession == 1 && ct.CtDate >= date_start
+								&& ct.CtDate <= date_end
+					  orderby c.CNumber ascending
+					  select new
+					  {
+						  cID = c.CId,
+						  cNumber = c.CNumber,
+						  cName = c.CName,
+						  ctDate = ct.CtDate,
+						  tID = t.TId,
+						  eEngName = e.EEngName,
+						  roomName = r.RoomName,
+						  cTotalLession = c.CTotalLession,
+						  cExpect = c.CExpect,
+						  cActual = c.CActual
+					  };
+			return await obj.ToListAsync();
+		}
+		#endregion
+
+		#region 課程 塞選日期 + 課程項目
+		// GET: api/Classes/date/2022-12-01/2023-02-01/2
+		[HttpGet("date/{dateStart}/{dateEnd}/{lcID}")]
+		public async Task<ActionResult<IEnumerable<dynamic>>> GetClassQuery2(string dateStart, string dateEnd, int lcID)
+		{
+			var date_start = Convert.ToDateTime(dateStart);
+			var date_end = Convert.ToDateTime(dateEnd);
+
+			var obj = from c in _context.Classes
+					  join ct in _context.ClassTimes on c.CId equals ct.CId
+					  join t in _context.Terms on ct.TId equals t.TId
+					  join e in _context.Employees on c.EId equals e.EId
+					  join r in _context.Rooms on c.RoomId equals r.RoomId
+					  join lc in _context.LessionCategories on c.LcId equals lc.LcId
+					  where ct.CtLession == 1 && ct.CtDate >= date_start
+								&& ct.CtDate <= date_end && lc.LcId == lcID
+					  orderby c.CNumber ascending
+					  select new
+					  {
+						  cID = c.CId,
+						  cNumber = c.CNumber,
+						  cName = c.CName,
+						  ctDate = ct.CtDate,
+						  tID = t.TId,
+						  eEngName = e.EEngName,
+						  roomName = r.RoomName,
+						  cTotalLession = c.CTotalLession,
+						  cExpect = c.CExpect,
+						  cActual = c.CActual
+					  };
+			return await obj.ToListAsync();
+		}
+		#endregion
+
+		#region 課程 塞選日期 + 教練
+		// GET: api/Classes/dateCoach/2022-12-01/2023-02-01/2
+		[HttpGet("dateCoach/{dateStart}/{dateEnd}/{eID}")]
+		public async Task<ActionResult<IEnumerable<dynamic>>> GetClassQuery3(string dateStart, string dateEnd, int eID)
+		{
+			var date_start = Convert.ToDateTime(dateStart);
+			var date_end = Convert.ToDateTime(dateEnd);
+
+			var obj = from c in _context.Classes
+					  join ct in _context.ClassTimes on c.CId equals ct.CId
+					  join t in _context.Terms on ct.TId equals t.TId
+					  join e in _context.Employees on c.EId equals e.EId
+					  join r in _context.Rooms on c.RoomId equals r.RoomId
+					  join lc in _context.LessionCategories on c.LcId equals lc.LcId
+					  where ct.CtLession == 1 && ct.CtDate >= date_start
+								&& ct.CtDate <= date_end && e.EId == eID
+					  orderby c.CNumber ascending
+					  select new
+					  {
+						  cID = c.CId,
+						  cNumber = c.CNumber,
+						  cName = c.CName,
+						  ctDate = ct.CtDate,
+						  tID = t.TId,
+						  eEngName = e.EEngName,
+						  roomName = r.RoomName,
+						  cTotalLession = c.CTotalLession,
+						  cExpect = c.CExpect,
+						  cActual = c.CActual
+					  };
+			return await obj.ToListAsync();
+		}
+		#endregion
+
+		#region 課程 塞選日期 + 課程項目 + 教練 
+		// GET: api/Classes/dateCoach/2022-12-01/2023-02-01/4/2
+		[HttpGet("dateCoach/{dateStart}/{dateEnd}/{lcID}/{eID}")]
+		public async Task<ActionResult<IEnumerable<dynamic>>> GetClassQuery4(string dateStart, string dateEnd, int lcID, int eID)
+		{
+			var date_start = Convert.ToDateTime(dateStart);
+			var date_end = Convert.ToDateTime(dateEnd);
+
+			var obj = from c in _context.Classes
+					  join ct in _context.ClassTimes on c.CId equals ct.CId
+					  join t in _context.Terms on ct.TId equals t.TId
+					  join e in _context.Employees on c.EId equals e.EId
+					  join r in _context.Rooms on c.RoomId equals r.RoomId
+					  join lc in _context.LessionCategories on c.LcId equals lc.LcId
+					  where ct.CtLession == 1 && ct.CtDate >= date_start
+								&& ct.CtDate <= date_end && lc.LcId == lcID && e.EId == eID
+					  orderby c.CNumber ascending
+					  select new
+					  {
+						  cID = c.CId,
+						  cNumber = c.CNumber,
+						  cName = c.CName,
+						  ctDate = ct.CtDate,
+						  tID = t.TId,
+						  eEngName = e.EEngName,
+						  roomName = r.RoomName,
+						  cTotalLession = c.CTotalLession,
+						  cExpect = c.CExpect,
+						  cActual = c.CActual
+					  };
+			return await obj.ToListAsync();
+		}
+		#endregion
+
+		#region 取到該課程有幾堂 cid---> classTimeId
+		// GET: api/Classes/totalLession/6
+		[HttpGet("totalLession/{id}")]
+		public async Task<ActionResult<IEnumerable<dynamic>>> GetTotalLession(int id)
+		{
+			var obj = from c in _context.Classes
+					  join ct in _context.ClassTimes on c.CId equals ct.CId
+					  join e in _context.Employees on c.EId equals e.EId
+					  where c.CId == id
+					  orderby ct.ClassTimeId ascending
+					  select new
+					  {
+						  cID = id,
+						  eID = e.EId,
+						  cClassTimeId = ct.ClassTimeId,
+						  cTotalLession = c.CTotalLession,
+						  ctDate = ct.CtDate
+					  };
+			return await obj.ToListAsync();
+		}
+		#endregion
+
+		#region 取得該類型已有的課程
+		// GET: api/Classes/lcCount/5
+		[HttpGet("lcCount/{lcID}")]
+		public async Task<ActionResult<IEnumerable<dynamic>>> GetlcCount(int lcID)
+		{
+			var obj = from c in _context.Classes
+					  where c.LcId == lcID
+					  orderby c.CId descending
+					  select c;
+
+			return await obj.ToListAsync();
+		}
+		#endregion
+
+		#region 給cNumber取得該課程cid
+		// GET: api/Classes/getid/AY003
+		[HttpGet("getid/{lcNumber}")]
+		public async Task<ActionResult<IEnumerable<dynamic>>> GetlcID(string lcNumber)
+		{
+			var obj = from c in _context.Classes
+					  where c.CNumber == lcNumber
+					  select c;
+
+			return await obj.ToListAsync();
+		}
+		#endregion
+
+
+		//---------------------------------------------------------  君 END  ------------------------------------------------------------
+
+
+		// PUT: api/Classes/5
+		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+		[HttpPut("{id}")]
         public async Task<IActionResult> PutClass(int id, Class @class)
         {
             if (id != @class.CId)

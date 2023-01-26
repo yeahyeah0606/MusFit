@@ -1251,13 +1251,71 @@ namespace MusFit.Controllers
             
         }
 
-
-
         public IActionResult KnowledgeColumn()
         {
             var viewModel = _context.KnowledgeColumns.ToList();
 
             return View(viewModel);
         }
-    }
+
+		//--------------------------------------------------------- 君 START ------------------------------------------------------------
+		public IActionResult ShopMemberList()
+		{
+			return View();
+		}
+		public IActionResult SignupClass1()
+		{
+			return View();
+		}
+		public IActionResult SignupClass2(int id)
+		{
+			ViewData["CID"] = id;
+			return View();
+			//return Content(cid.ToString());
+		}
+
+		public IActionResult AddClassManage1(string cName, int lcID, int tID, int cTotalLession, int eID,
+																		int cExcept, int cprice)
+		{
+			if (ModelState.IsValid)
+			{
+				if (string.IsNullOrEmpty(cName) || string.IsNullOrEmpty(lcID.ToString()) ||
+					string.IsNullOrEmpty(tID.ToString()) || string.IsNullOrEmpty(cTotalLession.ToString()) ||
+					string.IsNullOrEmpty(eID.ToString()) ||
+					string.IsNullOrEmpty(cExcept.ToString()) || string.IsNullOrEmpty(cprice.ToString()))
+				{
+					ViewData["error"] = "有未輸入的欄位，請檢查後再傳送！";
+					return View("AddClassManage1");
+				}
+
+				//取到並存下 Session
+				HttpContext.Session.SetString("cName", cName);
+				HttpContext.Session.SetString("lcID", lcID.ToString());
+				HttpContext.Session.SetString("tID", tID.ToString());
+				HttpContext.Session.SetString("cTotalLession", cTotalLession.ToString());
+				HttpContext.Session.SetString("eID", eID.ToString());
+				HttpContext.Session.SetString("cExcept", cExcept.ToString());
+				HttpContext.Session.SetString("cprice", cprice.ToString());
+			}
+			return View("AddClassManage2");
+		}
+
+		public IActionResult AddClassManage2()
+		{
+			return View();
+		}
+
+		public IActionResult QueryRoomManage()
+		{
+			return View();
+		}
+
+		public IActionResult QueryClassRecord()
+		{
+			return View();
+		}
+
+		//---------------------------------------------------------  君 END  ------------------------------------------------------------
+
+	}
 }

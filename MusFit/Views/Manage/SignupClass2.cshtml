@@ -1,0 +1,505 @@
+﻿@{
+	ViewData["Title"] = "報名課程";
+}
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Style -->
+	<link rel="stylesheet" href="../CSS/Signup_Class2.css">
+	<title>查詢、報名課程</title>
+</head>
+
+
+<h1>&nbsp;&nbsp;&nbsp;查詢、報名課程</h1>
+<hr>
+<br>
+<h3>&nbsp;&nbsp;&nbsp;請輸入要報名的會員編號或會員姓名</h3>
+	&nbsp;&nbsp;&nbsp;
+<label for="sNumber">會員編號:</label>
+<input type="text" id="sNumber" />
+	&nbsp;&nbsp;&nbsp;
+<label for="sName">會員姓名: </label>&nbsp;
+<input type="text" id="sName" />
+	&nbsp;&nbsp;&nbsp;
+<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+@*onclick="openCreateModel()"*@
+<br>
+<br>
+<!-- table 開始 -->
+
+<div class="record">
+	<table style="width:100%">
+		<thead>
+			<tr>
+				<th>課程編號</th>
+				<th>課程名稱</th>
+				<th>開課日</th>
+				<th>時段</th>
+				<th>教練</th>
+				<th>教室</th>
+				<th>堂數</th>
+			</tr>
+		</thead>
+		<tbody id="Listbody">
+		</tbody>
+
+	</table>
+</div>
+<br>
+
+@*報名 information*@
+<div id="signupModal" class="modal">
+
+	<div class="modal-content">
+		<span class="close" id="leaveCreate">&times;</span>
+		<form id="signupForm">
+			<h3>會員資料</h3>
+			<hr />
+			@*<input type="hidden" id="signupSNumber" name="signupSNumber" />*@
+			<div class="row">
+				<div class="column">
+					<label for="signupNumber">編&emsp;號</label>
+					<input type="text" id="signupNumber" readonly="readonly" />
+				</div>
+				<div class="column">
+					<label for="signupName">姓&emsp;名</label>
+					<input type="text" id="signupName" readonly="readonly" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="column">
+					<label for="signupBirth">生&emsp;日</label>
+					<input type="text" id="signupBirth" readonly="readonly" />
+				</div>
+				<div class="column">
+					<label for="signupPhone">手&emsp;機</label>
+					<input type="text" id="signupPhone" readonly="readonly" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="column">
+					<label for="orderStatus">狀&emsp;態</label>
+					<input type="radio" id="noPay" name="orderStatus" />未付款
+					<input type="radio" id=" allPay" name="orderStatus" />已付款
+				</div>
+
+			</div>
+			<p>確定要報名課程嗎?</p>
+			<input type="button" id="btnSignupConfirm" value="確定" />
+			<button class="cancel" id="cancelCreate">取消</button>
+		</form>
+	</div>
+
+</div>
+
+
+
+@*show error message *@
+<div id="errorMessage" class="modal">
+
+	<div id="errorModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>請輸入查詢條件!!</p>
+		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+
+</div>
+
+@*success operation*@
+<div id="successMessage" class="modal">
+
+	<div id="successModal" class="modal-content">
+		<span class="close" onclick="closeSuccessModel()">&times;</span>
+		<p>已存檔</p>
+		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
+	</div>
+
+</div>
+
+
+@section Scripts{
+	<script>
+		var createModal = document.getElementById("createModal");
+		var editModal = document.getElementById("editModal");
+		var deleteModal = document.getElementById("deleteModal");
+		var errorMessage = document.getElementById('errorMessage');
+		//clear-createform
+
+		function FormClear() {
+			document.getElementById("signupForm").reset();
+		}
+
+		document.getElementById('cancelCreate').addEventListener('click', closeModel);
+		document.getElementById('leaveCreate').addEventListener('click', closeModel);
+		document.getElementById('leaveCreate').addEventListener('click', FormClear);
+
+		//cancel-action
+		function closeModel() {
+			signupModal.style.display = "none";
+			errorMessage.style.display = "none";
+		}
+
+		function closeSuccessModel() {
+			$('#successMessage').css("display", "none");
+			location.reload();
+		}
+
+		// 取消
+		document.getElementById('cancelCreate').addEventListener('click', closeModel);
+
+		// 取單一課程資料
+		var Singlecid = @ViewData["CID"];
+		console.log(Singlecid);
+		var dataList = [];
+		$.ajax({
+			type: "get",
+			url: "/api/Classes/classList/" + Singlecid,
+			success: function (e) {
+				//alert("ok");   //  ok
+				$("#Listbody").empty();
+				dataList = e;
+				console.log(e);
+				dataList.forEach(function (x) {
+					console.log(x.cName);
+					var term, attendance, content;
+					switch (x.tID) {
+						case 9:
+							term = "09:00 ~ 10:00";
+							break;
+						case 10:
+							term = "10:00 ~ 11:00";
+							break;
+						case 11:
+							term = "11:00 ~ 12:00";
+							break;
+						case 13:
+							term = "13:00 ~ 14:00";
+							break;
+						case 14:
+							term = "14:00 ~ 15:00";
+							break;
+						case 15:
+							term = "15:00 ~ 16:00";
+							break;
+						case 16:
+							term = "16:00 ~ 17:00";
+							break;
+						case 17:
+							term = "17:00 ~ 18:00";
+							break;
+						case 18:
+							term = "18:00 ~ 19:00";
+							break;
+						case 19:
+							term = "19:00 ~ 20:00";
+							break;
+						case 20:
+							term = "20: 00 ~21: 00";
+							break;
+						case 21:
+							term = "21:00 ~ 22:00";
+							break;
+						default:
+					}
+					var date = new Date(x.ctDate).toLocaleDateString();
+					var template =
+						`
+									<tr class="result">
+											<td>${x.cNumber}</td>
+											<td>${x.cName}</td>
+											<td>${date}</td>
+											<td>${term}</td>
+											<td>${x.eEngName}</td>
+											<td>${x.roomName}</td>
+											<td>${x.cTotalLession}</td>
+									</tr>
+									`;
+					$("#Listbody").append(template);
+				})
+			}
+		})
+
+
+		// 查詢 會員編號 或  會員姓名
+		var myNumber, myName, myBirth, myPhone, mySid;
+		$('#btnQuery').click(function () {
+			var sNumberinfo = $('#sNumber').val();
+			var sNameinfo = $('#sName').val();
+
+			var count = 0;
+
+			if (sNumberinfo == "" && sNameinfo == "") {
+				$('#errorMessage').css("display", "block");
+			}
+			else {
+				console.log(typeof sNameinfo);   //string
+				console.log(sNameinfo);   //林心如
+
+				var NameFlag = true
+				$.ajax({
+					type: "get",
+					url: "/api/students/",
+					success: function (data) {
+						data.forEach(function (x) {
+							if (x.sNumber == sNumberinfo) {
+								count++;
+								//alert("有"+count);
+								mySid = x.sId;
+								console.log(mySid); //  6
+								$.ajax({
+									type: "get",
+									url: "/api/Students/" + x.sId,
+									success: function (d) {
+										//console.log("okkk");
+										myNumber = d.sNumber;
+										myName = d.sName;
+										myBirth = new Date(d.sBirth).toLocaleDateString();
+										myPhone = d.sPhone;
+										console.log(myName);  //林心如
+										//  放進表單
+										if (myName == sNameinfo || sNameinfo == "") {
+											$('#signupNumber').val(myNumber);
+											$('#signupName').val(myName);
+											$('#signupBirth').val(myBirth);
+											$('#signupPhone').val(myPhone);
+											// 打開表單
+											signupModal.style.display = "block";
+										} else {
+											alert("你輸入的會員編號顯示不是這位會員，請重新輸入");	//跳了兩次
+										}
+									}
+								})
+							} else if (x.sName == sNameinfo && sNumberinfo == "") {
+								count++;
+								//alert("有"+count);
+								mySid = x.sId;
+								console.log(mySid); //  6
+								$.ajax({
+									type: "get",
+									url: "/api/Students/" + x.sId,
+									success: function (d) {
+										//console.log("okkk");
+										myNumber = d.sNumber;
+										myName = d.sName;
+										myBirth = new Date(d.sBirth).toLocaleDateString();
+										myPhone = d.sPhone;
+										console.log(myName);  //林心如
+										//  放進表單
+										if (myName == sNameinfo || sNameinfo == "") {
+											$('#signupNumber').val(myNumber);
+											$('#signupName').val(myName);
+											$('#signupBirth').val(myBirth);
+											$('#signupPhone').val(myPhone);
+											// 打開表單
+											signupModal.style.display = "block";
+										}
+									}
+								})
+							}
+						})
+						console.log("count: " + count);
+						//沒有查到資料
+						if (count == 0) {
+							alert("沒有查到相關資料");
+							//$('#showNoDataModal').css("display", "block");
+						}
+						//console.log("NameFlag: " +  NameFlag);
+						//if (NameFlag) {
+						//	alert("你輸入的會員編號顯示不是這位會員，請重新輸入");
+						//}
+					}
+				})
+			}
+		})
+
+		// 確定報名
+		$('#btnSignupConfirm').click(function () {
+
+			// 檢查該會員是否已經報名過
+			//console.log( "該會員編號: "  + $('#signupNumber').val());
+			//var singleMember = $('#signupNumber').val();
+			//var mySNum = [ ], SNumcnt  ;
+			//$.ajax({
+			//	type: "GET",
+			//	 GET: api/ClassOrders/singleclass/1
+			//	url: "/api/ClassOrders/singleclass/" + Singlecid ,
+			//	success: function (data) {
+			//		SNumcnt = 0;
+			//		data.forEach(function(x){
+			//			mySNum[SNumcnt] = x.sNumber;
+			//			console.log("mySNum:" + mySNum);
+			//			console.log("typeof mySNum:" + typeof mySNum);	 object
+			//			SNumcnt++;
+			//			if( mycount != 0 ){
+			//				alert("該會員已經報名過了");
+			//				FormClear();
+			//				signupModal.style.display = "none";
+			//			}else{
+			//				alert("該會員可以報名");	// 錯誤
+			//			}
+
+			//		})
+			//		mySNumArr = new Array();
+			//		for (x in mySNum)
+			//			mySNumArr[mySNumArr.length] = x;
+			//		console.log("mySNumArr:" + mySNumArr);	// object
+
+			//		console.log("typeof mySNumArr:" + typeof mySNumArr);	// object
+			//	}
+			//})
+
+			var Status1 = $('input[name=orderStatus]')[0].checked;
+			var Status2 = $('input[name=orderStatus]')[1].checked;
+
+			if (Status1 || Status2) {
+				var UpdateSid = mySid;
+				var UpdateNumber = $('#signupNumber').val();
+				var UpdateName = $('#signupName').val();
+				var UpdateStatus, UpdateEid;
+				if (Status1) { UpdateStatus = "未付款"; } else { UpdateStatus = "已付款"; }
+
+				var mydate = new Date(new Date().getTime() + 8 * 3600 * 1000);
+				//console.log("mydate: "+mydate);
+				mydate = mydate.toJSON().slice(0, 19);
+				//console.log(mydate);
+
+				var arr = [];
+				var cnt = 0;
+				var updateData = [];
+				var recordData = [];
+				$.ajax({
+					type: "get",
+					//GET: api/Classes/totalLession/6
+					url: "/api/Classes/totalLession/" + Singlecid,
+					success: function (dataList) {
+						console.log("堂數有進");
+						//console.log(dataList);
+						dataList.forEach(function (x) {
+							//console.log(x.cClassTimeId);
+							arr[cnt] = x.cClassTimeId;
+							cnt++;
+							UpdateEid = x.eID;	// 會做六次  沒有影響但可以更好的寫法
+						})
+						console.log("ClassTimeId:" + arr);
+						console.log("2.教練:" + UpdateEid);
+						for (var k = 0; k < arr.length; k++) {
+							//console.log(arr[k]);
+							updateData[k] = {
+								sId: UpdateSid,
+								orderTime: mydate,
+								orderStatus: UpdateStatus,
+								eId: UpdateEid,
+								classTimeId: arr[k]
+							};
+
+							recordData[k] = {
+								classTimeId: arr[k],
+								sId: UpdateSid,
+								crAttendance: false,
+								crContent: "",
+							};
+						}
+						//console.log("裡面updateData:");  //有取到
+						console.log(JSON.stringify(updateData[0]));
+						//{"upSid":6,"upOrderTime":"2023-01-10","upStatus":"已付款","upEid":3,"upClassTimeID":7}
+						console.log(JSON.stringify(recordData[0]));
+						//{"classTimeId":29,"sId":14,"crAttendance":false,"crContent":""}
+
+						//放入 order
+						for (var n = 0; n < updateData.length; n++) {
+							console.log("for裡面updateData:");
+							console.log(updateData[n]);
+							$.ajax({
+								type: "POST",
+								//POST: api/ClassOrders
+								url: "/api/ClassOrders",
+								dataType: "json",
+								contentType: "application/json",
+								data: JSON.stringify(updateData[n]),
+								success: function (data) {
+									console.log("ClassOrders IN");
+								}
+							})
+						}
+
+						//放入 record
+						console.log(recordData);
+						console.log("typeof recordData: " + typeof recordData);
+						//var recordDataArr = [];
+						//for (elem in recordData) {
+						//	recordDataArr.push(recordData[elem]);
+						//}
+						$.ajax({
+							type: "POST",
+							// POST: api/ClassRecords/Many
+							url: "/api/ClassRecords/Many",
+							dataType: "json",
+							contentType: "application/json",
+							data: JSON.stringify(recordData),
+							success: function (data) {
+								console.log("ClassRecords2 IN");
+								console.log("Singlecid : " + Singlecid);
+								countAddition(Singlecid);
+								successSignup();
+							}
+						})
+					}
+				})
+			} else {
+				alert("沒有填寫是否付款!!!");
+			}
+
+		})
+
+		function countAddition(cID) {
+			var cId, cNumber, cName, lcId, cprice, eId, roomId, cActual;
+			var cExpect, cTotalLession;
+			$.ajax({
+				type: "get",
+				// GET: GET: api/Classes/3
+				url: "/api/Classes/" + cID,
+				success: function (data) {
+					DatacActual = data.cActual;
+					console.log("1.實際人數:" + DatacActual);  //有取到實際人數
+					DatacActual = DatacActual + 1;
+					console.log("1.加1後 實際人數:" + DatacActual);
+					var classData = {
+						cId: data.cId,
+						cNumber: data.cNumber,
+						cName: data.cName,
+						lcId: data.lcId,
+						cprice: data.cprice,
+						eId: data.eId,
+						roomId: data.roomId,
+						cActual: DatacActual,
+						cExpect: data.cExpect,
+						cTotalLession: data.cTotalLession
+					};
+					console.log("更新後的: " + classData);
+
+					//  更新class 人數
+					$.ajax({
+						type: "PUT",
+						//PUT: PUT: api/Classes/5
+						url: "/api/Classes/" + Singlecid,
+						dataType: "json",
+						contentType: "application/json",
+						data: JSON.stringify(classData),
+						success: function (data) {
+							//alert("有成功更改人數");
+						}
+					})
+				}
+			})
+		}
+
+		function successSignup() {
+			alert("有成功報名");
+			window.location = "/Manage/SignupClass2?id=" + Singlecid;
+			//console.log(Singlecid);
+		}
+	</script>
+}

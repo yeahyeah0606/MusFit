@@ -1,0 +1,767 @@
+﻿@model ContainerTest.ViewModels.AddClassViewModel
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor hca
+@{
+	string cName = hca.HttpContext.Session.GetString("cName");
+	string lcID = hca.HttpContext.Session.GetString("lcID");
+	string tID = hca.HttpContext.Session.GetString("tID");
+	string cTotalLession = hca.HttpContext.Session.GetString("cTotalLession");
+	string eID = hca.HttpContext.Session.GetString("eID");
+	string cExcept = hca.HttpContext.Session.GetString("cExcept");
+	string cprice = hca.HttpContext.Session.GetString("cprice");
+}
+
+@{
+	ViewData["Title"] = "課程管理 新增";
+}
+
+
+<link rel="stylesheet" href="~/css/AddClassManage2.css" />
+
+
+<div class="myForm">
+	<h3>課程管理 新增 </h3>
+	<fieldset>
+		<div class="row">
+			<div class="column">
+				<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+				<label id="date" for="dateStart">開課日</label>
+				<input type="date" id="dateStart" onchange="ShowWday()" />
+				<p id="startwday">&emsp;&emsp;&emsp;</p>
+			</div>
+			<div class="column">
+			</div>
+		</div>
+		<div class="row">
+			<div class="column">
+				<label class="space-style" for="weekday">星&emsp;期</label>
+				<input type="checkbox" name="weekday" id="week1" value="1" onclick="doCheck(this)"> 星期一 &nbsp;&nbsp;
+				<input type="checkbox" name="weekday" id="week2" value="2" onclick="doCheck(this)"> 星期二 &nbsp;&nbsp;
+				<input type="checkbox" name="weekday" id="week3" value="3" onclick="doCheck(this)"> 星期三 &nbsp;&nbsp;
+				<input type="checkbox" name="weekday" id="week4" value="4" onclick="doCheck(this)"> 星期四 &nbsp;&nbsp;
+				<input type="checkbox" name="weekday" id="week5" value="5" onclick="doCheck(this)"> 星期五 &nbsp;&nbsp;
+				<input type="checkbox" name="weekday" id="week6" value="6" onclick="doCheck(this)"> 星期六 &nbsp;&nbsp;
+				<input type="checkbox" name="weekday" id="week7" value="0" onclick="doCheck(this)"> 星期日
+
+				<button class="button" style="vertical-align:middle" id="btnSelect" ><span>選取</span> </button>
+				<p>&emsp;&emsp;</p>
+
+			</div>
+		</div>
+@*		<div>
+		</div>*@
+
+		<div class="date-block">
+			<div id="date-title">
+				<input type="hidden" id="tmpRoom" name="tmpRoom" />
+
+				<div class="row">
+					<div class="column">
+						<label class="space-style" for="height">課程日期</label>
+						<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+						<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+						<p>&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+					</div>
+					<div class="column"></div>
+				</div>
+			</div>
+			<div id="date-body"></div>
+		</div>
+		<div class="row">
+			<div class="column">
+				<label class="space-style" for="roomID">教&emsp;室&emsp;</label>
+				<select id="roomID" name="roomID" class="lession-select" required>
+					<option value="none" selected disabled hidden >請選擇</option>
+					<option value="1">&emsp;&emsp;1801&emsp;</option>
+					<option value="2">&emsp;&emsp;1802&emsp;</option>
+					<option value="3">&emsp;&emsp;1803&emsp;</option>
+					<option value="4">&emsp;&emsp;1804&emsp;</option>
+					<option value="5">&emsp;&emsp;1805&emsp;</option>
+				</select>
+				<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+			</div>
+			<div class="column"></div>
+		</div>
+	</fieldset>
+	<button class="button" style="vertical-align:middle" id="btnInsert"><span>新增</span> </button>
+	<button>取消</button>
+
+</div>
+
+@*確認新增 information*@
+<div id="addClassModal" class="modal">
+
+	<div class="modal-content">
+		<span class="close" id="leaveCreate">&times;</span>
+		<form id="addClassForm">
+			<h3>新增課程資料</h3>
+			<hr />
+			<input type="hidden" id="lcID" name="lcID" value="@lcID" />
+			<input type="hidden" id="tID" name="tID" value="@tID" />
+			<input type="hidden" id="cTotalLession" name="cTotalLession" value="@cTotalLession" />
+			<input type="hidden" id="eID" name="eID" value="@eID" />
+			<input type="hidden" id="lcAbbrev" name="lcAbbrev" />
+
+			<div class="row">
+				<div class="column">
+					<label for="addName">課程名稱</label>
+					<input type="text" id="addName" value="@cName"  readonly="readonly"/>
+				</div>
+				<div class="column">
+					<label for="addlcID">課程項目</label>
+					<input type="text" id="addlcID"  readonly="readonly"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="column">
+					<label for="addtID">課程時段</label>
+					<input type="text" id="addtID" readonly="readonly" />
+				</div>
+				<div class="column">
+					<label for="addcTotalLession">堂&emsp;數</label>
+					<input type="text" id="addcTotalLession" value="@cTotalLession"  readonly="readonly"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="column">
+					<label for="addeID">教&emsp;練</label>
+					<input type="text" id="addeID" readonly="readonly" />
+				</div>
+				<div class="column">
+					<div class="column">
+						<label for="addroomID">教&emsp;室</label>
+						<input type="text" id="addroomID" readonly="readonly" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+			<div class="column">
+				<label for="addcExcept">預計人數</label>
+					<input type="text" id="addcExcept" value="@cExcept" readonly="readonly" />
+			</div>
+			<div class="column">
+					<label for="addcPrice">價&emsp;錢</label>
+					<input type="text" id="addcPrice" value="@cprice" readonly="readonly" />
+				<div class="column">
+				</div>
+			</div>
+	</div>
+			<div class="row">
+					<div class="column">
+						<label class="space-style">課程日期</label>
+						@*<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>*@
+						<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+						<p>&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+					</div>
+					<div class="column"></div>
+			</div>
+
+			<div class="row">
+					<div class="column ">
+						<div name="addContent" id="addContent"
+							   rows="3" cols="80" minlength="5" maxlength="150"
+							   readonly="readonly">上課日期</div>
+					</div>
+				@*<div class="column"></div>*@
+			</div>
+			<p>確定要新增課程嗎?</p>
+			<input type="button" id="btnAddConfirm" value="確定" />
+			<button class="cancel" id="cancelCreate">取消</button>
+		</form>
+	</div>
+
+</div>
+
+@*show error message *@
+<div id="errorMessage" class="modal">
+
+	<div id="errorModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>請輸入查詢條件!!</p>
+		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+
+</div>
+
+@*success operation*@
+<div id="successMessage" class="modal">
+
+	<div id="successModal" class="modal-content">
+		<span class="close" onclick="closeSuccessModel()">&times;</span>
+		<p>已存檔</p>
+		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
+	</div>
+
+</div>
+
+@section Scripts{
+	<script>
+		function FormClear() {
+			document.getElementById("addClassForm").reset();
+		}
+
+		document.getElementById('cancelCreate').addEventListener('click', closeModel);
+		document.getElementById('leaveCreate').addEventListener('click', closeModel);
+		document.getElementById('leaveCreate').addEventListener('click', FormClear);
+
+		//cancel-action
+		function closeModel() {
+			addClassModal.style.display = "none";
+			errorMessage.style.display = "none";
+		}
+
+		function closeSuccessModel() {
+			$('#successMessage').css("display", "none");
+			location.reload();
+		}
+
+		// 取消
+		document.getElementById('cancelCreate').addEventListener('click', closeModel);
+
+		var dateStart, wNumber, c;
+		$('#btnInsert').click(function () {
+			dateStart = document.getElementById('dateStart').value;
+			console.log(dateStart); // xxxx-xx-xx  string
+			var myDate = Date2ymd(new Date(dateStart));
+			console.log(myDate);
+			//console.log(typeof myDate); // object
+
+
+			var weekday = [];
+			$("input[type=checkbox]:checked").each(function () {
+				weekday.push($(this).val());
+			});
+			result = weekday.toString();
+			console.log(weekday);       //  ['星期一','星期四']
+
+		})
+
+		function ShowWday() {
+			c = 0;
+			dateStart = document.getElementById('dateStart').value;
+			var startWeekday = getChineseDay(new Date(dateStart));
+			console.log(startWeekday); // 星期三    string
+			document.getElementById("startwday").innerText = startWeekday + "   ";
+			wNumber = new Date(dateStart).getDay();
+			//console.log(wNumber);
+			wFirstCheck(wNumber);
+		}
+		function Date2ymd(d) {
+			var day = d.getDate();
+			var month = d.getMonth() + 1;
+			var year = d.getFullYear();
+			if (month < 10) month = "0" + month;
+			if (day < 10) day = "0" + day;
+			return { year: year, month: month, day: day }
+		}
+
+		function getChineseDay(d) {
+			var wday = new Array(7);
+			wday[0] = "星期日";
+			wday[1] = "星期一";
+			wday[2] = "星期二";
+			wday[3] = "星期三";
+			wday[4] = "星期四";
+			wday[5] = "星期五";
+			wday[6] = "星期六";
+			return wday[d.getDay()];
+		}
+
+		function getChineseDay2(d) {
+			var wday = new Array(7);
+			wday[0] = "日";
+			wday[1] = "一";
+			wday[2] = "二";
+			wday[3] = "三";
+			wday[4] = "四";
+			wday[5] = "五";
+			wday[6] = "六";
+			return wday[d.getDay()];
+		}
+
+		function wFirstCheck(wNumber) {
+			FirstCheckClear();
+			switch (wNumber) {
+				case 1:
+					document.getElementById("week1").checked = true;
+					break;
+				case 2:
+					document.getElementById("week2").checked = true;
+					break;
+				case 3:
+					document.getElementById("week3").checked = true;
+					break;
+				case 4:
+					document.getElementById("week4").checked = true;
+					break;
+				case 5:
+					document.getElementById("week5").checked = true;
+					break;
+				case 6:
+					document.getElementById("week6").checked = true;
+					break;
+				case 7:
+					document.getElementById("week7").checked = true;
+					break;
+				default:
+			}
+		}
+
+		function FirstCheckClear(){
+			document.getElementById("week1").checked = false;
+			document.getElementById("week2").checked = false;
+			document.getElementById("week3").checked = false;
+			document.getElementById("week4").checked = false;
+			document.getElementById("week5").checked = false;
+			document.getElementById("week6").checked = false;
+			document.getElementById("week7").checked = false;
+		}
+
+		var limit = 1;
+		function doCheck(obj) {
+			obj.checked ? c++ : c--;
+			if (c > limit) {
+				obj.checked = false;
+				alert("【星期】最多只能選擇2個");
+				ShowWday();
+				//FirstCheckClear();
+			}
+		}
+		var result= [ ] ;
+		var quotient, remainder;
+		//var TotalLession = parseInt($('#cTotalLession').val());
+		$('#btnSelect').click(function () {
+			console.log("btnSelect:");
+			console.log("1. dateStart: "+dateStart);
+			console.log(wNumber);
+
+			var w = document.getElementsByName("weekday");
+			var len = w.length;
+			var count = 0;
+			var TotalLession = parseInt($('#cTotalLession').val());
+
+			console.log("TotalLession:"); 
+			console.log(TotalLession); 
+			quotient = Math.floor(TotalLession/2) ;
+			remainder = TotalLession%2 ;
+
+			// 日期選擇器 生成
+			$("#date-body").empty();
+			if ( remainder == 0 ){
+				for( var k = 0; k<quotient ; k++ ){
+					var n = 2*k + 1, m = 2*k + 2;
+					var template =
+						`
+						<div class="row">
+							<div class="column">
+								<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+										<label id="date" for="date${n}">日期 ${n}</label>
+										<input type="date" id="date${n}" />
+								<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+							</div>
+							<div class="column">
+								<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+										<label id="date" for="date${m}">日期 ${m}</label>
+										<input type="date" id="date${m}" />
+								<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+							</div>
+						</div>
+						    `;
+					$("#date-body").append(template);
+				}
+				var template3 =
+					` <div class="row">
+								<button class="button" style="vertical-align:middle"
+								  id="btnDateOK" onclick="chgRoomSelect2()"><span>完成日期選取</span> </button>
+						</div>
+					`;
+				$("#date-body").append(template3);
+			}else{
+				for (var k = 0; k < quotient; k++) {
+					var n = 2*k+1, m = 2*k+2;
+					var template =
+						`
+								<div class="row">
+									<div class="column">
+										<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+												<label id="date" for="date${n}">日期 ${n}</label>
+												<input type="date" id="date${n}" />
+										<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+									</div>
+									<div class="column">
+										<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+												<label id="date" for="date${m}">日期 ${m}</label>
+												<input type="date" id="date${m}" />
+										<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+									</div>
+								</div>
+									`;
+					$("#date-body").append(template);
+				}
+				var template2 =
+					`
+						<div class="row">
+							<div class="column">
+								<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+												<label id="date" for="date${TotalLession}">日期${TotalLession}</label>
+												<input type="date" id="date${TotalLession}" />
+								<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+							</div>
+							<div class="column">
+
+							</div>
+						</div>
+					`;
+				$("#date-body").append(template2);
+				var template3 =
+					` <div class="row">
+						<button class="button" style="vertical-align:middle" id="btnDateOK"
+								 onclick="chgRoomSelect2()"><span>完成日期選取</span> </button>
+					  </div>
+					`;
+				$("#date-body").append(template3);
+			}
+
+			for (k = 0; k < len; k++) {
+				if (w[k].checked == true) {
+					if( k == 6 )
+					    result[count] = 0;
+					else
+						result[count] = k+1;
+					count++;
+				}
+			}
+			console.log(result);	 // 取得兩個
+			var diff1 = result[1] -result[0] ;
+			var diff2 = 7+ result[0] - result[1];
+
+
+			date1 = new Date(dateStart);
+			console.log("date1: "+date1);
+
+			Date.prototype.addDays = function (days) {
+				this.setDate(this.getDate() + days);
+				return this;
+			}
+
+			// diff1 + diff2 = 7
+			//day1 = dateStart + diff1;
+			//day2 = dateStart + diff1 + diff2;
+			//day3 = dateStart + diff1 + diff2 + diff1;
+			//day4 = dateStart + diff1 + diff2 + diff1 + diff2;
+			//day5 = dateStart + diff1 + diff2 + diff1 + diff2 +diff1;
+			//date2 =  date1.addDays(7);
+
+			var  Allday = [ ];
+			var days = 0;
+			var wk, temp ;
+			if( wNumber == result[1] ){
+				temp = diff1;
+				diff1 = diff2;
+				diff2 = temp;
+			}
+
+			for (n = 0; n < TotalLession; n++) {
+				if (n == 0) {
+					days = 0;
+					console.log("days:"+days);
+				} else if ((n % 2) == 0) {
+					wk = Math.floor(n / 2);
+					days = diff2;
+					console.log("days:"+days);
+				} else {
+					wk = Math.floor(n / 2) ;
+					days = diff1;
+					console.log("days:"+days);
+				}
+				Allday[n] = JSON.stringify(date1.addDays(days));
+				//console.log(n + ": " + Allday[n]);
+				//console.log(typeof  Allday[n]);
+			}
+
+			console.log(Allday);
+			console.log(typeof Allday);  //object
+			var myDayList = [ ];
+			for(var n=0; n<TotalLession; n++){
+				myDayList[n] =  Allday[n].substr(1, 10) ;
+				console.log("myDayList " + n +": " + myDayList[n]); //2023-01-24  string
+				var temp = "date"+ (n+1).toString();
+				//console.log(temp);
+				document.getElementById(temp).value = myDayList[n];
+			}
+			// onchange Room
+			chgRoomSelect();
+		})
+
+		// 跳出確認新增視窗
+		var mylcID, mylcName, myterm, term, myCoach, myRoom;
+		var myContent;
+		var myDayList2 = [];
+		var weekStr = [];
+		$('#btnInsert').click(function () {
+			myContent = "";
+			mylcID = parseInt( $('#lcID').val() );
+			console.log("mylcID: "+ mylcID);
+		    myterm = parseInt($('#tID').val());
+			switch (myterm) {
+				case 9:
+					term = "09:00 ~ 10:00";
+					break;
+				case 10:
+					term = "10:00 ~ 11:00";
+					break;
+				case 11:
+					term = "11:00 ~ 12:00";
+					break;
+				case 13:
+					term = "13:00 ~ 14:00";
+					break;
+				case 14:
+					term = "14:00 ~ 15:00";
+					break;
+				case 15:
+					term = "15:00 ~ 16:00";
+					break;
+				case 16:
+					term = "16:00 ~ 17:00";
+					break;
+				case 17:
+					term = "17:00 ~ 18:00";
+					break;
+				case 18:
+					term = "18:00 ~ 19:00";
+					break;
+				case 19:
+					term = "19:00 ~ 20:00";
+					break;
+				case 20:
+					term = "20: 00 ~21: 00";
+					break;
+				case 21:
+					term = "21:00 ~ 22:00";
+					break;
+				default:
+			}
+			$('#addtID').val(term);
+			$.ajax({
+				type: "get",
+				url: "/api/LessionCategories/" + mylcID,
+				success: function (data) {
+					//alert(data.lcName);
+					$('#addlcID').val(data.lcName);
+					//mylcAbbrev = data.lcAbbrev;
+					//console.log(mylcAbbrev);	//有
+				}
+			})
+			myCoach = parseInt( $('#eID').val() );
+			$.ajax({
+				type: "get",
+				url: "/api/Employees/" + myCoach,
+				success: function (data){
+					//alert(data.eEngName);
+					$('#addeID').val(data.eEngName);
+				}
+			})
+			myRoom = parseInt($('#roomID').val());
+			$.ajax({
+				type: "get",
+				url: "/api/Rooms/" + myRoom,
+				success: function (data){
+					$('#addroomID').val(data.roomName);
+				}
+			})
+			var TotalLession = parseInt($('#cTotalLession').val());
+
+			for (var n = 0; n < TotalLession; n++) {
+				var temp = "date" + (n + 1).toString();
+				console.log("3. temp: ");
+				console.log(temp);
+				console.log(typeof temp);
+				myDayList2[n] = document.getElementById(temp).value ;
+				weekStr[n] = getChineseDay2(new Date(myDayList2[n]));
+			}
+			console.log("4. myDayList2 : ");
+			console.log(myDayList2);
+			console.log("4. weekStr : ");
+			console.log(weekStr);
+			for(var n=0; n<TotalLession; n++){
+				if( n==0 )   myContent += '<p>' ;
+				myContent +=  myDayList2[n] + " (" + weekStr[n] + ") 、";
+					if ( n == (TotalLession-1) ){
+						myContent = myContent.substr(0, myContent.length - 1);
+						myContent += '</p>';
+					}else{
+						if( (n%2) == 1 )   myContent += '</p><br><p>';
+					}
+			}
+			console.log("myContent: " + myContent);
+			console.log("myContent typeof: " + typeof myContent);	// string
+
+			document.getElementById('addContent').innerHTML= myContent ;
+			//$('#addContent').value(myContent);
+
+			// 打開表單
+			addClassModal.style.display = "block";
+		})
+
+
+		// 確定新增課程
+		var mylcAbbrev, lcCnt, mylcNumber ,mycID;
+		$('#btnAddConfirm').click(function () {
+			$.ajax({
+				type: "get",
+				url: "/api/LessionCategories/" + mylcID,
+				success: function (data){
+					//alert(data.lcName);
+					$('#addlcID').val(data.lcName);
+					mylcAbbrev = data.lcAbbrev;
+					console.log(mylcAbbrev);	//有
+					// 數有幾個該課程項目
+					lcCnt =0;
+					$.ajax({
+						type: "get",
+						//GET: api/Classes/lcCount/5
+						url: "/api/Classes/lcCount/" + mylcID,
+						success: function (datalc){
+							//alert("mylcID: " + mylcID);
+							datalc.forEach(function(x){
+								console.log(x.cName);
+								lcCnt++;
+							})
+							lcCnt ++;  // 新課程編號要加 1
+						    var tempNum =padAbbr(lcCnt, 3);
+							console.log("tempNum: "+tempNum);
+							mylcNumber = mylcAbbrev + tempNum.toString() ;
+							console.log("mylcNumber: " + mylcNumber);
+							var myTotalLession = $('#addcTotalLession').val();
+							var addClassData = {
+								cNumber: mylcNumber,
+								cName:  $('#addName').val(),
+								lcId: mylcID, 
+								cprice: parseInt( $('#addcPrice').val() ),
+								eId:  parseInt($('#eID').val()) ,
+								roomId: parseInt($('#roomID').val()),
+								cActual: 0,
+								cExpect: $('#addcExcept').val(),
+								cTotalLession: myTotalLession
+							};
+							console.log("addClassData: ");
+							console.log( addClassData);
+							//  新增 class
+							$.ajax({
+								type: "POST",
+								// POST: api/Classes
+								url: "/api/Classes/",
+								dataType: "json",
+								contentType: "application/json",
+								data: JSON.stringify(addClassData),
+								success: function (data) {
+									//alert("成功新增課程");
+									// 取得 cID
+									$.ajax({
+										type: "GET",
+										// GET: api/Classes/getid/AY003
+										url: "/api/Classes/getid/" + mylcNumber,
+										success: function (dataNum) {
+											dataNum.forEach(function (x) {
+												mycID = x.cId;
+												console.log("5. mycID:" + mycID);	
+											})
+											// 放進 classTime表
+											var ClassTimeData = [];
+											myterm = parseInt($('#tID').val());
+											console.log("6. mycID: " + mycID);
+
+											for (var n = 0; n < myTotalLession; n++) {
+												var temp = "date" + (n + 1).toString();
+												console.log("6. temp: ");
+												console.log(temp);
+												console.log(typeof temp);
+												myDayList2[n] = document.getElementById(temp).value ;
+												weekStr[n] = getChineseDay( new Date(myDayList2[n]) );
+
+												ClassTimeData[n] = {
+													cId: mycID,
+													ctDate: myDayList2[n],
+													ctLession: (n+1),
+													tId: myterm,
+													weekday: weekStr[n]
+												};
+
+												$.ajax({
+													type: "POST",
+													//POST: api/ClassTimes
+													url: "/api/ClassTimes",
+													dataType: "json",
+													contentType: "application/json",
+													data: JSON.stringify(ClassTimeData[n]),
+													success: function (data) {
+														sucInsertClass();	// 六次 要改
+													}
+												})
+											}
+
+										}
+									})
+								}
+							})
+
+						}
+					})
+					
+				}
+			})
+		})
+
+		function padAbbr(num, n){
+			var i = (num + "").length;
+			while( i++ < n )  num = "0" + num;
+			return num;
+		}
+
+		function sucInsertClass(){
+			alert("成功新增課程，請到課程頁面查詢");
+			window.location = "/Manage/SignupClass1";
+		}
+
+		// 日期  時段  影響 教室選擇
+		var mytID, temp, tLession;
+		var myDate3, myRoom = [ ] ;
+		var uniqueArr;
+		function chgRoomSelect(){
+			mytID = $('#tID').val();
+			tLession = parseInt($('#cTotalLession').val());
+			console.log("tLession: " + tLession);
+			console.log("mytID: " + mytID);
+
+			for(var n=0; n< tLession; n++){
+				temp = "date" + (n + 1).toString();
+				myDate3 = document.getElementById(temp).value;
+				console.log("myDate3: " + myDate3);
+				$.ajax({
+					type: "GET",
+					// GET: api/Rooms/available/2023-01-10/16
+					url: "/api/Rooms/available/" + myDate3 + "/" + mytID,
+					success: function (data) {
+						data.forEach(function(x){
+							//myRoom.push(x.roomName);
+							myRoom.push(x.roomID);
+						})
+						uniqueArr = [...new Set(myRoom)];
+						console.log("uniqueArr: " + uniqueArr);
+						$('#tmpRoom').val(uniqueArr);
+					}
+				})
+			}
+		}
+		function chgRoomSelect2(){
+			var roomSub= document.getElementById('tmpRoom').value;
+			console.log("roomSub: "+roomSub);
+			var option;
+			//$('#roomID').children("option").filter("[value=3]").remove();
+			$('#roomID').children("option").filter('[value="' + roomSub + '" ]').remove();
+		}
+	</script>
+
+}
+

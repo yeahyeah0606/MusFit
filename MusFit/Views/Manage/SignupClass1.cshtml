@@ -1,0 +1,476 @@
+﻿@{
+	ViewData["Title"] = "查詢、報名課程";
+}
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Style -->
+	<link rel="stylesheet" href="../CSS/Signup_Class1.css">
+
+	<title>查詢、報名課程</title>
+</head>
+
+	<h1>&nbsp;&nbsp;&nbsp;查詢、報名課程</h1>
+	<hr>
+	<br>
+	&nbsp;&nbsp;&nbsp;
+	<label for="dateStart">&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期: &nbsp;</label>
+	<input type="date" class="dateStart" id="dateStart" min="2022-01-01" max="2030-12-31" onchange="moveToEnd()" required />
+	<label for="dateEnd">&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;</label>
+	<input type="date" class="dateEnd" id="dateEnd" min="2022-01-01" max="2030-12-31" />
+	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+
+	<br><br>    &nbsp;&nbsp;&nbsp;
+	<label for="lcID">課程項目: </label>&nbsp;
+	<select class="lession-select" name="lcID" id="lcID"> 
+		<option value="none" selected disabled hidden>請選擇</option>
+		<option value="1">飛輪</option>
+		<option value="2">有氧泰拳</option>
+		<option value="3">有氧拳擊</option>
+		<option value="4">瑜珈</option>
+		<option value="5">空中瑜珈</option>
+		<option value="6">皮拉提斯</option>
+	</select>
+	 &nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+	<label for="eID">教練: </label>&nbsp;
+		<select id="eID" name="eID" class="lession-select" >
+			<option value="none" selected disabled hidden>請選擇</option>
+			<option value="1">Rachel</option>
+			<option value="2">Tina</option>
+			<option value="4">Christy</option>
+			<option value="5">Elaine</option>
+			<option value="6">Molly</option>
+		</select>
+	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+
+<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+	<br>
+	<br>
+
+	<!-- table 開始 -->
+
+	<div class="record">
+		<table style="width:100%">
+			<thead>
+				<tr>
+					<th>課程編號</th>
+					<th>課程名稱</th>
+					<th>開課日</th>
+					<th>時段</th>
+					<th>教練</th>
+					<th>教室</th>
+					<th>堂數</th>
+					<th>預計人數</th>
+					<th>實際人數</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody id="Listbody">
+			</tbody>
+		</table>
+		<br><br>
+		<div class="page-ul">
+			<ul class="pagination">
+				<li><a href="#">«</a></li>
+				<li><a href="#">1</a></li>
+				<li><a class="active" href="#">2</a></li>
+				<li><a href="#">3</a></li>
+				<li><a href="#">4</a></li>
+				<li><a href="#">5</a></li>
+				<li><a href="#">»</a></li>
+			</ul>
+		</div>
+
+	</div>
+
+@*刪除 information*@
+<div id="deleteModal" class="modal">
+
+	<div class="modal-content">
+		<span class="close" id="leaveCreate">&times;</span>
+		<form id="deleteForm">
+			<h3>課程刪除</h3>
+			<hr />
+			<input type="hidden" id="deletecID" name="deletecID" />
+			<input type="hidden" id="deleteTotalLession" name="deleteTotalLession" />
+			<input type="hidden" id="deleteclassTimeID" name="deleteclassTimeID" />
+
+			<p>確定要刪除該筆訂單嗎?</p>
+			<input type="button" id="btnDeleteConfirm" value="確定" />
+			<button class="cancel" id="cancelCreate">取消</button>
+		</form>
+	</div>
+
+</div>
+
+@*cannot deledte message *@
+<div id="cannotDeleteModal" class="modal">
+
+	<div id="errorModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>該課程目前已經開課或有人報名，不可以刪除!!</p>
+		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+
+</div>
+
+@*show error message *@
+<div id="errorMessage" class="modal">
+
+	<div class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>請輸入查詢條件!!</p>
+		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+
+</div>
+
+@*success operation*@
+<div id="successMessage" class="modal">
+
+	<div id="successModal" class="modal-content">
+		<span class="close" onclick="closeSuccessModel()">&times;</span>
+		<p>已刪除</p>
+		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
+	</div>
+
+</div>
+
+@section Scripts{
+		<script>
+
+			function FormClear() {
+				document.getElementById("deleteForm").reset();
+			}
+
+			document.getElementById('cancelCreate').addEventListener('click', closeModel);
+			document.getElementById('leaveCreate').addEventListener('click', closeModel);
+			document.getElementById('leaveCreate').addEventListener('click', FormClear);
+
+			//cancel-action
+			function closeModel() {
+				deleteModal.style.display = "none";
+				errorMessage.style.display = "none";
+				cannotDeleteModal.style.display = "none";
+			}
+
+			function closeSuccessModel() {
+				$('#successMessage').css("display", "none");
+				location.reload();
+			}
+
+			// 取消
+			document.getElementById('cancelCreate').addEventListener('click', closeModel);
+
+
+			//  全部show
+			var dataList = [];
+			$.ajax({
+				type: "get",
+				url: "/api/Classes/classList",
+				success: function (e) {
+					//alert("ok");
+					$("#Listbody").empty();
+					dataList = e;
+					dataList.forEach(function (x) {
+						//alert(x.cName);
+						var term;
+						switch (x.tID){
+							case 9:
+								term = "09:00 ~ 10:00";
+								break;
+							case 10:
+								term = "10:00 ~ 11:00";
+								break;
+							case 11:
+								term = "11:00 ~ 12:00";
+								break;
+							case 13:
+								term = "13:00 ~ 14:00";
+								break;
+							case 14:
+								term = "14:00 ~ 15:00";
+								break;
+							case 15:
+								term = "15:00 ~ 16:00";
+								break;
+							case 16:
+								term = "16:00 ~ 17:00";
+								break;
+							case 17:
+								term = "17:00 ~ 18:00";
+								break;
+							case 18:
+								term = "18:00 ~ 19:00";
+								break;
+							case 19:
+								term = "19:00 ~ 20:00";
+								break;
+							case 20:
+								term = "20:00 ~ 21:00";
+								break;
+							case 21:
+								term = "21:00 ~ 22:00";
+								break;
+							default:
+								//term = typeof(x.tID);
+						}
+						var date = new Date(x.ctDate).toLocaleDateString();
+						var template =
+							`
+											<tr class="result">
+												 <td>${x.cNumber}</td>
+												 <td>${x.cName}</td>
+												 <td>${date}</td>
+												 <td>${term}</td>
+												 <td>${x.eEngName}</td>
+												 <td>${x.roomName}</td>
+												 <td>${x.cTotalLession}</td>
+												 <td>${x.cExpect}</td>
+												<td>${x.cActual}</td>
+												<td>
+														<button class="button" style="vertical-align:middle" onclick=openSignModel(${x.cID})><span>報名</span></button>
+																		<button class="button" style="vertical-align:middle" onclick=openDeleteModel(${x.cID}) ><span>刪除</span></button>
+												</td>
+											</tr>
+											`;
+						$("#Listbody").append(template);
+					})
+					console.log(dataList);
+				}
+			})
+
+
+
+			// 取得哪堂課
+			function openSignModel(cID){
+				var NowDate = Date.now();
+				var FirstDate;
+				console.log("NowDate: " + NowDate);
+				$.ajax({
+					type: "get",
+					//GET: api/Classes/classList/3
+					url: "/api/Classes/classList/" + cID ,
+					success: function (data) {
+						data.forEach(function (x) {
+							FirstDate = new Date(x.ctDate).getTime();
+						})
+						console.log("FirstDate: " + FirstDate);//有
+						if (NowDate < FirstDate) {
+							// 檢查該課程人數是否沒有滿
+							$.ajax({
+								type: "GET",
+								//GET : api/Classes/1
+								url: "/api/Classes/" + cID,
+								success: function (data) {
+									if (data.cActual < data.cExpect){
+										//alert("可以報名");
+										window.location.href = '@Url.Action("SignupClass2","Manage")?id=' + cID;
+									}else{
+										alert("該課程人數已滿，請報名其他課程");
+									}
+								}
+							})
+						}else{
+							alert("該課程已經開課，無法報名，請選擇其他課程!!! ");   //有
+						}
+					}
+				})
+			}
+
+			// 查詢  課程項目
+			var mydateStart, mydateEnd, myeID, mylcID, count;
+			$('#btnQuery').click(function () {
+				count = 0;
+				mydateStart = $('#dateStart').val();    //  xxxx-xx-xx
+				mydateEnd = $('#dateEnd').val();
+				mylcID = $('#lcID').val();
+				myeID = $('#eID').val();
+				if ( mydateStart == "" ) {
+					mydateStart = "2999-12-31";
+					mydateEnd = "2999-12-31";
+				}
+				if ( mylcID == null )  mylcID = 99;
+				if ( myeID == null )   myeID = 99;
+				console.log("mydateStart: " + mydateStart);
+				console.log("mydateEnd: " + mydateEnd);
+				console.log("mylcID: " + mylcID);
+				console.log("myeID: " + myeID);
+
+				if (mydateStart == "2999-12-31" && mylcID == 99 && myeID == 99) {
+					//$('#errorMessage').css("display", "block");
+					alert("請設定查詢條件，至少需要選取一項");
+				}
+				else {
+						$.ajax({
+							type: "get",
+					        //GET: api/Classes/ClassQuery/2023-12-01/2023-02-01/1/1
+							url: "/api/Classes/ClassQuery/" + mydateStart + "/" + mydateEnd + "/" + mylcID + "/" + myeID,
+							success: function (dataList) {
+								//alert("ok");
+								$("#Listbody").empty();
+								dataList.forEach(function (x) {
+									//alert(x.cName);
+									var term;
+									switch (x.tID) {
+										case 9:
+											term = "09:00 ~ 10:00";
+											break;
+										case 10:
+											term = "10:00 ~ 11:00";
+											break;
+										case 11:
+											term = "11:00 ~ 12:00";
+											break;
+										case 13:
+											term = "13:00 ~ 14:00";
+											break;
+										case 14:
+											term = "14:00 ~ 15:00";
+											break;
+										case 15:
+											term = "15:00 ~ 16:00";
+											break;
+										case 16:
+											term = "16:00 ~ 17:00";
+											break;
+										case 17:
+											term = "17:00 ~ 18:00";
+											break;
+										case 18:
+											term = "18:00 ~ 19:00";
+											break;
+										case 19:
+											term = "19:00 ~ 20:00";
+											break;
+										case 20:
+											term = "20: 00 ~21: 00";
+											break;
+										case 21:
+											term = "21:00 ~ 22:00";
+											break;
+										default:
+										//term = typeof(x.tID);
+									}
+									var date = new Date(x.ctDate).toLocaleDateString();
+									var template =
+										`
+													<tr class="result">
+														 <td>${x.cNumber}</td>
+														 <td>${x.cName}</td>
+														 <td>${date}</td>
+														 <td>${term}</td>
+														 <td>${x.eEngName}</td>
+														 <td>${x.roomName}</td>
+														 <td>${x.cTotalLession}</td>
+														 <td>${x.cExpect}</td>
+														<td>${x.cActual}</td>
+														<td>
+														<button class="button" style="vertical-align:middle" onclick=openSignModel(${x.cID})><span>報名</span></button>
+														<button class="button" style="vertical-align:middle" onclick=openDeleteModel(${x.cID})><span>刪除</span></button></td>
+														</td>
+													</tr>
+													`;
+									$("#Listbody").append(template);
+									count++;
+								})
+								console.log("count: " + count);
+								//沒有查到資料
+								if (count == 0) {
+									alert("沒有查到相關資料");
+									//$('#showNoDataModal').css("display", "block");
+								}
+							}
+						})
+				}
+			})
+
+			// Delete 打開  單一課程
+			function openDeleteModel(cID) {
+				var ActualNumber, DeleteClassDate ;
+				$.ajax({
+					type: "get",
+					// GET: api/Classes/classList/3
+					url: "/api/Classes/classList/" + cID,
+					success: function (data) {
+						console.log(data);
+						ActualNumber = data[0].cActual;
+						DeleteClassDate = new Date( data[0].ctDate).getTime();
+						var TodayDate = Date.now();
+						console.log("開課: " + DeleteClassDate);
+						console.log("今天: " + TodayDate);
+
+						$('#deletecID').val(cID);
+						$('#deleteTotalLession').val(data[0].cTotalLession);
+						console.log("課程: " + cID);
+						console.log("課程堂數: " + data[0].cTotalLession);
+						console.log("課程實際人數: " + ActualNumber);
+						if (ActualNumber != 0 || TodayDate>=DeleteClassDate) {
+							cannotDeleteModal.style.display = "block";
+						}else{
+							deleteModal.style.display = "block";
+						}
+
+					}
+				})
+
+
+			}
+
+			//確定 刪除
+			$('#btnDeleteConfirm').click(function () {
+				console.log("確定刪除開始");
+				var classID = parseInt($('#deletecID').val());
+				var TotalLession = parseInt($('#deleteTotalLession').val());
+
+				console.log("classID:" + classID);
+				console.log("堂數:" + TotalLession);
+				var classTimeID;
+				$.ajax({
+					type: "get",
+					// GET : api/Classes/totalLession/3
+					url: "/api/Classes/totalLession/" + classID,
+					success: function (data) {
+						data.forEach(function(x){
+							//console.log("classTimeID:" + x.cClassTimeId);
+							classTimeID = x.cClassTimeId;
+							//進去刪classTime表
+							$.ajax({
+								type: "delete",
+								// DELETE: api/ClassTimes/57
+								url: "/api/ClassTimes/" + classTimeID,
+								success: function (e) {
+									console.log("classTimeID:" + x.cClassTimeId +"已經刪除");
+								}
+							})
+						})
+						// 進class表刪該課程
+						$.ajax({			
+							type: "delete",
+							// DELETE: api/Classes/12
+							url: "/api/Classes/" + classID,
+							success: function (e) {
+								console.log("classID:" + classID + "已經刪除");
+								$('#deleteModal').css("display", "none");
+								$('#successMessage').css("display", "block");
+							}
+						})
+
+					}
+				})
+
+
+			})
+
+			function moveToEnd() {
+				document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
+			}
+
+
+
+
+		</script>
+   }

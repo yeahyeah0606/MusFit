@@ -1,0 +1,256 @@
+﻿@{
+	ViewData["Title"] = "教室管理 查詢";
+}
+<link rel="stylesheet" href="~/css/QueryRoomManage.css" />
+
+<h1>&nbsp;&nbsp;&nbsp;教室管理 查詢</h1>
+<hr>
+<br>
+	&nbsp;&nbsp;&nbsp;
+<label for="dateStart">&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期: &nbsp;</label>
+<input type="date" class="dateStart" id="dateStart" min="2022-01-01" max="2023-12-31" onchange="moveToEnd()" required />
+<label for="dateEnd">&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;</label>
+<input type="date" class="dateEnd" id="dateEnd" min="2022-01-01" max="2023-12-31" />
+&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+<br>
+<br>&nbsp;&nbsp;&nbsp;
+<label for="tID">&nbsp;&nbsp;時&nbsp;&nbsp;&nbsp;&nbsp;段: &nbsp;</label>&nbsp;
+<select class="lession-select" name="tID" id="tID">
+	<option value="none" selected disabled hidden>請選擇</option>
+	<option value="9">09:00 ~ 10:00</option>     <!-- &emsp;&emsp; -->
+	<option value="10">10:00 ~ 11:00</option>
+	<option value="11">11:00 ~ 12:00</option>
+	<option value="13">13:00 ~ 14:00</option>
+	<option value="14">14:00 ~ 15:00</option>
+	<option value="15">15:00 ~ 16:00</option>
+	<option value="16">16:00 ~ 17:00</option>
+	<option value="17">17:00 ~ 18:00</option>
+	<option value="18">18:00 ~ 19:00</option>
+	<option value="19">19:00 ~ 20:00</option>
+	<option value="20">20:00 ~ 21:00</option>
+	<option value="21">21:00 ~ 22:00</option>
+</select>
+	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+<label for="roomID">教室: </label>&nbsp;
+<select id="roomID" name="roomID" class="lession-select">
+	<option value="none" selected disabled hidden>請選擇</option>
+	<option value="1">1801</option>
+	<option value="2">1802</option>
+	<option value="3">1803</option>
+	<option value="4">1804</option>
+	<option value="5">1805</option>
+</select>
+	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+
+<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+<br>
+<br>
+
+<!-- table 開始 -->
+
+<div class="record">
+	<table style="width:100%">
+		<thead>
+			<tr>
+				<th>日期</th>
+				<th>時段</th>
+				<th>教室</th>
+				<th>課程類型</th>
+				<th>課程名稱</th>
+				<th>教練</th>
+			</tr>
+		</thead>
+		<tbody id="Listbody">
+		</tbody>
+
+	</table>
+	<br>
+	@*<p class="total-member">共 15 人</p>*@
+	<div class="page-ul">
+		<ul class="pagination">
+			<li><a href="#">«</a></li>
+			<li><a href="#">1</a></li>
+			<li><a class="active" href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#">4</a></li>
+			<li><a href="#">5</a></li>
+			<li><a href="#">»</a></li>
+		</ul>
+	</div>
+</div>
+
+@section Scripts{
+	<script>
+		//  全部show
+		var dataList = [];
+		$.ajax({
+			type: "get",
+			url: "/api/Rooms/roomList",
+			success: function (dataList) {
+				$("#Listbody").empty();
+				dataList.forEach(function (x) {
+					var term;
+					switch (x.tID) {
+						case 9:
+							term = "09:00 ~ 10:00";
+							break;
+						case 10:
+							term = "10:00 ~ 11:00";
+							break;
+						case 11:
+							term = "11:00 ~ 12:00";
+							break;
+						case 13:
+							term = "13:00 ~ 14:00";
+							break;
+						case 14:
+							term = "14:00 ~ 15:00";
+							break;
+						case 15:
+							term = "15:00 ~ 16:00";
+							break;
+						case 16:
+							term = "16:00 ~ 17:00";
+							break;
+						case 17:
+							term = "17:00 ~ 18:00";
+							break;
+						case 18:
+							term = "18:00 ~ 19:00";
+							break;
+						case 19:
+							term = "19:00 ~ 20:00";
+							break;
+						case 20:
+							term = "20: 00 ~21: 00";
+							break;
+						case 21:
+							term = "21:00 ~ 22:00";
+							break;
+						default:
+
+					}
+					var date = new Date(x.ctDate).toLocaleDateString();
+					var template =
+						`
+																		<tr class="result">
+																				<td>${date}</td>
+																				<td>${term}</td>
+																				<td>${x.roomName}</td>
+																				<td>${x.lcType}</td>
+																				<td>${x.cName}</td>
+																				<td>${x.eEngName}</td>
+																		</tr>
+																		`;
+					$("#Listbody").append(template);
+				})
+				console.log(dataList);
+			}
+		})
+
+		// 查詢
+		var mydateStart, mydateEnd, mytID, mylcID, count;
+		$('#btnQuery').click(function () {
+			count = 0;
+			mydateStart = $('#dateStart').val();    //  xxxx-xx-xx
+			mydateEnd = $('#dateEnd').val();
+			mytID = $('#tID').val();
+			myroomID = $('#roomID').val();
+			if (mydateStart == "") {
+				mydateStart = "2999-12-31";
+				mydateEnd = "2999-12-31";
+			}
+			if (mytID == null) mytID = 99;
+			if (myroomID == null) myroomID = 99;
+			console.log("mydateStart: " + mydateStart);
+			console.log("mydateEnd: " + mydateEnd);
+			console.log("mytID: " + mytID);
+			console.log("myroomID: " + myroomID);
+
+			if (mydateStart == "2999-12-31" && mylcID == 99 && myroomID == 99) {
+				//$('#errorMessage').css("display", "block");
+				alert("請設定查詢條件，至少需要選取一項");
+			}
+			else {
+				$.ajax({
+					type: "get",
+					//GET: api/Rooms/RoomQuery/2023-01-01/2023-02-01/9/5
+					url: "/api/Rooms/RoomQuery/" + mydateStart + "/" + mydateEnd + "/" + mytID + "/" + myroomID,
+					success: function (dataList) {
+						$("#Listbody").empty();
+						dataList.forEach(function (x) {
+							var term;
+							switch (x.tID) {
+								case 9:
+									term = "09:00 ~ 10:00";
+									break;
+								case 10:
+									term = "10:00 ~ 11:00";
+									break;
+								case 11:
+									term = "11:00 ~ 12:00";
+									break;
+								case 13:
+									term = "13:00 ~ 14:00";
+									break;
+								case 14:
+									term = "14:00 ~ 15:00";
+									break;
+								case 15:
+									term = "15:00 ~ 16:00";
+									break;
+								case 16:
+									term = "16:00 ~ 17:00";
+									break;
+								case 17:
+									term = "17:00 ~ 18:00";
+									break;
+								case 18:
+									term = "18:00 ~ 19:00";
+									break;
+								case 19:
+									term = "19:00 ~ 20:00";
+									break;
+								case 20:
+									term = "20: 00 ~21: 00";
+									break;
+								case 21:
+									term = "21:00 ~ 22:00";
+									break;
+								default:
+
+							}
+
+							var date = new Date(x.ctDate).toLocaleDateString();
+							var template =
+								`
+																				<tr class="result">
+																						<td>${date}</td>
+																						<td>${term}</td>
+																						<td>${x.roomName}</td>
+																						<td>${x.lcType}</td>
+																						<td>${x.cName}</td>
+																						<td>${x.eEngName}</td>
+																				</tr>
+																				`;
+							$("#Listbody").append(template);
+							count++;
+						})
+						console.log("count: " + count);
+						//沒有查到資料
+						if (count == 0) {
+							alert("沒有查到相關資料");
+							//$('#showNoDataModal').css("display", "block");
+						}
+					}
+				})
+			}
+		})
+
+		function moveToEnd() {
+			document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
+		}
+
+
+	</script>
+   }

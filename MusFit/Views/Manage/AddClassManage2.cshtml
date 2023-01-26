@@ -148,7 +148,7 @@
 	</div>
 			<div class="row">
 					<div class="column">
-						<label class="space-style">課程日期</label>
+						<label >課程日期</label>
 						@*<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>*@
 						<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
 						<p>&emsp;&emsp;&emsp;&emsp;&emsp;</p>
@@ -158,11 +158,11 @@
 
 			<div class="row">
 					<div class="column ">
-						<div name="addContent" id="addContent"
+					<div name="addContent" id="addContent" class="test_box" 
 							   rows="3" cols="80" minlength="5" maxlength="150"
 							   readonly="readonly">上課日期</div>
 					</div>
-				@*<div class="column"></div>*@
+				<div class="column"></div>
 			</div>
 			<p>確定要新增課程嗎?</p>
 			<input type="button" id="btnAddConfirm" value="確定" />
@@ -225,8 +225,6 @@
 			var myDate = Date2ymd(new Date(dateStart));
 			console.log(myDate);
 			//console.log(typeof myDate); // object
-
-
 			var weekday = [];
 			$("input[type=checkbox]:checked").each(function () {
 				weekday.push($(this).val());
@@ -589,7 +587,7 @@
 				myContent +=  myDayList2[n] + " (" + weekStr[n] + ") 、";
 					if ( n == (TotalLession-1) ){
 						myContent = myContent.substr(0, myContent.length - 1);
-						myContent += '</p>';
+					myContent += '。</p>';
 					}else{
 						if( (n%2) == 1 )   myContent += '</p><br><p>';
 					}
@@ -696,13 +694,14 @@
 													contentType: "application/json",
 													data: JSON.stringify(ClassTimeData[n]),
 													success: function (data) {
-														sucInsertClass();	// 六次 要改
+														
 													}
 												})
 											}
 
 										}
 									})
+									sucInsertClass();	
 								}
 							})
 

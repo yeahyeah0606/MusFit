@@ -319,138 +319,137 @@
 		$('#btnSignupConfirm').click(function () {
 
 			// 檢查該會員是否已經報名過
-			//console.log( "該會員編號: "  + $('#signupNumber').val());
-			//var singleMember = $('#signupNumber').val();
-			//var mySNum = [ ], SNumcnt  ;
-			//$.ajax({
-			//	type: "GET",
-			//	 GET: api/ClassOrders/singleclass/1
-			//	url: "/api/ClassOrders/singleclass/" + Singlecid ,
-			//	success: function (data) {
-			//		SNumcnt = 0;
-			//		data.forEach(function(x){
-			//			mySNum[SNumcnt] = x.sNumber;
-			//			console.log("mySNum:" + mySNum);
-			//			console.log("typeof mySNum:" + typeof mySNum);	 object
-			//			SNumcnt++;
-			//			if( mycount != 0 ){
-			//				alert("該會員已經報名過了");
-			//				FormClear();
-			//				signupModal.style.display = "none";
-			//			}else{
-			//				alert("該會員可以報名");	// 錯誤
-			//			}
+			console.log( "該會員編號: "  + $('#signupNumber').val());
+			var singleMember = $('#signupNumber').val();
+			var mySNum = [ ], SNumcnt  ;
+			$.ajax({
+				type: "GET",
+				//GET: api/ClassOrders/singleclass/1
+				url: "/api/ClassOrders/singleclass/" + Singlecid ,
+				success: function (data) {
+					SNumcnt = 0;
+					data.forEach(function(x){
+						if(x.sNumber == singleMember ){
+							console.log("x.sNumber:" + x.sNumber);
+							SNumcnt++; 
+						 console.log("1. SNumcnt:" + SNumcnt);
 
-			//		})
-			//		mySNumArr = new Array();
-			//		for (x in mySNum)
-			//			mySNumArr[mySNumArr.length] = x;
-			//		console.log("mySNumArr:" + mySNumArr);	// object
-
-			//		console.log("typeof mySNumArr:" + typeof mySNumArr);	// object
-			//	}
-			//})
-
-			var Status1 = $('input[name=orderStatus]')[0].checked;
-			var Status2 = $('input[name=orderStatus]')[1].checked;
-
-			if (Status1 || Status2) {
-				var UpdateSid = mySid;
-				var UpdateNumber = $('#signupNumber').val();
-				var UpdateName = $('#signupName').val();
-				var UpdateStatus, UpdateEid;
-				if (Status1) { UpdateStatus = "未付款"; } else { UpdateStatus = "已付款"; }
-
-				var mydate = new Date(new Date().getTime() + 8 * 3600 * 1000);
-				//console.log("mydate: "+mydate);
-				mydate = mydate.toJSON().slice(0, 19);
-				//console.log(mydate);
-
-				var arr = [];
-				var cnt = 0;
-				var updateData = [];
-				var recordData = [];
-				$.ajax({
-					type: "get",
-					//GET: api/Classes/totalLession/6
-					url: "/api/Classes/totalLession/" + Singlecid,
-					success: function (dataList) {
-						console.log("堂數有進");
-						//console.log(dataList);
-						dataList.forEach(function (x) {
-							//console.log(x.cClassTimeId);
-							arr[cnt] = x.cClassTimeId;
-							cnt++;
-							UpdateEid = x.eID;	// 會做六次  沒有影響但可以更好的寫法
-						})
-						console.log("ClassTimeId:" + arr);
-						console.log("2.教練:" + UpdateEid);
-						for (var k = 0; k < arr.length; k++) {
-							//console.log(arr[k]);
-							updateData[k] = {
-								sId: UpdateSid,
-								orderTime: mydate,
-								orderStatus: UpdateStatus,
-								eId: UpdateEid,
-								classTimeId: arr[k]
-							};
-
-							recordData[k] = {
-								classTimeId: arr[k],
-								sId: UpdateSid,
-								crAttendance: false,
-								crContent: "",
-							};
 						}
-						//console.log("裡面updateData:");  //有取到
-						console.log(JSON.stringify(updateData[0]));
-						//{"upSid":6,"upOrderTime":"2023-01-10","upStatus":"已付款","upEid":3,"upClassTimeID":7}
-						console.log(JSON.stringify(recordData[0]));
-						//{"classTimeId":29,"sId":14,"crAttendance":false,"crContent":""}
+						console.log("2. SNumcnt:" + SNumcnt);
 
-						//放入 order
-						for (var n = 0; n < updateData.length; n++) {
-							console.log("for裡面updateData:");
-							console.log(updateData[n]);
+					})
+					console.log("3. SNumcnt:" + SNumcnt);
+					if (SNumcnt != 0) {
+						alert("該會員已報名過，不可重複報名");
+						FormClear();
+						signupModal.style.display = "none";
+					} else {
+						console.log("該會員可以報名");
+						var Status1 = $('input[name=orderStatus]')[0].checked;
+						var Status2 = $('input[name=orderStatus]')[1].checked;
+
+						if (Status1 || Status2) {
+							var UpdateSid = mySid;
+							var UpdateNumber = $('#signupNumber').val();
+							var UpdateName = $('#signupName').val();
+							var UpdateStatus, UpdateEid;
+							if (Status1) { UpdateStatus = "未付款"; } else { UpdateStatus = "已付款"; }
+
+							var mydate = new Date(new Date().getTime() + 8 * 3600 * 1000);
+							//console.log("mydate: "+mydate);
+							mydate = mydate.toJSON().slice(0, 19);
+							//console.log(mydate);
+
+							var arr = [];
+							var cnt = 0;
+							var updateData = [];
+							var recordData = [];
 							$.ajax({
-								type: "POST",
-								//POST: api/ClassOrders
-								url: "/api/ClassOrders",
-								dataType: "json",
-								contentType: "application/json",
-								data: JSON.stringify(updateData[n]),
-								success: function (data) {
-									console.log("ClassOrders IN");
+								type: "get",
+								//GET: api/Classes/totalLession/6
+								url: "/api/Classes/totalLession/" + Singlecid,
+								success: function (dataList) {
+									console.log("堂數有進");
+									//console.log(dataList);
+									dataList.forEach(function (x) {
+										//console.log(x.cClassTimeId);
+										arr[cnt] = x.cClassTimeId;
+										cnt++;
+										UpdateEid = x.eID;	// 會做六次  沒有影響但可以更好的寫法
+									})
+									console.log("ClassTimeId:" + arr);
+									console.log("2.教練:" + UpdateEid);
+									for (var k = 0; k < arr.length; k++) {
+										//console.log(arr[k]);
+										updateData[k] = {
+											sId: UpdateSid,
+											orderTime: mydate,
+											orderStatus: UpdateStatus,
+											eId: UpdateEid,
+											classTimeId: arr[k]
+										};
+
+										recordData[k] = {
+											classTimeId: arr[k],
+											sId: UpdateSid,
+											crAttendance: false,
+											crContent: "",
+										};
+									}
+									//console.log("裡面updateData:");  //有取到
+									console.log(JSON.stringify(updateData[0]));
+									//{"upSid":6,"upOrderTime":"2023-01-10","upStatus":"已付款","upEid":3,"upClassTimeID":7}
+									console.log(JSON.stringify(recordData[0]));
+									//{"classTimeId":29,"sId":14,"crAttendance":false,"crContent":""}
+
+									//放入 order
+									for (var n = 0; n < updateData.length; n++) {
+										console.log("for裡面updateData:");
+										console.log(updateData[n]);
+										$.ajax({
+											type: "POST",
+											//POST: api/ClassOrders
+											url: "/api/ClassOrders",
+											dataType: "json",
+											contentType: "application/json",
+											data: JSON.stringify(updateData[n]),
+											success: function (data) {
+												console.log("ClassOrders IN");
+											}
+										})
+									}
+
+									//放入 record
+									console.log(recordData);
+									console.log("typeof recordData: " + typeof recordData);
+									//var recordDataArr = [];
+									//for (elem in recordData) {
+									//	recordDataArr.push(recordData[elem]);
+									//}
+									$.ajax({
+										type: "POST",
+										// POST: api/ClassRecords/Many
+										url: "/api/ClassRecords/Many",
+										dataType: "json",
+										contentType: "application/json",
+										data: JSON.stringify(recordData),
+										success: function (data) {
+											console.log("ClassRecords2 IN");
+											console.log("Singlecid : " + Singlecid);
+											countAddition(Singlecid);
+											successSignup();
+										}
+									})
 								}
 							})
+						} else {
+							alert("沒有填寫是否付款!!!");
 						}
-
-						//放入 record
-						console.log(recordData);
-						console.log("typeof recordData: " + typeof recordData);
-						//var recordDataArr = [];
-						//for (elem in recordData) {
-						//	recordDataArr.push(recordData[elem]);
-						//}
-						$.ajax({
-							type: "POST",
-							// POST: api/ClassRecords/Many
-							url: "/api/ClassRecords/Many",
-							dataType: "json",
-							contentType: "application/json",
-							data: JSON.stringify(recordData),
-							success: function (data) {
-								console.log("ClassRecords2 IN");
-								console.log("Singlecid : " + Singlecid);
-								countAddition(Singlecid);
-								successSignup();
-							}
-						})
 					}
-				})
-			} else {
-				alert("沒有填寫是否付款!!!");
-			}
+				}
+			})
+
+
 
 		})
 

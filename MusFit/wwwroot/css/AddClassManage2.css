@@ -294,3 +294,20 @@ form a {
     margin: auto;
     background-color: #8a8a8d;
 }
+
+.test_box {
+    width: 400px;
+    min-height: 120px;
+    max-height: 300px;
+    _height: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 3px;
+    outline: 2px;
+    border: 2px solid #a0b3d6;
+    font-size: 18px;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: auto;
+    _overflow-y: visible;
+}

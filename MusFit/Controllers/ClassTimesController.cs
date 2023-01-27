@@ -88,7 +88,7 @@ namespace MusFit.Controllers
             return classTime;
         }
 		//--------------------------------------------------------- 君 START ------------------------------------------------------------
-		#region 單一課程相關資訊
+		#region 單一課程最後一堂課日期
 		// GET: api/ClassTimes/endDate/1
 		[HttpGet("endDate/{id}")]
 		public async Task<ActionResult<IEnumerable<dynamic>>> GetEndDate(int id)

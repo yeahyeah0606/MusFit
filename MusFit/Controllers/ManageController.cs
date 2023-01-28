@@ -1315,7 +1315,27 @@ namespace MusFit.Controllers
 			return View();
 		}
 
-		//---------------------------------------------------------  君 END  ------------------------------------------------------------
+        //---------------------------------------------------------  君 END  ------------------------------------------------------------
 
-	}
+        public IActionResult ClassIntroduce()
+        {
+            var viewModel = _context.ClassIntroduces.ToList();
+            var myquery2 = (from myemployee1 in _context.Employees select myemployee1).ToList();
+            ViewBag.querydata = myquery2;
+
+
+            var query = from classdate in _context.ClassTimes
+                        group classdate by classdate.CId into g
+                        select new
+                        {
+                            g.Key,
+
+                        };
+
+
+
+            return View(viewModel);
+
+        }
+    }
 }

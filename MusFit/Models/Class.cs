@@ -9,7 +9,6 @@ namespace MusFit.Models
     {
         public Class()
         {
-            ClassIntroduces = new HashSet<ClassIntroduce>();
             ClassTimes = new HashSet<ClassTime>();
         }
 
@@ -27,7 +26,6 @@ namespace MusFit.Models
         public virtual Employee EIdNavigation { get; set; }
         public virtual LessionCategory Lc { get; set; }
         public virtual Room Room { get; set; }
-        public virtual ICollection<ClassIntroduce> ClassIntroduces { get; set; }
         public virtual ICollection<ClassTime> ClassTimes { get; set; }
     }
 }

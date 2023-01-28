@@ -519,6 +519,7 @@
 							console.log("mytoday : " + mytoday);
 							if( mytoday > endDate ){
 								alert("該課程已經結束，不可更動");
+							$('#editModal').css("display", "none");
 							}else{
 								console.log("該課程可更動");
 								if (Status1 || Status2 || Status3) {

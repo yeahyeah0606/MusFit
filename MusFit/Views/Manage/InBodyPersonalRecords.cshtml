@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="~/css/InBodyPersonalRecords.css" />
 <div class="myContent">
 
-    <h3>InBody紀錄查詢</h3>
+    <h3>InBody個人歷史紀錄 - <span id="name"></span></h3>
 
     <div class="searcharea">
         <select id="dateQuery" onchange="selectDateRecord()">
@@ -96,6 +96,7 @@
             deleteModal.style.display = "none";
         }
 
+        //get personal inBody records
         $.ajax({
             type: "get",
             url: "/api/InBodies/sId/" + @ViewBag.Id,
@@ -113,6 +114,15 @@
                         $('#myTable').append(tableRow);
                     })
                }
+        })
+
+        //get student's name
+        $.ajax({
+            type: "get",
+            url: "/api/students/" + @ViewBag.Id,
+            success: function (x) {
+                $('#name').text(x.sName);
+            }
         })
 
        function selectDateRecord(x){

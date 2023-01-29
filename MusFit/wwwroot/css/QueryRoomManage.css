@@ -112,38 +112,10 @@ tr {
 .total-member {
     text-align: right;
     font-size: 18px;
-    padding-right: 4%;
+    padding-right: 15%;
 }
 /* 上一頁 下一頁 樣式 */
-.page-ul {
-    text-align: center;
+.pagination .active a {
+    background-color: #8a8a8d !important;
+    border: none;
 }
-
-ul.pagination {
-    display: inline-block;
-    padding: 0;
-    margin: 0;
-}
-
-    ul.pagination li {
-        display: inline;
-    }
-
-        ul.pagination li a {
-            color: black;
-            float: left;
-            padding: 8px 16px;
-            text-decoration: none;
-            transition: background-color .3s;
-            border: 1px solid #ddd;
-        }
-
-            ul.pagination li a.active {
-                background-color: #66afe9;
-                color: white;
-                border: 1px solid #4da6f0;
-            }
-
-            ul.pagination li a:hover:not(.active) {
-                background-color: #4da6f0;
-            }

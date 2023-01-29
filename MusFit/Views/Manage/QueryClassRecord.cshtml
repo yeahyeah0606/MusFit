@@ -328,8 +328,8 @@
 			const totalPage = page.pageTotal;
 			let pagination = document.querySelector('#pageid');
 			var pageHtml = "", prevButton, nextButton;
-			let pageIndex = nowPage;
-			//let pageIndex =9;
+			let pageIndex = parseInt(nowPage);
+			//pageIndex =9;
 
 			console.log("裡面pageIndex : " + pageIndex);   // ok
 			if (page.hasPage) {
@@ -346,7 +346,7 @@
 			let firstPage = `<li class='list-items' pagenumber=1><a class="page-link" href="#" data-page="${i}">1</a></li>`;
 			let lastPage = `<li class='list-items' pagenumber=${totalPage}><a class="page-link" href="#" data-page="${totalPage}">${totalPage}</a></li>`;
 			let leftOmitPage = `<li class='list-items' id='btnGoLeft'><a class="page-link" href="#" data-page="${i}">...</a></li>`;
-			let rightOmitPage = `<li class='list-items' id='btnGoRight'><a class="page-link" href="#" data-page="${i}">...</a></li>`;
+			let rightOmitPage = `<li class='list-items' id='btnGoRight'><a class="page-link" href="#" data-page="${totalPage}">...</a></li>`;
 			pageHtml = prevButton;
 			/* 生成頁數 */
 			if (totalPage <= 10) {
@@ -361,19 +361,20 @@
 				}
 				pageHtml += rightOmitPage;
 				pageHtml += lastPage;
-			} else if (pageIndex > totalPage - 7) {
+			} else if (pageIndex > ( totalPage - 7 )) {
 				//總頁數大於10頁且當前頁接近總頁數
 				pageHtml += firstPage;
 				pageHtml += leftOmitPage;
-				for (let i = totalPage - 8; i <= totalPage; i++) {
+				for (let i =( totalPage - 8); i <= totalPage; i++) {
 					pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
 				}
 			} else {
 				//當前頁在中間
 				pageHtml += firstPage;
 				pageHtml += leftOmitPage;
-				for (let i = pageIndex - 3; i <= pageIndex + 3; i++) {
+				for (let i = (pageIndex - 3); i <=( pageIndex + 3); i++) {
 					pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+					//console.log("pageIndex: " + pageIndex);	
 				}
 				pageHtml += rightOmitPage;
 				pageHtml += lastPage;

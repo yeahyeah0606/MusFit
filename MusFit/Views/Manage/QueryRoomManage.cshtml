@@ -65,30 +65,65 @@
 
 	</table>
 	<br>
-	@*<p class="total-member">共 15 人</p>*@
-	<div class="page-ul">
-		<ul class="pagination">
-			<li><a href="#">«</a></li>
-			<li><a href="#">1</a></li>
-			<li><a class="active" href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li><a href="#">4</a></li>
-			<li><a href="#">5</a></li>
-			<li><a href="#">»</a></li>
-		</ul>
-	</div>
 </div>
+<p class="total-member" id="dataNum">全部 :  共 0 筆 </p>
+	@*pagination*@
+	<div class="d-flex justify-content-center">
+		<nav aria-label="Page navigation example">
+			<ul class="pagination" id="pageid"></ul>
+		</nav>
+	</div>
 
 @section Scripts{
 	<script>
-		//  全部show
-		var dataList = [];
-		$.ajax({
-			type: "get",
-			url: "/api/Rooms/roomList",
-			success: function (dataList) {
-				$("#Listbody").empty();
-				dataList.forEach(function (x) {
+		const pageid = document.getElementById('pageid');
+		pageid.addEventListener('click', switchPage);
+
+		function switchPage(n) {
+            n.preventDefault();
+            const nowpage = n.target.dataset.page; // nowpage = "data-page"
+			console.log("nowpage:" + nowpage);
+            pagination(jsonData, nowpage);
+        }
+
+		// 計算分頁數
+        function pagination(jsonData, nowPage) {
+
+            const dataTotal = jsonData.length;
+
+            const perpage = 5;
+            const pageTotal = Math.ceil(dataTotal / perpage);
+
+            let currentPage = nowPage;
+			// 當"當前頁數"比"總頁數"大的時候，"當前頁數"就等於"總頁數"
+            if (currentPage > pageTotal) { currentPage = pageTotal; }
+
+            const minData = (currentPage * perpage) - perpage + 1;
+            const maxData = (currentPage * perpage);
+
+            // dynamic data array according to current page
+            const data = [];
+
+            jsonData.forEach((item, index) => {
+                const num = index + 1;
+				// 當 num 比 minData 大且又小於 maxData 就push進去新陣列。
+                if (num >= minData && num <= maxData) { data.push(item); }
+            })
+            const page = {
+                pageTotal,
+                currentPage,
+                hasPage: currentPage > 1,  // has previous page
+                hasNext: currentPage < pageTotal,  // has next page
+            }
+            displayData(data);
+            pageBtn(page);
+			console.log(`全部資料:${dataTotal} 每一頁顯示:${perpage}筆 總頁數:${pageTotal}`);
+			document.getElementById("dataNum").innerText = `全部 :  共 ${dataTotal} 筆`;
+        }
+
+		function displayData(data) {
+			var tableRow;
+			data.forEach(function (x) {
 					var term;
 					switch (x.tID) {
 						case 9:
@@ -122,7 +157,7 @@
 							term = "19:00 ~ 20:00";
 							break;
 						case 20:
-							term = "20: 00 ~21: 00";
+							term = "20:00 ~ 21:00";
 							break;
 						case 21:
 							term = "21:00 ~ 22:00";
@@ -131,20 +166,56 @@
 
 					}
 					var date = new Date(x.ctDate).toLocaleDateString();
-					var template =
-						`
-																		<tr class="result">
-																				<td>${date}</td>
-																				<td>${term}</td>
-																				<td>${x.roomName}</td>
-																				<td>${x.lcType}</td>
-																				<td>${x.cName}</td>
-																				<td>${x.eEngName}</td>
-																		</tr>
-																		`;
-					$("#Listbody").append(template);
-				})
-				console.log(dataList);
+					tableRow += `
+										<tr class="result">
+												<td>${date}</td>
+												<td>${term}</td>
+												<td>${x.roomName}</td>
+												<td>${x.lcType}</td>
+												<td>${x.cName}</td>
+												<td>${x.eEngName}</td>
+										</tr>
+										`;
+				count++;
+			})
+			
+			$('.result').remove();
+			$('#Listbody').append(tableRow);
+		}
+
+		function pageBtn(page) {
+            let str = '';
+            const total = page.pageTotal;
+
+            // if current page > 1 or not
+            if (page.hasPage) { str += `<li class="page-item"><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`; }
+            else { str += `<li class="page-item disabled"><span class="page-link">&laquo;</span></li>`; }
+
+            // pages (current page = data-page)
+            for (let i = 1; i <= total; i++) {
+                if (Number(page.currentPage) === i) { str += `<li class="page-item active"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`; }
+                else { str += `<li class="page-item"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`; }
+            };
+
+            // if current page < total page or not
+            if (page.hasNext) { str += `<li class="page-item"><a class="page-link" href="#" data-page="${Number(page.currentPage) + 1}">&raquo;</a></li>`; }
+            else { str += `<li class="page-item disabled"><span class="page-link">&raquo;</span></li>`; }
+
+            pageid.innerHTML = str;
+        }
+
+
+		//  全部show
+		//var dataList = [];
+		var jsonData = [];
+		$.ajax({
+			type: "get",
+			url: "/api/Rooms/roomList",
+				success: function (data) {
+				//$("#Listbody").empty();
+				jsonData = data;
+				console.log("jsonData: "+ jsonData);
+				pagination(jsonData, 1);
 			}
 		})
 
@@ -176,67 +247,10 @@
 					type: "get",
 					//GET: api/Rooms/RoomQuery/2023-01-01/2023-02-01/9/5
 					url: "/api/Rooms/RoomQuery/" + mydateStart + "/" + mydateEnd + "/" + mytID + "/" + myroomID,
-					success: function (dataList) {
-						$("#Listbody").empty();
-						dataList.forEach(function (x) {
-							var term;
-							switch (x.tID) {
-								case 9:
-									term = "09:00 ~ 10:00";
-									break;
-								case 10:
-									term = "10:00 ~ 11:00";
-									break;
-								case 11:
-									term = "11:00 ~ 12:00";
-									break;
-								case 13:
-									term = "13:00 ~ 14:00";
-									break;
-								case 14:
-									term = "14:00 ~ 15:00";
-									break;
-								case 15:
-									term = "15:00 ~ 16:00";
-									break;
-								case 16:
-									term = "16:00 ~ 17:00";
-									break;
-								case 17:
-									term = "17:00 ~ 18:00";
-									break;
-								case 18:
-									term = "18:00 ~ 19:00";
-									break;
-								case 19:
-									term = "19:00 ~ 20:00";
-									break;
-								case 20:
-									term = "20: 00 ~21: 00";
-									break;
-								case 21:
-									term = "21:00 ~ 22:00";
-									break;
-								default:
-
-							}
-
-							var date = new Date(x.ctDate).toLocaleDateString();
-							var template =
-								`
-																				<tr class="result">
-																						<td>${date}</td>
-																						<td>${term}</td>
-																						<td>${x.roomName}</td>
-																						<td>${x.lcType}</td>
-																						<td>${x.cName}</td>
-																						<td>${x.eEngName}</td>
-																				</tr>
-																				`;
-							$("#Listbody").append(template);
-							count++;
-						})
-						console.log("count: " + count);
+					success: function (data) {
+						jsonData = data;
+						console.log("jsonData: " + jsonData);
+						pagination(jsonData, 1);
 						//沒有查到資料
 						if (count == 0) {
 							alert("沒有查到相關資料");

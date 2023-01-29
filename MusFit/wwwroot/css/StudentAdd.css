@@ -1001,18 +1001,9 @@ textarea.form-control-lg {
     position: relative;
 }
 
-.student-add-form {
-    position: relative;
-}
 
-    .student-add-form .student-add-form-left {
-        position: relative;
-        text-align: center;
-    }
 
-    .student-add-form .student-add-form-right {
-        text-align: center;
-    }
+    
 
 .card-body .photoFile input {
     vertical-align: middle;
@@ -1033,14 +1024,7 @@ textarea.form-control-lg {
     border-radius: 50px;
 }
 
-/*.studentGender {
-    display: flex;
-}*/
 
-/*.genderLabel, .jobLabel, .typeLabel {
-    margin-left: 4px;
-    margin-right: 6px;
-}*/
 
 .from-group label {
     font-size: 18px;

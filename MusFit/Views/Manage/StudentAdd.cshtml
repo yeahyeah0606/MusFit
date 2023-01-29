@@ -41,7 +41,7 @@
                                 <span class="field-validation-valid text-danger" data-valmsg-for="SName"
                                       data-valmsg-replace="true" asp-validation-for="SName"></span>
                             </div>
-                            <div class="from-group mb-4">
+                            <div class="from-group mb-4" style="margin-left:-40px;">
                                 <label asp-for="SGender">性別</label>
 
                                 <label class="form-check-label" id="SGender">
@@ -56,7 +56,7 @@
                                 <span class="field-validation-valid text-danger" data-valmsg-for="SGender"
                                       data-valmsg-replace="true" asp-validation-for="SGender"></span>
                             </div>
-                            <div class="from-group mb-4 studentBirth text-left">
+                            <div class="from-group mb-4" style="margin-left:-15px;">
                                 <label asp-for="SBirth">生日</label>
                                 <input asp-for="SBirth" class="form-control w-50" type="date"
                                        name="SBirth"><br>
@@ -70,7 +70,7 @@
                                 <span class="field-validation-valid text-danger" data-valmsg-for="SMail"
                                       data-valmsg-replace="true" asp-validation-for="SMail"></span>
                             </div>
-                            <div class="col-3 from-group mt-2">
+                            <div class="col-3 from-group " style="margin-left:35px;">
                                 <label asp-for="SPassword">密碼</label>
                                 <input asp-for="SPassword" class="form-control" type="text"
                                        value="預設為生日" readonly>
@@ -78,9 +78,9 @@
                         </div>
 
                         <div class="col-6 student-add-form-right">
-                            <div class="from-group mb-4 date text-left">
+                            <div class="from-group mb-4 " style="margin-left:-15px;">
                                 <label asp-for="SJoinDate">入會日期</label>
-                                <input asp-for="SJoinDate" class="form-control" type="date"
+                                <input asp-for="SJoinDate" class="form-control w-50" type="date"
                                        name="SJoinDate" value="@DateTime.Now.ToString("yyyy-MM-dd")"><br>
                                 <span class="field-validation-valid text-danger" data-valmsg-for="SJoinDate"
                                       data-valmsg-replace="true" asp-validation-for="SJoinDate"></span>

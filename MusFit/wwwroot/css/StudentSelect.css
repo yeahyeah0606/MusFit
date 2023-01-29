@@ -383,27 +383,6 @@ textarea.form-control-lg {
         height: 1.5em
     }
 
-.form-select {
-    -moz-padding-start: calc(.85rem - 3px);
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: #fff;
-    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E");
-    background-position: right .85rem center;
-    background-repeat: no-repeat;
-    background-size: 16px 12px;
-    border: 1px solid #ced4da;
-    border-radius: .2rem;
-    color: #495057;
-    display: block;
-    font-size: .875rem;
-    font-weight: 400;
-    line-height: 1.5;
-    padding: .3rem 2.55rem .3rem .85rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    width: 100%
-}
 
 .row > * {
     flex-shrink: 0;
@@ -486,18 +465,15 @@ textarea.form-control-lg {
     align-items: center;
     align-content: center;
     text-align: center;
-    background-color: #666666;
+    background-color: #ced4da;
     color: black;
 }
 
-.btnDiv a:active {
-    text-decoration: none;
-    border-color: transparent;
-    background-color: #88888884;
+#btnEdit:hover {
+    opacity: 0.7;
 }
 
-.btnDiv a:hover {
+#btnReturn:hover {
     text-decoration: none;
-    border-color: transparent;
-    background-color: #88888888;
+    opacity: 0.7;
 }

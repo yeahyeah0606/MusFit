@@ -40,19 +40,19 @@
                                 @{
                                     if (Model.SGender == false)
                                     {
-                                        <input asp-for="SGender" class="form-control" type="text"
+                                                    <input asp-for="SGender" class="form-control" type="text"
                                        name="SGender" value="女" disabled>
                                     }
                                     else
                                     {
-                                        <input asp-for="SGender" class="form-control" type="text"
+                                                    <input asp-for="SGender" class="form-control" type="text"
                                        name="SGender" value="男" disabled>
                                     }
                                 }
                             </div>
                             <div class="from-group mb-4">
                                 <label asp-for="SBirth">生日</label>
-                                <input asp-for="SBirth" class="form-control" type="date"
+                                <input asp-for="SBirth" class="form-control" style="width:250px;" type="date"
                                        name="SBirth" disabled>
                             </div>
                             <div class="from-group mb-4">
@@ -70,7 +70,7 @@
                         <div class="col-6 student-select-form-right">
                             <div class="from-group mb-4">
                                 <label asp-for="SJoinDate">入會日期</label>
-                                <input asp-for="SJoinDate" class="form-control w-50" type="date"
+                                <input asp-for="SJoinDate" class="form-control" style="width:250px;" type="date"
                                        name="SJoinDate" disabled>
                             </div>
                             <div class="from-group mb-4">
@@ -96,10 +96,10 @@
                             </div>
                             <div class="row from-group mb-4 btnDiv">
                                 <div class="col-6">
-                                    <a id="btnEdit" type="button" name="edit" onclick="EditStudent()">編輯</a>
+                                    <a id="btnEdit" type="button" name="edit" style="padding-left:65px;" onclick="EditStudent()">編輯</a>
                                 </div>
                                 <div class="col-6">
-                                    <a href="@Url.Action("StudentSearch","Manage")" id="btnReturn" type="button" name="return">返回</a>
+                                    <a href="@Url.Action("StudentSearch","Manage")" id="btnReturn" type="button" name="return" style="padding-left:65px;">返回</a>
                                 </div>
                             </div>
 

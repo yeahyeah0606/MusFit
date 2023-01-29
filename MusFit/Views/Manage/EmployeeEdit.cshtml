@@ -62,11 +62,11 @@
 							</div>
 							<div class="form-group mb-4">
 								<label asp-for="EBirth">生日</label>
-								<input asp-for="EBirth" class="form-control" type="date"><br>
+								<input asp-for="EBirth" class="form-control" style="width:247px;" type="date"><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EBirth"
 									  data-valmsg-replace="true" asp-validation-for="EBirth"></span>
 							</div>
-							<div class="from-group mb-4">
+							<div class="from-group mb-4" style="margin-left:-100px;">
                                 <label asp-for="EIdentityNumber">身分證</label>
 								<input asp-for="EIdentityNumber" class="form-control" type="text"
 									   name="EIdentityNumber"><br>
@@ -109,6 +109,7 @@
 									  data-valmsg-replace="true" asp-validation-for="EIsCoach"></span>
 							</div>
 							<div class="form-group mb-4">
+								<label>課程項目</label>
 								@using (Html.BeginForm("EEdit", "Manage"))
                                 {
                                     foreach (var item in Model.AvailableLession)
@@ -128,13 +129,13 @@
                             </div>
 							<div class="form-group mb-4">
 								<label asp-for="EEnrollDate">入職日期</label>
-								<input asp-for="EEnrollDate" class="form-control" type="date"><br>
+								<input asp-for="EEnrollDate" class="form-control" style="width:247px;"  type="date"><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EEnrollDate"
 									  data-valmsg-replace="true" asp-validation-for="EEnrollDate"></span>
 							</div>
 							<div class="form-group mb-4">
 								<label asp-for="EResignDate">離職日期</label>
-								<input asp-for="EResignDate" class="form-control" type="date"><br>
+								<input asp-for="EResignDate" class="form-control" style="width:247px;"  type="date"><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EResignDate"
 									  data-valmsg-replace="true" asp-validation-for="EResignDate"></span>
 							</div>
@@ -151,7 +152,7 @@
 									  data-valmsg-replace="true" asp-validation-for="EContactorPhone"></span>
 							</div>
 							<div class="form-group mb-4">
-								<label asp-for="EExplain" class="label-style">風格描述</label>
+								<label asp-for="EExplain" class="label-style" style="margin-left:0px;">風格描述</label>
 								<textarea asp-for="EExplain" class="form-control" rows="5" cols="22"></textarea><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EExplain"
 									  data-valmsg-replace="true" asp-validation-for="EExplain"></span>

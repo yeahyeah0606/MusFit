@@ -1008,7 +1008,12 @@ textarea.form-control-lg {
     width: 200px;
 }
 
-.from-group label {
+.card-body .photoFile input {
+    vertical-align: middle;
+    padding-left: 40%;
+}
+
+.card-body label {
     font-size: 18px;
     display: inline-block;
     width: 100px;

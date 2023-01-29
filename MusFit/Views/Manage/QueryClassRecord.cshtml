@@ -147,10 +147,10 @@
 
 </div>
 
-@*success operation*@
-<div id="successMessage" class="modal">
+@*update operation*@
+<div id="updateMessage" class="modal">
 
-	<div id="successModal" class="modal-content">
+	<div id="updateModal" class="modal-content">
 		<span class="close" onclick="closeSuccessModel()">&times;</span>
 		<p>已存檔</p>
 		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
@@ -181,8 +181,8 @@
 		}
 
 		function closeSuccessModel() {
-			$('#successMessage').css("display", "none");
-			location.reload();
+			$('#updateMessage').css("display", "none");
+			myrefresh();
 		}
 
 		// 取消
@@ -324,7 +324,7 @@
 			$('#crbody').append(tableRow);
 		}
 
-		function pageBtn(page,nowPage) {
+		function pageBtn(page, nowPage) {
 			const totalPage = page.pageTotal;
 			let pagination = document.querySelector('#pageid');
 			var pageHtml = "", prevButton, nextButton;
@@ -335,22 +335,22 @@
 			if (page.hasPage) {
 				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`;
 			} else {
-				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${i}">&laquo;</a></li>`;
+				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#"  data-page="${pageIndex}">&laquo;</a></li>`;
 			}
 			if (page.hasNext) {
 				nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${Number(page.currentPage) + 1}">&raquo;</a></li>`;
 			} else {
-					nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${totalPage}">&raquo;</a></li>`;
+				nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${pageIndex}" >&raquo;</a></li>`;
 			}
-			
-			let firstPage = `<li class='list-items' pagenumber=1><a class="page-link" href="#" data-page="${i}">1</a></li>`; 
+
+			let firstPage = `<li class='list-items' pagenumber=1><a class="page-link" href="#" data-page="${i}">1</a></li>`;
 			let lastPage = `<li class='list-items' pagenumber=${totalPage}><a class="page-link" href="#" data-page="${totalPage}">${totalPage}</a></li>`;
-			let leftOmitPage = `<li class='list-items' id='btnGoLeft'><a class="page-link" href="#" data-page="${i}">...</a></li>`; 
+			let leftOmitPage = `<li class='list-items' id='btnGoLeft'><a class="page-link" href="#" data-page="${i}">...</a></li>`;
 			let rightOmitPage = `<li class='list-items' id='btnGoRight'><a class="page-link" href="#" data-page="${i}">...</a></li>`;
-			pageHtml = prevButton; 
+			pageHtml = prevButton;
 			/* 生成頁數 */
 			if (totalPage <= 10) {
-				//  總頁數小於等於10頁全部顯示 
+				//  總頁數小於等於10頁全部顯示
 				for (let i = 1; i <= totalPage; i++) {
 					pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
 				}
@@ -381,10 +381,7 @@
 			pageHtml += nextButton;
 			pagination.innerHTML = pageHtml;
 			document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
-
-			//let pagenumberBtns = document.querySelectorAll('li[pagenumber]'); //獲取所有的頁碼按鈕
-
-        }
+		}
 
 			//  全部show
 		var dataData = [];
@@ -503,7 +500,9 @@
 						data: JSON.stringify(updateData),
 						success: function (data) {
 							$('#editModal').css("display", "none");
-							alert("有成功更改");
+							//alert("有成功更改");
+							$('#updateMessage').css("display", "block");
+							//myrefresh();
 						}
 					})
 
@@ -514,50 +513,12 @@
 				document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
 			}
 
-			//不能用...
-			function switchFun(tID) {
-				switch (tID) {
-					case 9:
-						term = "09:00 ~ 10:00";
-						break;
-					case 10:
-						term = "10:00 ~ 11:00";
-						break;
-					case 11:
-						term = "11:00 ~ 12:00";
-						break;
-					case 13:
-						term = "13:00 ~ 14:00";
-						break;
-					case 14:
-						term = "14:00 ~ 15:00";
-						break;
-					case 15:
-						term = "15:00 ~ 16:00";
-						break;
-					case 16:
-						term = "16:00 ~ 17:00";
-						break;
-					case 17:
-						term = "17:00 ~ 18:00";
-						break;
-					case 18:
-						term = "18:00 ~ 19:00";
-						break;
-					case 19:
-						term = "19:00 ~ 20:00";
-						break;
-					case 20:
-						term = "20: 00 ~21: 00";
-						break;
-					case 21:
-						term = "21:00 ~ 22:00";
-						break;
-					default:
-
-				}
+			function myrefresh()
+			{
+				window.location.reload();
 			}
-		</script>
+
+	</script>
 
 
 }

@@ -112,7 +112,8 @@ tr {
 .total-member {
     text-align: right;
     font-size: 18px;
-    padding-right: 15%;
+    /*    padding-right: 30px;*/
+    padding-left: 80px;
 }
 /* 上一頁 下一頁 樣式 */
 .pagination .active a {

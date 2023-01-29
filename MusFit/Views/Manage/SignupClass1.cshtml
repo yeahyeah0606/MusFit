@@ -74,7 +74,6 @@
 			</tbody>
 		</table>
 		<br>
-		@*<p class="total-member" id="dataNum">全部 :  共 0 筆 </p>*@
 		@*pagination*@
 		<div class="d-flex justify-content-center">
 			<nav aria-label="Page navigation example">
@@ -155,7 +154,7 @@
 
 		function closeSuccessModel() {
 			$('#successMessage').css("display", "none");
-			location.reload();
+				myrefresh();
 		}
 
 		// 取消
@@ -296,7 +295,7 @@
 			if (page.hasNext) {
 				nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${Number(page.currentPage) + 1}">&raquo;</a></li>`;
 			} else {
-					nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${totalPage}">&raquo;</a></li>`;
+					nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${totalPage}" >&raquo;</a></li>`;
 			}
 
 			let firstPage = `<li class='list-items' pagenumber=1><a class="page-link" href="#" data-page="${i}">1</a></li>`;
@@ -514,7 +513,10 @@
 				document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
 			}
 
-
+			function myrefresh()
+			{
+				window.location.reload();
+			}
 
 
 	</script>

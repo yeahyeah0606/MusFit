@@ -239,7 +239,7 @@ form a {
         cursor: pointer;
     }
 
-#noDataModal, #errorModal, #successModal {
+#noDataModal, #errorModal, #successModal, #updateModal {
     width: 30%;
 }
 

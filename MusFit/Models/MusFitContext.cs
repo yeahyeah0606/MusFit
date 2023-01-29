@@ -29,11 +29,11 @@ namespace MusFit.Models
         public virtual DbSet<LessionCategory> LessionCategories { get; set; }
         public virtual DbSet<News> News { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
-        public virtual DbSet<RoomState> RoomStates { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Term> Terms { get; set; }
         public virtual DbSet<VwCoachSchedule> VwCoachSchedules { get; set; }
         public virtual DbSet<VwInBody> VwInBodies { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -99,8 +99,6 @@ namespace MusFit.Models
 
                 entity.Property(e => e.InId).HasColumnName("inID");
 
-                entity.Property(e => e.CId).HasColumnName("cID");
-
                 entity.Property(e => e.EId).HasColumnName("eID");
 
                 entity.Property(e => e.InCategory)
@@ -126,12 +124,6 @@ namespace MusFit.Models
                     .HasMaxLength(20)
                     .HasColumnName("inTitle")
                     .IsFixedLength(true);
-
-                entity.HasOne(d => d.CIdNavigation)
-                    .WithMany(p => p.ClassIntroduces)
-                    .HasForeignKey(d => d.CId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ClassIntroduce_Class");
 
                 entity.HasOne(d => d.EIdNavigation)
                     .WithMany(p => p.ClassIntroduces)
@@ -670,27 +662,6 @@ namespace MusFit.Models
                 entity.Property(e => e.RoomName).HasColumnName("roomName");
             });
 
-            modelBuilder.Entity<RoomState>(entity =>
-            {
-                entity.HasKey(e => e.RsId);
-
-                entity.ToTable("RoomState");
-
-                entity.Property(e => e.RsId).HasColumnName("rsID");
-
-                entity.Property(e => e.CId).HasColumnName("cID");
-
-                entity.Property(e => e.ClassTimeId).HasColumnName("classTimeID");
-
-                entity.Property(e => e.RoomId).HasColumnName("roomID");
-
-                entity.HasOne(d => d.Room)
-                    .WithMany(p => p.RoomStates)
-                    .HasForeignKey(d => d.RoomId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RoomState_Room");
-            });
-
             modelBuilder.Entity<Student>(entity =>
             {
                 entity.HasKey(e => e.SId);
@@ -768,7 +739,7 @@ namespace MusFit.Models
             modelBuilder.Entity<Term>(entity =>
             {
                 entity.HasKey(e => e.TId)
-                    .HasName("PK__Term__DC115707E6ED16FC");
+                    .HasName("PK__Term__DC115707D4DFA21A");
 
                 entity.ToTable("Term");
 

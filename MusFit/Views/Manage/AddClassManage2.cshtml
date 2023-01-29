@@ -298,7 +298,7 @@
 				case 6:
 					document.getElementById("week6").checked = true;
 					break;
-				case 7:
+				case 0:
 					document.getElementById("week7").checked = true;
 					break;
 				default:
@@ -481,10 +481,12 @@
 			console.log(typeof Allday);  //object
 			var myDayList = [ ];
 			for(var n=0; n<TotalLession; n++){
+				
 				myDayList[n] =  Allday[n].substr(1, 10) ;
 				console.log("myDayList " + n +": " + myDayList[n]); //2023-01-24  string
 				var temp = "date"+ (n+1).toString();
 				//console.log(temp);
+				document.getElementById(temp).value ="";
 				document.getElementById(temp).value = myDayList[n];
 			}
 			// onchange Room

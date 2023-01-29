@@ -225,9 +225,9 @@
 								dataCheck.forEach(function (k) {
 									checkcnt++;
 								})
-								console.log("checkcnt : " + checkcnt);
+								//console.log("checkcnt : " + checkcnt);
 								if (checkcnt > 0) { checkStatus = "退款"; } else { checkStatus = x.oOrderStatus; }
-								console.log("checkStatus : " + checkStatus);
+								//console.log("checkStatus : " + checkStatus);
 
 								if (x.crAttendance == true) { attendance = "Y"; } else { attendance = "N"; }
 								if (x.crContent == null) { content = ""; } else { content = x.crContent; }
@@ -499,139 +499,157 @@
 				var Status1 = $('input[name=orderStatus]')[0].checked;
 				var Status2 = $('input[name=orderStatus]')[1].checked;
 				var Status3 = $('input[name=orderStatus]')[2].checked;
-				var UpdateCid, UpdateSid;
+				var UpdateCid, UpdateSid, endDate, mytoday;
 				var hidStatus =$('#hidden-oStatus').val();
 				if( hidStatus=="退款" ){
 					alert("退款後不可更動，只能重新報名！");
 					$('#editModal').css("display", "none");
 				}else{
-					if (Status1 || Status2 || Status3) {
-						UpdateSid = $('#editSid').val();
-						UpdateCid = $('#editCid').val();
-						var UpdateTLession = parseInt($('#editTotalLession').val());
-						var UpdateEid = parseInt($('#editeID').val());
-						//console.log("UpdateEid : "+UpdateEid);
-						var UpdateStatus;
-						var mytoday= new Date().getTime() + 8 * 3600 * 1000;
-						console.log(" mytoday2 : " + mytoday);
-						var Upatedate = new Date(mytoday).toJSON().slice(0, 19);
-						console.log("Upatedate2 : " + Upatedate);
-						if (Status1 || Status2 ) {
-							if (Status1) UpdateStatus = "未付款";
-							if (Status2) UpdateStatus = "已付款";
-							console.log("UpdateStatus : " + UpdateStatus);
-							//取得orderID(有日期判斷)
-							$.ajax({
-								type: "get",
-								//GET: api/ClassOrders/orderIDall/1/5
-								url: "/api/ClassOrders/orderIDall/" + UpdateCid + "/" + UpdateSid,
-								success: function (data) {
-									data.forEach(function (x) {
-										console.log("orderID:" + x.oorderID);
-										var orderID = x.oorderID;
-										var UpdatectID = x.classTimeID;
-
-										var updateData = {
-											orderId: orderID,
-											sId: UpdateSid,
-											orderTime: Upatedate,
-											orderStatus: UpdateStatus,
-											eID: UpdateEid,
-											classTimeId: UpdatectID
-										};
-										console.log(updateData);
-
-										//更改order的付款狀態
+					//查看是否課程已上完
+					UpdateCid = $('#editCid').val();
+					$.ajax({
+						type: "GET",
+						// GET: api/ClassTimes/endDate/1
+						url: "/api/ClassTimes/endDate/" + UpdateCid,
+						success: function (data) {
+							console.log(data)
+							endDate = new Date(data[0].endDate).getTime() + 8 * 3600 * 1000;
+							mytoday = new Date().getTime() + 8 * 3600 * 1000;
+							console.log("endDate : " + endDate);
+							console.log("mytoday : " + mytoday);
+							if( mytoday > endDate ){
+								alert("該課程已經結束，不可更動");
+							$('#editModal').css("display", "none");
+							}else{
+								console.log("該課程可更動");
+								if (Status1 || Status2 || Status3) {
+									UpdateSid = $('#editSid').val();
+									UpdateCid = $('#editCid').val();
+									var UpdateTLession = parseInt($('#editTotalLession').val());
+									var UpdateEid = parseInt($('#editeID').val());
+									var UpdateStatus;
+									mytoday= new Date().getTime() + 8 * 3600 * 1000;
+									console.log(" mytoday2 : " + mytoday);
+									var Upatedate = new Date(mytoday).toJSON().slice(0, 19);
+									console.log("Upatedate2 : " + Upatedate);
+									if (Status1 || Status2 ) {
+										if (Status1) UpdateStatus = "未付款";
+										if (Status2) UpdateStatus = "已付款";
+										console.log("UpdateStatus : " + UpdateStatus);
+										//取得orderID(有日期判斷)
 										$.ajax({
-											type: "PUT",
-											//PUT: api/ClassOrders/128
-											url: "/api/ClassOrders/" + orderID,
-											dataType: "json",
-											contentType: "application/json",
-											data: JSON.stringify(updateData),
+											type: "get",
+											//GET: api/ClassOrders/orderIDall/1/5
+											url: "/api/ClassOrders/orderIDall/" + UpdateCid + "/" + UpdateSid,
 											success: function (data) {
-												//alert("已更動Order囉");
-												//flag1 = true;
-												console.log("Status3 : " + Status3);
-												//if (Status3) { flag2 = true; }
-												$('#editModal').css("display", "none");
-												$('#updateMessage').css("display", "block");
+												data.forEach(function (x) {
+													console.log("orderID:" + x.oorderID);
+													var orderID = x.oorderID;
+													var UpdatectID = x.classTimeID;
+
+													var updateData = {
+														orderId: orderID,
+														sId: UpdateSid,
+														orderTime: Upatedate,
+														orderStatus: UpdateStatus,
+														eID: UpdateEid,
+														classTimeId: UpdatectID
+													};
+													console.log(updateData);
+													//更改order的付款狀態
+													$.ajax({
+														type: "PUT",
+														//PUT: api/ClassOrders/128
+														url: "/api/ClassOrders/" + orderID,
+														dataType: "json",
+														contentType: "application/json",
+														data: JSON.stringify(updateData),
+														success: function (data) {
+															console.log("Status3 : " + Status3);
+															$('#editModal').css("display", "none");
+															$('#updateMessage').css("display", "block");
+														}
+													})
+												})
+
 											}
 										})
-									})
-								}
-							})
 
-						} else {
-							UpdateStatus = "退款";
-							// 退款時，實際人數要減一
-							countSubtraction(UpdateCid);
-							console.log("UpdateStatus : " + UpdateStatus);
-							 //取得orderID(有日期判斷)
-							$.ajax({
-								type: "get",
-								//GET: api/ClassOrders/filter/12/1039
-								url: "/api/ClassOrders/filter/" + UpdateCid + "/" + UpdateSid,
-								success: function (data) {
-									data.forEach(function (x) {
-										console.log("orderID:" + x.oorderID);
-										var orderID = x.oorderID;
-										var UpdatectID = x.classTimeID;
-
-										var updateData = {
-											orderId: orderID,
-											sId: UpdateSid,
-											orderTime: Upatedate,
-											orderStatus: UpdateStatus,
-											eID: UpdateEid,
-											classTimeId: UpdatectID
-										};
-										console.log(updateData);
-
-										 //更改order的付款狀態
+									} else {
+										UpdateStatus = "退款";
+										// 退款時，實際人數要減一
+										countSubtraction(UpdateCid);
+										console.log("UpdateStatus : " + UpdateStatus);
+											//取得orderID(有日期判斷)
 										$.ajax({
-											type: "PUT",
-											//PUT: api/ClassOrders/128
-											url: "/api/ClassOrders/" + orderID,
-											dataType: "json",
-											contentType: "application/json",
-											data: JSON.stringify(updateData),
+											type: "get",
+											//GET: api/ClassOrders/filter/12/1039
+											url: "/api/ClassOrders/filter/" + UpdateCid + "/" + UpdateSid,
 											success: function (data) {
-												//alert("已更動Order囉");
-												//flag1 = true;
-												console.log("Status3 : " + Status3);
-												//if (Status3) { flag2 = true; }
-												$('#editModal').css("display", "none");
-												$('#updateMessage').css("display", "block");
+												data.forEach(function (x) {
+													console.log("orderID:" + x.oorderID);
+													var orderID = x.oorderID;
+													var UpdatectID = x.classTimeID;
+
+													var updateData = {
+														orderId: orderID,
+														sId: UpdateSid,
+														orderTime: Upatedate,
+														orderStatus: UpdateStatus,
+														eID: UpdateEid,
+														classTimeId: UpdatectID
+													};
+													console.log(updateData);
+
+														//更改order的付款狀態
+													$.ajax({
+														type: "PUT",
+														//PUT: api/ClassOrders/128
+														url: "/api/ClassOrders/" + orderID,
+														dataType: "json",
+														contentType: "application/json",
+														data: JSON.stringify(updateData),
+														success: function (data) {
+															//alert("已更動Order囉");
+															//flag1 = true;
+															console.log("Status3 : " + Status3);
+															//if (Status3) { flag2 = true; }
+															$('#editModal').css("display", "none");
+															$('#updateMessage').css("display", "block");
+														}
+													})
+												})
 											}
 										})
-									})
-								}
-							})
-							 //ClassRecord     給cID + sID-----> crID
-							$.ajax({
-								type: "get",
-								//GET: api/ClassRecords/crIDfilter/12/1039
-								url: "/api/ClassRecords/crIDfilter/" + UpdateCid + "/" + UpdateSid,
-								success: function (data) {
-									console.log(data);
-									data.forEach(function (x) {
-										console.log("crID : " + x.crID);
-										var crID = x.crID;
-										//開始刪除 classRecord
+											//ClassRecord     給cID + sID-----> crID
 										$.ajax({
-											type: "delete",
-											//DELETE: api/ClassRecords/5
-											url: "/api/ClassRecords/" + crID,
-											success: function (e) {
-												//alert("已刪除ClassRecords囉");
+											type: "get",
+											//GET: api/ClassRecords/crIDfilter/12/1039
+											url: "/api/ClassRecords/crIDfilter/" + UpdateCid + "/" + UpdateSid,
+											success: function (data) {
+												console.log(data);
+												data.forEach(function (x) {
+													console.log("crID : " + x.crID);
+													var crID = x.crID;
+													//開始刪除 classRecord
+													$.ajax({
+														type: "delete",
+														//DELETE: api/ClassRecords/5
+														url: "/api/ClassRecords/" + crID,
+														success: function (e) {
+															//alert("已刪除ClassRecords囉");
+														}
+													})
+												})
 											}
 										})
-									})
+									}
 								}
-							})
+							}
 						}
-					}
+					})
+
+					
 				}
 
 			})

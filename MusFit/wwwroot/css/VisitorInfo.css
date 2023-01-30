@@ -69,7 +69,7 @@ button:hover {
 }
 
 #btnQuery, #btnShowAll {
-    background-color: #8a8a8d;
+    background-color: #6B7BA7;
 }
 
 .edit {
@@ -187,7 +187,7 @@ form a {
 
 #btnCreateConfirm, #btnEditConfirm, #btnconfirmdelete, #btnCreateReserveConfirm {
     color: #fff;
-    background: #a764b2;
+    background: #6B7BA7;
     padding: 5px 10px;
     margin: 10px 5px;
     border: none;
@@ -219,7 +219,7 @@ form a {
 .btnConfirmMessage {
     width: 20%;
     margin: auto;
-    background-color: #8a8a8d;
+    background-color: #6B7BA7;
 }
 
  .btnConfirmMessage:focus{

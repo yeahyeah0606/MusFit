@@ -122,7 +122,7 @@
                 hasNext: currentPage < pageTotal,  // has next page
             }
             displayData(data);
-            pageBtn(page,nowPage);
+            pageBtn(page, nowPage);
         }
 
         function displayData(data){
@@ -206,7 +206,10 @@
                 }
                 pageHtml += nextButton;
                 pagination.innerHTML = pageHtml;
-                document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
+                console.log(totalPage);
+                if (totalPage != 0) {
+                    document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
+                }
         }
 
         function switchPage(e) {
@@ -248,9 +251,9 @@
                 $('.result').remove();
                 if (queryInput != "") {
                     myAJAX(AjaxType.GET, "/api/classorders/guestorders/", findVisitorsRevservation);
-                } else {
+                } else if (queryStartDate != "" && queryEndDate != "") {
                     myAJAX(AjaxType.GET, "/api/classorders/guestorders/datequery/" + queryStartDate + "/" + queryEndDate, findReservationsByQueryDate);
-                }
+                } 
             } 
         })
         function findVisitorsRevservation(data){        
@@ -262,6 +265,7 @@
                 }
             })
             pagination(queryData, 1);
+            console.log(flag);
             if (flag == false) {
                 $('#showNoDataModal').css("display", "block");
                 $('#confirmNoData').focus();
@@ -276,6 +280,7 @@
                 })              
             }
             pagination(queryData, 1);
+            console.log(flag);
             if (flag == false) {
                 $('#showNoDataModal').css("display", "block");
                 $('#confirmNoData').focus();

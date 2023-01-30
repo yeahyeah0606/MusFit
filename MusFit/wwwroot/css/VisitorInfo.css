@@ -233,7 +233,7 @@ form a {
 
 #validationModal, #valPhoneModal, #valMailModal, #deleteContent, #valVisitorModal,
 #noDataModal, #errorModal, #successModal {
-    width: 30%;
+    width: 400px;
 }
 
 

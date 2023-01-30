@@ -76,8 +76,8 @@
         }
 /* table 樣式 */
 .record {
-    width: 90%;
-    padding-left: 5%;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
 table {
@@ -89,7 +89,7 @@ table {
 }
 
 th {
-    background-color: #0080FF;
+    background-color: #9092AD;
     color: #ffffff;
     width: 25vw;
     height: 75px;
@@ -107,13 +107,10 @@ tr {
     border-bottom: 1px solid #dddddd;
 }
 
-    tr:last-of-type {
-        border-bottom: 2px solid #0080FF;
-    }
 
-    tr:nth-of-type(even) td {
-        background-color: #f3f3f3;
-    }
+tr:nth-of-type(even) td {
+    background-color: #f3f3f3;
+}
 
 /* 總人數 置右 樣式 */
 .total-member {

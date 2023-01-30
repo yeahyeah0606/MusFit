@@ -92,10 +92,10 @@ body::-webkit-scrollbar-thumb {
         line-height: 30px;
 }
 
-    .side-bar .menu .item a:hover {
-        background-color: #6B7BA7;
-        transition: 0.3s ease;
-    }
+.side-bar .menu .item a:hover {
+    background-color: #6B7BA7;
+    transition: 0.3s ease;
+}
 
 
 .side-bar .menu .item a .dropdown {
@@ -105,11 +105,16 @@ body::-webkit-scrollbar-thumb {
     transition: 0.3s ease;
 }
 
-    .side-bar .menu .item .sub-menu {
-        background-color: #6B7BA7;
-        /*background-color: #506fbb;*/
-        display: none;
-    }
+
+.side-bar .menu .item .sub-menu {
+    background-color: #6B7BA7;
+    display: none;
+}
+
+.side-bar .menu .item .sub-menu a:hover{
+    background-color: #919ac9;
+    opacity: 0.9;
+}
 
 .active {
     background-color: #66708D;

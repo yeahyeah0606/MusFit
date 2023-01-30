@@ -4,7 +4,7 @@
 
 
 table {
-    width: 100%;
+    width: 98%;
     overflow: hidden;
     border-radius: 10px 10px 0px 0px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
@@ -238,8 +238,18 @@ form a {
 
 
 .pagination .active a {
-    background-color: #8a8a8d !important;
+    background-color: #666ea2 !important;
     border:none;
+}
+
+.pagination a {
+    color: #fff !important;
+    /*background-color: #a196a7;*/
+    background-color: #9092AD;
+}
+
+.pagination a:hover{
+    background-color: #b4a9b9 !important;
 }
 
 

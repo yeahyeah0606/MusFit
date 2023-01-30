@@ -134,9 +134,9 @@
                 if (o.gender == false) { gender = '女'; } else { gender = '男'; }
                 tableRow += `<tr class="result">
                                         <td>${o.name}</td>
-                                        <td>${gender}</td>
-                                        <td>${o.phone}</td>
-                                        <td>${o.mail}</td>
+                                        <td class="gender">${gender}</td>
+                                        <td class="phone">${o.phone}</td>
+                                        <td class="mail">${o.mail}</td>
                                         <td>${o.className}</td>
                                         <td>${date}(${o.weekday.substring(2)})</td>
                                         <td>

@@ -244,12 +244,28 @@ form a {
 
 .pagination a {
     color: #fff !important;
-    /*background-color: #a196a7;*/
     background-color: #9092AD;
 }
 
 .pagination a:hover{
     background-color: #b4a9b9 !important;
+}
+
+@media(max-width: 1170px){
+    .mail {display: none; }
+    .searchArea span, input[type=date]{display:none;}
+    #queryinfo{width: 55%; }
+}
+
+@media(max-width: 737px){
+    .gender, .phone {display: none;}
+}
+
+@media(max-width: 547px){
+    .edit{ margin-bottom: 5px;}
+    #queryinfo { width: 45%;}
+    #queryinfo::placeholder{font-size: 13px;}
+    .searchArea button, .createArea button{font-size:14px; padding: 5px 6px;}
 }
 
 

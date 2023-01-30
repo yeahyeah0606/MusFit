@@ -9,7 +9,7 @@
     <div class="row d-flex">
         <div class="searchArea">
             <input id="queryinfo" type="text" placeholder="請輸入訪客姓名或手機..." />  
-            <input type="date" id="startDate" placeholder="體驗日期起..." onchange="this.className=(this.value!=''?'has-value':'');queryStartDateChange(this);"/> ~ 
+            <input type="date" id="startDate" placeholder="體驗日期起..." onchange="this.className=(this.value!=''?'has-value':'');queryStartDateChange(this);"/> <span>~</span>
             <input type="date" id="endDate" onchange="this.className=(this.value!=''?'has-value':'')" placeholder="體驗日期迄..." />
             <button id="btnQuery">查詢</button>
             <button id="btnShowAll">顯示全部</button>
@@ -22,9 +22,9 @@
     <table id="myTable">
         <tr class="title">
             <th>姓名</th>
-            <th>性別</th>
-            <th>手機號碼</th>
-            <th>信箱</th>
+            <th class="gender">性別</th>
+            <th class="phone">手機號碼</th>
+            <th class="mail">信箱</th>
             <th>體驗課程</th>
             <th>課程日期</th>
             <th>操作</th>

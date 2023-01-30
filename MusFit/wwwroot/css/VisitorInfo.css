@@ -2,15 +2,19 @@
     padding: 40px 10px;
 }
 
+
 table {
-    border-spacing: 0;
     width: 100%;
-    border: 1px solid #625e5e;
+    overflow: hidden;
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+    border-collapse: collapse;
     margin: 0px auto;
 }
 
 .title {
-    background-color: #a5c0e4;
+    background-color: #9092AD;
+    color: #fff;
 }
 
 th, td {

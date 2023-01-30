@@ -381,7 +381,8 @@
 			}
 			pageHtml += nextButton;
 			pagination.innerHTML = pageHtml;
-			document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
+			if(totalPage!=0)
+				document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
 		}
 
 			//  全部show

@@ -12,7 +12,8 @@
 
 	<title>查詢、報名課程</title>
 </head>
-
+<div class="record">
+	<div class="topQuery">
 	<h1>&nbsp;&nbsp;&nbsp;查詢、報名課程</h1>
 	<hr>
 	<br>
@@ -21,7 +22,6 @@
 	<input type="date" class="dateStart" id="dateStart" min="2022-01-01" max="2030-12-31" onchange="moveToEnd()" required />
 	<label for="dateEnd">&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;</label>
 	<input type="date" class="dateEnd" id="dateEnd" min="2022-01-01" max="2030-12-31" />
-	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
 
 	<br><br>    &nbsp;&nbsp;&nbsp;
 	<label for="lcID">課程項目: </label>&nbsp;
@@ -34,7 +34,7 @@
 		<option value="5">空中瑜珈</option>
 		<option value="6">皮拉提斯</option>
 	</select>
-	 &nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+	 &nbsp;&nbsp;&nbsp;
 	<label for="eID">教練: </label>&nbsp;
 		<select id="eID" name="eID" class="lession-select" >
 			<option value="none" selected disabled hidden>請選擇</option>
@@ -44,17 +44,13 @@
 			<option value="5">Elaine</option>
 			<option value="6">Molly</option>
 		</select>
-	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;
 
 <button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
-<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
-
 	<br>
-	<br>
-
+	<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
+		</div>
 	<!-- table 開始 -->
-
-	<div class="record">
 		<table style="width:100%">
 			<thead>
 				<tr>
@@ -83,7 +79,6 @@
 
 @*刪除 information*@
 <div id="deleteModal" class="modal">
-
 	<div class="modal-content">
 		<span class="close" id="leaveCreate">&times;</span>
 		<form id="deleteForm">
@@ -92,35 +87,56 @@
 			<input type="hidden" id="deletecID" name="deletecID" />
 			<input type="hidden" id="deleteTotalLession" name="deleteTotalLession" />
 			<input type="hidden" id="deleteclassTimeID" name="deleteclassTimeID" />
-
 			<p>確定要刪除該筆訂單嗎?</p>
 			<input type="button" id="btnDeleteConfirm" value="確定" />
 			<button class="cancel" id="cancelCreate">取消</button>
 		</form>
 	</div>
-
 </div>
 
-@*cannot deledte message *@
+@*cannot delete message *@
 <div id="cannotDeleteModal" class="modal">
-
 	<div id="errorModal" class="modal-content">
 		<span class="close" onclick="closeModel()">&times;</span>
 		<p>該課程目前已經開課或有人報名，不可以刪除!!</p>
 		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
+</div>
 
+@*query No Data*@
+<div id="showNoDataModal" class="modal">
+		<div id="errorModal" class="modal-content">
+			<span class="close" onclick="closeModel()">&times;</span>
+			<p>沒有查到相關資料</p>
+			<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
 </div>
 
 @*show error message *@
 <div id="errorMessage" class="modal">
-
-	<div class="modal-content">
+	<div id="errorModal" class="modal-content">
 		<span class="close" onclick="closeModel()">&times;</span>
-		<p>請輸入查詢條件!!</p>
+		<p>請設定查詢條件，至少需要選取一項</p>
 		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
+</div>
 
+@*show error message *@
+	<div id="hadOpenModal" class="modal">
+	<div id="errorModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>該課程已經開課，無法報名，請選擇其他課程!!!</p>
+		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
+@*show error message *@
+	<div id="fullPeopleModal" class="modal">
+	<div id="errorModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>該課程人數已滿，請報名其他課程</p>
+		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
 </div>
 
 @*success operation*@
@@ -150,6 +166,10 @@
 			deleteModal.style.display = "none";
 			errorMessage.style.display = "none";
 			cannotDeleteModal.style.display = "none";
+			showNoDataModal.style.display = "none";
+			hadOpenModal.style.display = "none";
+			fullPeopleModal.style.display = "none";
+
 		}
 
 		function closeSuccessModel() {
@@ -267,8 +287,8 @@
 									<td>${x.cExpect}</td>
 								<td>${x.cActual}</td>
 								<td>
-										<button class="button" style="vertical-align:middle" onclick=openSignModel(${x.cID})><span>報名</span></button>
-														<button class="button" style="vertical-align:middle" onclick=openDeleteModel(${x.cID}) ><span>刪除</span></button>
+										<button class="button"  id="btnSignup" style="vertical-align:middle" onclick=openSignModel(${x.cID})><span>報名</span></button>
+										<button class="button"  id="btnDelete" style="vertical-align:middle" onclick=openDeleteModel(${x.cID}) ><span>刪除</span></button>
 								</td>
 							</tr>
 							`;
@@ -376,15 +396,16 @@
 								url: "/api/Classes/" + cID,
 								success: function (data) {
 									if (data.cActual < data.cExpect){
-										//alert("可以報名");
 										window.location.href = '@Url.Action("SignupClass2","Manage")?id=' + cID;
 									}else{
-										alert("該課程人數已滿，請報名其他課程");
+										//alert("該課程人數已滿，請報名其他課程");
+										$('#fullPeopleModal').css("display", "block");
 									}
 								}
 							})
 						}else{
-							alert("該課程已經開課，無法報名，請選擇其他課程!!! ");   //有
+							//alert("該課程已經開課，無法報名，請選擇其他課程!!! ");   
+							$('#hadOpenModal').css("display", "block");
 						}
 					}
 				})
@@ -410,8 +431,8 @@
 				//console.log("myeID: " + myeID);
 
 				if (mydateStart == "2999-12-31" && mylcID == 99 && myeID == 99) {
-					//$('#errorMessage').css("display", "block");
-					alert("請設定查詢條件，至少需要選取一項");
+					$('#errorMessage').css("display", "block");
+					//alert("請設定查詢條件，至少需要選取一項");
 				}
 				else {
 						$.ajax({
@@ -423,8 +444,8 @@
 								pagination(jsonData, 1);
 								//沒有查到資料
 								if (count == 0) {
-									alert("沒有查到相關資料");
-									//$('#showNoDataModal').css("display", "block");
+									//alert("沒有查到相關資料");
+									$('#showNoDataModal').css("display", "block");
 								}
 							}
 						})
@@ -465,7 +486,6 @@
 
 			//確定 刪除
 			$('#btnDeleteConfirm').click(function () {
-				console.log("確定刪除開始");
 				var classID = parseInt($('#deletecID').val());
 				var TotalLession = parseInt($('#deleteTotalLession').val());
 
@@ -508,14 +528,14 @@
 
 			})
 
-			function moveToEnd() {
-				document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
-			}
+	function moveToEnd() {
+		document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
+	}
 
-			function myrefresh()
-			{
-				window.location.reload();
-			}
+	function myrefresh()
+	{
+		window.location.reload();
+	}
 
 
 	</script>

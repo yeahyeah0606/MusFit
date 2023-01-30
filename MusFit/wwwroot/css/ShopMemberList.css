@@ -18,12 +18,12 @@
     padding: 5px;
 }
 
-    .classNumber-input:focus, .memberID-input:focus {
-        border-color: #66afe9;
-        outline: 0;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
-        box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
-    }
+.classNumber-input:focus, .memberID-input:focus {
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
 
 /* 查詢 button 樣式 */
 #btnQuery{
@@ -61,7 +61,7 @@
 #btnEdit {
     display: inline-block;
     border-radius: 4px;
-    background-color: #6B7BA7;
+    background-color: #96ba9a;
     border: none;
     color: #FFFFFF;
     text-align: center;
@@ -74,10 +74,10 @@
     margin: 1px;
 }
 
-#btnSignup{
+#btnSignup {
     display: inline-block;
     border-radius: 4px;
-    background-color:aqua;
+    background-color: #f5ba31;
     border: none;
     color: #FFFFFF;
     text-align: center;
@@ -141,15 +141,15 @@ table {
 th {
     background-color: #9092AD;
     color: #ffffff;
-    width: 25vw;
-    height: 75px;
+    width: 25px;
+    height: 55px;
     text-align: center;
 }
 
 td {
     background-color: #ffffff;
     width: 25vw;
-    height: 50px;
+    height: 55px;
     text-align: center;
 }
 
@@ -157,18 +157,16 @@ tr {
     border-bottom: 1px solid #dddddd;
 }
 
-    tr:nth-of-type(even) td {
-        background-color: #f3f3f3;
-    }
-
-/* 使用最簡單的滾動方法，在y軸實現滾動效果 */
+tr:nth-of-type(even) td {
+    background-color: #f3f3f3;
+}
 
 /* 總人數 置右 樣式 */
 .total-member {
     text-align: right;
     font-size: 18px;
-    /*    padding-right: 30px;*/
-    padding-left: 80px;
+    /*padding-right: 50px;*/
+    padding-left: 80%;
 }
 /* 上一頁 下一頁 樣式 */
 .pagination .active a {
@@ -181,7 +179,7 @@ tr {
 .modal {
     display: none;
     position: fixed;
-    z-index: 3;
+    z-index: 6;
     padding-top: 100px;
     left: 0;
     top: 0;
@@ -199,7 +197,6 @@ tr {
     border: 1px solid #888;
     width: 60%;
 }
-
 .row {
     width: 100%;
     display: grid;
@@ -209,13 +206,13 @@ tr {
     padding: 0px 20px;
 }
 
-
 input[type=text], select {
+    /*width: 40%;*/
     border: solid 1px #a4a1a1;
     border-radius: 5px;
     padding: 2px 5px;
     outline: none;
-/*    color:aquamarine;
+    /*    color:aquamarine;
     content: attr(placeholder);*/
 }
 
@@ -244,9 +241,10 @@ form a {
     bottom: 35px;
 }
 
-#btnCreateConfirm, #btnSignupConfirm, #btnconfirmdelete, #btnCreateReserveConfirm {
+
+#btnEditConfirm{
     color: #fff;
-    background: #a764b2;
+    background: #6B7BA7;
     padding: 5px 10px;
     margin: 10px 5px;
     border: none;
@@ -254,11 +252,29 @@ form a {
     outline: none;
 }
 
+.btnConfirmMessage {
+    color: #fff;
+    background-color: #6B7BA7;
+    padding: 5px 10px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+}
 
-    #btnconfirm:hover, #btnconfirmdelete:hover, #btncanceldelete, #btnCreateReserveConfirm:hover,
-    #btnCreateConfirm:hover {
-        opacity: 0.9;
-    }
+#btnEditConfirm:hover, .cancel:hover, .btnConfirmMessage:hover {
+    opacity: 0.9;
+}
+
+.cancel {
+    background-color: #c0bcbc;
+    color: #fff;
+    padding: 5px 10px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+}
 
 .close {
     color: #aaaaaa;
@@ -269,11 +285,11 @@ form a {
     font-weight: bold;
 }
 
-    .close:hover, .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-    }
+.close:hover, .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 #noDataModal, #errorModal, #successModal {
     width: 30%;

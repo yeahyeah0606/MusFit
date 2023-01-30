@@ -24,8 +24,7 @@
 	<fieldset>
 		<div class="row">
 			<div class="column">
-				@*<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>*@
-				<label id="date" for="dateStart">開課日</label>
+				<label id="date" class="space-style" for="dateStart">開課日</label>
 				<input type="date" id="dateStart" onchange="ShowWday()" />
 				<p id="startwday">&emsp;&emsp;&emsp;</p>
 			</div>
@@ -51,7 +50,7 @@
 @*		<div>
 		</div>*@
 
-		<div class="date-block">
+		<div class="date-block" id="date-block" style="display:none">
 			<div id="date-title">
 				<input type="hidden" id="tmpRoom" name="tmpRoom" />
 
@@ -59,8 +58,8 @@
 					<div class="column">
 						<label class="classDate">課程日期</label>
 						<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-						<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-						<p>&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+@*						<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+						<p>&emsp;&emsp;&emsp;&emsp;&emsp;</p>*@
 					</div>
 					<div class="column"></div>
 				</div>
@@ -69,8 +68,7 @@
 		</div>
 		<div class="row">
 			<div class="column">
-
-				<label class="classRoom" for="roomID">教&emsp;室&emsp;</label>
+				<label class="space-style" for="roomID">教&emsp;室&emsp;</label>
 				<select id="roomID" name="roomID" class="lession-select" required>
 					<option value="none" selected disabled hidden >請選擇</option>
 					<option value="1">&emsp;&emsp;1801&emsp;</option>
@@ -79,7 +77,8 @@
 					<option value="4">&emsp;&emsp;1804&emsp;</option>
 					<option value="5">&emsp;&emsp;1805&emsp;</option>
 				</select>
-				<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+				<p >&emsp;&emsp;&emsp;</p>
+
 			</div>
 			<div class="column"></div>
 		</div>
@@ -345,6 +344,7 @@
 				quotient = Math.floor(TotalLession/2) ;
 				remainder = TotalLession%2 ;
 
+				document.getElementById("date-block").style.display = "";
 				// 日期選擇器 生成
 				$("#date-body").empty();
 				if ( remainder == 0 ){
@@ -355,13 +355,13 @@
 							<div class="row">
 								<div class="column">
 									<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-											<label id="date" for="date${n}">日期 ${n}</label>
+											<label id="date" for="date${n}">日期 ${n}&emsp;&emsp;</label>
 											<input type="date" id="date${n}" />
 									<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
 								</div>
 								<div class="column">
 									<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-											<label id="date" for="date${m}">日期 ${m}</label>
+													<label id="date" for="date${m}">日期 ${m}&emsp;&emsp;</label>
 											<input type="date" id="date${m}" />
 									<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
 								</div>
@@ -384,13 +384,13 @@
 									<div class="row">
 										<div class="column">
 											<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-													<label id="date" for="date${n}">日期 ${n}</label>
+															<label id="date" for="date${n}">日期 ${n}&emsp;&emsp;</label>
 													<input type="date" id="date${n}" />
 											<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
 										</div>
 										<div class="column">
 											<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-													<label id="date" for="date${m}">日期 ${m}</label>
+													<label id="date" for="date${m}">日期 ${m}&emsp;&emsp;</label>
 													<input type="date" id="date${m}" />
 											<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
 										</div>
@@ -403,8 +403,8 @@
 							<div class="row">
 								<div class="column">
 									<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-													<label id="date" for="date${TotalLession}">日期${TotalLession}</label>
-													<input type="date" id="date${TotalLession}" />
+											<label id="date" for="date${TotalLession}">日期${TotalLession}&emsp;&emsp;</label>
+											<input type="date" id="date${TotalLession}" />
 									<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
 								</div>
 								<div class="column">

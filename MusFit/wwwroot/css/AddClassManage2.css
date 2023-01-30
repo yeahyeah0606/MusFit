@@ -64,22 +64,26 @@ form {
     border-radius: 5px;
 }
 
-
-
-#date, #classRoom {
-    position: relative;
-    /*left: -85px;*/
-    left: 30px;
+input[type=date] {
+    width: 30%;
 }
 
-input[type=text], select, input[type=date]{
-    width: 40%;
-    padding: 5px 3px;
+select {
+    width: 30%;
+    padding: 5px 10px;
     border-radius: 5px;
     border: 1.2px solid #808080;
-    margin-top: 1px;
+    margin-top: 5px;
     outline: none;
-    padding-left: 30px;
+}
+
+input[type=text] {
+    width: 50%;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1.2px solid #808080;
+    margin-top: 5px;
+    outline: none;
 }
 
 .column {
@@ -87,9 +91,13 @@ input[type=text], select, input[type=date]{
 }
 
 .date-block {
-    background-color: bisque;
+    background-color: #D6EAF8;
     margin-left: 60px;
     margin-right: 60px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-radius: 10px;
+    /*    margin-bottom: 30px;*/
 }
 
 .space-style, p {
@@ -139,6 +147,39 @@ input[type=checkbox] {
     zoom: 1.2;
 }
 
+#btnSelect {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #6B7BA7;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px 10px;
+    width: 80px;
+    height: 32px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+#btnDateOK {
+    display: flex;
+    /*display: inline-block;*/
+    border-radius: 4px;
+    background-color: #6B7BA7;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px 10px;
+    width: 20%;
+    height: 32px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin-left: 40%;
+    justify-content: center;
+}
 
 button {
     color: #fff;
@@ -150,9 +191,9 @@ button {
     border-radius: 3px;
 }
 
-    button:hover {
-        opacity: 0.9;
-    }
+button:hover {
+    opacity: 0.9;
+}
 
 input[type="submit"] {
     color: #fff;
@@ -218,16 +259,13 @@ input[type="submit"] {
 }
 
 
-input[type=text], select {
+input[type=text]{
     border: solid 1px #a4a1a1;
     border-radius: 5px;
     padding: 2px 5px;
     outline: none;
 }
 
-select {
-    width: 60%;
-}
 
 input[type=radio] {
     margin: auto 25px;

@@ -153,7 +153,7 @@
                 const totalPage = page.pageTotal;
                 let pagination = document.querySelector('#pageid');
                 var pageHtml = "", prevButton, nextButton;
-                let pageIndex = nowPage;
+                let pageIndex = parseInt(nowPage);
 
                 if (page.hasPage) {
                     prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`;

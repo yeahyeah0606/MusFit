@@ -122,7 +122,7 @@
                 hasNext: currentPage < pageTotal,  // has next page
             }
             displayData(data);
-            pageBtn(page);
+            pageBtn(page,nowPage);
         }
 
         function displayData(data){
@@ -149,25 +149,64 @@
             $('#myTable').append(tableRow);
         }
 
-        function pageBtn(page) {
-            let str = '';
-            const total = page.pageTotal;
+        function pageBtn(page, nowPage) {
+                const totalPage = page.pageTotal;
+                let pagination = document.querySelector('#pageid');
+                var pageHtml = "", prevButton, nextButton;
+                let pageIndex = nowPage;
 
-            // if current page > 1 or not
-            if (page.hasPage) { str += `<li class="page-item"><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`; }
-            else { str += `<li class="page-item disabled"><span class="page-link">&laquo;</span></li>`; }
+                if (page.hasPage) {
+                    prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`;
+                } else {
+                    prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#"  data-page="${pageIndex}">&laquo;</a></li>`;
+                }
+                if (page.hasNext) {
+                    nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${Number(page.currentPage) + 1}">&raquo;</a></li>`;
+                } else {
+                    nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${pageIndex}" >&raquo;</a></li>`;
+                }
 
-            // pages (current page = data-page)
-            for (let i = 1; i <= total; i++) {
-                if (Number(page.currentPage) === i) { str += `<li class="page-item active"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`; }
-                else { str += `<li class="page-item"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`; }
-            };
+                let firstPage = `<li class='list-items' pagenumber=1><a class="page-link" href="#" data-page="${i}">1</a></li>`;
+                let lastPage = `<li class='list-items' pagenumber=${totalPage}><a class="page-link" href="#" data-page="${totalPage}">${totalPage}</a></li>`;
+                let leftOmitPage = `<li class='list-items' id='btnGoLeft'><a class="page-link" href="#" data-page="${i}">...</a></li>`;
+                let rightOmitPage = `<li class='list-items' id='btnGoRight'><a class="page-link" href="#" data-page="${totalPage}">...</a></li>`;
+                pageHtml = prevButton;
 
-            // if current page < total page or not
-            if (page.hasNext) { str += `<li class="page-item"><a class="page-link" href="#" data-page="${Number(page.currentPage) + 1}">&raquo;</a></li>`; }
-            else { str += `<li class="page-item disabled"><span class="page-link">&raquo;</span></li>`; }
-
-            pageid.innerHTML = str;
+                if (totalPage <= 10) {
+                    // totalPage is less than 10 pages
+                    for (let i = 1; i <= totalPage; i++) {
+                        pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+                    }
+                }
+                else if (pageIndex <= 8) {
+                    // if currentPage is at the start
+                    for (let i = 1; i <= 9; i++) {
+                        pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+                    }
+                    pageHtml += rightOmitPage;
+                    pageHtml += lastPage;
+                }
+                else if (pageIndex > totalPage - 7) {
+                    // if currentPage is at the end
+                    pageHtml += firstPage;
+                    pageHtml += leftOmitPage;
+                    for (let i = totalPage - 8; i <= totalPage; i++) {
+                        pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+                    }
+                }
+                else {
+                    // if currentPage is in middle
+                    pageHtml += firstPage;
+                    pageHtml += leftOmitPage;
+                    for (let i = pageIndex - 3; i <= pageIndex + 3; i++) {
+                        pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+                    }
+                    pageHtml += rightOmitPage;
+                    pageHtml += lastPage;
+                }
+                pageHtml += nextButton;
+                pagination.innerHTML = pageHtml;
+                document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
         }
 
         function switchPage(e) {

@@ -330,6 +330,7 @@
             else if (!reg.test(phone)) { valPhoneMessage.style.display = "block"; $('#confirmValPhone').focus(); }
             else if (!IsEmail(mail)) { valMailMessage.style.display = "block"; $('#confirmValMail').focus(); }
             else {
+                console.log(GetFormData($('#createForm')));
                 myAJAX(AjaxType.POST, "/api/students/", showMessage("已存檔"),"application/json", JSON.stringify(GetFormData($('#createForm'))));
             }
         })
@@ -393,14 +394,21 @@
              $('#name').val(e.sName);
              $('#phone').val(e.sPhone);
              $('#mail').val(e.sMail);
-             $('#sNumber').val(e.sNumber);
-             $('#sContactor').val(e.sContactor);
-             $('#sContactPhone').val(e.sContactPhone);
-             $('#sPhoto').val(e.sPhoto);
-             $('#sAddress').val(e.sAddress);
-             $('#sAccount').val(e.sAccount);
-             $('#sPassword').val(e.sPassword);
-             $('#sToken').val(e.sToken);
+            $('#sNumber').val(e.sNumber);
+            if (e.sContactor == null) { $('#sContactor').val("null") }
+            else { $('#sContactor').val(e.sContactor); }
+            if (e.sContactPhone == null) { $('#sContactPhone').val("null") }
+            else { $('#sContactPhone').val(e.sContactPhone); }
+            if (e.sPhoto == null) { $('#sPhoto').val("null") }
+            else { $('#sPhoto').val(e.sPhoto); }
+            if (e.sAddress == null) { $('#sAddress').val("null") }
+            else { $('#sAddress').val(e.sAddress); }
+            if (e.sAccount == null) { $('#sAccount').val("null") }
+            else { $('#sAccount').val(e.sAccount); }
+            if (e.sPassword == null) { $('#sPassword').val("null") }
+            else { $('#sPassword').val(e.sPassword); }
+            if (e.sToken == null) { $('#sToken').val("null") }
+            else { $('#sToken').val(e.sToken); }
              if (e.sBirth == null) { $('#sBirth').val("null"); }
              else { $('#sBirth').val(e.sBirth); }
              if (e.sJoinDate == null) { $('#sJoinDate').val("null"); }

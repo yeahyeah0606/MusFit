@@ -6,17 +6,20 @@
 <h1>&nbsp;&nbsp;&nbsp;教室管理 查詢</h1>
 <hr>
 <br>
-	&nbsp;&nbsp;&nbsp;
-<label for="dateStart">&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期: &nbsp;</label>
-<input type="date" class="dateStart" id="dateStart" min="2022-01-01" max="2023-12-31" onchange="moveToEnd()" required />
-<label for="dateEnd">&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;</label>
-<input type="date" class="dateEnd" id="dateEnd" min="2022-01-01" max="2023-12-31" />
-&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+
+<div class="topQuery">
+		&nbsp;&nbsp;&nbsp;
+	<label for="dateStart">&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期: &nbsp;</label>
+	<input type="date" class="dateStart" id="dateStart" min="2022-01-01" max="2023-12-31" onchange="moveToEnd()" required />
+	<label for="dateEnd">&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;</label>
+	<input type="date" class="dateEnd" id="dateEnd" min="2022-01-01" max="2023-12-31" />
+</div>
 <br>
-<br>&nbsp;&nbsp;&nbsp;
+<div class="topQuery">
+&nbsp;&nbsp;&nbsp;
 <label for="tID">&nbsp;&nbsp;時&nbsp;&nbsp;&nbsp;&nbsp;段: &nbsp;</label>&nbsp;
 <select class="lession-select" name="tID" id="tID">
-	<option value="none" selected disabled hidden>請選擇</option>
+	<option value="none" selected disabled hidden>請選擇  </option>
 	<option value="9">09:00 ~ 10:00</option>     <!-- &emsp;&emsp; -->
 	<option value="10">10:00 ~ 11:00</option>
 	<option value="11">11:00 ~ 12:00</option>
@@ -30,23 +33,21 @@
 	<option value="20">20:00 ~ 21:00</option>
 	<option value="21">21:00 ~ 22:00</option>
 </select>
-	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
-<label for="roomID">教室: </label>&nbsp;
+	&nbsp;&nbsp;&nbsp;
+<label for="roomID">&nbsp;&nbsp;教&nbsp;&nbsp;&nbsp;&nbsp;室: &nbsp; </label>&nbsp;
 <select id="roomID" name="roomID" class="lession-select">
-	<option value="none" selected disabled hidden>請選擇</option>
+	<option value="none" selected disabled hidden>請選擇 </option>
 	<option value="1">1801</option>
 	<option value="2">1802</option>
 	<option value="3">1803</option>
 	<option value="4">1804</option>
 	<option value="5">1805</option>
 </select>
-	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
-
-<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+	&nbsp;&nbsp;&nbsp;
+	<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+	
+</div>
 <span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
-<br>
-<br>
-
 <!-- table 開始 -->
 
 <div class="record">

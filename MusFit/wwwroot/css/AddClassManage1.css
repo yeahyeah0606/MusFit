@@ -1,6 +1,6 @@
 ﻿.myForm {
     width: 100%;
-    padding: 30px 30px;
+    padding: 10px 10px;
     text-align:center;
 }
  
@@ -14,7 +14,7 @@ form {
     width:100%;
     margin: 0px auto 0 auto;
     position: relative;
-    padding: 20px 20px;
+    padding: 10px 10px;
 }
 
 .row {
@@ -66,22 +66,24 @@ form {
 
 
 input[type=date] {
-   /* width: 70%;
+    /* width: 70%;
     margin-left: 20px;*/
     position: relative;
     left: -190px;
+    width: 40%;
 }
 
-#date{
+#date {
     position: relative;
     left: -95px;
+
 }
 #startwday {
     color: orangered;
 }
 
 input[type=text], input[type=number], select {
-    width: 30%;
+    width: 40%;
     padding: 5px 10px;
     border-radius: 5px;
     border: 1.2px solid #808080;
@@ -114,7 +116,7 @@ fieldset{
     border: solid 1px black;
     border-radius: 10px;
     margin-bottom: 30px;
-    box-shadow: 10px 10px 10px rgba(0,0,0,0.15);
+    box-shadow: 3px 3px 3px rgba(0,0,0,0.15);
 }
 
 .control input {
@@ -177,4 +179,8 @@ input[type="submit"]:hover {
     padding: 0.3rem 0.85rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     width: 100%;
+}
+
+input::placeholder {
+    color: lightgray;
 }

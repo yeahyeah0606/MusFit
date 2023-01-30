@@ -26,10 +26,10 @@
     }
 
 /* 查詢 button 樣式 */
-.button {
+#btnQuery{
     display: inline-block;
     border-radius: 4px;
-    background-color: #f4511e;
+    background-color: #6B7BA7;
     border: none;
     color: #FFFFFF;
     text-align: center;
@@ -42,6 +42,53 @@
     margin: 1px;
 }
 
+#btnDelete {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #ce7b7b;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+    width: 80px;
+    height: 32px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 1px;
+}
+
+#btnEdit {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #6B7BA7;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+    width: 80px;
+    height: 32px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 1px;
+}
+
+#btnSignup{
+    display: inline-block;
+    border-radius: 4px;
+    background-color:aqua;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+    width: 80px;
+    height: 32px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 1px;
+}
     .button span {
         cursor: pointer;
         display: inline-block;
@@ -66,10 +113,21 @@
             opacity: 1;
             right: 0;
         }
+
+/*.topQuery {
+    position: fixed;
+    left: 20%;
+    top: 17%;
+    height:100px;
+    z-index: 5;
+}*/
 /* table 樣式 */
 .record {
+    position: absolute;
+    /*padding-top: 10%;*/
     padding-left: 2%;
     padding-right: 2%;
+    z-index: 3;
 }
 
 table {
@@ -102,6 +160,8 @@ tr {
     tr:nth-of-type(even) td {
         background-color: #f3f3f3;
     }
+
+/* 使用最簡單的滾動方法，在y軸實現滾動效果 */
 
 /* 總人數 置右 樣式 */
 .total-member {
@@ -155,6 +215,8 @@ input[type=text], select {
     border-radius: 5px;
     padding: 2px 5px;
     outline: none;
+/*    color:aquamarine;
+    content: attr(placeholder);*/
 }
 
 select {
@@ -221,4 +283,8 @@ form a {
     width: 20%;
     margin: auto;
     background-color: #8a8a8d;
+}
+
+input::placeholder {
+    color:lightgray;
 }

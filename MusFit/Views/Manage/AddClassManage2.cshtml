@@ -24,7 +24,7 @@
 	<fieldset>
 		<div class="row">
 			<div class="column">
-				<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+				@*<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>*@
 				<label id="date" for="dateStart">開課日</label>
 				<input type="date" id="dateStart" onchange="ShowWday()" />
 				<p id="startwday">&emsp;&emsp;&emsp;</p>
@@ -57,7 +57,7 @@
 
 				<div class="row">
 					<div class="column">
-						<label class="space-style" for="height">課程日期</label>
+						<label class="classDate">課程日期</label>
 						<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
 						<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
 						<p>&emsp;&emsp;&emsp;&emsp;&emsp;</p>
@@ -69,7 +69,8 @@
 		</div>
 		<div class="row">
 			<div class="column">
-				<label class="space-style" for="roomID">教&emsp;室&emsp;</label>
+
+				<label class="classRoom" for="roomID">教&emsp;室&emsp;</label>
 				<select id="roomID" name="roomID" class="lession-select" required>
 					<option value="none" selected disabled hidden >請選擇</option>
 					<option value="1">&emsp;&emsp;1801&emsp;</option>

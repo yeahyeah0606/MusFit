@@ -231,3 +231,8 @@ form a {
     margin: auto;
     background-color: #8a8a8d;
 }
+
+
+input::placeholder {
+    color: lightgray;
+}

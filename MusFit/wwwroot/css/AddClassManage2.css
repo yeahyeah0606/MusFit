@@ -1,6 +1,6 @@
 ﻿.myForm {
     width: 100%;
-    padding: 30px 30px;
+    padding: 10px 10px;
     text-align: center;
 }
 
@@ -14,7 +14,7 @@ form {
     width: 100%;
     margin: 0px auto 0 auto;
     position: relative;
-    padding: 20px 20px;
+    padding: 10px 10px;
 }
 
 .row {
@@ -65,25 +65,21 @@ form {
 }
 
 
-/*input[type=date] {*/
-/* width: 70%;
-    margin-left: 20px;*/
-/*position: relative;
-    left: -190px;
-}*/
 
-#date {
+#date, #classRoom {
     position: relative;
-    left: -95px;
+    /*left: -85px;*/
+    left: 30px;
 }
 
 input[type=text], select, input[type=date]{
-    width: 30%;
-    padding: 5px 10px;
+    width: 40%;
+    padding: 5px 3px;
     border-radius: 5px;
     border: 1.2px solid #808080;
-    margin-top: 5px;
+    margin-top: 1px;
     outline: none;
+    padding-left: 30px;
 }
 
 .column {
@@ -310,4 +306,8 @@ form a {
     overflow-x: hidden;
     overflow-y: auto;
     _overflow-y: visible;
+}
+
+input::placeholder {
+    color: lightgray;
 }

@@ -108,11 +108,16 @@ tr {
 .total-member {
     text-align: right;
     font-size: 18px;
-    /*    padding-right: 30px;*/
-    padding-left: 80px;
+    /*padding-right: 50px;*/
+    padding-left: 80%;
 }
 /* 上一頁 下一頁 樣式 */
 .pagination .active a {
     background-color: #8a8a8d !important;
     border: none;
+}
+
+
+input::placeholder {
+    color: lightgray;
 }

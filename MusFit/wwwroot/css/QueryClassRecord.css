@@ -253,3 +253,8 @@ form a {
 #editContent {
     width: 80%;
 }
+
+
+input::placeholder {
+    color: lightgray;
+}

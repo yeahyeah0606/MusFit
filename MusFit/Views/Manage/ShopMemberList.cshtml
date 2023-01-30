@@ -3,27 +3,30 @@
 }
 <link rel="stylesheet" href="~/css/ShopMemberList.css" />
 
-<h1>&nbsp;&nbsp;&nbsp;購買課程會員清單</h1>
-<hr>
-<br>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label for="cNumber">課程編號: </label>&nbsp;
-<input type="text" class="memberID-input" id="cNumber" name="cNumber" placeholder="ex: AB001">
-	&nbsp;&nbsp;&nbsp;&nbsp
-<label for="sNumber">會員編號: </label>&nbsp;
-<input type="text" class="memberID-input" id="sNumber" name="sNumber" placeholder="ex: S0001">
-	&nbsp;&nbsp;&nbsp;
-<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<button class="button" style="vertical-align:middle" onclick="location.href = '@Url.Action("SignupClass1","Manage")' ">
-	<span>報名</span>
-</button>
-<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
-<br>
-<br>
+
 
 
 <div class="record">
+
+	<div class="topQuery">
+		<h1>&nbsp;&nbsp;&nbsp;購買課程會員清單</h1>
+		<hr>
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label for="cNumber">課程編號: </label>&nbsp;
+		<input type="text" class="memberID-input" id="cNumber" name="cNumber" placeholder="ex: AB001">
+		&nbsp;&nbsp;&nbsp;&nbsp
+		<label for="sNumber">會員編號: </label>&nbsp;
+		<input type="text" class="memberID-input" id="sNumber" name="sNumber" placeholder="ex: S0001">
+		&nbsp;&nbsp;&nbsp;
+		<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button class="button" id="btnSignup" style="vertical-align:middle" onclick="location.href = '@Url.Action("SignupClass1","Manage")' ">
+			<span>報名</span>
+		</button>
+		<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
+	</div>
+
 	<table style="width:100%">
 		<thead>
 			<tr>
@@ -42,13 +45,14 @@
 		</tbody>
 	</table>
 	<br>
+	@*pagination*@
+	<div class="d-flex justify-content-center">
+		<nav aria-label="Page navigation example">
+			<ul class="pagination" id="pageid"></ul>
+		</nav>
+	</div>
 </div>
-@*pagination*@
-<div class="d-flex justify-content-center">
-	<nav aria-label="Page navigation example">
-		<ul class="pagination" id="pageid"></ul>
-	</nav>
-</div>
+
 
 @*編輯 information*@
 <div id="editModal" class="modal">
@@ -319,10 +323,10 @@
 									<td>${x.cTotalLession}</td>
 									<td>${checkStatus}</td>
 									<td>
-										<button class="button" style="vertical-align:middle"   onclick=openEditModel(${x.cID},${x.sID}) >
+										<button class="button" id="btnEdit" style="vertical-align:middle"   onclick=openEditModel(${x.cID},${x.sID}) >
 												<span>編輯</span>
 										</button>
-										<button class="button" style="vertical-align:middle"   onclick=openDeleteModel(${x.cID},${x.sID}) >
+										<button class="button" id="btnDelete" style="vertical-align:middle"   onclick=openDeleteModel(${x.cID},${x.sID}) >
 												<span>刪除</span>
 										</button>
 									</td>

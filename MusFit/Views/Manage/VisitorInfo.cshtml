@@ -116,13 +116,13 @@
             <h3>新增訪客資料</h3>
             <hr />
             <input type="hidden" name="sIsStudentOrNot" value="false" />
-            <input type="hidden" name="sContactor" value="" />
-            <input type="hidden" name="sContactPhone" value="" />
-            <input type="hidden"  name="sPhoto"  value=""/>
-            <input type="hidden"  name="sAddress"  value=""/>
-            <input type="hidden"  name="sAccount" value="" />
-            <input type="hidden"  name="sPassword" value="" />
-            <input type="hidden"  name="sToken"  value="" />
+            <input type="hidden" name="sContactor" value="null" />
+            <input type="hidden" name="sContactPhone" value="null" />
+            <input type="hidden" name="sPhoto" value="null" />
+            <input type="hidden" name="sAddress" value="null" />
+            <input type="hidden" name="sAccount" value="null" />
+            <input type="hidden" name="sPassword" value="null" />
+            <input type="hidden"  name="sToken"  value="null" />
             <input type="hidden" name="sJoinDate" value="null"/>
             <input type="hidden" name="sBirth" value="null" />
 
@@ -133,8 +133,8 @@
                 </div>
                 <div class="column">
                     <label for="name">性&emsp;別<span class="star"> * </span></label>
-                    <input type="radio" name="sGender" />男
-                    <input type="radio" name="sGender" />女
+                    <input type="radio" name="sGender" value="true"/>男
+                    <input type="radio" name="sGender" value="false" />女
                     <input type="radio" name="sGender" hidden value="0" checked />
                 </div>
             </div>

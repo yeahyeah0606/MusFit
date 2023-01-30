@@ -206,7 +206,6 @@
                 }
                 pageHtml += nextButton;
                 pagination.innerHTML = pageHtml;
-                console.log(totalPage);
                 if (totalPage != 0) {
                     document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
                 }
@@ -265,7 +264,6 @@
                 }
             })
             pagination(queryData, 1);
-            console.log(flag);
             if (flag == false) {
                 $('#showNoDataModal').css("display", "block");
                 $('#confirmNoData').focus();
@@ -280,7 +278,6 @@
                 })              
             }
             pagination(queryData, 1);
-            console.log(flag);
             if (flag == false) {
                 $('#showNoDataModal').css("display", "block");
                 $('#confirmNoData').focus();

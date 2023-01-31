@@ -41,9 +41,10 @@ input {
     width: 350px;
     height: 330px;
     padding: 10px 10px;
-    border: solid 1.5px #625e5e;
+    border: solid 1.5px #E3E3F1;
+    background-color: #E3E3F1;
     border-radius: 8px;
-    margin:auto;
+    margin: auto;
 }
 
 h6 {

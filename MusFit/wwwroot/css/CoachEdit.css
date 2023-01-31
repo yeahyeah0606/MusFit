@@ -977,18 +977,7 @@ textarea.form-control-lg {
     position: relative;
 }
 
-.employee-edit-form {
-    position: relative;
-}
 
-    .employee-edit-form .employee-edit-form-left {
-        position: relative;
-        text-align: center;
-    }
-
-    .employee-edit-form .employee-edit-form-right {
-        text-align: center;
-    }
 
 .card-body .photoFile input {
     vertical-align: middle;
@@ -1014,6 +1003,7 @@ textarea.form-control-lg {
 }
 
 .card-body label {
+    margin-right: 20px;
     font-size: 18px;
     display: inline-block;
     width: 100px;
@@ -1072,23 +1062,10 @@ textarea.form-control-lg {
     margin-top: 20px;
 }
 
-.card-body .mb-0 {
-    display: flex;
-    text-align: center;
-}
 
 .card-body .btn-edit button {
     flex: 1;
     align-items: center;
-    background-color: #666666;
-    color: white;
-}
-
-.card-body .btn-cancel button {
-    flex: 1;
-    align-items: flex-start;
-    background-color: #d3d3d3;
-    color: black;
 }
 
 

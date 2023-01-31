@@ -22,12 +22,12 @@
                 <hr class="my-0" />
 
                 <div class="card-body">
-                    <div class="row student-add-form mx-sm-3 mb-2 form-inline"
+                    <div class="row student-add-form  form-inline" style="width:90%;"
                          name="student-add-form" method="get" action="">
-                        <div class="col-6 student-add-form-left">
+                        <div class="col-6 student-add-form-left" style="text-align:left;">
+                            <p id="error" style="color:red;" hidden>會員已存在!</p>
                             <div class="from-group mb-4">
 
-                                <p id="error" style="color:red;" hidden>會員已存在!</p>
                                 <label asp-for="SPhone">手機號碼</label>
                                 <input asp-for="SPhone" class="form-control" type="text"
                                        name="SPhone" onchange="GetStudentData()"><br>
@@ -41,25 +41,21 @@
                                 <span class="field-validation-valid text-danger" data-valmsg-for="SName"
                                       data-valmsg-replace="true" asp-validation-for="SName"></span>
                             </div>
-                            <div class="from-group mb-4" style="margin-left:-40px;">
+                            <div class="from-group mb-4" >
                                 <label asp-for="SGender">性別</label>
-
-                                <label class="form-check-label" id="SGender">
-                                    <input asp-for="SGender" class="form-check-input" type="radio"
-                                           name="SGender" value="false">女
-                                </label>
-
-                                <label class="form-check-label" id="SGender">
-                                    <input asp-for="SGender" class="form-check-input" type="radio"
-                                           name="SGender" value="true">男
-                                </label><br>
+                                    <label  id="SGender" style="width:50px;">
+                                        <input asp-for="SGender" type="radio" name="SGender" value="false">女
+                                    </label>
+                                    <label  id="SGender" style="width:50px;margin-left:10px;">
+                                        <input asp-for="SGender"  type="radio" name="SGender" value="true">男
+                                    </label><br>
                                 <span class="field-validation-valid text-danger" data-valmsg-for="SGender"
                                       data-valmsg-replace="true" asp-validation-for="SGender"></span>
                             </div>
-                            <div class="from-group mb-4" style="margin-left:-15px;">
+                            <div class="from-group mb-4" >
                                 <label asp-for="SBirth">生日</label>
-                                <input asp-for="SBirth" class="form-control w-50" type="date"
-                                       name="SBirth"><br>
+                                <input asp-for="SBirth" class="form-control" type="date"
+                                       name="SBirth" style="width:255px;"><br>
                                 <span class="field-validation-valid text-danger" data-valmsg-for="SBirth"
                                       data-valmsg-replace="true" asp-validation-for="SBirth"></span>
                             </div>
@@ -70,17 +66,17 @@
                                 <span class="field-validation-valid text-danger" data-valmsg-for="SMail"
                                       data-valmsg-replace="true" asp-validation-for="SMail"></span>
                             </div>
-                            <div class="col-3 from-group " style="margin-left:35px;">
+                            <div class="from-group mb-4">
                                 <label asp-for="SPassword">密碼</label>
                                 <input asp-for="SPassword" class="form-control" type="text"
-                                       value="預設為生日" readonly>
+                                       value="預設為生日(19940213)" readonly>
                             </div>
                         </div>
 
-                        <div class="col-6 student-add-form-right">
-                            <div class="from-group mb-4 " style="margin-left:-15px;">
+                        <div class="col-6 student-add-form-right" >
+                            <div class="from-group mb-4 ">
                                 <label asp-for="SJoinDate">入會日期</label>
-                                <input asp-for="SJoinDate" class="form-control w-50" type="date"
+                                <input asp-for="SJoinDate" class="form-control" type="date" style="width:250px;"
                                        name="SJoinDate" value="@DateTime.Now.ToString("yyyy-MM-dd")"><br>
                                 <span class="field-validation-valid text-danger" data-valmsg-for="SJoinDate"
                                       data-valmsg-replace="true" asp-validation-for="SJoinDate"></span>
@@ -142,7 +138,6 @@
                 //cache: false, //不會緩存，post 本身就不會緩存，get 會緩存(會顯示在Url上)才需要設定
                 success: function (data) {
                     var date = new Date();
-                    date.setDate(date.getDate() + 1);
                     if (data != "") {
                         var jsonData = JSON.parse(data);  //將json格式轉回物件使用
                         if (jsonData.SIsStudentOrNot == true) {

@@ -1012,15 +1012,15 @@ textarea.form-control-lg {
 .card-body img {
     height: 200px;
     width: 200px;
-    border: 2px solid #000;
 }
 
-.employee-edit-form-left .employeeGender, .employeeJob, .employeeType {
-    display: flex;
+.form-control::placeholder {
+    opacity: 0.6;
 }
 
 
 .from-group label {
+    margin-right: 20px;
     font-size: 18px;
     display: inline-block;
     width: 100px;
@@ -1030,42 +1030,16 @@ textarea.form-control-lg {
 }
 
 .card-body .label-style {
-    margin-left: 12px;
+    margin-right: 20px;
     font-size: 18px;
     display: inline-block;
-    width: 100px;
-    text-align: justify;
-    text-align-last: justify;
-    vertical-align: middle;
-}
-
-.from-group .birthday {
-    font-size: 18px;
-    display: inline-block;
-    width: 100px;
+    width: 105px;
     text-align: justify;
     text-align-last: justify;
     vertical-align: middle;
 }
 
 
-::placeholder {
-    color: red;
-    opacity: 0.1;
-}
-
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: red;
-}
-
-::-ms-input-placeholder { /* Microsoft Edge */
-    color: red;
-}
-
-.genderLabel, .jobLabel, .typeLabel {
-    margin-left: 4px;
-    margin-right: 6px;
-}
 
 .form-select {
     width: 61%;
@@ -1114,10 +1088,6 @@ textarea.form-control-lg {
     margin-top: 20px;
 }
 
-.card-body .mb-0 {
-    display: flex;
-    text-align: center;
-}
 
 .card-body .btn-edit button {
     flex: 1;
@@ -1126,19 +1096,13 @@ textarea.form-control-lg {
     color: white;
 }
 
-.card-body .btn-cancel button {
-    flex: 1;
-    align-items: flex-start;
-    background-color: #d3d3d3;
-    color: black;
-}
+
 
 
 .card-body button {
     font-size: 20px;
     border-radius: 4px;
     border-color: transparent;
-    width: 80%;
     height: 38px;
     float: right;
 }

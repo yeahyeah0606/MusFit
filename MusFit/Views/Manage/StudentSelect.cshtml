@@ -22,7 +22,7 @@
                 <hr class="my-0" />
 
                 <div class="card-body">
-                    <div class="row student-select-form mx-sm-3 mb-2 form-inline"
+                    <div class="row student-select-form form-inline" style="width:90%;"
                          name="student-select-form" method="get" action="">
                         <div class="col-6 student-select-form-left">
                             <div class="from-group mb-4">
@@ -96,10 +96,10 @@
                             </div>
                             <div class="row from-group mb-4 btnDiv">
                                 <div class="col-6">
-                                    <a id="btnEdit" type="button" name="edit" style="padding-left:65px;" onclick="EditStudent()">編輯</a>
+                                    <a id="btnEdit" type="button" name="edit" onclick="EditStudent()">編輯</a>
                                 </div>
                                 <div class="col-6">
-                                    <a href="@Url.Action("StudentSearch","Manage")" id="btnReturn" type="button" name="return" style="padding-left:65px;">返回</a>
+                                    <a href="@Url.Action("StudentSearch","Manage")" id="btnReturn" type="button" name="return">返回</a>
                                 </div>
                             </div>
 

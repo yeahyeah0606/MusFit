@@ -977,18 +977,7 @@ textarea.form-control-lg {
     position: relative;
 }
 
-.employee-edit-form {
-    position: relative;
-}
 
-    .employee-edit-form .employee-edit-form-left {
-        position: relative;
-        text-align: center;
-    }
-
-    .employee-edit-form .employee-edit-form-right {
-        text-align: center;
-    }
 
 .card-body .photoFile input {
     vertical-align: middle;
@@ -1015,6 +1004,7 @@ textarea.form-control-lg {
 }
 
 .card-body label {
+    margin-right: 20px;
     font-size: 18px;
     display: inline-block;
     width: 100px;
@@ -1023,18 +1013,9 @@ textarea.form-control-lg {
     vertical-align: middle;
 }
 
-.employee-edit-form-right .employeeType {
-    display: flex;
-}
 
-.employeeType .typeLabel {
-    padding-left: 2px;
-    margin-right: 20px;
-}
 
-.from-group .form-check-label {
-    width: 100px;
-}
+
 
 
 .card-body .label-style {
@@ -1047,6 +1028,9 @@ textarea.form-control-lg {
     vertical-align: middle;
 }
 
+.form-control::placeholder {
+    opacity: 0.6;
+}
 
 .form-control {
     -webkit-appearance: none;
@@ -1073,42 +1057,24 @@ textarea.form-control-lg {
     margin-top: 20px;
 }
 
-.card-body .mb-0 {
-    display: flex;
-    text-align: center;
+
+
+
+#btnCancel {
+    background-color: #cdcfd0;
 }
 
-.card-body .btn-edit button {
-    flex: 1;
-    align-items: center;
-    background-color: #666666;
-    color: white;
+#btnReset:hover {
+    opacity: 0.7;
 }
 
-.card-body .btn-cancel button {
-    flex: 1;
-    align-items: flex-start;
-    background-color: #d3d3d3;
-    color: black;
+#btnSave:hover {
+    opacity: 0.7;
 }
 
 
-.card-body button {
-    font-size: 20px;
-    border-radius: 4px;
+
+a:hover {
     border-color: transparent;
-    width: 80%;
-    height: 38px;
-    float: right;
-}
-
-
-button:active {
-    border-color: transparent;
-    background-color: #88888888;
-}
-
-button:hover {
-    border-color: transparent;
-    background-color: #88888888;
+    opacity: 0.7;
 }

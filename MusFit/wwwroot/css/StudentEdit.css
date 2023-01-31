@@ -1007,6 +1007,11 @@ textarea.form-control-lg {
     vertical-align: middle;
 }
 
+.form-control::placeholder {
+    opacity: 0.6;
+}
+
+
 .form-control {
     -webkit-appearance: none;
     -moz-appearance: none;

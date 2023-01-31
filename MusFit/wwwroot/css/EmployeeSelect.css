@@ -441,6 +441,7 @@ textarea.form-control-lg {
 
 
 .card-body label {
+    margin-right: 20px;
     font-size: 18px;
     display: inline-block;
     width: 100px;
@@ -449,9 +450,7 @@ textarea.form-control-lg {
     vertical-align: middle;
 }
 
-.card-body .label-style {
-    margin-left: 10px;
-}
+
 
 .form-control {
     -webkit-appearance: none;

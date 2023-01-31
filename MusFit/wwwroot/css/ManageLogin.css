@@ -18,7 +18,7 @@ body {
 /*title area*/
 .logo-area {
     padding: 20px 30px;
-    background-color: #bcbbbb;
+    background-color: #BCBDCD;
     position: fixed;
     z-index: 1;
     width: 1280px;
@@ -52,7 +52,7 @@ body {
     height: 280px;
     background-color: white;
     border-radius: 5px;
-    border-top: 10px solid #8a8a8d;
+    border-top: 10px solid #9092AD;
     box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
     position: relative;
     margin: auto;
@@ -68,7 +68,7 @@ body {
 
 .submit {
     color: white;
-    background: #8a8a8d;
+    background: #9092AD;
     width: 200px;
     height: 30px;
     margin: auto;
@@ -78,7 +78,7 @@ body {
 }
 
 .submit:hover {
-    background: #626161;
+    background: #5e5fa7;
 }
 
 input {

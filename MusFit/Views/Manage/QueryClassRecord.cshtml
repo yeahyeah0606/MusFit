@@ -5,7 +5,6 @@
 }
 <link rel="stylesheet" href="~/css/QueryClassRecord.css" />
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<div class="myContent">
 	<h1>&nbsp;&nbsp;&nbsp;課程紀錄 查詢</h1>
 	<hr>
 	<input type="hidden" id="editcrID" name="editcrID" />
@@ -32,9 +31,9 @@
 
 	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
 	<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+	<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
+	<br><br>
 
-
-</div>
 	<div class="record">
 		<table style="width:100%">
 			<thead>
@@ -57,7 +56,6 @@
 		<br />
 	</div>
 
-<p class="total-member" id="dataNum">全部 :  共 0 筆 </p>
 @*pagination*@
 <div class="d-flex justify-content-center">
 	<nav aria-label="Page navigation example">
@@ -149,10 +147,10 @@
 
 </div>
 
-@*success operation*@
-<div id="successMessage" class="modal">
+@*update operation*@
+<div id="updateMessage" class="modal">
 
-	<div id="successModal" class="modal-content">
+	<div id="updateModal" class="modal-content">
 		<span class="close" onclick="closeSuccessModel()">&times;</span>
 		<p>已存檔</p>
 		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
@@ -183,8 +181,8 @@
 		}
 
 		function closeSuccessModel() {
-			$('#successMessage').css("display", "none");
-			location.reload();
+			$('#updateMessage').css("display", "none");
+			myrefresh();
 		}
 
 		// 取消
@@ -326,33 +324,33 @@
 			$('#crbody').append(tableRow);
 		}
 
-		function pageBtn(page,nowPage) {
+		function pageBtn(page, nowPage) {
 			const totalPage = page.pageTotal;
 			let pagination = document.querySelector('#pageid');
 			var pageHtml = "", prevButton, nextButton;
-			let pageIndex = nowPage;
-			//let pageIndex =9;
+			let pageIndex = parseInt(nowPage);
+			//pageIndex =9;
 
 			console.log("裡面pageIndex : " + pageIndex);   // ok
-			 if (page.hasPage) {
-				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`; 
-			 }else{
-				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#">&laquo;</a></li>`;
-			 }
-			if (page.hasNext){
-				nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${Number(page.currentPage) + 1}">&raquo;</a></li>`; 
-			}else{
-				nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#">&raquo;</a></li>`; 
+			if (page.hasPage) {
+				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`;
+			} else {
+				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#"  data-page="${pageIndex}">&laquo;</a></li>`;
 			}
-			
-			let firstPage = `<li class='list-items' pagenumber=1><a class="page-link" href="#" data-page="${i}">1</a></li>`; 
+			if (page.hasNext) {
+				nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${Number(page.currentPage) + 1}">&raquo;</a></li>`;
+			} else {
+				nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${pageIndex}" >&raquo;</a></li>`;
+			}
+
+			let firstPage = `<li class='list-items' pagenumber=1><a class="page-link" href="#" data-page="${i}">1</a></li>`;
 			let lastPage = `<li class='list-items' pagenumber=${totalPage}><a class="page-link" href="#" data-page="${totalPage}">${totalPage}</a></li>`;
-			let leftOmitPage = `<li class='list-items' id='btnGoLeft'><a class="page-link" href="#" data-page="${i}">...</a></li>`; 
-			let rightOmitPage = `<li class='list-items' id='btnGoRight'><a class="page-link" href="#" data-page="${i}">...</a></li>`;
-			pageHtml = prevButton; 
+			let leftOmitPage = `<li class='list-items' id='btnGoLeft'><a class="page-link" href="#" data-page="${i}">...</a></li>`;
+			let rightOmitPage = `<li class='list-items' id='btnGoRight'><a class="page-link" href="#" data-page="${totalPage}">...</a></li>`;
+			pageHtml = prevButton;
 			/* 生成頁數 */
 			if (totalPage <= 10) {
-				//  總頁數小於等於10頁全部顯示 
+				//  總頁數小於等於10頁全部顯示
 				for (let i = 1; i <= totalPage; i++) {
 					pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
 				}
@@ -363,30 +361,29 @@
 				}
 				pageHtml += rightOmitPage;
 				pageHtml += lastPage;
-			} else if (pageIndex > totalPage - 7) {
+			} else if (pageIndex > ( totalPage - 7 )) {
 				//總頁數大於10頁且當前頁接近總頁數
 				pageHtml += firstPage;
 				pageHtml += leftOmitPage;
-				for (let i = totalPage - 8; i <= totalPage; i++) {
+				for (let i =( totalPage - 8); i <= totalPage; i++) {
 					pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
 				}
 			} else {
 				//當前頁在中間
 				pageHtml += firstPage;
 				pageHtml += leftOmitPage;
-				for (let i = pageIndex - 3; i <= pageIndex + 3; i++) {
+				for (let i = (pageIndex - 3); i <=( pageIndex + 3); i++) {
 					pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+					//console.log("pageIndex: " + pageIndex);	
 				}
 				pageHtml += rightOmitPage;
 				pageHtml += lastPage;
 			}
 			pageHtml += nextButton;
 			pagination.innerHTML = pageHtml;
-			document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
-
-			//let pagenumberBtns = document.querySelectorAll('li[pagenumber]'); //獲取所有的頁碼按鈕
-
-        }
+			if(totalPage!=0)
+				document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
+		}
 
 			//  全部show
 		var dataData = [];
@@ -396,7 +393,6 @@
 					success: function (data) {
 					jsonData = data;
 					pagination(jsonData, 1);
-
 				}
 			})
 
@@ -411,9 +407,6 @@
 				if (mycID == null) mycID = 9999;
 				if (mysName == "") mysName = "沒填姓名";
 				if (myctLession == "") myctLession = 99;
-				//console.log("mycID: " + mycID);
-				//console.log("mysName: " + mysName);
-				//console.log("myctLession: " + myctLession);
 
 				if ( mycID == 9999 ) {
 					//$('#errorMessage').css("display", "block");
@@ -424,79 +417,9 @@
 							type: "get",
 							// GET: /api/ClassRecords/RecordQuery/1/鄧紫棋/1
 							url: "/api/ClassRecords/RecordQuery/" + mycID + "/" + mysName + "/" + myctLession ,
-							success: function (e) {
-								//alert("ok");
-								$("#crbody").empty();
-								dataList = e;
-								dataList.forEach(function (x) {
-									//alert(x.cName);
-									var term, attendance, content;
-									if (x.crAttendance == true) { attendance = "Y"; } else { attendance = "N"; }
-									if (x.crContent == null) { content = ""; } else { content = x.crContent; }
-									switch (x.tId) {
-										case 9:
-											term = "09:00 ~ 10:00";
-											break;
-										case 10:
-											term = "10:00 ~ 11:00";
-											break;
-										case 11:
-											term = "11:00 ~ 12:00";
-											break;
-										case 13:
-											term = "13:00 ~ 14:00";
-											break;
-										case 14:
-											term = "14:00 ~ 15:00";
-											break;
-										case 15:
-											term = "15:00 ~ 16:00";
-											break;
-										case 16:
-											term = "16:00 ~ 17:00";
-											break;
-										case 17:
-											term = "17:00 ~ 18:00";
-											break;
-										case 18:
-											term = "18:00 ~ 19:00";
-											break;
-										case 19:
-											term = "19:00 ~ 20:00";
-											break;
-										case 20:
-											term = "20: 00 ~21: 00";
-											break;
-										case 21:
-											term = "21:00 ~ 22:00";
-											break;
-										default:
-											term = typeof (x.tId);
-									}
-									var date = new Date(x.ctDate).toLocaleDateString();
-									var template =
-										`
-													<tr class="result">
-														<td>${x.sNumber}</td>
-														<td>${x.sName}</td>
-														<td>${date}</td>
-														<td>${x.lcType}</td>
-														<td>${x.cName}</td>
-														<td>${term}</td>
-														<td>${x.ctLession}</td>
-														<td>${attendance}</td>
-														<td>${content}</td>
-														<td>
-															<button class="button" style="vertical-align:middle"  onclick=openEditModel(${x.crID}) >
-															<span>編輯</span>
-															</button>
-														 </td>
-													</tr>
-													`;
-									$("#crbody").append(template);
-									count++;
-								})
-								console.log("count: " + count);
+							success: function (data) {
+								jsonData = data;
+								pagination(jsonData, 1);
 								//沒有查到資料
 								if (count == 0) {
 									alert("沒有查到相關資料");
@@ -579,7 +502,9 @@
 						data: JSON.stringify(updateData),
 						success: function (data) {
 							$('#editModal').css("display", "none");
-							alert("有成功更改");
+							//alert("有成功更改");
+							$('#updateMessage').css("display", "block");
+							//myrefresh();
 						}
 					})
 
@@ -590,50 +515,12 @@
 				document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
 			}
 
-			//不能用...
-			function switchFun(tID) {
-				switch (tID) {
-					case 9:
-						term = "09:00 ~ 10:00";
-						break;
-					case 10:
-						term = "10:00 ~ 11:00";
-						break;
-					case 11:
-						term = "11:00 ~ 12:00";
-						break;
-					case 13:
-						term = "13:00 ~ 14:00";
-						break;
-					case 14:
-						term = "14:00 ~ 15:00";
-						break;
-					case 15:
-						term = "15:00 ~ 16:00";
-						break;
-					case 16:
-						term = "16:00 ~ 17:00";
-						break;
-					case 17:
-						term = "17:00 ~ 18:00";
-						break;
-					case 18:
-						term = "18:00 ~ 19:00";
-						break;
-					case 19:
-						term = "19:00 ~ 20:00";
-						break;
-					case 20:
-						term = "20: 00 ~21: 00";
-						break;
-					case 21:
-						term = "21:00 ~ 22:00";
-						break;
-					default:
-
-				}
+			function myrefresh()
+			{
+				window.location.reload();
 			}
-		</script>
+
+	</script>
 
 
 }

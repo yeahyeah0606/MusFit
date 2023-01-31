@@ -69,8 +69,8 @@
         }
 /* table 樣式 */
 .record {
-    width: 90%;
-    padding-left: 5%;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
 table {
@@ -82,7 +82,7 @@ table {
 }
 
 th {
-    background-color: #0080FF;
+    background-color: #9092AD;
     color: #ffffff;
     width: 25vw;
     height: 75px;
@@ -100,10 +100,6 @@ tr {
     border-bottom: 1px solid #dddddd;
 }
 
-    tr:last-of-type {
-        border-bottom: 2px solid #0080FF;
-    }
-
     tr:nth-of-type(even) td {
         background-color: #f3f3f3;
     }
@@ -112,10 +108,16 @@ tr {
 .total-member {
     text-align: right;
     font-size: 18px;
-    padding-right: 15%;
+    /*padding-right: 50px;*/
+    padding-left: 80%;
 }
 /* 上一頁 下一頁 樣式 */
 .pagination .active a {
     background-color: #8a8a8d !important;
     border: none;
+}
+
+
+input::placeholder {
+    color: lightgray;
 }

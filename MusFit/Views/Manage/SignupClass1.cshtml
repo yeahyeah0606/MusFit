@@ -12,7 +12,8 @@
 
 	<title>查詢、報名課程</title>
 </head>
-
+<div class="record">
+	<div class="topQuery">
 	<h1>&nbsp;&nbsp;&nbsp;查詢、報名課程</h1>
 	<hr>
 	<br>
@@ -21,7 +22,6 @@
 	<input type="date" class="dateStart" id="dateStart" min="2022-01-01" max="2030-12-31" onchange="moveToEnd()" required />
 	<label for="dateEnd">&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;</label>
 	<input type="date" class="dateEnd" id="dateEnd" min="2022-01-01" max="2030-12-31" />
-	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
 
 	<br><br>    &nbsp;&nbsp;&nbsp;
 	<label for="lcID">課程項目: </label>&nbsp;
@@ -34,7 +34,7 @@
 		<option value="5">空中瑜珈</option>
 		<option value="6">皮拉提斯</option>
 	</select>
-	 &nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+	 &nbsp;&nbsp;&nbsp;
 	<label for="eID">教練: </label>&nbsp;
 		<select id="eID" name="eID" class="lession-select" >
 			<option value="none" selected disabled hidden>請選擇</option>
@@ -44,15 +44,13 @@
 			<option value="5">Elaine</option>
 			<option value="6">Molly</option>
 		</select>
-	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;
 
 <button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
 	<br>
-	<br>
-
+	<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
+		</div>
 	<!-- table 開始 -->
-
-	<div class="record">
 		<table style="width:100%">
 			<thead>
 				<tr>
@@ -71,24 +69,16 @@
 			<tbody id="Listbody">
 			</tbody>
 		</table>
-		<br><br>
-		<div class="page-ul">
-			<ul class="pagination">
-				<li><a href="#">«</a></li>
-				<li><a href="#">1</a></li>
-				<li><a class="active" href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#">»</a></li>
-			</ul>
+		<br>
+		@*pagination*@
+		<div class="d-flex justify-content-center">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination" id="pageid"></ul>
+			</nav>
 		</div>
-
-	</div>
 
 @*刪除 information*@
 <div id="deleteModal" class="modal">
-
 	<div class="modal-content">
 		<span class="close" id="leaveCreate">&times;</span>
 		<form id="deleteForm">
@@ -97,35 +87,56 @@
 			<input type="hidden" id="deletecID" name="deletecID" />
 			<input type="hidden" id="deleteTotalLession" name="deleteTotalLession" />
 			<input type="hidden" id="deleteclassTimeID" name="deleteclassTimeID" />
-
 			<p>確定要刪除該筆訂單嗎?</p>
 			<input type="button" id="btnDeleteConfirm" value="確定" />
 			<button class="cancel" id="cancelCreate">取消</button>
 		</form>
 	</div>
-
 </div>
 
-@*cannot deledte message *@
+@*cannot delete message *@
 <div id="cannotDeleteModal" class="modal">
-
 	<div id="errorModal" class="modal-content">
 		<span class="close" onclick="closeModel()">&times;</span>
 		<p>該課程目前已經開課或有人報名，不可以刪除!!</p>
 		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
+</div>
 
+@*query No Data*@
+<div id="showNoDataModal" class="modal">
+		<div id="errorModal" class="modal-content">
+			<span class="close" onclick="closeModel()">&times;</span>
+			<p>沒有查到相關資料</p>
+			<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
 </div>
 
 @*show error message *@
 <div id="errorMessage" class="modal">
-
-	<div class="modal-content">
+	<div id="errorModal" class="modal-content">
 		<span class="close" onclick="closeModel()">&times;</span>
-		<p>請輸入查詢條件!!</p>
+		<p>請設定查詢條件，至少需要選取一項</p>
 		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
+</div>
 
+@*show error message *@
+	<div id="hadOpenModal" class="modal">
+	<div id="errorModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>該課程已經開課，無法報名，請選擇其他課程!!!</p>
+		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
+@*show error message *@
+	<div id="fullPeopleModal" class="modal">
+	<div id="errorModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>該課程人數已滿，請報名其他課程</p>
+		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
 </div>
 
 @*success operation*@
@@ -140,106 +151,224 @@
 </div>
 
 @section Scripts{
-		<script>
+	<script>
 
-			function FormClear() {
-				document.getElementById("deleteForm").reset();
+		function FormClear() {
+			document.getElementById("deleteForm").reset();
+		}
+
+		document.getElementById('cancelCreate').addEventListener('click', closeModel);
+		document.getElementById('leaveCreate').addEventListener('click', closeModel);
+		document.getElementById('leaveCreate').addEventListener('click', FormClear);
+
+		//cancel-action
+		function closeModel() {
+			deleteModal.style.display = "none";
+			errorMessage.style.display = "none";
+			cannotDeleteModal.style.display = "none";
+			showNoDataModal.style.display = "none";
+			hadOpenModal.style.display = "none";
+			fullPeopleModal.style.display = "none";
+
+		}
+
+		function closeSuccessModel() {
+			$('#successMessage').css("display", "none");
+				myrefresh();
+		}
+
+		// 取消
+		document.getElementById('cancelCreate').addEventListener('click', closeModel);
+
+		// 分頁功能
+		const pageid = document.getElementById('pageid');
+		pageid.addEventListener('click', switchPage);
+		var nowpage;
+
+		function switchPage(n) {
+			n.preventDefault();
+			const nowpage = n.target.dataset.page; // nowpage = "data-page"
+			console.log("nowpage:" + nowpage);
+			pagination(jsonData, nowpage);
+		}
+
+		// 計算分頁數
+		var page;
+		function pagination(jsonData, nowPage) {
+
+			const dataTotal = jsonData.length;
+			const perpage = 4;
+			const pageTotal = Math.ceil(dataTotal / perpage);
+
+			let currentPage = nowPage;
+			// 當"當前頁數"比"總頁數"大的時候，"當前頁數"就等於"總頁數"
+			if (currentPage > pageTotal) { currentPage = pageTotal; }
+
+			const minData = (currentPage * perpage) - perpage + 1;
+			const maxData = (currentPage * perpage);
+
+			// dynamic data array according to current page
+			const data = [];
+
+			jsonData.forEach((item, index) => {
+				const num = index + 1;
+				// 當 num 比 minData 大且又小於 maxData 就push進去新陣列。
+				if (num >= minData && num <= maxData) { data.push(item); }
+			})
+			page = {
+				pageTotal,
+				currentPage,
+				hasPage: currentPage > 1,  // has previous page
+				hasNext: currentPage < pageTotal,  // has next page
 			}
+			displayData(data);
+			pageBtn(page, nowPage);
+			console.log(`全部資料:${dataTotal} 每一頁顯示:${perpage}筆 總頁數:${pageTotal}`);
+			document.getElementById("dataNum").innerText = `全部 :  共 ${dataTotal} 筆`;
+		}
 
-			document.getElementById('cancelCreate').addEventListener('click', closeModel);
-			document.getElementById('leaveCreate').addEventListener('click', closeModel);
-			document.getElementById('leaveCreate').addEventListener('click', FormClear);
+		function displayData(data) {
+			var tableRow;
+			data.forEach(function (x) {
+				var term, attendance, content;
+				if (x.crAttendance == true) { attendance = "Y"; } else { attendance = "N"; }
+				if (x.crContent == null) { content = ""; } else { content = x.crContent; }
+				switch (x.tID) {
+					case 9:
+						term = "09:00 ~ 10:00";
+						break;
+					case 10:
+						term = "10:00 ~ 11:00";
+						break;
+					case 11:
+						term = "11:00 ~ 12:00";
+						break;
+					case 13:
+						term = "13:00 ~ 14:00";
+						break;
+					case 14:
+						term = "14:00 ~ 15:00";
+						break;
+					case 15:
+						term = "15:00 ~ 16:00";
+						break;
+					case 16:
+						term = "16:00 ~ 17:00";
+						break;
+					case 17:
+						term = "17:00 ~ 18:00";
+						break;
+					case 18:
+						term = "18:00 ~ 19:00";
+						break;
+					case 19:
+						term = "19:00 ~ 20:00";
+						break;
+					case 20:
+						term = "20:00 ~ 21:00";
+						break;
+					case 21:
+						term = "21:00 ~ 22:00";
+						break;
+					default:
 
-			//cancel-action
-			function closeModel() {
-				deleteModal.style.display = "none";
-				errorMessage.style.display = "none";
-				cannotDeleteModal.style.display = "none";
+				}
+				var date = new Date(x.ctDate).toLocaleDateString();
+				tableRow +=
+							`
+							<tr class="result">
+									<td>${x.cNumber}</td>
+									<td>${x.cName}</td>
+									<td>${date}</td>
+									<td>${term}</td>
+									<td>${x.eEngName}</td>
+									<td>${x.roomName}</td>
+									<td>${x.cTotalLession}</td>
+									<td>${x.cExpect}</td>
+								<td>${x.cActual}</td>
+								<td>
+										<button class="button"  id="btnSignup" style="vertical-align:middle" onclick=openSignModel(${x.cID})><span>報名</span></button>
+										<button class="button"  id="btnDelete" style="vertical-align:middle" onclick=openDeleteModel(${x.cID}) ><span>刪除</span></button>
+								</td>
+							</tr>
+							`;
+				count++;
+			})
+
+			$('.result').remove();
+			$('#Listbody').append(tableRow);
+		}
+
+			function pageBtn(page, nowPage) {
+				const totalPage = page.pageTotal;
+				let pagination = document.querySelector('#pageid');
+				var pageHtml = "", prevButton, nextButton;
+				let pageIndex = parseInt(nowPage);
+				//pageIndex =9;
+
+				console.log("裡面pageIndex : " + pageIndex);   // ok
+				if (page.hasPage) {
+					prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`;
+				} else {
+					prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#"  data-page="${pageIndex}">&laquo;</a></li>`;
+				}
+				if (page.hasNext) {
+					nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${Number(page.currentPage) + 1}">&raquo;</a></li>`;
+				} else {
+					nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${pageIndex}" >&raquo;</a></li>`;
+				}
+
+				let firstPage = `<li class='list-items' pagenumber=1><a class="page-link" href="#" data-page="${i}">1</a></li>`;
+				let lastPage = `<li class='list-items' pagenumber=${totalPage}><a class="page-link" href="#" data-page="${totalPage}">${totalPage}</a></li>`;
+				let leftOmitPage = `<li class='list-items' id='btnGoLeft'><a class="page-link" href="#" data-page="${i}">...</a></li>`;
+				let rightOmitPage = `<li class='list-items' id='btnGoRight'><a class="page-link" href="#" data-page="${totalPage}">...</a></li>`;
+				pageHtml = prevButton;
+				/* 生成頁數 */
+				if (totalPage <= 10) {
+					//  總頁數小於等於10頁全部顯示
+					for (let i = 1; i <= totalPage; i++) {
+						pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+					}
+				} else if (pageIndex <= 8) {
+					//總頁數大於10頁遠離總頁數
+					for (let i = 1; i <= 9; i++) {
+						pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+					}
+					pageHtml += rightOmitPage;
+					pageHtml += lastPage;
+				} else if (pageIndex > (totalPage - 7)) {
+					//總頁數大於10頁且當前頁接近總頁數
+					pageHtml += firstPage;
+					pageHtml += leftOmitPage;
+					for (let i = (totalPage - 8); i <= totalPage; i++) {
+						pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+					}
+				} else {
+					//當前頁在中間
+					pageHtml += firstPage;
+					pageHtml += leftOmitPage;
+					for (let i = (pageIndex - 3); i <= (pageIndex + 3); i++) {
+						pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+						//console.log("pageIndex: " + pageIndex);
+					}
+					pageHtml += rightOmitPage;
+					pageHtml += lastPage;
+				}
+				pageHtml += nextButton;
+				pagination.innerHTML = pageHtml;
+				if (totalPage != 0)
+					document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
 			}
-
-			function closeSuccessModel() {
-				$('#successMessage').css("display", "none");
-				location.reload();
-			}
-
-			// 取消
-			document.getElementById('cancelCreate').addEventListener('click', closeModel);
-
 
 			//  全部show
 			var dataList = [];
 			$.ajax({
 				type: "get",
 				url: "/api/Classes/classList",
-				success: function (e) {
-					//alert("ok");
-					$("#Listbody").empty();
-					dataList = e;
-					dataList.forEach(function (x) {
-						//alert(x.cName);
-						var term;
-						switch (x.tID){
-							case 9:
-								term = "09:00 ~ 10:00";
-								break;
-							case 10:
-								term = "10:00 ~ 11:00";
-								break;
-							case 11:
-								term = "11:00 ~ 12:00";
-								break;
-							case 13:
-								term = "13:00 ~ 14:00";
-								break;
-							case 14:
-								term = "14:00 ~ 15:00";
-								break;
-							case 15:
-								term = "15:00 ~ 16:00";
-								break;
-							case 16:
-								term = "16:00 ~ 17:00";
-								break;
-							case 17:
-								term = "17:00 ~ 18:00";
-								break;
-							case 18:
-								term = "18:00 ~ 19:00";
-								break;
-							case 19:
-								term = "19:00 ~ 20:00";
-								break;
-							case 20:
-								term = "20:00 ~ 21:00";
-								break;
-							case 21:
-								term = "21:00 ~ 22:00";
-								break;
-							default:
-								//term = typeof(x.tID);
-						}
-						var date = new Date(x.ctDate).toLocaleDateString();
-						var template =
-							`
-											<tr class="result">
-												 <td>${x.cNumber}</td>
-												 <td>${x.cName}</td>
-												 <td>${date}</td>
-												 <td>${term}</td>
-												 <td>${x.eEngName}</td>
-												 <td>${x.roomName}</td>
-												 <td>${x.cTotalLession}</td>
-												 <td>${x.cExpect}</td>
-												<td>${x.cActual}</td>
-												<td>
-														<button class="button" style="vertical-align:middle" onclick=openSignModel(${x.cID})><span>報名</span></button>
-																		<button class="button" style="vertical-align:middle" onclick=openDeleteModel(${x.cID}) ><span>刪除</span></button>
-												</td>
-											</tr>
-											`;
-						$("#Listbody").append(template);
-					})
-					console.log(dataList);
+				success: function (data) {
+					jsonData = data;
+					console.log(jsonData);
+					pagination(jsonData, 1);
 				}
 			})
 
@@ -267,15 +396,16 @@
 								url: "/api/Classes/" + cID,
 								success: function (data) {
 									if (data.cActual < data.cExpect){
-										//alert("可以報名");
 										window.location.href = '@Url.Action("SignupClass2","Manage")?id=' + cID;
 									}else{
-										alert("該課程人數已滿，請報名其他課程");
+										//alert("該課程人數已滿，請報名其他課程");
+										$('#fullPeopleModal').css("display", "block");
 									}
 								}
 							})
 						}else{
-							alert("該課程已經開課，無法報名，請選擇其他課程!!! ");   //有
+							//alert("該課程已經開課，無法報名，請選擇其他課程!!! ");   
+							$('#hadOpenModal').css("display", "block");
 						}
 					}
 				})
@@ -295,93 +425,27 @@
 				}
 				if ( mylcID == null )  mylcID = 99;
 				if ( myeID == null )   myeID = 99;
-				console.log("mydateStart: " + mydateStart);
-				console.log("mydateEnd: " + mydateEnd);
-				console.log("mylcID: " + mylcID);
-				console.log("myeID: " + myeID);
+				//console.log("mydateStart: " + mydateStart);
+				//console.log("mydateEnd: " + mydateEnd);
+				//console.log("mylcID: " + mylcID);
+				//console.log("myeID: " + myeID);
 
 				if (mydateStart == "2999-12-31" && mylcID == 99 && myeID == 99) {
-					//$('#errorMessage').css("display", "block");
-					alert("請設定查詢條件，至少需要選取一項");
+					$('#errorMessage').css("display", "block");
+					//alert("請設定查詢條件，至少需要選取一項");
 				}
 				else {
 						$.ajax({
 							type: "get",
 					        //GET: api/Classes/ClassQuery/2023-12-01/2023-02-01/1/1
 							url: "/api/Classes/ClassQuery/" + mydateStart + "/" + mydateEnd + "/" + mylcID + "/" + myeID,
-							success: function (dataList) {
-								//alert("ok");
-								$("#Listbody").empty();
-								dataList.forEach(function (x) {
-									//alert(x.cName);
-									var term;
-									switch (x.tID) {
-										case 9:
-											term = "09:00 ~ 10:00";
-											break;
-										case 10:
-											term = "10:00 ~ 11:00";
-											break;
-										case 11:
-											term = "11:00 ~ 12:00";
-											break;
-										case 13:
-											term = "13:00 ~ 14:00";
-											break;
-										case 14:
-											term = "14:00 ~ 15:00";
-											break;
-										case 15:
-											term = "15:00 ~ 16:00";
-											break;
-										case 16:
-											term = "16:00 ~ 17:00";
-											break;
-										case 17:
-											term = "17:00 ~ 18:00";
-											break;
-										case 18:
-											term = "18:00 ~ 19:00";
-											break;
-										case 19:
-											term = "19:00 ~ 20:00";
-											break;
-										case 20:
-											term = "20: 00 ~21: 00";
-											break;
-										case 21:
-											term = "21:00 ~ 22:00";
-											break;
-										default:
-										//term = typeof(x.tID);
-									}
-									var date = new Date(x.ctDate).toLocaleDateString();
-									var template =
-										`
-													<tr class="result">
-														 <td>${x.cNumber}</td>
-														 <td>${x.cName}</td>
-														 <td>${date}</td>
-														 <td>${term}</td>
-														 <td>${x.eEngName}</td>
-														 <td>${x.roomName}</td>
-														 <td>${x.cTotalLession}</td>
-														 <td>${x.cExpect}</td>
-														<td>${x.cActual}</td>
-														<td>
-														<button class="button" style="vertical-align:middle" onclick=openSignModel(${x.cID})><span>報名</span></button>
-														<button class="button" style="vertical-align:middle" onclick=openDeleteModel(${x.cID})><span>刪除</span></button></td>
-														</td>
-													</tr>
-													`;
-									$("#Listbody").append(template);
-									count++;
-								})
-								console.log("count: " + count);
+							success: function (data) {
+								jsonData = data;
+								pagination(jsonData, 1);
 								//沒有查到資料
 								if (count == 0) {
-									alert("沒有查到相關資料");
-									//$('#showNoDataModal').css("display", "block");
+									//alert("沒有查到相關資料");
+									$('#showNoDataModal').css("display", "block");
 								}
 							}
 						})
@@ -422,7 +486,6 @@
 
 			//確定 刪除
 			$('#btnDeleteConfirm').click(function () {
-				console.log("確定刪除開始");
 				var classID = parseInt($('#deletecID').val());
 				var TotalLession = parseInt($('#deleteTotalLession').val());
 
@@ -465,12 +528,15 @@
 
 			})
 
-			function moveToEnd() {
-				document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
-			}
+	function moveToEnd() {
+		document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
+	}
+
+	function myrefresh()
+	{
+		window.location.reload();
+	}
 
 
-
-
-		</script>
+	</script>
    }

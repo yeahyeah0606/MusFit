@@ -6,17 +6,20 @@
 <h1>&nbsp;&nbsp;&nbsp;教室管理 查詢</h1>
 <hr>
 <br>
-	&nbsp;&nbsp;&nbsp;
-<label for="dateStart">&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期: &nbsp;</label>
-<input type="date" class="dateStart" id="dateStart" min="2022-01-01" max="2023-12-31" onchange="moveToEnd()" required />
-<label for="dateEnd">&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;</label>
-<input type="date" class="dateEnd" id="dateEnd" min="2022-01-01" max="2023-12-31" />
-&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
+
+<div class="topQuery">
+		&nbsp;&nbsp;&nbsp;
+	<label for="dateStart">&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期: &nbsp;</label>
+	<input type="date" class="dateStart" id="dateStart" min="2022-01-01" max="2023-12-31" onchange="moveToEnd()" required />
+	<label for="dateEnd">&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;</label>
+	<input type="date" class="dateEnd" id="dateEnd" min="2022-01-01" max="2023-12-31" />
+</div>
 <br>
-<br>&nbsp;&nbsp;&nbsp;
+<div class="topQuery">
+&nbsp;&nbsp;&nbsp;
 <label for="tID">&nbsp;&nbsp;時&nbsp;&nbsp;&nbsp;&nbsp;段: &nbsp;</label>&nbsp;
 <select class="lession-select" name="tID" id="tID">
-	<option value="none" selected disabled hidden>請選擇</option>
+	<option value="none" selected disabled hidden>請選擇  </option>
 	<option value="9">09:00 ~ 10:00</option>     <!-- &emsp;&emsp; -->
 	<option value="10">10:00 ~ 11:00</option>
 	<option value="11">11:00 ~ 12:00</option>
@@ -30,22 +33,21 @@
 	<option value="20">20:00 ~ 21:00</option>
 	<option value="21">21:00 ~ 22:00</option>
 </select>
-	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
-<label for="roomID">教室: </label>&nbsp;
+	&nbsp;&nbsp;&nbsp;
+<label for="roomID">&nbsp;&nbsp;教&nbsp;&nbsp;&nbsp;&nbsp;室: &nbsp; </label>&nbsp;
 <select id="roomID" name="roomID" class="lession-select">
-	<option value="none" selected disabled hidden>請選擇</option>
+	<option value="none" selected disabled hidden>請選擇 </option>
 	<option value="1">1801</option>
 	<option value="2">1802</option>
 	<option value="3">1803</option>
 	<option value="4">1804</option>
 	<option value="5">1805</option>
 </select>
-	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
-
-<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
-<br>
-<br>
-
+	&nbsp;&nbsp;&nbsp;
+	<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+	
+</div>
+<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
 <!-- table 開始 -->
 
 <div class="record">
@@ -66,60 +68,62 @@
 	</table>
 	<br>
 </div>
-<p class="total-member" id="dataNum">全部 :  共 0 筆 </p>
-	@*pagination*@
-	<div class="d-flex justify-content-center">
-		<nav aria-label="Page navigation example">
-			<ul class="pagination" id="pageid"></ul>
-		</nav>
-	</div>
+@*pagination*@
+<div class="d-flex justify-content-center">
+	<nav aria-label="Page navigation example">
+		<ul class="pagination" id="pageid"></ul>
+	</nav>
+</div>
 
 @section Scripts{
 	<script>
+		// 分頁功能
 		const pageid = document.getElementById('pageid');
 		pageid.addEventListener('click', switchPage);
+		var nowpage;
 
 		function switchPage(n) {
-            n.preventDefault();
-            const nowpage = n.target.dataset.page; // nowpage = "data-page"
+			n.preventDefault();
+			const nowpage = n.target.dataset.page; // nowpage = "data-page"
 			console.log("nowpage:" + nowpage);
-            pagination(jsonData, nowpage);
-        }
+			pagination(jsonData, nowpage);
+		}
 
 		// 計算分頁數
-        function pagination(jsonData, nowPage) {
+		var page;
+		function pagination(jsonData, nowPage) {
 
-            const dataTotal = jsonData.length;
+			const dataTotal = jsonData.length;
+			const perpage = 5;
+			const pageTotal = Math.ceil(dataTotal / perpage);
 
-            const perpage = 5;
-            const pageTotal = Math.ceil(dataTotal / perpage);
-
-            let currentPage = nowPage;
+			let currentPage = nowPage;
 			// 當"當前頁數"比"總頁數"大的時候，"當前頁數"就等於"總頁數"
-            if (currentPage > pageTotal) { currentPage = pageTotal; }
+			if (currentPage > pageTotal) { currentPage = pageTotal; }
 
-            const minData = (currentPage * perpage) - perpage + 1;
-            const maxData = (currentPage * perpage);
+			const minData = (currentPage * perpage) - perpage + 1;
+			const maxData = (currentPage * perpage);
 
-            // dynamic data array according to current page
-            const data = [];
+			// dynamic data array according to current page
+			const data = [];
 
-            jsonData.forEach((item, index) => {
-                const num = index + 1;
+			jsonData.forEach((item, index) => {
+				const num = index + 1;
 				// 當 num 比 minData 大且又小於 maxData 就push進去新陣列。
-                if (num >= minData && num <= maxData) { data.push(item); }
-            })
-            const page = {
-                pageTotal,
-                currentPage,
-                hasPage: currentPage > 1,  // has previous page
-                hasNext: currentPage < pageTotal,  // has next page
-            }
-            displayData(data);
-            pageBtn(page);
+				if (num >= minData && num <= maxData) { data.push(item); }
+			})
+			page = {
+				pageTotal,
+				currentPage,
+				hasPage: currentPage > 1,  // has previous page
+				hasNext: currentPage < pageTotal,  // has next page
+			}
+			displayData(data);
+			pageBtn(page, nowPage);
 			console.log(`全部資料:${dataTotal} 每一頁顯示:${perpage}筆 總頁數:${pageTotal}`);
 			document.getElementById("dataNum").innerText = `全部 :  共 ${dataTotal} 筆`;
-        }
+		}
+
 
 		function displayData(data) {
 			var tableRow;
@@ -183,26 +187,66 @@
 			$('#Listbody').append(tableRow);
 		}
 
-		function pageBtn(page) {
-            let str = '';
-            const total = page.pageTotal;
+		function pageBtn(page, nowPage) {
+			const totalPage = page.pageTotal;
+			let pagination = document.querySelector('#pageid');
+			var pageHtml = "", prevButton, nextButton;
+			let pageIndex = parseInt(nowPage);
+			//pageIndex =9;
 
-            // if current page > 1 or not
-            if (page.hasPage) { str += `<li class="page-item"><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`; }
-            else { str += `<li class="page-item disabled"><span class="page-link">&laquo;</span></li>`; }
+			console.log("裡面pageIndex : " + pageIndex);   // ok
+			if (page.hasPage) {
+				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`;
+			} else {
+				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#"  data-page="${pageIndex}">&laquo;</a></li>`;
+			}
+			if (page.hasNext) {
+				nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${Number(page.currentPage) + 1}">&raquo;</a></li>`;
+			} else {
+				nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${pageIndex}" >&raquo;</a></li>`;
+			}
 
-            // pages (current page = data-page)
-            for (let i = 1; i <= total; i++) {
-                if (Number(page.currentPage) === i) { str += `<li class="page-item active"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`; }
-                else { str += `<li class="page-item"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`; }
-            };
-
-            // if current page < total page or not
-            if (page.hasNext) { str += `<li class="page-item"><a class="page-link" href="#" data-page="${Number(page.currentPage) + 1}">&raquo;</a></li>`; }
-            else { str += `<li class="page-item disabled"><span class="page-link">&raquo;</span></li>`; }
-
-            pageid.innerHTML = str;
-        }
+			let firstPage = `<li class='list-items' pagenumber=1><a class="page-link" href="#" data-page="${i}">1</a></li>`;
+			let lastPage = `<li class='list-items' pagenumber=${totalPage}><a class="page-link" href="#" data-page="${totalPage}">${totalPage}</a></li>`;
+			let leftOmitPage = `<li class='list-items' id='btnGoLeft'><a class="page-link" href="#" data-page="${i}">...</a></li>`;
+			let rightOmitPage = `<li class='list-items' id='btnGoRight'><a class="page-link" href="#" data-page="${totalPage}">...</a></li>`;
+			pageHtml = prevButton;
+			/* 生成頁數 */
+			if (totalPage <= 10) {
+				//  總頁數小於等於10頁全部顯示
+				for (let i = 1; i <= totalPage; i++) {
+					pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+				}
+			} else if (pageIndex <= 8) {
+				//總頁數大於10頁遠離總頁數
+				for (let i = 1; i <= 9; i++) {
+					pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+				}
+				pageHtml += rightOmitPage;
+				pageHtml += lastPage;
+			} else if (pageIndex > (totalPage - 7)) {
+				//總頁數大於10頁且當前頁接近總頁數
+				pageHtml += firstPage;
+				pageHtml += leftOmitPage;
+				for (let i = (totalPage - 8); i <= totalPage; i++) {
+					pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+				}
+			} else {
+				//當前頁在中間
+				pageHtml += firstPage;
+				pageHtml += leftOmitPage;
+				for (let i = (pageIndex - 3); i <= (pageIndex + 3); i++) {
+					pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+					//console.log("pageIndex: " + pageIndex);
+				}
+				pageHtml += rightOmitPage;
+				pageHtml += lastPage;
+			}
+			pageHtml += nextButton;
+			pagination.innerHTML = pageHtml;
+			if (totalPage != 0)
+				document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
+		}
 
 
 		//  全部show
@@ -212,7 +256,6 @@
 			type: "get",
 			url: "/api/Rooms/roomList",
 				success: function (data) {
-				//$("#Listbody").empty();
 				jsonData = data;
 				console.log("jsonData: "+ jsonData);
 				pagination(jsonData, 1);

@@ -134,6 +134,11 @@ button:hover {
     padding: 0px 20px;
 }
 
+input:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px white inset;
+    -webkit-text-fill-color: #000;
+}
+
 
 input[type=text], select {
     border: solid 1px #a4a1a1;

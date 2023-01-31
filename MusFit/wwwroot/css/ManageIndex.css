@@ -187,9 +187,8 @@ hr{
 }
 
 #logout:hover {
-    background-color: #5d6d8e;
-    color: #8d89cc;
-    opacity: 0.9;
+    background-color: #D37CA5;
+    opacity: 0.8;
 }
 
 #logout:focus{

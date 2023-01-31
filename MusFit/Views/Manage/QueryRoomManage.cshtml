@@ -6,51 +6,49 @@
 <h1>&nbsp;&nbsp;&nbsp;教室管理 查詢</h1>
 <hr>
 <br>
-
-<div class="topQuery">
+<div class="record">
+	<div class="topQuery">
 		&nbsp;&nbsp;&nbsp;
 	<label for="dateStart">&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期: &nbsp;</label>
 	<input type="date" class="dateStart" id="dateStart" min="2022-01-01" max="2023-12-31" onchange="moveToEnd()" required />
 	<label for="dateEnd">&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;</label>
 	<input type="date" class="dateEnd" id="dateEnd" min="2022-01-01" max="2023-12-31" />
-</div>
-<br>
-<div class="topQuery">
-&nbsp;&nbsp;&nbsp;
-<label for="tID">&nbsp;&nbsp;時&nbsp;&nbsp;&nbsp;&nbsp;段: &nbsp;</label>&nbsp;
-<select class="lession-select" name="tID" id="tID">
-	<option value="none" selected disabled hidden>請選擇  </option>
-	<option value="9">09:00 ~ 10:00</option>     <!-- &emsp;&emsp; -->
-	<option value="10">10:00 ~ 11:00</option>
-	<option value="11">11:00 ~ 12:00</option>
-	<option value="13">13:00 ~ 14:00</option>
-	<option value="14">14:00 ~ 15:00</option>
-	<option value="15">15:00 ~ 16:00</option>
-	<option value="16">16:00 ~ 17:00</option>
-	<option value="17">17:00 ~ 18:00</option>
-	<option value="18">18:00 ~ 19:00</option>
-	<option value="19">19:00 ~ 20:00</option>
-	<option value="20">20:00 ~ 21:00</option>
-	<option value="21">21:00 ~ 22:00</option>
-</select>
+	<br><br>
 	&nbsp;&nbsp;&nbsp;
-<label for="roomID">&nbsp;&nbsp;教&nbsp;&nbsp;&nbsp;&nbsp;室: &nbsp; </label>&nbsp;
-<select id="roomID" name="roomID" class="lession-select">
-	<option value="none" selected disabled hidden>請選擇 </option>
-	<option value="1">1801</option>
-	<option value="2">1802</option>
-	<option value="3">1803</option>
-	<option value="4">1804</option>
-	<option value="5">1805</option>
-</select>
+	<label for="tID">&nbsp;&nbsp;時&nbsp;&nbsp;&nbsp;&nbsp;段: &nbsp;</label>&nbsp;
+	<select class="lession-select" name="tID" id="tID">
+		<option value="none" selected disabled hidden>請選擇  </option>
+		<option value="9">09:00 ~ 10:00</option>     <!-- &emsp;&emsp; -->
+		<option value="10">10:00 ~ 11:00</option>
+		<option value="11">11:00 ~ 12:00</option>
+		<option value="13">13:00 ~ 14:00</option>
+		<option value="14">14:00 ~ 15:00</option>
+		<option value="15">15:00 ~ 16:00</option>
+		<option value="16">16:00 ~ 17:00</option>
+		<option value="17">17:00 ~ 18:00</option>
+		<option value="18">18:00 ~ 19:00</option>
+		<option value="19">19:00 ~ 20:00</option>
+		<option value="20">20:00 ~ 21:00</option>
+		<option value="21">21:00 ~ 22:00</option>
+	</select>
+	&nbsp;&nbsp;&nbsp;
+	<label for="roomID">&nbsp;&nbsp;教&nbsp;&nbsp;&nbsp;&nbsp;室: &nbsp; </label>&nbsp;
+	<select id="roomID" name="roomID" class="lession-select">
+		<option value="none" selected disabled hidden>請選擇 </option>
+		<option value="1">1801</option>
+		<option value="2">1802</option>
+		<option value="3">1803</option>
+		<option value="4">1804</option>
+		<option value="5">1805</option>
+	</select>
 	&nbsp;&nbsp;&nbsp;
 	<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
-	
-</div>
-<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
-<!-- table 開始 -->
 
-<div class="record">
+	<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
+
+</div>
+
+<!-- table 開始 -->
 	<table style="width:100%">
 		<thead>
 			<tr>
@@ -75,8 +73,28 @@
 	</nav>
 </div>
 
+@*query No Data*@
+<div id="showNoDataModal" class="modal">
+		<div id="errorModal" class="modal-content">
+			<span class="close" onclick="closeModel()">&times;</span>
+			<p>沒有查到相關資料</p>
+			<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
 @section Scripts{
 	<script>
+
+		function closeModel() {
+			errorMessage.style.display = "none";
+			showNoDataModal.style.display = "none";
+		}
+
+		function closeSuccessModel() {
+			$('#successMessage').css("display", "none");
+				//myrefresh();
+		}
+
 		// 分頁功能
 		const pageid = document.getElementById('pageid');
 		pageid.addEventListener('click', switchPage);
@@ -296,18 +314,17 @@
 						pagination(jsonData, 1);
 						//沒有查到資料
 						if (count == 0) {
-							alert("沒有查到相關資料");
-							//$('#showNoDataModal').css("display", "block");
+							//alert("沒有查到相關資料");
+							$('#showNoDataModal').css("display", "block");
 						}
 					}
 				})
 			}
 		})
 
-		function moveToEnd() {
-			document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
-		}
-
+	function moveToEnd() {
+		document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
+	}
 
 	</script>
    }

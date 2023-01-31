@@ -11,7 +11,47 @@
 }
 */
 
+/* 查詢 button 樣式 */
+#btnQuery {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #6B7BA7;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+    width: 80px;
+    height: 32px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 1px;
+}
 
+#btnConfirmMessage {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #6B7BA7;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+    width: 80px;
+    height: 32px;
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+.cancel {
+    background-color: #c0bcbc;
+    color: #fff;
+    padding: 5px 10px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+}
 /* 查詢 button 樣式 */
 .button {
     display: inline-block;
@@ -58,25 +98,22 @@
 width: 90%;
 padding-left: 5%;
 }
-    
-table{
-overflow:hidden;
-border-radius:10px 10px 0px 0px;
-box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
-font-family: 'Oswald', sans-serif;
-border-collapse:collapse;
-    
+
+table {
+    overflow: hidden;
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+    font-family: 'Oswald', sans-serif;
+    border-collapse: collapse;
 }
 
-th{
-background-color:#0080FF;
-color:#ffffff;
-width:25vw;
-height:75px;
-text-align: center;
-
+th {
+    background-color: #9092AD;
+    color: #ffffff;
+    width: 25px;
+    height: 55px;
+    text-align: center;
 }
-    
 
 td{
 background-color:#ffffff;
@@ -89,9 +126,6 @@ tr{
 border-bottom: 1px solid #dddddd;
 }
 
-tr:last-of-type{
-border-bottom: 2px solid #0080FF;
-}
 
 tr:nth-of-type(even) td{
 background-color:#f3f3f3;
@@ -135,6 +169,13 @@ ul.pagination li a.active {
 
 ul.pagination li a:hover:not(.active) {
     background-color: #4da6f0;
+}
+
+/* 會員編號 樣式 */
+.memberID-input {
+    width: 150px;
+    height: 35px;
+    padding: 5px;
 }
 
 /* 會員資料 樣式 */
@@ -197,8 +238,14 @@ input[type=radio] {
     margin: auto 25px;
 }
 
+form input[type=text] {
+    background-color: #ddd;
+}
+
 form input[type=text]:focus, select:focus {
     background-color: #ddd;
+    /*    border-color: rgba(135, 206, 250, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(135, 206, 250, 0.6);*/
 }
 
 
@@ -214,7 +261,7 @@ form a {
     bottom: 35px;
 }
 
-#btnCreateConfirm, #btnSignupConfirm, #btnconfirmdelete, #btnCreateReserveConfirm {
+#btnCreateConfirm, #btnSignupConfirm, #btnconfirmdelete {
     color: #fff;
     background: #a764b2;
     padding: 5px 10px;
@@ -225,7 +272,7 @@ form a {
 }
 
 
-    #btnconfirm:hover, #btnconfirmdelete:hover, #btncanceldelete, #btnCreateReserveConfirm:hover,
+    #btnconfirm:hover, #btnconfirmdelete:hover, #btncanceldelete,
     #btnCreateConfirm:hover {
         opacity: 0.9;
     }

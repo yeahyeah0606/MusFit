@@ -19,10 +19,10 @@
 <h3>&nbsp;&nbsp;&nbsp;請輸入要報名的會員編號或會員姓名</h3>
 	&nbsp;&nbsp;&nbsp;
 <label for="sNumber">會員編號:</label>
-<input type="text" id="sNumber" />
+<input type="text" class="memberID-input" id="sNumber" />
 	&nbsp;&nbsp;&nbsp;
 <label for="sName">會員姓名: </label>&nbsp;
-<input type="text" id="sName" />
+<input type="text" class="memberID-input" id="sName" />
 	&nbsp;&nbsp;&nbsp;
 <button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
 @*onclick="openCreateModel()"*@
@@ -99,13 +99,11 @@
 
 @*show error message *@
 <div id="errorMessage" class="modal">
-
 	<div id="errorModal" class="modal-content">
 		<span class="close" onclick="closeModel()">&times;</span>
 		<p>請輸入查詢條件!!</p>
-		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
-
 </div>
 
 @*success operation*@
@@ -133,6 +131,7 @@
 		}
 
 		document.getElementById('cancelCreate').addEventListener('click', closeModel);
+		document.getElementById('cancelCreate').addEventListener('click', FormClear);
 		document.getElementById('leaveCreate').addEventListener('click', closeModel);
 		document.getElementById('leaveCreate').addEventListener('click', FormClear);
 
@@ -228,17 +227,11 @@
 		$('#btnQuery').click(function () {
 			var sNumberinfo = $('#sNumber').val();
 			var sNameinfo = $('#sName').val();
-
 			var count = 0;
-
 			if (sNumberinfo == "" && sNameinfo == "") {
 				$('#errorMessage').css("display", "block");
 			}
 			else {
-				console.log(typeof sNameinfo);   //string
-				console.log(sNameinfo);   //林心如
-
-				var NameFlag = true
 				$.ajax({
 					type: "get",
 					url: "/api/students/",
@@ -306,10 +299,6 @@
 							alert("沒有查到相關資料");
 							//$('#showNoDataModal').css("display", "block");
 						}
-						//console.log("NameFlag: " +  NameFlag);
-						//if (NameFlag) {
-						//	alert("你輸入的會員編號顯示不是這位會員，請重新輸入");
-						//}
 					}
 				})
 			}

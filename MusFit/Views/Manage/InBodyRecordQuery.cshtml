@@ -96,7 +96,7 @@
                     url: "/api/students/",
                     success: function (e) {
                         e.forEach(function (s) {
-                            if(s.sAccount != ""){
+                            if(s.sAccount != null){
                                 // find visitor
                                 if (s.sName == name || s.sNumber == id || s.sAccount == account) {                                
                                 var sId = s.sId;

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="~/css/VisitorInfo.css" />
 
 <div class="myContent">
-    <h3>訪客資料</h3>
+    <h2>訪客資料</h2>
     <div class="row d-flex">
         <div class="searchArea">
             <input id="queryinfo" type="text" placeholder="請輸入訪客姓名或手機..." />  
@@ -65,7 +65,7 @@
                     <label for="name">姓&emsp;名<span class="star"> * </span></label>
                     <input type="text" id="name" name="sName" />
                 </div>
-                <div class="column">
+                <div id="gender_col" class="column">
                     <label for="name">性&emsp;別<span class="star"> * </span></label>
                     <input type="radio" name="sGender" />男
                     <input type="radio" name="sGender" />女
@@ -110,7 +110,7 @@
 @*create visitor information*@
 <div id="createModal" class="modal">
 
-    <div class="modal-content">
+    <div class="modal-content createmodals">
         <span class="close" id="leaveCreate">&times;</span>
         <form id="createForm">
             <h3>新增訪客資料</h3>
@@ -131,7 +131,7 @@
                     <label for="name">姓&emsp;名<span class="star"> * </span></label>
                     <input type="text" id="CreateName" name="sName" />
                 </div>
-                <div class="column">
+                <div id="create_gender_col"class="column">
                     <label for="name">性&emsp;別<span class="star"> * </span></label>
                     <input type="radio" name="sGender" value="true"/>男
                     <input type="radio" name="sGender" value="false" />女
@@ -143,8 +143,8 @@
                     <label for="phone">手&emsp;機<span class="star"> * </span></label>
                     <input type="text" id="CreatePhone" name="sPhone" />
                 </div>
-                <div class="column">
-                    <label for="mail">&emsp;&emsp;信&emsp;箱<span class="star"> * </span></label>
+                <div  id="create_mail_col" class="column">
+                    <label for="mail">信&emsp;箱<span class="star"> * </span></label>
                     <input type="text" id="CreateMail" name="sMail" />
                 </div>
             </div>
@@ -159,7 +159,7 @@
 @*create-visitor-reseration*@
 <div id="createReserveModal" class="modal">
 
-    <div class="modal-content">
+    <div class="modal-content createmodals">
         <span class="close" id="leaveReservation">&times;</span>
         <h3>預約課程體驗</h3>
         <form id="createOrder">

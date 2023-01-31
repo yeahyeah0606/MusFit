@@ -12,11 +12,12 @@
     padding: 5px;
 }
 
-/* 彈跳視窗 */
+/*懸浮視窗  visitor information*/
+/*-----------------------------------------------------------------*/
 .modal {
     display: none;
     position: fixed;
-    z-index: 3;
+    z-index: 6;
     padding-top: 100px;
     left: 0;
     top: 0;
@@ -44,6 +45,17 @@
     padding: 0px 20px;
 }
 
+input[type=text], select {
+    border: solid 1px #a4a1a1;
+    border-radius: 5px;
+    padding: 2px 5px;
+    outline: none;
+}
+
+select {
+    width: 60%;
+}
+
 /* 查詢 button 樣式 */
 
 #btnQuery {
@@ -60,6 +72,16 @@
     transition: all 0.5s;
     cursor: pointer;
     margin: 1px;
+}
+
+.btnConfirmMessage {
+    color: #fff;
+    background-color: #6B7BA7;
+    padding: 5px 10px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
 }
 
 .button span {

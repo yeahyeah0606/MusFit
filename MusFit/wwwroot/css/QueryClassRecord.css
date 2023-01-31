@@ -164,11 +164,12 @@ tr:nth-of-type(even) td {
     border: none;
 }
 
-/* 彈跳視窗 */
+/*懸浮視窗  visitor information*/
+/*-----------------------------------------------------------------*/
 .modal {
     display: none;
     position: fixed;
-    z-index: 3;
+    z-index: 6;
     padding-top: 100px;
     left: 0;
     top: 0;
@@ -195,6 +196,7 @@ tr:nth-of-type(even) td {
     margin: 20px auto;
     padding: 0px 20px;
 }
+
 
 
 input[type=text], select {
@@ -236,7 +238,7 @@ form a {
     bottom: 35px;
 }
 
- #btnEditConfirm {
+#btnEditConfirm {
     color: #fff;
     background: #a764b2;
     padding: 5px 10px;
@@ -244,6 +246,17 @@ form a {
     border: none;
     border-radius: 3px;
     outline: none;
+}
+
+#btnConfirmMessage {
+    color: #fff;
+    background: #a764b2;
+    padding: 5px 10px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    margin-left:40%;
 }
 
 #cancelCreate {

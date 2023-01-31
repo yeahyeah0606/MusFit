@@ -46,8 +46,6 @@
 
 			</div>
 		</div>
-@*		<div>
-		</div>*@
 
 		<div class="date-block" id="date-block" style="display:none">
 			<div id="date-title">
@@ -57,8 +55,6 @@
 					<div class="column">
 						<label class="classDate">課程日期</label>
 						<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-@*						<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-						<p>&emsp;&emsp;&emsp;&emsp;&emsp;</p>*@
 					</div>
 					<div class="column"></div>
 				</div>
@@ -166,32 +162,73 @@
 			<p>&emsp;確定要新增課程嗎?</p>
 			<br>
 			<input type="button" id="btnAddConfirm" value="確定" />
-			<button class="cancel" id="cancelCreate">取消</button>
+			<button class="cancel" id="cancelCreate" onclick="closeModel()">取消</button>
 		</form>
-	</div>
-
-</div>
-
-@*show error message *@
-<div id="errorMessage" class="modal">
-
-	<div id="errorModal" class="modal-content">
-		<span class="close" onclick="closeModel()">&times;</span>
-		<p>請輸入查詢條件!!</p>
-		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
 
 </div>
 
 @*success operation*@
 <div id="successMessage" class="modal">
-
 	<div id="successModal" class="modal-content">
 		<span class="close" onclick="closeSuccessModel()">&times;</span>
 		<p>已存檔</p>
 		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
 	</div>
+</div>
 
+@*沒有開始日期*@
+<div id="noStartDateModal" class="modal">
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>請先選擇開課日</p>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
+@*沒有開始日期*@
+<div id="needTwoModal" class="modal">
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>請先選取兩個【星期】，再按【選取】</p>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
+@*沒有按日期選取按鈕*@
+<div id="notSelectDateModal" class="modal">
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>請先按下【日期選取】，才能新增</p>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
+@*【星期】最多只能選擇2個*@
+<div id="moreThanTwoModal" class="modal">
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>【星期】最多只能選擇2個</p><br>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
+@*請先選擇教室，再新增*@
+<div id="noRoomModal" class="modal">
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>請先選擇教室，再新增</p><br>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
+@*成功新增課程*@
+<div id="successInsertModal" class="modal">
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>成功新增課程，請到課程頁面查詢</p><br>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="gotoSignupPage()">確定</button>
+	</div>
 </div>
 
 @section Scripts{
@@ -200,14 +237,24 @@
 			document.getElementById("addClassForm").reset();
 		}
 
+		// 取消
 		document.getElementById('cancelCreate').addEventListener('click', closeModel);
 		document.getElementById('leaveCreate').addEventListener('click', closeModel);
+		document.getElementById('cancelCreate').addEventListener('click', FormClear);
 		document.getElementById('leaveCreate').addEventListener('click', FormClear);
 
-		//cancel-action
 		function closeModel() {
-			addClassModal.style.display = "none";
-			errorMessage.style.display = "none";
+			addClassModal.style.display = "none"; 
+			noStartDateModal.style.display = "none";
+			needTwoModal.style.display = "none";
+			notSelectDateModal.style.display = "none";
+			moreThanTwoModal.style.display = "none";
+			noRoomModal.style.display = "none";
+		}
+
+		function gotoSignupPage(){
+			successInsertModal.style.display = "none";
+			window.location = "/Manage/SignupClass1";
 		}
 
 		function closeSuccessModel() {
@@ -215,8 +262,6 @@
 			location.reload();
 		}
 
-		// 取消
-		document.getElementById('cancelCreate').addEventListener('click', closeModel);
 
 		var dateStart, wNumber, c;
 		$('#btnInsert').click(function () {
@@ -224,7 +269,6 @@
 			console.log(dateStart); // xxxx-xx-xx  string
 			var myDate = Date2ymd(new Date(dateStart));
 			console.log(myDate);
-			//console.log(typeof myDate); // object
 			var weekday = [];
 			$("input[type=checkbox]:checked").each(function () {
 				weekday.push($(this).val());
@@ -238,10 +282,9 @@
 			c = 0;
 			dateStart = document.getElementById('dateStart').value;
 			var startWeekday = getChineseDay(new Date(dateStart));
-			console.log(startWeekday); // 星期三    string
+			console.log(startWeekday); 
 			document.getElementById("startwday").innerText = startWeekday + "   ";
 			wNumber = new Date(dateStart).getDay();
-			//console.log(wNumber);
 			wFirstCheck(wNumber);
 		}
 		function Date2ymd(d) {
@@ -320,9 +363,9 @@
 			obj.checked ? c++ : c--;
 			if (c > limit) {
 				obj.checked = false;
-				alert("【星期】最多只能選擇2個");
+				//alert("【星期】最多只能選擇2個");
+				$('#moreThanTwoModal').css("display", "block");
 				ShowWday();
-				//FirstCheckClear();
 			}
 		}
 		var result= [ ] ;
@@ -332,7 +375,8 @@
 			dateStart = document.getElementById('dateStart').value;
 			console.log("btnSelect裡的dateStart:  "+ dateStart); // xxxx-xx-xx  string
 			if(dateStart=="" ){
-				alert("請先選擇開課日");
+				//alert("請先選擇開課日");
+				$('#noStartDateModal').css("display", "block");
 			}else{
 				var w = document.getElementsByName("weekday");
 				var len = w.length;
@@ -351,8 +395,8 @@
 				console.log("count:" + len);
 
 				if (count != 2) {
-					alert("請先選取兩個【星期】，再按【選取】");
-
+					//alert("請先選取兩個【星期】，再按【選取】");
+					$('#needTwoModal').css("display", "block");
 				}else{
 					console.log("TotalLession:"+TotalLession); 
 					quotient = Math.floor(TotalLession/2) ;
@@ -514,6 +558,9 @@
 			$('#btnDateClick').val("Yes");
 		}
 
+		function valueIsNaN(v) { 
+			return v !== v; 
+		}
 		// 跳出確認新增視窗
 		var mylcID, mylcName, myterm, term, myCoach, myRoom;
 		var myContent;
@@ -526,100 +573,108 @@
 				mylcID = parseInt( $('#lcID').val() );
 				console.log("mylcID: "+ mylcID);
 				myterm = parseInt($('#tID').val());
-				switch (myterm) {
-					case 9:
-						term = "09:00 ~ 10:00";
-						break;
-					case 10:
-						term = "10:00 ~ 11:00";
-						break;
-					case 11:
-						term = "11:00 ~ 12:00";
-						break;
-					case 13:
-						term = "13:00 ~ 14:00";
-						break;
-					case 14:
-						term = "14:00 ~ 15:00";
-						break;
-					case 15:
-						term = "15:00 ~ 16:00";
-						break;
-					case 16:
-						term = "16:00 ~ 17:00";
-						break;
-					case 17:
-						term = "17:00 ~ 18:00";
-						break;
-					case 18:
-						term = "18:00 ~ 19:00";
-						break;
-					case 19:
-						term = "19:00 ~ 20:00";
-						break;
-					case 20:
-						term = "20: 00 ~21: 00";
-						break;
-					case 21:
-						term = "21:00 ~ 22:00";
-						break;
-					default:
-				}
-				$('#addtID').val(term);
-				$.ajax({
-					type: "get",
-					url: "/api/LessionCategories/" + mylcID,
-					success: function (data) {
-						//alert(data.lcName);
-						$('#addlcID').val(data.lcName);
-						//mylcAbbrev = data.lcAbbrev;
-						//console.log(mylcAbbrev);	//有
-					}
-				})
-				myCoach = parseInt( $('#eID').val() );
-				$.ajax({
-					type: "get",
-					url: "/api/Employees/" + myCoach,
-					success: function (data){
-						//alert(data.eEngName);
-						$('#addeID').val(data.eEngName);
-					}
-				})
 				myRoom = parseInt($('#roomID').val());
-				$.ajax({
-					type: "get",
-					url: "/api/Rooms/" + myRoom,
-					success: function (data){
-						$('#addroomID').val(data.roomName);
+				console.log("myRoom: " + myRoom);
+				var roomNaN = valueIsNaN(myRoom);;
+				console.log("myRoom 空值?: " + roomNaN);  //true
+				if( roomNaN ){
+					//alert("請先選擇教室，再新增");
+					$('#noRoomModal').css("display", "block");
+				}else{
+					switch (myterm) {
+						case 9:
+							term = "09:00 ~ 10:00";
+							break;
+						case 10:
+							term = "10:00 ~ 11:00";
+							break;
+						case 11:
+							term = "11:00 ~ 12:00";
+							break;
+						case 13:
+							term = "13:00 ~ 14:00";
+							break;
+						case 14:
+							term = "14:00 ~ 15:00";
+							break;
+						case 15:
+							term = "15:00 ~ 16:00";
+							break;
+						case 16:
+							term = "16:00 ~ 17:00";
+							break;
+						case 17:
+							term = "17:00 ~ 18:00";
+							break;
+						case 18:
+							term = "18:00 ~ 19:00";
+							break;
+						case 19:
+							term = "19:00 ~ 20:00";
+							break;
+						case 20:
+							term = "20: 00 ~21: 00";
+							break;
+						case 21:
+							term = "21:00 ~ 22:00";
+							break;
+						default:
 					}
-				})
-				var TotalLession = parseInt($('#cTotalLession').val());
-
-				for (var n = 0; n < TotalLession; n++) {
-					var temp = "date" + (n + 1).toString();
-					myDayList2[n] = document.getElementById(temp).value ;
-					weekStr[n] = getChineseDay2(new Date(myDayList2[n]));
-				}
-				console.log("4. myDayList2 : ");
-				console.log(myDayList2);
-				console.log("4. weekStr : ");
-				console.log(weekStr);
-				for(var n=0; n<TotalLession; n++){
-					if( n==0 )   myContent += '<p>' ;
-					myContent +=  myDayList2[n] + " (" + weekStr[n] + ") 、";
-						if ( n == (TotalLession-1) ){
-							myContent = myContent.substr(0, myContent.length - 1);
-						myContent += '。</p>';
-						}else{
-							if( (n%2) == 1 )   myContent += '</p><br><p>';
+					$('#addtID').val(term);
+					$.ajax({
+						type: "get",
+						url: "/api/LessionCategories/" + mylcID,
+						success: function (data) {
+							$('#addlcID').val(data.lcName);
 						}
+					})
+					myCoach = parseInt( $('#eID').val() );
+					$.ajax({
+						type: "get",
+						url: "/api/Employees/" + myCoach,
+						success: function (data){
+							$('#addeID').val(data.eEngName);
+						}
+					})
+
+					$.ajax({
+						type: "get",
+						url: "/api/Rooms/" + myRoom,
+						success: function (data){
+							$('#addroomID').val(data.roomName);
+						}
+					})
+					var TotalLession = parseInt($('#cTotalLession').val());
+
+					for (var n = 0; n < TotalLession; n++) {
+						var temp = "date" + (n + 1).toString();
+						myDayList2[n] = document.getElementById(temp).value ;
+						weekStr[n] = getChineseDay2(new Date(myDayList2[n]));
+					}
+					console.log("4. myDayList2 : ");
+					console.log(myDayList2);
+					console.log("4. weekStr : ");
+					console.log(weekStr);
+					for(var n=0; n<TotalLession; n++){
+						if( n==0 )   myContent += '<p>' ;
+						myContent +=  myDayList2[n] + " (" + weekStr[n] + ") 、";
+							if ( n == (TotalLession-1) ){
+								myContent = myContent.substr(0, myContent.length - 1);
+							myContent += '。</p>';
+							}else{
+								if( (n%2) == 1 )   myContent += '</p><br><p>';
+							}
+					}
+					console.log("myContent: " + myContent);
+					document.getElementById('addContent').innerHTML= myContent ;
+
+					// 打開表單
+					addClassModal.style.display = "block";			
 				}
-				console.log("myContent: " + myContent);
-				document.getElementById('addContent').innerHTML= myContent ;
-				// 打開表單
-				addClassModal.style.display = "block";				
+			
 			}else{
-				alert("請先按下【日期選取】，才能新增");
+				//alert("請先按下【日期選取】，才能新增");
+				$('#notSelectDateModal').css("display", "block");
 			}
 	})
 
@@ -630,10 +685,8 @@
 				type: "get",
 				url: "/api/LessionCategories/" + mylcID,
 				success: function (data){
-					//alert(data.lcName);
 					$('#addlcID').val(data.lcName);
 					mylcAbbrev = data.lcAbbrev;
-					console.log(mylcAbbrev);	//有
 					// 數有幾個該課程項目
 					lcCnt =0;
 					$.ajax({
@@ -641,7 +694,6 @@
 						//GET: api/Classes/lcCount/5
 						url: "/api/Classes/lcCount/" + mylcID,
 						success: function (datalc){
-							//alert("mylcID: " + mylcID);
 							datalc.forEach(function(x){
 								console.log(x.cName);
 								lcCnt++;
@@ -674,7 +726,6 @@
 								contentType: "application/json",
 								data: JSON.stringify(addClassData),
 								success: function (data) {
-									//alert("成功新增課程");
 									// 取得 cID
 									$.ajax({
 										type: "GET",
@@ -739,8 +790,9 @@
 		}
 
 		function sucInsertClass(){
-			alert("成功新增課程，請到課程頁面查詢");
-			window.location = "/Manage/SignupClass1";
+			//alert("成功新增課程，請到課程頁面查詢");
+			$('#successInsertModal').css("display", "block");
+			//window.location = "/Manage/SignupClass1";
 		}
 
 		// 日期  時段  影響 教室選擇

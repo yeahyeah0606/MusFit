@@ -264,12 +264,13 @@ input[type="submit"] {
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     width: 100%;
 }
+
 /*懸浮視窗  visitor information*/
 /*-----------------------------------------------------------------*/
 .modal {
     display: none;
     position: fixed;
-    z-index: 3;
+    z-index: 6;
     padding-top: 100px;
     left: 0;
     top: 0;
@@ -296,7 +297,6 @@ input[type="submit"] {
     margin: 20px auto;
     padding: 0px 20px;
 }
-
 
 input[type=text] {
     border: solid 1px #a4a1a1;

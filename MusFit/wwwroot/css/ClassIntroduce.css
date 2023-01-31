@@ -5,22 +5,20 @@
 
 #divnavlink {
     display: inline;
-    margin-top: 2%;
+
 }
 
 .mycontain {
-    margin-top: 5%;
+
     margin-left: 1%;
     margin-right: 1%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
 }
 
-    .mycontain .contentheader {
-        background-color: #E4E3E3;
-        color: #000000;
-        padding: 2px 5px 2px 5px;
-        border-radius: 3px;
-    }
+.contentheader {
+    margin-left: 5%;
+    margin-top: 2%;
+}
 
 .navButton {
     border: none;
@@ -38,8 +36,22 @@
     border-width: 0.5px;
     margin-left: 1%;
     margin-top: 1%;
-    margin-bottom: 2%;
 }
+
+table {
+    overflow: hidden;
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 0 0 9px rgba(0, 0, 0, 0.35);
+    font-family: 'Oswald', sans-serif;
+    border-collapse: collapse;
+}
+
+    table thead {
+        background-color: #9092AD;
+        color: #ffffff;
+        width: 25vw;
+        height: 65px;
+    }
 
 .divtextarea {
     background-color: #ffff;
@@ -118,4 +130,60 @@ select {
     background-color: #EFEFEF;
     border-radius: 5px;
     height: 50%
+}
+
+#addbtn span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+    text-align: center;
+}
+
+    #addbtn span:after {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-file-earmark-plus-fill' viewBox='0 0 16 16'%3E%3Cpath d='M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM8.5 7v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 1 0z'/%3E%3C/svg%3E");
+        opacity: 0;
+        top: 0;
+        right: -40px;
+        transition: 0.5s;
+        padding-left: 3px;
+    }
+
+#addbtn:hover span {
+    padding-left: 5px;
+}
+
+    #addbtn:hover span:after {
+        opacity: 1;
+        right: 0;
+    }
+
+.deletesvg button {
+    border: none;
+    background-color: #ffff;
+}
+
+.deletesvg :focus {
+    border: none;
+    background-color: #ffff;
+}
+
+.deleteword {
+    text-align: center;
+    color: #737373;
+}
+
+.deletedescribe {
+    text-align: center;
+    font-size: 12px;
+    color: #CBCBCB;
+}
+
+.Modaldeletebtndiv {
+    margin-left: 37%;
+}
+
+.Modaldeletebtn {
+    background-color: #9092AD;
+    color: #ffff;
 }

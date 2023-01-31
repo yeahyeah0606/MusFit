@@ -1,8 +1,8 @@
-﻿@model List<ClassIntroduce>
+﻿@model List<MusFit.Models.ClassIntroduce>
 
 
 @{
-    ViewBag.Title = "News";
+    ViewBag.Title = "ClassIntroduce";
 
 }
 
@@ -101,12 +101,40 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-2">
+                                <label for="addEId">發布員工</label>
+                            </div>
+                            <div class="col-3">
+
                                 <select id="addEId" class="Employeeselect" size="1">
                                     @foreach (var item in ViewBag.querydata)
                                     {
                                         <option class="EmployeeOption" value="@item.EId">@item.EName-@item.EId</option>
                                     }
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-2">
+                                <label for="addCId">課程選擇</label>
+
+                            </div>
+                            <div class="col-3">
+
+                                <select id="addCId" class="Classselect" size="1">
+                                    @{
+
+                                                @foreach (var item in ViewBag.classquerydata)
+                                        {
+
+                                                    <option class="ClassOption" value="@item.CId">@item.CName</option>
+
+                                        }
+
+                                    }
+
 
                                 </select>
                             </div>
@@ -122,6 +150,7 @@
     </div>
 
     <hr>
+
     <br>
 
     <div id="divnavlink">
@@ -136,36 +165,81 @@
     </div>
 
     <div class="allclass" id="cardio">
+        <div class="searchdiv justify-content-end" style="margin-left:85%;">
+            <label for="cardiocheckuntake">未下架</label>
+            <input type="checkbox" id="cardiocheckuntake" onclick="cardiocheckuntake()">
+
+            <label for="cardiochecktake">已下架</label>
+            <input type="checkbox" id="cardiochecktake" onclick="cardiochecktaken()">
+
+
+        </div>
         <table class="table">
             <thead>
                 <tr>
+                    <th scope="col"><input id="cardioallcheckbox" type="checkbox" onclick="cardioselectall()" disabled></th>
                     <th scope="col">課程類型</th>
                     <th scope="col">課程名稱</th>
                     <th scope="col">發布時間</th>
+                    <th scope="col">課程結束日期</th>
                     <th scope="col">操作</th>
+                    <th scope="col">課程是否結束</th>
                 </tr>
             </thead>
             <tbody>
 
                 @{
-                    var query = from cardio in Model
-                                where cardio.InCategory.Contains("有氧") || cardio.InCategory.Contains("飛輪")
-                                select cardio;
-
-                    foreach (var item in query)
+                    var cardiocount = 0;
+                    foreach (var item in ViewBag.viewModeldata)
                     {
-                        <tr>
-                            <td>@item.InCategory</td>
-                            <td>@item.InTitle</td>
-                            <td>@item.InDate</td>
-                            <td>
-                                <button id="cardioEdit" class="btnEdit btn" type="button" data-target="#cardioEditModal" data-toggle="modal" onclick="cardioget(@item.InId)">編輯</button>
-                                <button id="cardioDelete" class="btnDelete btn" onclick="cardiodelete(@item.InId)">刪除</button>
-                            </td>
-                        </tr>
-                    }
-                }
+                        if (item.LcId == 1 || item.LcId == 2 || item.LcId == 3)
+                        {
+                            cardiocount++;
+                            var result = DateTime.Compare(@item.lastDate, DateTime.Today);
 
+                            if (result < 0)
+                            {
+                                        <tr class="trtaken">
+                                            <td><input class="cardioselectbox" type="checkbox" disabled></td>
+                                            <td>@item.InCategory</td>
+                                            <td>@item.InTitle</td>
+                                            <td>@item.InDate</td>
+                                            <td>@item.lastDate</td>
+                                            <td>
+                                                <button id="cardioEdit" class="btnEdit btn" type="button" data-target="#cardioEditModal" data-toggle="modal" onclick="cardioget(@item.InId)">編輯</button>
+                                                <button id="cardioDelete" class="btnDelete btn" onclick="cardiodelete(@item.InId)">刪除</button>
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="cardiocheckbox" checked disabled>
+                                            </td>
+                                        </tr>
+                            }
+                            else
+                            {
+                                        <tr class="truntaken">
+                                            <td><input class="cardioselectbox" type="checkbox" disabled></td>
+
+                                            <td>@item.InCategory</td>
+                                            <td>@item.InTitle</td>
+                                            <td>@item.InDate</td>
+                                            <td>
+                                                <button id="cardioEdit" class="btnEdit btn" type="button" data-target="#cardioEditModal" data-toggle="modal" onclick="cardioget(@item.InId)">編輯</button>
+                                                <button id="cardioDelete" class="btnDelete btn" onclick="cardiodelete(@item.InId)">刪除</button>
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="cardiocheckbox" disabled>
+                                            </td>
+                                        </tr>
+
+                            }
+                        }
+
+                    }
+
+                            <tr hidden>
+                                <td id="cardiocount">@cardiocount</td>
+                            </tr>
+                }
 
             </tbody>
         </table>
@@ -248,11 +322,28 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div>
+                                    <label for="cardioeId">發布員工</label>
+                                </div>
                                 <div class="col-6">
                                     <select id="cardioeId" class="Employeeselect" name="employee" size="1">
                                         @foreach (var item in ViewBag.querydata)
                                         {
                                             <option class="EmployeeOption" value="@item.EId">@item.EName-@item.EId</option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <label for="cardiocId">課程選擇</label>
+                                </div>
+                                <div class="col-6">
+                                    <select id="cardiocId" class="classselect" size="1">
+                                        @foreach (var item in ViewBag.cardioclassquerydata)
+                                        {
+                                            <option class="classOption" value="@item.CId">@item.CName</option>
                                         }
 
                                     </select>
@@ -277,27 +368,61 @@
                     <th scope="col">課程類型</th>
                     <th scope="col">課程名稱</th>
                     <th scope="col">發布時間</th>
+                    <th scope="col">課程結束日期</th>
                     <th scope="col">操作</th>
+                    <th scope="col">課程是否結束</th>
+
                 </tr>
             </thead>
             <tbody>
                 @{
-                    var query1 = from yoga in Model
-                                 where yoga.InCategory.Contains("瑜珈") || yoga.InCategory.Contains("皮拉提斯")
-                                 select yoga;
 
-                    foreach (var item1 in query1)
+
+                    foreach (var item in ViewBag.viewModeldata)
                     {
-                        <tr>
-                            <td>@item1.InCategory</td>
-                            <td>@item1.InTitle</td>
-                            <td>@item1.InDate</td>
-                            <td>
-                                <button id="yogaEdit" class="btnEdit btn" type="button" data-target="#yogaEditModal" data-toggle="modal" onclick="yogaget(@item1.InId)">編輯</button>
-                                <button id="yogaDelete" class="btnDelete btn" onclick="yogadelete(@item1.InId)">刪除</button>
-                            </td>
-                        </tr>
+                        if (item.LcId == 4 || item.LcId == 5 || item.LcId == 6)
+                        {
+
+                            var result = DateTime.Compare(@item.lastDate, DateTime.Today);
+
+                            if (result < 0)
+                            {
+                                        <tr>
+                                            <td>@item.InCategory</td>
+                                            <td>@item.InTitle</td>
+                                            <td>@item.InDate</td>
+                                            <td>@item.lastDate</td>
+                                            <td>
+                                                <button id="yogaEdit" class="btnEdit btn" type="button" data-target="#yogaEditModal" data-toggle="modal" onclick="yogaget(@item.InId)">編輯</button>
+                                                <button id="yogaDelete" class="btnDelete btn" onclick="yogadelete(@item.InId)">刪除</button>
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" checked disabled>
+                                            </td>
+                                        </tr>
+                            }
+                            else
+                            {
+                                        <tr>
+                                            <td>@item.InCategory</td>
+                                            <td>@item.InTitle</td>
+                                            <td>@item.InDate</td>
+                                            <td>
+                                                <button id="yogaEdit" class="btnEdit btn" type="button" data-target="#yogaEditModal" data-toggle="modal" onclick="yogaget(@item.InId)">編輯</button>
+                                                <button id="yogaDelete" class="btnDelete btn" onclick="yogadelete(@item.InId)">刪除</button>
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" disabled>
+                                            </td>
+                                        </tr>
+
+                            }
+                        }
+
                     }
+
+
+
                 }
 
 
@@ -392,6 +517,15 @@
 
                                     </select>
                                 </div>
+                            </div>
+                            <div class="col-6">
+                                <select id="yogacId" class="classselect" size="1">
+                                    @foreach (var item in ViewBag.yogaclassquerydata)
+                                    {
+                                        <option class="classOption" value="@item.CId">@item.CName</option>
+                                    }
+
+                                </select>
                             </div>
                         </form>
                     </div>
@@ -561,6 +695,7 @@
                 console.log(data.inDate)
 
                 $('#cardioeId').val(data.eId)
+                $('#cardiocId').val(data.cId)
             }
         })
     }
@@ -589,6 +724,7 @@
                 console.log(data.inDate)
 
                 $('#yogaeId').val(data.eId)
+                $('#yogacId').val(data.cId)
             }
         })
     }
@@ -626,6 +762,8 @@
             inCategory: categorydata,
             inPhoto: addphotodata,
             eId: $('#addEId').val(),
+            cId: $('#addCId').val(),
+            cIdNavigation: null,
             eIdNavigation: null
         }
 
@@ -682,7 +820,10 @@
             inCategory: cardiocategorydata,
             inPhoto: cardiophotodata,
             eId: $('#cardioeId').val(),
-            eIdNavigation: null
+            eIdNavigation: null,
+            cIdNavigation: null,
+            cId: $('#cardiocId').val(),
+
         }
 
         var cardioputId = $('#cardioId').val();
@@ -731,7 +872,10 @@
             inCategory: yogacategorydata,
             inPhoto: yogaphotodata,
             eId: $('#yogaeId').val(),
-            eIdNavigation: null
+            eIdNavigation: null,
+            cIdNavigation: null,
+            cId: $('#yogacId').val(),
+
         }
 
         var yogaputId = $('#yogaId').val();
@@ -771,7 +915,7 @@
 
     }
 
-        function cardiodelete(id) {
+    function cardiodelete(id) {
 
         if (confirm('確定要刪除此筆資料嗎?')) {
             $.ajax({
@@ -790,3 +934,95 @@
     }
 
 </script>
+
+@*下架判斷 checkbox判斷*@
+<script>
+
+
+
+    //未下架
+    function cardiocheckuntake() {
+
+        if ($('#cardiocheckuntake').is(":checked")) {
+            document.getElementById("cardiochecktake").disabled = true;
+
+            var cardiocount = parseInt($('#cardiocount').text())
+            var check = $('.cardiocheckbox');
+            for (var i = 0; i < cardiocount; i++) {
+                if (check[i].checked) {
+                    $('.trtaken').hide()
+                    console.log("ok")
+                } else {
+                    console.log("no")
+                    console.log(cardiocount)
+
+                }
+            }
+        } else {
+            $('.trtaken').show()
+            document.getElementById("cardiochecktake").disabled = false;
+
+        }
+
+
+    }
+
+    //已下架
+    //cardio
+    function cardiochecktaken() {
+
+        if ($('#cardiochecktake').is(":checked")) {
+            document.getElementById("cardiocheckuntake").disabled = true;
+
+            document.getElementById("cardioallcheckbox").disabled = false;
+            $('.trtaken .cardioselectbox').attr('disabled', false);
+
+            var cardiocount = parseInt($('#cardiocount').text())
+            var check = $('.cardiocheckbox');
+            for (var i = 0; i < cardiocount; i++) {
+                if (check[i].checked) {
+
+                    console.log("ok")
+                } else {
+                    console.log("no")
+                    $('.truntaken').hide()
+                }
+            }
+        } else {
+            $('.truntaken').show()
+            document.getElementById("cardiocheckuntake").disabled = false;
+            document.getElementById("cardioallcheckbox").disabled = true;
+            $('.trtaken .cardioselectbox').attr('disabled', true);
+
+        }
+    }
+</script>
+
+@*checkbox判斷*@
+<script>
+    //小於1筆則不給勾選下架的checkbox
+    var cardiolistsum = parseInt($('#cardiocount').text())
+    if (cardiolistsum <= 1) {
+        document.getElementById("cardiocheckuntake").disabled = true;
+        document.getElementById("cardiochecktake").disabled = true;
+    } else {
+        document.getElementById("cardiocheckuntake").disabled = false;
+
+        document.getElementById("cardiochecktake").disabled = false;
+    }
+
+    //勾th的checkbox,為全選
+    function cardioselectall(){
+        if ($('#cardioallcheckbox').is(":checked")) {
+            $('.trtaken .cardioselectbox').prop('checked', true)
+            console.log($('#cardioallcheckbox').is(":checked"))
+        } else {
+            $('.trtaken .cardioselectbox').prop('checked', false)
+
+        }
+    }
+
+</script>
+
+
+

@@ -195,7 +195,10 @@
 			document.getElementById("deleteForm").reset();
 		}
 
+
+		// 取消
 		document.getElementById('cancelCreate').addEventListener('click', closeModel);
+		document.getElementById('cancelCreate').addEventListener('click', FormClear);
 		document.getElementById('leaveCreate').addEventListener('click', closeModel);
 		document.getElementById('leaveCreate').addEventListener('click', FormClear);
 
@@ -213,9 +216,6 @@
 			$('#successMessage').css("display", "none");
 			myrefresh();
 		}
-
-		// 取消
-		document.getElementById('cancelCreate').addEventListener('click', closeModel);
 
 		// 分頁功能
 		const pageid = document.getElementById('pageid');
@@ -365,9 +365,6 @@
 			let pagination = document.querySelector('#pageid');
 			var pageHtml = "", prevButton, nextButton;
 			let pageIndex = parseInt(nowPage);
-			//pageIndex =9;
-
-			console.log("裡面pageIndex : " + pageIndex);   // ok
 			if (page.hasPage) {
 				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`;
 			} else {
@@ -428,7 +425,6 @@
 			url: "/api/ClassOrders/memberList",
 			success: function (data) {
 				jsonData = data;
-				//console.log( jsonData);
 				pagination(jsonData, 1);
 			}
 		})
@@ -439,7 +435,6 @@
 		$('#btnQuery').click(function () {
 			var sNumberinfo = $('#sNumber').val();
 			var cNumberinfo = $('#cNumber').val();
-			//count = 0;
 
 			if (sNumberinfo == "" && cNumberinfo == "") {
 				$('#errorMessage').css("display", "block");

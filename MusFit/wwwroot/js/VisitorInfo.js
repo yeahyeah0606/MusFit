@@ -66,8 +66,19 @@
         //close success message modal
         function closeSuccessModel() {
             $('#messageModal').css("display", "none");
+            myAJAX(AjaxType.GET, "/api/students/guestsName/" + $('#CreateName').val(), success);
             location.reload();
-}
+        }
+        function success(x) {
+            $('#visitorSId').val(x[0].sId);
+            var classRecords = { sId: $('#visitorSId').val(), classTimeId: 63 };
+            var classOrders = { sId: $('#visitorSId').val(), classTimeId: 63, orderTime: new Date().toJSON().slice(0, 19),orderStatus: '體驗',eId:1 };
+            console.log(JSON.stringify(classOrders));
+            console.log(JSON.stringify(classRecords));
+            myAJAX(AjaxType.POST, "/api/classorders/", null, "application/json", JSON.stringify(classOrders));
+            myAJAX(AjaxType.POST, "/api/classrecords/", null, "application/json", JSON.stringify(classRecords));
+        }
+
 
         //email format validation
         function IsEmail(email) {
@@ -349,6 +360,7 @@
             $('#messageModal').css("display", "block");
             $('#confirmMessage').focus();
         }
+
 
         //create reservation
         $('#btnCreateReserveConfirm').click(function () {

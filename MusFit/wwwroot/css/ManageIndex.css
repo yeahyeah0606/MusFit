@@ -161,8 +161,9 @@ body::-webkit-scrollbar-track {
 }
 
 .menu i {
-    font-size: 14px;
+    width: 20px;
 }
+
 
 .identity {
     padding:28px 25px;

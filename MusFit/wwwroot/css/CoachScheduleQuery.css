@@ -6,6 +6,11 @@
     outline: none;
 }
 
+input:focus {
+    border-color: rgba(135, 206, 250, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(135, 206, 250, 0.6);
+}
+
 .form1 {
     width: inherit;
     text-align: center;
@@ -19,7 +24,8 @@
     width: 350px;
     height: 330px;
     padding: 10px 10px;
-    border: solid 1.5px #625e5e;
+    border: none;
+    background-color: #E3E3F1;
     border-radius: 8px;
     margin: auto;
 }
@@ -50,7 +56,7 @@ h4 {
 
 
 #reset {
-    background-color: #c0bcbc;
+    background-color: #b0b9dd;
     color: #fff;
     padding: 5px 10px;
     margin-left: 20px;
@@ -88,13 +94,13 @@ h4 {
 
 
 #noDataModal, #errorModal {
-    width: 30%;
+    width: 400px;
 }
 
 .btnConfirmMessage {
     width: 20%;
     margin: auto;
-    background-color: #8a8a8d;
+    background-color: #6B7BA7;
     color: #fff;
     padding: 5px 10px;
     border: none;

@@ -195,11 +195,11 @@ button {
     }
 
 #successModal, #deleteInBody {
-    width: 30%;
+    width: 400px;
 }
 
 .btnConfirmMessage {
     width: 20%;
     margin: auto;
-    background-color: #8a8a8d;
+    background-color: #6B7BA7;
 }

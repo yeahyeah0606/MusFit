@@ -14,7 +14,9 @@ namespace MusFit.Models
         public string InPhoto { get; set; }
         public DateTime InDate { get; set; }
         public int EId { get; set; }
+        public int CId { get; set; }
 
+        public virtual Class CIdNavigation { get; set; }
         public virtual Employee EIdNavigation { get; set; }
     }
 }

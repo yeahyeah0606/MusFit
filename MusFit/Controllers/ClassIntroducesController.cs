@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using MusFit.Models;
 
@@ -87,6 +89,8 @@ namespace MusFit.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClassIntroduce(int id)
         {
+
+
             var classIntroduce = await _context.ClassIntroduces.FindAsync(id);
             if (classIntroduce == null)
             {
@@ -103,5 +107,7 @@ namespace MusFit.Controllers
         {
             return _context.ClassIntroduces.Any(e => e.InId == id);
         }
+
     }
+
 }

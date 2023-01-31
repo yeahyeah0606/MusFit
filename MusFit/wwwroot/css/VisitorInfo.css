@@ -27,7 +27,7 @@ tr:nth-child(even) {
     background-color: #f2f2f2
 }
 
-h3 {
+h2 {
     color: #434040;
     text-align: center;
 }
@@ -55,7 +55,7 @@ button:hover {
         opacity: 0.9;
 }
 
-#moreDetail{
+#moreDetail {
     border: none;
     border-radius: 5px;
     background-color: #6c92ba;
@@ -83,18 +83,18 @@ button:hover {
 }
 
 #btncreate {
-    background-color: #6c92ba;
+    background-color: #D37CA5;
     outline: none;
 }
 
 #btncreateReserve {
-    background-color: #b86035;
+    background-color: #b591b3;
     outline: none;
 }
 
 
 .cancel {
-    background-color: #c0bcbc;
+    background-color: #b0b9dd;
     color: #fff;
     padding: 8px 10px;
     margin: 0px 5px;
@@ -127,7 +127,7 @@ button:hover {
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 60%;
+    width: 800px;
 }
 
 .row {
@@ -147,20 +147,27 @@ input[type=text], select {
     outline: none;
 }
 
+input[type=text]:focus, input[type=date]:focus, select:focus {
+    border-color: rgba(135, 206, 250, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(135, 206, 250, 0.6);
+}
+
 select{
     width: 60%;
 }
 
-#classDate, #new_classDate {
-    width: 70%;
+#create_gender_col {
+    position: relative;
+    right: 21px;
+}
+
+#gender_col {
+    position: relative;
+    right: 18px;
 }
 
 input[type=radio] {
         margin: auto 25px;
-}
-
-form input[type=text]:focus, select:focus {
-    background-color: #ddd;
 }
 
 
@@ -168,13 +175,22 @@ form input[type=text]:focus, select:focus {
     width: 24%;
 }
 
+#queryinfo::placeholder{
+    opacity:0.7;
+}
+
 input[type="date"]:not(.has-value):before {
-    color: lightgray;
+    color: gray;
+    opacity:0.7;
     content: attr(placeholder);
 }
 
-input[type=date]{
-    width:24%;
+input[type=date] {
+    width: 24%;
+    border-radius: 5px;
+    border: solid 1px #a4a1a1;
+    padding: 2px 5px;
+    outline: none;
 }
 
 
@@ -257,6 +273,16 @@ form a {
     #queryinfo{width: 55%; }
 }
 
+@media(max-width: 800px){
+    .modal-content{width: 600px; margin-top:-60px;}
+    input[type=text],select{width: 60%;}
+    .row,.column{margin: 7px;}
+    #gender_col {position:relative; left: -71px;}
+    #create_gender_col{ right: 68px;}
+    #create_mail_col {right: 6px; }
+    .createmodals {margin: auto;}
+}
+
 @media(max-width: 737px){
     .gender, .phone {display: none;}
 }
@@ -266,6 +292,13 @@ form a {
     #queryinfo { width: 45%;}
     #queryinfo::placeholder{font-size: 13px;}
     .searchArea button, .createArea button{font-size:14px; padding: 5px 6px;}
+    .modal-content { width: 420px;}
+    input[type=text], select { width: 73%;}
+    .row, .column {margin: 7px;}
+    #gender_col { left: -37px; }
+    #moreDetail{font-size: 14px; position: relative; bottom: -6px; margin:auto 0px; padding: 5px 10px; }
+    #create_gender_col {left:-36px;}
+    #create_mail_col{ left: -22px; }
 }
 
 

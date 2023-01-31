@@ -16,6 +16,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Xml.Linq;
+using System.Threading.Tasks.Dataflow;
+using Microsoft.AspNetCore.Routing;
+using System.Dynamic;
 
 namespace MusFit.Controllers
 {
@@ -156,7 +159,7 @@ namespace MusFit.Controllers
         }
 
 
-      
+
         public IActionResult StudentQuery()
         {
 
@@ -164,7 +167,7 @@ namespace MusFit.Controllers
 
         }
 
-       
+
         public IActionResult StudentSearch(string SNumber, string SName, string SAccount)
         {
             var queryResult = (from s in _context.Students
@@ -203,7 +206,7 @@ namespace MusFit.Controllers
             try
             {
                 var json = "";
-                var studentResult =  _context.Students.FirstOrDefault(u => u.SPhone == student.SPhone);
+                var studentResult = _context.Students.FirstOrDefault(u => u.SPhone == student.SPhone);
 
                 if (studentResult != null)
                 {
@@ -221,10 +224,10 @@ namespace MusFit.Controllers
 
                 throw e;
             }
-            
+
         }
 
-       
+
         public IActionResult StudentSelect(string SNumber, string SName, string SAccount)
         {
             try
@@ -250,7 +253,7 @@ namespace MusFit.Controllers
                                        SIsStudentOrNot = s.SIsStudentOrNot
                                    }).FirstOrDefault();
 
-               
+
                 return View("StudentSelect", queryResult);
             }
             catch (System.Exception e)
@@ -260,18 +263,18 @@ namespace MusFit.Controllers
             }
         }
 
-   
+
         public IActionResult StudentEdit()
         {
             return View();
         }
 
-     
+
         public IActionResult SEdit(string SNumber)
         {
             try
             {
-                
+
                 var queryResult = (from s in _context.Students
                                    where s.SNumber == SNumber
                                    select new StudentViewModel()
@@ -379,7 +382,7 @@ namespace MusFit.Controllers
         }
 
 
-     
+
         public IActionResult StudentAdd()
         {
             return View();
@@ -387,24 +390,24 @@ namespace MusFit.Controllers
 
         public async Task<IActionResult> SAdd(string SPhone)
         {
-            var guestResult = await(from s in _context.Students
-                               where s.SPhone == SPhone && s.SIsStudentOrNot == false
-                               select new StudentViewModel()
-                               {
-                                   SNumber = s.SNumber,
-                                   SName = s.SName,
-                                   SMail = s.SMail,
-                                   SGender = s.SGender,
-                                   SBirth = s.SBirth,
-                                   SPhone = s.SPhone,
-                                   SPhoto = s.SPhoto,
-                                   SAccount = s.SAccount,
-                                   SContactor = s.SContactor,
-                                   SContactPhone = s.SContactPhone,
-                                   SAddress = s.SAddress,
-                                   SJoinDate = s.SJoinDate,
-                                   SIsStudentOrNot = s.SIsStudentOrNot
-                               }).FirstOrDefaultAsync();
+            var guestResult = await (from s in _context.Students
+                                     where s.SPhone == SPhone && s.SIsStudentOrNot == false
+                                     select new StudentViewModel()
+                                     {
+                                         SNumber = s.SNumber,
+                                         SName = s.SName,
+                                         SMail = s.SMail,
+                                         SGender = s.SGender,
+                                         SBirth = s.SBirth,
+                                         SPhone = s.SPhone,
+                                         SPhoto = s.SPhoto,
+                                         SAccount = s.SAccount,
+                                         SContactor = s.SContactor,
+                                         SContactPhone = s.SContactPhone,
+                                         SAddress = s.SAddress,
+                                         SJoinDate = s.SJoinDate,
+                                         SIsStudentOrNot = s.SIsStudentOrNot
+                                     }).FirstOrDefaultAsync();
 
 
             return View("StudentAdd", guestResult);
@@ -418,16 +421,16 @@ namespace MusFit.Controllers
             {
                 //是否為訪客資料
                 var guestResult = await _context.Students.FirstOrDefaultAsync(x => x.SPhone == studentViewModel.SPhone);
-            
+
 
                 //轉換 password -> sha2_256 比較
-                string sPassword = studentViewModel.SBirth.ToString().Replace("-","").Replace("-","");
+                string sPassword = studentViewModel.SBirth.ToString().Replace("-", "").Replace("-", "");
                 byte[] data = Encoding.GetEncoding(1252).GetBytes(sPassword);
                 var sha = new SHA256Managed();
                 byte[] bytesEncode = sha.ComputeHash(data);
 
-               
-                
+
+
                 Student student = new Student()
                 {
                     SNumber = studentViewModel.SNumber,
@@ -461,7 +464,7 @@ namespace MusFit.Controllers
                     }
                     await _context.Students.AddAsync(student);
                     await _context.SaveChangesAsync();
-                    studentViewModel.SNumber =  _context.Students.FirstOrDefault(x => x.SPhone == studentViewModel.SPhone).SNumber;
+                    studentViewModel.SNumber = _context.Students.FirstOrDefault(x => x.SPhone == studentViewModel.SPhone).SNumber;
                     return View("StudentSelect", studentViewModel);
 
                 }
@@ -506,13 +509,13 @@ namespace MusFit.Controllers
             }
         }
 
-       
+
         public IActionResult EmployeeQuery()
         {
             return View();
         }
 
-        
+
         public IActionResult EmployeeSearch(string ENumber, string EName, string EAccount)
         {
             var queryResult = (from e in _context.Employees 
@@ -559,20 +562,20 @@ namespace MusFit.Controllers
             return View("EmployeeSelect", queryResult);
         }
 
-        
+
         public IActionResult EmployeeSelect()
         {
             return View();
         }
 
-       
+
         public IActionResult EmployeeEdit()
         {
 
             return View();
         }
 
-       
+
 
         public IActionResult EEdit(string ENumber)
         {
@@ -628,9 +631,9 @@ namespace MusFit.Controllers
                 if (!ModelState.IsValid)
                 {
                     var LessionResult = (from e in _context.Employees
-                                        join cs in _context.CoachSpecials on e.EId equals cs.EId into esc
-                                        from cs in esc.DefaultIfEmpty()
-                                        where e.ENumber == employee.ENumber
+                                         join cs in _context.CoachSpecials on e.EId equals cs.EId into esc
+                                         from cs in esc.DefaultIfEmpty()
+                                         where e.ENumber == employee.ENumber
                                          select cs.LcId.ToString()
                                ).ToList();
 
@@ -695,7 +698,7 @@ namespace MusFit.Controllers
                             employee.EPhoto = Convert.ToBase64String(fileBytes);
                         }
                     }
-                   
+
 
                     if (employeeResult != null)
                     {
@@ -735,7 +738,7 @@ namespace MusFit.Controllers
 
         }
 
-      
+
         //取得6筆課程項目
         private IList<SelectListItem> GetLession()
         {
@@ -753,7 +756,7 @@ namespace MusFit.Controllers
             return lessionCategories;
         }
 
-      
+
         public IActionResult EmployeeAdd()
         {
             var queryResult = new EmployeeViewModel();
@@ -800,7 +803,7 @@ namespace MusFit.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                   
+
                     return View("EmployeeAdd");
                 }
                 else
@@ -812,7 +815,7 @@ namespace MusFit.Controllers
                     var sha = new SHA256Managed();
                     byte[] bytesEncode = sha.ComputeHash(data);
 
-                    
+
 
                     Employee emp = new Employee()
                     {
@@ -886,7 +889,7 @@ namespace MusFit.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+
                 // 轉換 password -> sha2_256 比較 (轉使用者輸入的舊密碼與資料庫比較)
                 byte[] data = Encoding.GetEncoding(1252).GetBytes(password.OldPassword);
                 var sha = new SHA256Managed();
@@ -905,13 +908,13 @@ namespace MusFit.Controllers
                     ViewData["errorOld"] = "舊密碼輸入錯誤!";
                     isDataError = true;
                 }
-                
+
                 if (password.NewPassword != password.CheckPassword)
                 {
                     ViewData["errorNew"] = "新密碼與確認密碼不符!";
                     isDataError = true;
                 }
-                
+
                 if (password.OldPassword == password.NewPassword)
                 {
                     ViewData["errorDouble"] = "舊密碼與新密碼不可以一樣!";
@@ -932,9 +935,10 @@ namespace MusFit.Controllers
 
                 ViewData["message"] = "密碼修改成功!";
                 return View("EditPassword");
-            }else
+            }
+            else
             {
-                
+
                 return View("EditPassword");
             }
         }
@@ -942,7 +946,7 @@ namespace MusFit.Controllers
         [Authentication]
         public IActionResult CoachEdit()
         {
-            string eAccount = HttpContext.Session.GetString("Manager")?? HttpContext.Session.GetString("Coach");
+            string eAccount = HttpContext.Session.GetString("Manager") ?? HttpContext.Session.GetString("Coach");
             if (eAccount == "Manager")
             {
                 return Redirect("/Manage/Index");
@@ -973,10 +977,10 @@ namespace MusFit.Controllers
 
 
             var CoachLessionResult = (from e in _context.Employees
-                                         join cs in _context.CoachSpecials on e.EId equals cs.EId into esc
-                                         from cs in esc.DefaultIfEmpty()
-                                         where e.EAccount == eAccount
-                                         select cs.LcId.ToString()
+                                      join cs in _context.CoachSpecials on e.EId equals cs.EId into esc
+                                      from cs in esc.DefaultIfEmpty()
+                                      where e.EAccount == eAccount
+                                      select cs.LcId.ToString()
                                ).ToList();
 
             queryResult.AvailableLession = GetLession();
@@ -984,9 +988,9 @@ namespace MusFit.Controllers
 
             return View("CoachEdit", queryResult);
 
-          
 
-            
+
+
         }
 
         [Authentication]
@@ -1180,7 +1184,7 @@ namespace MusFit.Controllers
                 return Redirect("/Manage/Index");
             }
 
-            
+
             return View();
         }
 
@@ -1244,11 +1248,11 @@ namespace MusFit.Controllers
             }
             else
             {
-                
+
                 return View("CoachPasswordEdit");
             }
-            
-            
+
+
         }
 
         public IActionResult KnowledgeColumn()
@@ -1258,84 +1262,153 @@ namespace MusFit.Controllers
             return View(viewModel);
         }
 
-		//--------------------------------------------------------- 君 START ------------------------------------------------------------
-		public IActionResult ShopMemberList()
-		{
-			return View();
-		}
-		public IActionResult SignupClass1()
-		{
-			return View();
-		}
-		public IActionResult SignupClass2(int id)
-		{
-			ViewData["CID"] = id;
-			return View();
-			//return Content(cid.ToString());
-		}
+        //--------------------------------------------------------- 君 START ------------------------------------------------------------
+        public IActionResult ShopMemberList()
+        {
+            return View();
+        }
+        public IActionResult SignupClass1()
+        {
+            return View();
+        }
+        public IActionResult SignupClass2(int id)
+        {
+            ViewData["CID"] = id;
+            return View();
+            //return Content(cid.ToString());
+        }
 
-		public IActionResult AddClassManage1(string cName, int lcID, int tID, int cTotalLession, int eID,
-																		int cExcept, int cprice)
-		{
-			if (ModelState.IsValid)
-			{
-				if (string.IsNullOrEmpty(cName) || string.IsNullOrEmpty(lcID.ToString()) ||
-					string.IsNullOrEmpty(tID.ToString()) || string.IsNullOrEmpty(cTotalLession.ToString()) ||
-					string.IsNullOrEmpty(eID.ToString()) ||
-					string.IsNullOrEmpty(cExcept.ToString()) || string.IsNullOrEmpty(cprice.ToString()))
-				{
-					ViewData["error"] = "有未輸入的欄位，請檢查後再傳送！";
-					return View("AddClassManage1");
-				}
+        public IActionResult AddClassManage1(string cName, int lcID, int tID, int cTotalLession, int eID,
+                                                                        int cExcept, int cprice)
+        {
+            if (ModelState.IsValid)
+            {
+                if (string.IsNullOrEmpty(cName) || string.IsNullOrEmpty(lcID.ToString()) ||
+                    string.IsNullOrEmpty(tID.ToString()) || string.IsNullOrEmpty(cTotalLession.ToString()) ||
+                    string.IsNullOrEmpty(eID.ToString()) ||
+                    string.IsNullOrEmpty(cExcept.ToString()) || string.IsNullOrEmpty(cprice.ToString()))
+                {
+                    ViewData["error"] = "有未輸入的欄位，請檢查後再傳送！";
+                    return View("AddClassManage1");
+                }
 
-				//取到並存下 Session
-				HttpContext.Session.SetString("cName", cName);
-				HttpContext.Session.SetString("lcID", lcID.ToString());
-				HttpContext.Session.SetString("tID", tID.ToString());
-				HttpContext.Session.SetString("cTotalLession", cTotalLession.ToString());
-				HttpContext.Session.SetString("eID", eID.ToString());
-				HttpContext.Session.SetString("cExcept", cExcept.ToString());
-				HttpContext.Session.SetString("cprice", cprice.ToString());
-			}
-			return View("AddClassManage2");
-		}
+                //取到並存下 Session
+                HttpContext.Session.SetString("cName", cName);
+                HttpContext.Session.SetString("lcID", lcID.ToString());
+                HttpContext.Session.SetString("tID", tID.ToString());
+                HttpContext.Session.SetString("cTotalLession", cTotalLession.ToString());
+                HttpContext.Session.SetString("eID", eID.ToString());
+                HttpContext.Session.SetString("cExcept", cExcept.ToString());
+                HttpContext.Session.SetString("cprice", cprice.ToString());
+            }
+            return View("AddClassManage2");
+        }
 
-		public IActionResult AddClassManage2()
-		{
-			return View();
-		}
+        public IActionResult AddClassManage2()
+        {
+            return View();
+        }
 
-		public IActionResult QueryRoomManage()
-		{
-			return View();
-		}
+        public IActionResult QueryRoomManage()
+        {
+            return View();
+        }
 
-		public IActionResult QueryClassRecord()
-		{
-			return View();
-		}
+        public IActionResult QueryClassRecord()
+        {
+            return View();
+        }
 
         //---------------------------------------------------------  君 END  ------------------------------------------------------------
+    
 
         public IActionResult ClassIntroduce()
         {
-            var viewModel = _context.ClassIntroduces.ToList();
+        
+            var classtimemax = (from classtime in _context.ClassTimes
+                                group classtime by classtime.CId into grouping
+                                select new
+                                {
+                                    CId= grouping.Key,
+                                    CtDate= grouping.Max(x => x.CtDate),
+                                }
+                              );
+
+            var classjointime = (from classjoindata in _context.Classes
+                                 join classtimequery in classtimemax on classjoindata.CId equals classtimequery.CId
+                                 select new 
+                                 {
+                                     CId = classjoindata.CId,
+                                     CNumber = classjoindata.CNumber,
+                                     CName = classjoindata.CName,
+                                     MaxDate = classtimequery.CtDate,
+                                     LcID = classjoindata.LcId
+
+                                 }
+                            );
+
+            var query = (from Modeldata in _context.ClassIntroduces
+                         join classjoin in classjointime on Modeldata.CId equals classjoin.CId
+                         select new
+                         {
+                             CId = Modeldata.CId,
+                             CNumber = classjoin.CNumber,
+                             CName = classjoin.CName,
+                             lastDate = classjoin.MaxDate,
+                             LcId = classjoin.LcID,
+                             InTitle = Modeldata.InTitle,
+                             InContent = Modeldata.InContent,
+                             InId = Modeldata.InId,
+                             InDate = Modeldata.InDate,
+                             InCategory = Modeldata.InCategory,
+                             EId = Modeldata.EId,
+                             EIdNavigation = Modeldata.EIdNavigation,
+                             CIdNavigation = Modeldata.CIdNavigation,
+
+                         }.ToExpando()
+                             );
+
+
             var myquery2 = (from myemployee1 in _context.Employees select myemployee1).ToList();
             ViewBag.querydata = myquery2;
 
+            var classquery = (from myclass in _context.Classes select myclass).ToList();
+            ViewBag.classquerydata = classquery;
 
-            var query = from classdate in _context.ClassTimes
-                        group classdate by classdate.CId into g
-                        select new
-                        {
-                            g.Key,
 
-                        };
+            var cardioclassquery = (from mycardioclass in _context.Classes where mycardioclass.LcId == 1 || mycardioclass.LcId == 2 || mycardioclass.LcId == 3 select mycardioclass).ToList();
+            ViewBag.cardioclassquerydata = cardioclassquery;
+
+            var yogaclassquery = (from myyogaclass in _context.Classes where myyogaclass.LcId == 4 || myyogaclass.LcId == 5 || myyogaclass.LcId == 6 select myyogaclass).ToList();
+            ViewBag.yogaclassquerydata = yogaclassquery;
+
+
+
+            var viewModel = _context.ClassIntroduces.ToList();
+            ViewBag.viewModeldata = query;
+
 
 
 
             return View(viewModel);
 
+        }
+
+
+    }
+
+    //將匿名類別擴充
+    public static class ExpandoExtensions
+    {
+      
+        public static ExpandoObject ToExpando(this object anonymousObject)
+        {
+            IDictionary<string, object> anonymousDictionary =
+                new RouteValueDictionary(anonymousObject);
+            IDictionary<string, object> expando = new ExpandoObject();
+            foreach (var item in anonymousDictionary)
+                expando.Add(item);
+            return (ExpandoObject)expando;
         }
     }
 }

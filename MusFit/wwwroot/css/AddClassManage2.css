@@ -109,14 +109,8 @@ input[type=text] {
     margin-left: 40px;
 }
 
-
-legend {
-    text-align: center;
-    width: 20%;
-    background-color: black;
-    color: #fff;
-    padding: 3px 6px;
-    font-size: 18px;
+label{
+    margin-right: 20px;
 }
 
 fieldset {
@@ -158,6 +152,51 @@ input[type=checkbox] {
     padding: 5px 10px;
     width: 80px;
     height: 32px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+#btnInsert {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #D37CA5;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px 10px;
+    height: 35px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+#btnAddConfirm {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #6B7BA7;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px 10px;
+    height: 35px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+#btnReset, #cancelCreate {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #C09DC2;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px 10px;
+    height: 35px;
     transition: all 0.5s;
     cursor: pointer;
     margin-left: 20px;
@@ -259,11 +298,12 @@ input[type="submit"] {
 }
 
 
-input[type=text]{
+input[type=text] {
     border: solid 1px #a4a1a1;
     border-radius: 5px;
     padding: 2px 5px;
     outline: none;
+    height: 30px;
 }
 
 
@@ -347,5 +387,5 @@ form a {
 }
 
 input::placeholder {
-    color: lightgray;
+    opacity: 0.7;
 }

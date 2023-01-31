@@ -15,13 +15,12 @@
 	ViewData["Title"] = "課程管理 新增";
 }
 
-
 <link rel="stylesheet" href="~/css/AddClassManage2.css" />
-
 
 <div class="myForm">
 	<h3>課程管理 新增 </h3>
 	<fieldset>
+		<input type="hidden" id="btnDateClick" name="btnDateClick" value="No"/>
 		<div class="row">
 			<div class="column">
 				<label id="date" class="space-style" for="dateStart">開課日</label>
@@ -84,7 +83,7 @@
 		</div>
 	</fieldset>
 	<button class="button" style="vertical-align:middle" id="btnInsert"><span>新增</span> </button>
-	<button>取消</button>
+	<button id="btnReset" onclick="myrefresh()">清除</button>
 
 </div>
 
@@ -105,43 +104,43 @@
 			<div class="row">
 				<div class="column">
 					<label for="addName">課程名稱</label>
-					<input type="text" id="addName" value="@cName"  readonly="readonly"/>
+					<input type="text" class="form-control" id="addName" value="@cName" readonly="readonly" />
 				</div>
 				<div class="column">
 					<label for="addlcID">課程項目</label>
-					<input type="text" id="addlcID"  readonly="readonly"/>
+					<input type="text" class="form-control" id="addlcID" readonly="readonly" />
 				</div>
 			</div>
 			<div class="row">
 				<div class="column">
 					<label for="addtID">課程時段</label>
-					<input type="text" id="addtID" readonly="readonly" />
+					<input type="text" class="form-control" id="addtID" readonly="readonly" />
 				</div>
 				<div class="column">
-					<label for="addcTotalLession">堂&emsp;數</label>
-					<input type="text" id="addcTotalLession" value="@cTotalLession"  readonly="readonly"/>
+					<label for="addcTotalLession">堂&emsp;數&emsp;</label>
+					<input type="text" class="form-control" id="addcTotalLession" value="@cTotalLession"  readonly="readonly"/>
 				</div>
 			</div>
 			<div class="row">
 				<div class="column">
-					<label for="addeID">教&emsp;練</label>
-					<input type="text" id="addeID" readonly="readonly" />
+					<label for="addeID">教&emsp;練&emsp;</label>
+					<input type="text" class="form-control" id="addeID" readonly="readonly" />
 				</div>
 				<div class="column">
 					<div class="column">
-						<label for="addroomID">教&emsp;室</label>
-						<input type="text" id="addroomID" readonly="readonly" />
+						<label for="addroomID">教&emsp;室&emsp;</label>
+						<input type="text" class="form-control" id="addroomID" readonly="readonly" />
 					</div>
 				</div>
 			</div>
 			<div class="row">
 			<div class="column">
 				<label for="addcExcept">預計人數</label>
-					<input type="text" id="addcExcept" value="@cExcept" readonly="readonly" />
+					<input type="text" class="form-control" id="addcExcept" value="@cExcept" readonly="readonly" />
 			</div>
 			<div class="column">
-					<label for="addcPrice">價&emsp;錢</label>
-					<input type="text" id="addcPrice" value="@cprice" readonly="readonly" />
+					<label for="addcPrice">價&emsp;錢&emsp;</label>
+					<input type="text" class="form-control" id="addcPrice" value="@cprice" readonly="readonly" />
 				<div class="column">
 				</div>
 			</div>
@@ -164,7 +163,8 @@
 					</div>
 				<div class="column"></div>
 			</div>
-			<p>確定要新增課程嗎?</p>
+			<p>&emsp;確定要新增課程嗎?</p>
+			<br>
 			<input type="button" id="btnAddConfirm" value="確定" />
 			<button class="cancel" id="cancelCreate">取消</button>
 		</form>
@@ -339,169 +339,189 @@
 				var count = 0;
 				var TotalLession = parseInt($('#cTotalLession').val());
 
-				console.log("TotalLession:"); 
-				console.log(TotalLession); 
-				quotient = Math.floor(TotalLession/2) ;
-				remainder = TotalLession%2 ;
-
-				document.getElementById("date-block").style.display = "";
-				// 日期選擇器 生成
-				$("#date-body").empty();
-				if ( remainder == 0 ){
-					for( var k = 0; k<quotient ; k++ ){
-						var n = 2*k + 1, m = 2*k + 2;
-						var template =
-							`
-							<div class="row">
-								<div class="column">
-									<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-											<label id="date" for="date${n}">日期 ${n}&emsp;&emsp;</label>
-											<input type="date" id="date${n}" />
-									<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-								</div>
-								<div class="column">
-									<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-													<label id="date" for="date${m}">日期 ${m}&emsp;&emsp;</label>
-											<input type="date" id="date${m}" />
-									<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-								</div>
-							</div>
-								`;
-						$("#date-body").append(template);
-					}
-					var template3 =
-						` <div class="row">
-									<button class="button" style="vertical-align:middle"
-										id="btnDateOK" onclick="chgRoomSelect2()"><span>完成日期選取</span> </button>
-							</div>
-						`;
-					$("#date-body").append(template3);
-				}else{
-					for (var k = 0; k < quotient; k++) {
-						var n = 2*k+1, m = 2*k+2;
-						var template =
-							`
-									<div class="row">
-										<div class="column">
-											<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-															<label id="date" for="date${n}">日期 ${n}&emsp;&emsp;</label>
-													<input type="date" id="date${n}" />
-											<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-										</div>
-										<div class="column">
-											<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-													<label id="date" for="date${m}">日期 ${m}&emsp;&emsp;</label>
-													<input type="date" id="date${m}" />
-											<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-										</div>
-									</div>
-										`;
-						$("#date-body").append(template);
-					}
-					var template2 =
-						`
-							<div class="row">
-								<div class="column">
-									<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-											<label id="date" for="date${TotalLession}">日期${TotalLession}&emsp;&emsp;</label>
-											<input type="date" id="date${TotalLession}" />
-									<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-								</div>
-								<div class="column">
-
-								</div>
-							</div>
-						`;
-					$("#date-body").append(template2);
-					var template3 =
-						` <div class="row">
-							<button class="button" style="vertical-align:middle" id="btnDateOK"
-										onclick="chgRoomSelect2()"><span>完成日期選取</span> </button>
-							</div>
-						`;
-					$("#date-body").append(template3);
-				}
-
 				for (k = 0; k < len; k++) {
 					if (w[k].checked == true) {
-						if( k == 6 )
+						if (k == 6)
 							result[count] = 0;
 						else
-							result[count] = k+1;
+							result[count] = k + 1;
 						count++;
 					}
 				}
-				console.log(result);	 // 取得兩個
-				var diff1 = result[1] -result[0] ;
-				var diff2 = 7+ result[0] - result[1];
+				console.log("count:" + len);
 
+				if (count != 2) {
+					alert("請先選取兩個【星期】，再按【選取】");
 
-				date1 = new Date(dateStart);
-				console.log("date1: "+date1);
+				}else{
+					console.log("TotalLession:"+TotalLession); 
+					quotient = Math.floor(TotalLession/2) ;
+					remainder = TotalLession%2 ;
+					document.getElementById("date-block").style.display = "";
+					// 日期選擇器 生成
+					$("#date-body").empty();
+					if ( remainder == 0 ){
+						for( var k = 0; k<quotient ; k++ ){
+							var n = 2*k + 1, m = 2*k + 2;
+							var template =
+								`
+								<div class="row">
+									<div class="column">
+										<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+												<label id="date" for="date${n}">${n}.&emsp;</label>
+												<input type="date" id="date${n}" />
+										<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+									</div>
+									<div class="column">
+										<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+														<label id="date" for="date${m}">${m}.&emsp;</label>
+												<input type="date" id="date${m}" />
+										<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+									</div>
+								</div>
+									`;
+							$("#date-body").append(template);
+						}
+						var template3 =
+							` <div class="row">
+										<button class="button" style="vertical-align:middle"
+											id="btnDateOK" onclick="btnDateClick()"><span>日期選取</span> </button>
+								</div>
+							`;
+						$("#date-body").append(template3);
+					}else{
+						for (var k = 0; k < quotient; k++) {
+							var n = 2*k+1, m = 2*k+2;
+							var template =
+								`
+										<div class="row">
+											<div class="column">
+												<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+																<label id="date" for="date${n}">${n}.&emsp;</label>
+														<input type="date" id="date${n}" />
+												<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+											</div>
+											<div class="column">
+												<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+														<label id="date" for="date${m}">${m}.&emsp;</label>
+														<input type="date" id="date${m}" />
+												<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+											</div>
+										</div>
+											`;
+							$("#date-body").append(template);
+						}
+						var template2 =
+							`
+								<div class="row">
+									<div class="column">
+										<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+												<label id="date" for="date${TotalLession}">${TotalLession}.&emsp;</label>
+												<input type="date" id="date${TotalLession}" />
+										<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+									</div>
+									<div class="column">
 
-				Date.prototype.addDays = function (days) {
-					this.setDate(this.getDate() + days);
-					return this;
-				}
-
-				// diff1 + diff2 = 7
-				//day1 = dateStart + diff1;
-				//day2 = dateStart + diff1 + diff2;
-				//day3 = dateStart + diff1 + diff2 + diff1;
-				//day4 = dateStart + diff1 + diff2 + diff1 + diff2;
-				//day5 = dateStart + diff1 + diff2 + diff1 + diff2 +diff1;
-				//date2 =  date1.addDays(7);
-
-				var  Allday = [ ];
-				var days = 0;
-				var wk, temp ;
-				if( wNumber == result[1] ){
-					temp = diff1;
-					diff1 = diff2;
-					diff2 = temp;
-				}
-
-				for (n = 0; n < TotalLession; n++) {
-					if (n == 0) {
-						days = 0;
-						console.log("days:"+days);
-					} else if ((n % 2) == 0) {
-						wk = Math.floor(n / 2);
-						days = diff2;
-						console.log("days:"+days);
-					} else {
-						wk = Math.floor(n / 2) ;
-						days = diff1;
-						console.log("days:"+days);
+									</div>
+								</div>
+							`;
+						$("#date-body").append(template2);
+						var template3 =
+							` <div class="row">
+								<button class="button" style="vertical-align:middle" id="btnDateOK"
+													onclick="btnDateClick()"><span>日期選取</span> </button>
+								</div>
+							`;
+						$("#date-body").append(template3);
 					}
-					Allday[n] = JSON.stringify(date1.addDays(days));
-					//console.log(n + ": " + Allday[n]);
-					//console.log(typeof  Allday[n]);
+
+					console.log(result);	 // 取得兩個
+					var diff1 = result[1] -result[0] ;
+					var diff2 = 7+ result[0] - result[1];
+
+
+					date1 = new Date(dateStart);
+					console.log("date1: "+date1);
+
+					Date.prototype.addDays = function (days) {
+						this.setDate(this.getDate() + days);
+						return this;
+					}
+
+					// diff1 + diff2 = 7
+					//day1 = dateStart + diff1;
+					//day2 = dateStart + diff1 + diff2;
+					//day3 = dateStart + diff1 + diff2 + diff1;
+					//day4 = dateStart + diff1 + diff2 + diff1 + diff2;
+					//day5 = dateStart + diff1 + diff2 + diff1 + diff2 +diff1;
+					//date2 =  date1.addDays(7);
+
+					var  Allday = [ ];
+					var days = 0;
+					var wk, temp ;
+					if( wNumber == result[1] ){
+						temp = diff1;
+						diff1 = diff2;
+						diff2 = temp;
+					}
+
+					for (n = 0; n < TotalLession; n++) {
+						if (n == 0) {
+							days = 0;
+							console.log("days:"+days);
+						} else if ((n % 2) == 0) {
+							wk = Math.floor(n / 2);
+							days = diff2;
+							console.log("days:"+days);
+						} else {
+							wk = Math.floor(n / 2) ;
+							days = diff1;
+							console.log("days:"+days);
+						}
+						Allday[n] = JSON.stringify(date1.addDays(days));
+						//console.log(n + ": " + Allday[n]);
+						//console.log(typeof  Allday[n]);
+					}
+
+					console.log(Allday);
+					//console.log(typeof Allday);  //object
+					var myDayList = [ ];
+					for(var n=0; n<TotalLession; n++){
+				
+						myDayList[n] =  Allday[n].substr(1, 10) ;
+						//console.log("myDayList " + n +": " + myDayList[n]); //2023-01-24  string
+						var temp = "date"+ (n+1).toString();
+						//console.log(temp);
+						document.getElementById(temp).value ="";
+						document.getElementById(temp).value = myDayList[n];
+					}
+					// onchange Room
+					chgRoomSelect();
 				}
 
-				console.log(Allday);
-				//console.log(typeof Allday);  //object
-				var myDayList = [ ];
-				for(var n=0; n<TotalLession; n++){
-				
-					myDayList[n] =  Allday[n].substr(1, 10) ;
-					//console.log("myDayList " + n +": " + myDayList[n]); //2023-01-24  string
-					var temp = "date"+ (n+1).toString();
-					//console.log(temp);
-					document.getElementById(temp).value ="";
-					document.getElementById(temp).value = myDayList[n];
-				}
-				// onchange Room
-				chgRoomSelect();
 			}
 		})
 
-			// 跳出確認新增視窗
-			var mylcID, mylcName, myterm, term, myCoach, myRoom;
-			var myContent;
-			var myDayList2 = [];
-			var weekStr = [];
-			$('#btnInsert').click(function () {
+		// 完成日期選取--->改變room選擇
+		function btnDateClick() {
+			var roomSub = document.getElementById('tmpRoom').value;
+			console.log("roomSub: " + roomSub);
+			var option;
+			//$('#roomID').children("option").filter("[value=3]").remove();
+			$('#roomID').children("option").filter('[value="' + roomSub + '" ]').remove();
+
+			// 完成日期選取
+			$('#btnDateClick').val("Yes");
+		}
+
+		// 跳出確認新增視窗
+		var mylcID, mylcName, myterm, term, myCoach, myRoom;
+		var myContent;
+		var myDayList2 = [];
+		var weekStr = [];
+		$('#btnInsert').click(function () {
+			var btnDateClick= $('#btnDateClick').val();
+			if( btnDateClick=="Yes" ){
 				myContent = "";
 				mylcID = parseInt( $('#lcID').val() );
 				console.log("mylcID: "+ mylcID);
@@ -577,9 +597,6 @@
 
 				for (var n = 0; n < TotalLession; n++) {
 					var temp = "date" + (n + 1).toString();
-					console.log("3. temp: ");
-					console.log(temp);
-					console.log(typeof temp);
 					myDayList2[n] = document.getElementById(temp).value ;
 					weekStr[n] = getChineseDay2(new Date(myDayList2[n]));
 				}
@@ -598,17 +615,13 @@
 						}
 				}
 				console.log("myContent: " + myContent);
-				console.log("myContent typeof: " + typeof myContent);	// string
-
 				document.getElementById('addContent').innerHTML= myContent ;
-				//$('#addContent').value(myContent);
-
 				// 打開表單
-				addClassModal.style.display = "block";
-			
-
-		})
-
+				addClassModal.style.display = "block";				
+			}else{
+				alert("請先按下【日期選取】，才能新增");
+			}
+	})
 
 		// 確定新增課程
 		var mylcAbbrev, lcCnt, mylcNumber ,mycID;
@@ -760,13 +773,12 @@
 				})
 			}
 		}
-		function chgRoomSelect2(){
-			var roomSub= document.getElementById('tmpRoom').value;
-			console.log("roomSub: "+roomSub);
-			var option;
-			//$('#roomID').children("option").filter("[value=3]").remove();
-			$('#roomID').children("option").filter('[value="' + roomSub + '" ]').remove();
-		}
+		
+	function myrefresh()
+	{
+	window.location.reload();
+	}
+
 	</script>
 
 }

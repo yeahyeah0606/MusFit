@@ -119,5 +119,5 @@ tr {
 
 
 input::placeholder {
-    color: lightgray;
+    opacity: 0.7;
 }

@@ -99,7 +99,7 @@
         </fieldset>
 
         <button class="btnNext" id="btnNextPage" type="submit">下一頁</button>
-        <button>取消</button>
+        <button id="btnReset" onclick="myrefresh()">清除</button>
     </form>
 </div>
 
@@ -129,6 +129,11 @@
                 })
             })
         }
+
+     function myrefresh()
+    {
+        window.location.reload();
+    }
 
     </script>
 }

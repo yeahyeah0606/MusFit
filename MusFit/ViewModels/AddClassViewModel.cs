@@ -25,12 +25,12 @@ namespace ContainerTest.ViewModels
 
 
 		[Display(Name = "堂數")]
-        [Range(5, 15, ErrorMessage = "堂數必須介於5 ~ 15")]
+		[Required(ErrorMessage = "必須填入堂數")]
+		[Range(5, 15, ErrorMessage = "堂數必須介於5 ~ 15")]
         public int cTotalLession { get; set; }
 
 		[Display(Name = "教練")]
 		[Required(ErrorMessage = "必須填入授課教練")]
-
 		public int eID { get; set; }
 
 

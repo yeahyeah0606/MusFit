@@ -66,7 +66,7 @@ namespace MusFit.Controllers
 					  join e in _context.Employees on c.EId equals e.EId
 					  join r in _context.Rooms on c.RoomId equals r.RoomId
 					  join lc in _context.LessionCategories on c.LcId equals lc.LcId
-					  where ct.CtLession == 1
+					  where ct.CtLession == 1 && c.CId !=11
 					  orderby ct.CtDate descending
 					  select new
 					  {
@@ -134,7 +134,7 @@ namespace MusFit.Controllers
 						  join e in _context.Employees on c.EId equals e.EId
 						  join r in _context.Rooms on c.RoomId equals r.RoomId
 						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
-						  where ct.CtLession == 1 && ct.CtDate >= date_start
+						  where ct.CtLession == 1 && ct.CtDate >= date_start && c.CId != 11
 								  && ct.CtDate <= date_end && lc.LcId == lcID && e.EId == eID
 						  orderby c.CNumber ascending
 						  select new
@@ -479,7 +479,7 @@ namespace MusFit.Controllers
 		public async Task<ActionResult<IEnumerable<dynamic>>> GetlcCount(int lcID)
 		{
 			var obj = from c in _context.Classes
-					  where c.LcId == lcID
+					  where c.LcId == lcID && c.CId != 11
 					  orderby c.CId descending
 					  select c;
 

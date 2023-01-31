@@ -36,6 +36,15 @@ namespace MusFit.Controllers
             return await guests.ToListAsync();
         }
 
+        [HttpGet("guestsName/{name}")]
+        public async Task<ActionResult<IEnumerable<Student>>> GetGuestName(string name)
+        {
+            var guests = from s in _context.Students
+                         where name == s.SName && s.SIsStudentOrNot == false
+                         select s;
+            return await guests.ToListAsync();
+        }
+
         [HttpGet("studentNumber/")]
         public IActionResult GetStudentNumber()
         {

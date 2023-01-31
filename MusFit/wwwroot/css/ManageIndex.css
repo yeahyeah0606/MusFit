@@ -268,11 +268,11 @@ fieldset {
 }
 
 .odd {
-    background-image: linear-gradient(to top right, #f2ed73, #d3ce61);
+    background-image: linear-gradient(to top right, #D37CA5, #efb9ef);
 }
 
 .even {
-    background-image: linear-gradient(to top right, #9a9797, #dfd9d9);
+    background-image: linear-gradient(to top right, #ad94c7, #d7b4ef);
 }
 
 .golden_crown {

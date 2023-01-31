@@ -1067,6 +1067,12 @@ textarea.form-control-lg {
     width: 100%;
 }
 
+    .form-control[readonly]:focus {
+        border-color: white;
+        box-shadow: 0 0px 0px, 0 0 0px transparent;
+    }
+
+
 .from-group input :disabled {
     font-size: 19px;
     border: #929292 1px solid !important;

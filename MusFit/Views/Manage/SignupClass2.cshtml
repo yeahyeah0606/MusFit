@@ -6,30 +6,24 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 	<!-- Style -->
 	<link rel="stylesheet" href="../CSS/Signup_Class2.css">
 	<title>查詢、報名課程</title>
 </head>
 
-
 <h1>&nbsp;&nbsp;&nbsp;查詢、報名課程</h1>
-<hr>
-<br>
+<hr><br>
 <h3>&nbsp;&nbsp;&nbsp;請輸入要報名的會員編號或會員姓名</h3>
 	&nbsp;&nbsp;&nbsp;
 <label for="sNumber">會員編號:</label>
-<input type="text" id="sNumber" />
+<input type="text" class="memberID-input" id="sNumber" />
 	&nbsp;&nbsp;&nbsp;
 <label for="sName">會員姓名: </label>&nbsp;
-<input type="text" id="sName" />
+<input type="text" class="memberID-input" id="sName" />
 	&nbsp;&nbsp;&nbsp;
 <button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
-@*onclick="openCreateModel()"*@
-<br>
-<br>
+<br><br>
 <!-- table 開始 -->
-
 <div class="record">
 	<table style="width:100%">
 		<thead>
@@ -45,14 +39,12 @@
 		</thead>
 		<tbody id="Listbody">
 		</tbody>
-
 	</table>
 </div>
 <br>
 
 @*報名 information*@
 <div id="signupModal" class="modal">
-
 	<div class="modal-content">
 		<span class="close" id="leaveCreate">&times;</span>
 		<form id="signupForm">
@@ -95,30 +87,77 @@
 
 </div>
 
-
+@*query No Data*@
+<div id="showNoDataModal" class="modal">
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>沒有查到相關資料</p>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
 
 @*show error message *@
 <div id="errorMessage" class="modal">
-
 	<div id="errorModal" class="modal-content">
 		<span class="close" onclick="closeModel()">&times;</span>
 		<p>請輸入查詢條件!!</p>
-		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
-
 </div>
 
 @*success operation*@
 <div id="successMessage" class="modal">
-
 	<div id="successModal" class="modal-content">
 		<span class="close" onclick="closeSuccessModel()">&times;</span>
 		<p>已存檔</p>
 		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
 	</div>
-
 </div>
 
+@* 編號和名字對不上 *@
+<div id="notThisPersonModal" class="modal">
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>你輸入的會員編號顯示不是這位會員，請重新輸入</p>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
+@*已經報名過*@
+<div id="hadSignupModal" class="modal">
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>該會員已報名過，不可重複報名</p>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
+@*沒有填寫是否付款*@
+<div id="notSetStatusModal" class="modal">
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>沒有填寫是否付款!!!</p>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
+@*人數已滿*@
+<div id="fullPeopleModal" class="modal">
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>該課程人數已滿，請報名其他課程</p>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
+@*成功報名*@
+<div id="successSignupModal" class="modal">
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>已成功報名！</p>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="successSighupOK()">確定</button>
+	</div>
+</div>
 
 @section Scripts{
 	<script>
@@ -133,6 +172,7 @@
 		}
 
 		document.getElementById('cancelCreate').addEventListener('click', closeModel);
+		document.getElementById('cancelCreate').addEventListener('click', FormClear);
 		document.getElementById('leaveCreate').addEventListener('click', closeModel);
 		document.getElementById('leaveCreate').addEventListener('click', FormClear);
 
@@ -140,6 +180,11 @@
 		function closeModel() {
 			signupModal.style.display = "none";
 			errorMessage.style.display = "none";
+			showNoDataModal.style.display = "none";
+			notThisPersonModal.style.display = "none";
+			hadSignupModal.style.display = "none";
+			notSetStatusModal.style.display = "none";
+			fullPeopleModal.style.display = "none";
 		}
 
 		function closeSuccessModel() {
@@ -158,7 +203,6 @@
 			type: "get",
 			url: "/api/Classes/classList/" + Singlecid,
 			success: function (e) {
-				//alert("ok");   //  ok
 				$("#Listbody").empty();
 				dataList = e;
 				console.log(e);
@@ -228,17 +272,11 @@
 		$('#btnQuery').click(function () {
 			var sNumberinfo = $('#sNumber').val();
 			var sNameinfo = $('#sName').val();
-
 			var count = 0;
-
 			if (sNumberinfo == "" && sNameinfo == "") {
 				$('#errorMessage').css("display", "block");
 			}
 			else {
-				console.log(typeof sNameinfo);   //string
-				console.log(sNameinfo);   //林心如
-
-				var NameFlag = true
 				$.ajax({
 					type: "get",
 					url: "/api/students/",
@@ -246,19 +284,15 @@
 						data.forEach(function (x) {
 							if (x.sNumber == sNumberinfo) {
 								count++;
-								//alert("有"+count);
 								mySid = x.sId;
-								console.log(mySid); //  6
 								$.ajax({
 									type: "get",
 									url: "/api/Students/" + x.sId,
 									success: function (d) {
-										//console.log("okkk");
 										myNumber = d.sNumber;
 										myName = d.sName;
 										myBirth = new Date(d.sBirth).toLocaleDateString();
 										myPhone = d.sPhone;
-										console.log(myName);  //林心如
 										//  放進表單
 										if (myName == sNameinfo || sNameinfo == "") {
 											$('#signupNumber').val(myNumber);
@@ -268,25 +302,22 @@
 											// 打開表單
 											signupModal.style.display = "block";
 										} else {
-											alert("你輸入的會員編號顯示不是這位會員，請重新輸入");	//跳了兩次
+											//alert("你輸入的會員編號顯示不是這位會員，請重新輸入");	
+											$('#notThisPersonModal').css("display", "block");
 										}
 									}
 								})
 							} else if (x.sName == sNameinfo && sNumberinfo == "") {
 								count++;
-								//alert("有"+count);
 								mySid = x.sId;
-								console.log(mySid); //  6
 								$.ajax({
 									type: "get",
 									url: "/api/Students/" + x.sId,
 									success: function (d) {
-										//console.log("okkk");
 										myNumber = d.sNumber;
 										myName = d.sName;
 										myBirth = new Date(d.sBirth).toLocaleDateString();
 										myPhone = d.sPhone;
-										console.log(myName);  //林心如
 										//  放進表單
 										if (myName == sNameinfo || sNameinfo == "") {
 											$('#signupNumber').val(myNumber);
@@ -303,13 +334,9 @@
 						console.log("count: " + count);
 						//沒有查到資料
 						if (count == 0) {
-							alert("沒有查到相關資料");
-							//$('#showNoDataModal').css("display", "block");
+							//alert("沒有查到相關資料");
+							$('#showNoDataModal').css("display", "block");
 						}
-						//console.log("NameFlag: " +  NameFlag);
-						//if (NameFlag) {
-						//	alert("你輸入的會員編號顯示不是這位會員，請重新輸入");
-						//}
 					}
 				})
 			}
@@ -324,7 +351,6 @@
 				url: "/api/Classes/" + Singlecid,
 				success: function (data) {
 					if (data.cActual < data.cExpect) {
-						//alert("可以報名");
 						// 檢查該會員是否已經報名過
 						console.log( "該會員編號: "  + $('#signupNumber').val());
 						var singleMember = $('#signupNumber').val();
@@ -347,11 +373,11 @@
 								})
 								console.log("3. SNumcnt:" + SNumcnt);
 								if (SNumcnt != 0) {
-									alert("該會員已報名過，不可重複報名");
+									//alert("該會員已報名過，不可重複報名");
+									$('#hadSignupModal').css("display", "block");
 									FormClear();
 									signupModal.style.display = "none";
 								} else {
-									console.log("該會員可以報名");
 									var Status1 = $('input[name=orderStatus]')[0].checked;
 									var Status2 = $('input[name=orderStatus]')[1].checked;
 
@@ -450,13 +476,15 @@
 											}
 										})
 									} else {
-										alert("沒有填寫是否付款!!!");
+										//alert("沒有填寫是否付款!!!");
+										$('#notSetStatusModal').css("display", "block");
 									}
 								}
 							}
 						})						
 					} else {
-						alert("該課程人數已滿，請報名其他課程");
+						//alert("該課程人數已滿，請報名其他課程");
+						$('#fullPeopleModal').css("display", "block");
 					}
 				}
 			})
@@ -498,7 +526,6 @@
 						contentType: "application/json",
 						data: JSON.stringify(classData),
 						success: function (data) {
-							//alert("有成功更改人數");
 						}
 					})
 				}
@@ -506,7 +533,13 @@
 		}
 
 		function successSignup() {
-			alert("有成功報名");
+			//alert("有成功報名");
+			$('#successSignupModal').css("display", "block");
+		}
+
+		// 成功報名的確定按鈕
+		function successSighupOK() {
+			successSignupModal.style.display = "none";
 			window.location = "/Manage/SignupClass2?id=" + Singlecid;
 			//console.log(Singlecid);
 		}

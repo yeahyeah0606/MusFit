@@ -24,9 +24,9 @@
 				<hr class="my-0" />
 
 				<div class="card-body">
-					<div class="row employee-edit-form mx-sm-3 mb-2 form-inline"
-                          name="employee-edit-form" method="get" action="">
-						<div class="col-6 employee-edit-form-left">
+					<div class="row employee-edit-form form-inline" style="width:90%;"
+                          name="employee-edit-form" method="get" action="" >
+						<div class="col-6 employee-edit-form-left" style="text-align:left;">
 							@{
 								if (message != "")
                                 {
@@ -73,7 +73,7 @@
 								<span class="field-validation-valid text-danger" data-valmsg-for="EBirth"
 									  data-valmsg-replace="true" asp-validation-for="EBirth"></span>
 							</div>
-							<div class="from-group mb-4" style="margin-left:-100px;">
+							<div class="from-group mb-4" >
                                 <label asp-for="EIdentityNumber" >身分證</label>
 								<input asp-for="EIdentityNumber" class="form-control" type="text"
 									   name="EIdentityNumber"><br>
@@ -98,7 +98,7 @@
 								<span class="field-validation-valid text-danger" data-valmsg-for="EAddress"
 									  data-valmsg-replace="true" asp-validation-for="EAddress"></span>
 							</div>
-							<div class="form-group ">
+							<div class="mb-5 ">
 							</div>
 						</div>
 
@@ -115,24 +115,29 @@
 								<span class="field-validation-valid text-danger" data-valmsg-for="EIsCoach"
 									  data-valmsg-replace="true" asp-validation-for="EIsCoach"></span>
 							</div>
-							<div class="form-group mb-4">
-								<label>課程</label>
-								@using (Html.BeginForm("CEdit", "Manage"))
-                                {
-                                    foreach (var item in Model.AvailableLession)
-                                    {
-                                        <div class="checkbox" asp-for="AvailableLession">
-                                            <label>
-                                                <input type="checkbox" name="SelectedLession" value="@item.Value"
-                                                       @if(Model.SelectedLession.Contains(item.Value))
-                                                       {
-                                                            <text> checked </text>
-                                                       }
-                                                 /> @item.Text
-                                            </label>
-                                        </div>
-                                    }
-                                }
+							<div class="row form-group mb-4" style="text-align:left;margin:0px;">
+								<div class="col-6">
+									<label>課程</label>
+								</div>
+								<div class="col-6">
+
+									@using (Html.BeginForm("CEdit", "Manage"))
+									{
+										foreach (var item in Model.AvailableLession)
+										{
+											<div class="checkbox" asp-for="AvailableLession">
+												<label>
+													<input type="checkbox" name="SelectedLession" value="@item.Value"
+														   @if(Model.SelectedLession.Contains(item.Value))
+														   {
+																<text> checked </text>
+														   }
+													 /> @item.Text
+												</label>
+											</div>
+										}
+									}
+								</div>
                             </div>
 							<div class="form-group mb-4">
 								<label asp-for="EEnrollDate">入職日期</label>
@@ -164,29 +169,31 @@
 								<span class="field-validation-valid text-danger" data-valmsg-for="EExplain"
                                           data-valmsg-replace="true" asp-validation-for="EExplain"></span>
 							</div>
-							<div class="row form-group mb-0">
-								<div class="col-6 btn-edit">
-									<button id="btnSave" type="submit" name="save">儲存</button>
-								</div>
-							</div>
-							
-						</div>
-						<hr class="my-0" />
-						<div>
-							<div>
-								<h5>密碼重設</h5>
-							</div>
-							<div class="form-group mb-4">
-								<label asp-for="EPassword">密碼</label>
-								<input asp-for="EPassword" class="form-control w-25" type="text" value="" readonly>
-							</div>
-							<div class="form-group mb-0">
-								<div class=" btn-edit">
-									<button id="btnSave" type="button" name="save" class="w-100" onclick="ResetPassword()">密碼重設</button>
-								</div>
-							</div>
 						</div>
 					</div>
+					<div class="row allButton" style="width:90%;">
+						<div class="col-8">
+							<div class="form-group form-inline">
+								<label asp-for="EPassword">密碼重設</label>
+								<input asp-for="EPassword" class="form-control" type="text" value="" readonly>
+								<button id="btnSave" type="button" name="save" class="btn btn-dark ml-2" onclick="ResetPassword()">密碼重設</button>
+							</div>
+						</div>
+						<div class="col-4">
+							<div class="form-group ">
+								<div class="btn-edit">
+									<button id="btnSave" type="submit" name="save" class="btn btn-dark">儲存</button>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+
+
+
+
+
 				</div>
 			</div>
 

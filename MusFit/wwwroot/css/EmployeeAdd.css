@@ -1088,6 +1088,12 @@ textarea.form-control-lg {
     margin-top: 20px;
 }
 
+.form-control[readonly]:focus {
+    border-color: white;
+    box-shadow: 0 0px 0px, 0 0 0px transparent;
+}
+
+
 
 .card-body .btn-edit button {
     flex: 1;

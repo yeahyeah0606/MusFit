@@ -28,6 +28,11 @@ input{
     outline: none;
 }
 
+input:focus {
+    border-color: rgba(135, 206, 250, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(135, 206, 250, 0.6);
+}
+
 .content {
     width: inherit;
     text-align: center;
@@ -41,7 +46,8 @@ input{
     width: 350px;
     height: 330px;
     padding: 10px 10px;
-    border: solid 1.5px #625e5e;
+    border: solid 1.5px #E3E3F1;
+    background-color: #E3E3F1;
     border-radius: 8px;
     margin: auto;
 }
@@ -74,7 +80,7 @@ input:focus {
 }
 
 input:-webkit-autofill {
-    box-shadow: 0 0 0px 1000px transparent inset;
+    box-shadow: 0 0 0px 1000px white inset;
     -webkit-text-fill-color: #000;
     -webkit-background-clip: text;
 }

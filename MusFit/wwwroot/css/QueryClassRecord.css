@@ -29,14 +29,37 @@
     padding: 5px;
 }
 
-    .ctLession:focus, .sName:focus {
-        border-color: #66afe9;
-        outline: 0;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
-        box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
-    }
-
 /* 查詢 button 樣式 */
+#btnQuery {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #6B7BA7;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+    width: 80px;
+    height: 32px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 1px;
+}
+#btnEdit {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #96ba9a;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+    width: 80px;
+    height: 32px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 1px;
+}
 .button {
     display: inline-block;
     border-radius: 4px;
@@ -53,30 +76,30 @@
     margin: 1px;
 }
 
-    .button span {
-        cursor: pointer;
-        display: inline-block;
-        position: relative;
-        transition: 0.5s;
-    }
+.button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
 
-        .button span:after {
-            content: '»';
-            position: absolute;
-            opacity: 0;
-            top: 0;
-            right: -20px;
-            transition: 0.5s;
-        }
+.button span:after {
+    content: '»';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
 
-    .button:hover span {
-        padding-right: 25px;
-    }
+.button:hover span {
+    padding-right: 25px;
+}
 
-        .button:hover span:after {
-            opacity: 1;
-            right: 0;
-        }
+.button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
 
 .edit {
     background-color: #96ba9a;
@@ -120,20 +143,20 @@ tr {
     border-bottom: 1px solid #dddddd;
 }
 
-    tr:last-of-type {
-        /*border-bottom: 2px solid #0080FF;*/
-    }
+tr:last-of-type {
+    /*border-bottom: 2px solid #0080FF;*/
+}
 
-    tr:nth-of-type(even) td {
-        background-color: #f3f3f3;
-    }
+tr:nth-of-type(even) td {
+    background-color: #f3f3f3;
+}
 
 /* 總人數 置右 樣式 */
 .total-member {
     text-align: right;
     font-size: 18px;
-    /*    padding-right: 30px;*/
-    padding-left: 150px;
+    /*padding-right: 50px;*/
+    padding-left: 80%;
 }
 /* 上一頁 下一頁 樣式 */
 .pagination .active a {
@@ -141,12 +164,12 @@ tr {
     border: none;
 }
 
-/* 彈跳視窗 */
-/*create visitor information*/
+/*懸浮視窗  visitor information*/
+/*-----------------------------------------------------------------*/
 .modal {
     display: none;
     position: fixed;
-    z-index: 3;
+    z-index: 6;
     padding-top: 100px;
     left: 0;
     top: 0;
@@ -175,6 +198,7 @@ tr {
 }
 
 
+
 input[type=text], select {
     border: solid 1px #a4a1a1;
     border-radius: 5px;
@@ -191,8 +215,14 @@ input[type=radio] {
     margin: auto 25px;
 }
 
-form input[type=text]:focus, select:focus {
+form input[type=text] {
     background-color: #ddd;
+}
+
+form input[type=text]:focus, select:focus{
+    background-color: #ddd;
+/* border-color: rgba(135, 206, 250, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(135, 206, 250, 0.6);*/
 }
 
 
@@ -208,7 +238,7 @@ form a {
     bottom: 35px;
 }
 
-#btnCreateConfirm, #btnEditConfirm, #btnconfirmdelete, #btnCreateReserveConfirm {
+#btnEditConfirm {
     color: #fff;
     background: #a764b2;
     padding: 5px 10px;
@@ -218,11 +248,30 @@ form a {
     outline: none;
 }
 
+#btnConfirmMessage {
+    color: #fff;
+    background: #a764b2;
+    padding: 5px 10px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    margin-left:40%;
+}
 
-    #btnconfirm:hover, #btnconfirmdelete:hover, #btncanceldelete, #btnCreateReserveConfirm:hover,
-    #btnCreateConfirm:hover {
-        opacity: 0.9;
-    }
+#cancelCreate {
+    color: #fff;
+    background: #c0bcbc;
+    padding: 5px 10px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+}
+
+#btnEditConfirm:hover {
+    opacity: 0.9;
+}
 
 .close {
     color: #aaaaaa;

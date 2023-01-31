@@ -66,8 +66,17 @@
         //close success message modal
         function closeSuccessModel() {
             $('#messageModal').css("display", "none");
+            if ($('#CreateName').val() != "") { myAJAX(AjaxType.GET, "/api/students/guestsName/" + $('#CreateName').val(), postEmptyClassOrderAndClassRecord);}
             location.reload();
-}
+        }
+        function postEmptyClassOrderAndClassRecord(x) {
+            $('#visitorSId').val(x[0].sId);
+            var classRecords = { sId: $('#visitorSId').val(), classTimeId: 63 };
+            var classOrders = { sId: $('#visitorSId').val(), classTimeId: 63, orderTime: new Date().toJSON().slice(0, 19),orderStatus: '體驗',eId:1 };
+            myAJAX(AjaxType.POST, "/api/classorders/", null, "application/json", JSON.stringify(classOrders));
+            myAJAX(AjaxType.POST, "/api/classrecords/", null, "application/json", JSON.stringify(classRecords));
+        }
+
 
         //email format validation
         function IsEmail(email) {
@@ -129,16 +138,21 @@
             var tableRow;
             var gender;
             var date;
+            var weekday;
+            var dateInfo;
             data.forEach(function (o) {
                 date = new Date(o.date).toLocaleDateString();
+                weekday = o.weekday.substring(2);
+                dateInfo = `${date}(${weekday})`;
                 if (o.gender == false) { gender = '女'; } else { gender = '男'; }
+                if (o.timeID == 63) { o.className = "尚未預約"; dateInfo = "尚未預約"; }
                 tableRow += `<tr class="result">
                                         <td>${o.name}</td>
                                         <td class="gender">${gender}</td>
                                         <td class="phone">${o.phone}</td>
                                         <td class="mail">${o.mail}</td>
                                         <td>${o.className}</td>
-                                        <td>${date}(${o.weekday.substring(2)})</td>
+                                        <td>${dateInfo}</td>
                                         <td>
                                         <button class="edit" onclick=openEditModel(${o.sID},${o.orderID})> 編輯 </button>
                                         <button class="delete" onclick = "opendeleteModel(${o.orderID},${o.classRecordID})" > 刪除 </button>
@@ -330,10 +344,11 @@
             else if (!reg.test(phone)) { valPhoneMessage.style.display = "block"; $('#confirmValPhone').focus(); }
             else if (!IsEmail(mail)) { valMailMessage.style.display = "block"; $('#confirmValMail').focus(); }
             else {
-                console.log(GetFormData($('#createForm')));
-                myAJAX(AjaxType.POST, "/api/students/", showMessage("已存檔"),"application/json", JSON.stringify(GetFormData($('#createForm'))));
+                myAJAX(AjaxType.POST, "/api/students/", showMessage("已存檔"), "application/json", JSON.stringify(GetFormData($('#createForm'))));
             }
         })
+
+
         function showMessage(message){
             $('#createModal').css("display", "none");
             $('#createReserveModal').css("display", "none");
@@ -343,6 +358,7 @@
             $('#messageModal').css("display", "block");
             $('#confirmMessage').focus();
         }
+
 
         //create reservation
         $('#btnCreateReserveConfirm').click(function () {
@@ -435,8 +451,16 @@
             $('#className').empty();
             data.forEach(function (c) {
                 var option;
-                if (c.cId == classID) { option = `<option value="${c.cName}" selected>${c.cName}</option>`; }
-                else { option = `<option value="${c.cName}">${c.cName}</option>`; }
+                if (c.cId == classID) {
+                    // classID == 11 means no appointment yet
+                    if (classID == 11) { option = `<option value="0" selected hidden disabled>----------尚未預約----------</option>`; }
+                    else {   option = `<option value="${c.cName}" selected>${c.cName}</option>`;}      
+                }
+                else {
+                    // classID == 11 means no appointment yet
+                    if (c.cId != 11) {option = `<option value="${c.cName}">${c.cName}</option>`; }
+                    
+                }
                 $('#className').append(option);
             })
         }
@@ -446,8 +470,12 @@
                  var option;
                  var date = new Date(t.ctDate).toLocaleDateString();
                  var weeday = t.weekday.substring(2);
-                if (t.cId == classID) {
-                    if (t.classTimeId == classTimeID) { option = `<option value="${t.ctDate}" selected>${date}(${weeday}) ${t.startTime}~${t.endTime}</option>`; }
+                 if (t.cId == classID) {
+                     if (t.classTimeId == classTimeID) {
+                         // classID == 63 means no appointment yet
+                         if (classTimeID == 63) { option = `<option value="0" selected hidden disabled>----------尚未預約----------</option>`; }
+                         else { option = `<option value="${t.ctDate}" selected>${date}(${weeday}) ${t.startTime}~${t.endTime}</option>`;}
+                     }
                     else { option = `<option value="${t.ctDate}">${date}(${weeday}) ${t.startTime}~${t.endTime}</option>`; }
                   }
                  $('#classDate').append(option);

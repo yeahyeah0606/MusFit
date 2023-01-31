@@ -24,8 +24,7 @@
 	<fieldset>
 		<div class="row">
 			<div class="column">
-				<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-				<label id="date" for="dateStart">開課日</label>
+				<label id="date" class="space-style" for="dateStart">開課日</label>
 				<input type="date" id="dateStart" onchange="ShowWday()" />
 				<p id="startwday">&emsp;&emsp;&emsp;</p>
 			</div>
@@ -51,16 +50,16 @@
 @*		<div>
 		</div>*@
 
-		<div class="date-block">
+		<div class="date-block" id="date-block" style="display:none">
 			<div id="date-title">
 				<input type="hidden" id="tmpRoom" name="tmpRoom" />
 
 				<div class="row">
 					<div class="column">
-						<label class="space-style" for="height">課程日期</label>
+						<label class="classDate">課程日期</label>
 						<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-						<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-						<p>&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+@*						<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+						<p>&emsp;&emsp;&emsp;&emsp;&emsp;</p>*@
 					</div>
 					<div class="column"></div>
 				</div>
@@ -78,7 +77,8 @@
 					<option value="4">&emsp;&emsp;1804&emsp;</option>
 					<option value="5">&emsp;&emsp;1805&emsp;</option>
 				</select>
-				<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+				<p >&emsp;&emsp;&emsp;</p>
+
 			</div>
 			<div class="column"></div>
 		</div>
@@ -329,279 +329,284 @@
 		var quotient, remainder;
 		//var TotalLession = parseInt($('#cTotalLession').val());
 		$('#btnSelect').click(function () {
-			console.log("btnSelect:");
-			console.log("1. dateStart: "+dateStart);
-			console.log(wNumber);
-
-			var w = document.getElementsByName("weekday");
-			var len = w.length;
-			var count = 0;
-			var TotalLession = parseInt($('#cTotalLession').val());
-
-			console.log("TotalLession:"); 
-			console.log(TotalLession); 
-			quotient = Math.floor(TotalLession/2) ;
-			remainder = TotalLession%2 ;
-
-			// 日期選擇器 生成
-			$("#date-body").empty();
-			if ( remainder == 0 ){
-				for( var k = 0; k<quotient ; k++ ){
-					var n = 2*k + 1, m = 2*k + 2;
-					var template =
-						`
-						<div class="row">
-							<div class="column">
-								<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-										<label id="date" for="date${n}">日期 ${n}</label>
-										<input type="date" id="date${n}" />
-								<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-							</div>
-							<div class="column">
-								<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-										<label id="date" for="date${m}">日期 ${m}</label>
-										<input type="date" id="date${m}" />
-								<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-							</div>
-						</div>
-						    `;
-					$("#date-body").append(template);
-				}
-				var template3 =
-					` <div class="row">
-								<button class="button" style="vertical-align:middle"
-								  id="btnDateOK" onclick="chgRoomSelect2()"><span>完成日期選取</span> </button>
-						</div>
-					`;
-				$("#date-body").append(template3);
+			dateStart = document.getElementById('dateStart').value;
+			console.log("btnSelect裡的dateStart:  "+ dateStart); // xxxx-xx-xx  string
+			if(dateStart=="" ){
+				alert("請先選擇開課日");
 			}else{
-				for (var k = 0; k < quotient; k++) {
-					var n = 2*k+1, m = 2*k+2;
-					var template =
-						`
-								<div class="row">
-									<div class="column">
-										<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-												<label id="date" for="date${n}">日期 ${n}</label>
-												<input type="date" id="date${n}" />
-										<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-									</div>
-									<div class="column">
-										<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-												<label id="date" for="date${m}">日期 ${m}</label>
-												<input type="date" id="date${m}" />
-										<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-									</div>
+				var w = document.getElementsByName("weekday");
+				var len = w.length;
+				var count = 0;
+				var TotalLession = parseInt($('#cTotalLession').val());
+
+				console.log("TotalLession:"); 
+				console.log(TotalLession); 
+				quotient = Math.floor(TotalLession/2) ;
+				remainder = TotalLession%2 ;
+
+				document.getElementById("date-block").style.display = "";
+				// 日期選擇器 生成
+				$("#date-body").empty();
+				if ( remainder == 0 ){
+					for( var k = 0; k<quotient ; k++ ){
+						var n = 2*k + 1, m = 2*k + 2;
+						var template =
+							`
+							<div class="row">
+								<div class="column">
+									<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+											<label id="date" for="date${n}">日期 ${n}&emsp;&emsp;</label>
+											<input type="date" id="date${n}" />
+									<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
 								</div>
-									`;
-					$("#date-body").append(template);
-				}
-				var template2 =
-					`
-						<div class="row">
-							<div class="column">
-								<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-												<label id="date" for="date${TotalLession}">日期${TotalLession}</label>
-												<input type="date" id="date${TotalLession}" />
-								<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+								<div class="column">
+									<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+													<label id="date" for="date${m}">日期 ${m}&emsp;&emsp;</label>
+											<input type="date" id="date${m}" />
+									<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+								</div>
 							</div>
-							<div class="column">
-
+								`;
+						$("#date-body").append(template);
+					}
+					var template3 =
+						` <div class="row">
+									<button class="button" style="vertical-align:middle"
+										id="btnDateOK" onclick="chgRoomSelect2()"><span>完成日期選取</span> </button>
 							</div>
-						</div>
-					`;
-				$("#date-body").append(template2);
-				var template3 =
-					` <div class="row">
-						<button class="button" style="vertical-align:middle" id="btnDateOK"
-								 onclick="chgRoomSelect2()"><span>完成日期選取</span> </button>
-					  </div>
-					`;
-				$("#date-body").append(template3);
-			}
+						`;
+					$("#date-body").append(template3);
+				}else{
+					for (var k = 0; k < quotient; k++) {
+						var n = 2*k+1, m = 2*k+2;
+						var template =
+							`
+									<div class="row">
+										<div class="column">
+											<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+															<label id="date" for="date${n}">日期 ${n}&emsp;&emsp;</label>
+													<input type="date" id="date${n}" />
+											<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+										</div>
+										<div class="column">
+											<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+													<label id="date" for="date${m}">日期 ${m}&emsp;&emsp;</label>
+													<input type="date" id="date${m}" />
+											<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+										</div>
+									</div>
+										`;
+						$("#date-body").append(template);
+					}
+					var template2 =
+						`
+							<div class="row">
+								<div class="column">
+									<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+											<label id="date" for="date${TotalLession}">日期${TotalLession}&emsp;&emsp;</label>
+											<input type="date" id="date${TotalLession}" />
+									<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+								</div>
+								<div class="column">
 
-			for (k = 0; k < len; k++) {
-				if (w[k].checked == true) {
-					if( k == 6 )
-					    result[count] = 0;
-					else
-						result[count] = k+1;
-					count++;
+								</div>
+							</div>
+						`;
+					$("#date-body").append(template2);
+					var template3 =
+						` <div class="row">
+							<button class="button" style="vertical-align:middle" id="btnDateOK"
+										onclick="chgRoomSelect2()"><span>完成日期選取</span> </button>
+							</div>
+						`;
+					$("#date-body").append(template3);
 				}
-			}
-			console.log(result);	 // 取得兩個
-			var diff1 = result[1] -result[0] ;
-			var diff2 = 7+ result[0] - result[1];
 
-
-			date1 = new Date(dateStart);
-			console.log("date1: "+date1);
-
-			Date.prototype.addDays = function (days) {
-				this.setDate(this.getDate() + days);
-				return this;
-			}
-
-			// diff1 + diff2 = 7
-			//day1 = dateStart + diff1;
-			//day2 = dateStart + diff1 + diff2;
-			//day3 = dateStart + diff1 + diff2 + diff1;
-			//day4 = dateStart + diff1 + diff2 + diff1 + diff2;
-			//day5 = dateStart + diff1 + diff2 + diff1 + diff2 +diff1;
-			//date2 =  date1.addDays(7);
-
-			var  Allday = [ ];
-			var days = 0;
-			var wk, temp ;
-			if( wNumber == result[1] ){
-				temp = diff1;
-				diff1 = diff2;
-				diff2 = temp;
-			}
-
-			for (n = 0; n < TotalLession; n++) {
-				if (n == 0) {
-					days = 0;
-					console.log("days:"+days);
-				} else if ((n % 2) == 0) {
-					wk = Math.floor(n / 2);
-					days = diff2;
-					console.log("days:"+days);
-				} else {
-					wk = Math.floor(n / 2) ;
-					days = diff1;
-					console.log("days:"+days);
+				for (k = 0; k < len; k++) {
+					if (w[k].checked == true) {
+						if( k == 6 )
+							result[count] = 0;
+						else
+							result[count] = k+1;
+						count++;
+					}
 				}
-				Allday[n] = JSON.stringify(date1.addDays(days));
-				//console.log(n + ": " + Allday[n]);
-				//console.log(typeof  Allday[n]);
-			}
+				console.log(result);	 // 取得兩個
+				var diff1 = result[1] -result[0] ;
+				var diff2 = 7+ result[0] - result[1];
 
-			console.log(Allday);
-			console.log(typeof Allday);  //object
-			var myDayList = [ ];
-			for(var n=0; n<TotalLession; n++){
+
+				date1 = new Date(dateStart);
+				console.log("date1: "+date1);
+
+				Date.prototype.addDays = function (days) {
+					this.setDate(this.getDate() + days);
+					return this;
+				}
+
+				// diff1 + diff2 = 7
+				//day1 = dateStart + diff1;
+				//day2 = dateStart + diff1 + diff2;
+				//day3 = dateStart + diff1 + diff2 + diff1;
+				//day4 = dateStart + diff1 + diff2 + diff1 + diff2;
+				//day5 = dateStart + diff1 + diff2 + diff1 + diff2 +diff1;
+				//date2 =  date1.addDays(7);
+
+				var  Allday = [ ];
+				var days = 0;
+				var wk, temp ;
+				if( wNumber == result[1] ){
+					temp = diff1;
+					diff1 = diff2;
+					diff2 = temp;
+				}
+
+				for (n = 0; n < TotalLession; n++) {
+					if (n == 0) {
+						days = 0;
+						console.log("days:"+days);
+					} else if ((n % 2) == 0) {
+						wk = Math.floor(n / 2);
+						days = diff2;
+						console.log("days:"+days);
+					} else {
+						wk = Math.floor(n / 2) ;
+						days = diff1;
+						console.log("days:"+days);
+					}
+					Allday[n] = JSON.stringify(date1.addDays(days));
+					//console.log(n + ": " + Allday[n]);
+					//console.log(typeof  Allday[n]);
+				}
+
+				console.log(Allday);
+				//console.log(typeof Allday);  //object
+				var myDayList = [ ];
+				for(var n=0; n<TotalLession; n++){
 				
-				myDayList[n] =  Allday[n].substr(1, 10) ;
-				console.log("myDayList " + n +": " + myDayList[n]); //2023-01-24  string
-				var temp = "date"+ (n+1).toString();
-				//console.log(temp);
-				document.getElementById(temp).value ="";
-				document.getElementById(temp).value = myDayList[n];
+					myDayList[n] =  Allday[n].substr(1, 10) ;
+					//console.log("myDayList " + n +": " + myDayList[n]); //2023-01-24  string
+					var temp = "date"+ (n+1).toString();
+					//console.log(temp);
+					document.getElementById(temp).value ="";
+					document.getElementById(temp).value = myDayList[n];
+				}
+				// onchange Room
+				chgRoomSelect();
 			}
-			// onchange Room
-			chgRoomSelect();
 		})
 
-		// 跳出確認新增視窗
-		var mylcID, mylcName, myterm, term, myCoach, myRoom;
-		var myContent;
-		var myDayList2 = [];
-		var weekStr = [];
-		$('#btnInsert').click(function () {
-			myContent = "";
-			mylcID = parseInt( $('#lcID').val() );
-			console.log("mylcID: "+ mylcID);
-		    myterm = parseInt($('#tID').val());
-			switch (myterm) {
-				case 9:
-					term = "09:00 ~ 10:00";
-					break;
-				case 10:
-					term = "10:00 ~ 11:00";
-					break;
-				case 11:
-					term = "11:00 ~ 12:00";
-					break;
-				case 13:
-					term = "13:00 ~ 14:00";
-					break;
-				case 14:
-					term = "14:00 ~ 15:00";
-					break;
-				case 15:
-					term = "15:00 ~ 16:00";
-					break;
-				case 16:
-					term = "16:00 ~ 17:00";
-					break;
-				case 17:
-					term = "17:00 ~ 18:00";
-					break;
-				case 18:
-					term = "18:00 ~ 19:00";
-					break;
-				case 19:
-					term = "19:00 ~ 20:00";
-					break;
-				case 20:
-					term = "20: 00 ~21: 00";
-					break;
-				case 21:
-					term = "21:00 ~ 22:00";
-					break;
-				default:
-			}
-			$('#addtID').val(term);
-			$.ajax({
-				type: "get",
-				url: "/api/LessionCategories/" + mylcID,
-				success: function (data) {
-					//alert(data.lcName);
-					$('#addlcID').val(data.lcName);
-					//mylcAbbrev = data.lcAbbrev;
-					//console.log(mylcAbbrev);	//有
+			// 跳出確認新增視窗
+			var mylcID, mylcName, myterm, term, myCoach, myRoom;
+			var myContent;
+			var myDayList2 = [];
+			var weekStr = [];
+			$('#btnInsert').click(function () {
+				myContent = "";
+				mylcID = parseInt( $('#lcID').val() );
+				console.log("mylcID: "+ mylcID);
+				myterm = parseInt($('#tID').val());
+				switch (myterm) {
+					case 9:
+						term = "09:00 ~ 10:00";
+						break;
+					case 10:
+						term = "10:00 ~ 11:00";
+						break;
+					case 11:
+						term = "11:00 ~ 12:00";
+						break;
+					case 13:
+						term = "13:00 ~ 14:00";
+						break;
+					case 14:
+						term = "14:00 ~ 15:00";
+						break;
+					case 15:
+						term = "15:00 ~ 16:00";
+						break;
+					case 16:
+						term = "16:00 ~ 17:00";
+						break;
+					case 17:
+						term = "17:00 ~ 18:00";
+						break;
+					case 18:
+						term = "18:00 ~ 19:00";
+						break;
+					case 19:
+						term = "19:00 ~ 20:00";
+						break;
+					case 20:
+						term = "20: 00 ~21: 00";
+						break;
+					case 21:
+						term = "21:00 ~ 22:00";
+						break;
+					default:
 				}
-			})
-			myCoach = parseInt( $('#eID').val() );
-			$.ajax({
-				type: "get",
-				url: "/api/Employees/" + myCoach,
-				success: function (data){
-					//alert(data.eEngName);
-					$('#addeID').val(data.eEngName);
-				}
-			})
-			myRoom = parseInt($('#roomID').val());
-			$.ajax({
-				type: "get",
-				url: "/api/Rooms/" + myRoom,
-				success: function (data){
-					$('#addroomID').val(data.roomName);
-				}
-			})
-			var TotalLession = parseInt($('#cTotalLession').val());
-
-			for (var n = 0; n < TotalLession; n++) {
-				var temp = "date" + (n + 1).toString();
-				console.log("3. temp: ");
-				console.log(temp);
-				console.log(typeof temp);
-				myDayList2[n] = document.getElementById(temp).value ;
-				weekStr[n] = getChineseDay2(new Date(myDayList2[n]));
-			}
-			console.log("4. myDayList2 : ");
-			console.log(myDayList2);
-			console.log("4. weekStr : ");
-			console.log(weekStr);
-			for(var n=0; n<TotalLession; n++){
-				if( n==0 )   myContent += '<p>' ;
-				myContent +=  myDayList2[n] + " (" + weekStr[n] + ") 、";
-					if ( n == (TotalLession-1) ){
-						myContent = myContent.substr(0, myContent.length - 1);
-					myContent += '。</p>';
-					}else{
-						if( (n%2) == 1 )   myContent += '</p><br><p>';
+				$('#addtID').val(term);
+				$.ajax({
+					type: "get",
+					url: "/api/LessionCategories/" + mylcID,
+					success: function (data) {
+						//alert(data.lcName);
+						$('#addlcID').val(data.lcName);
+						//mylcAbbrev = data.lcAbbrev;
+						//console.log(mylcAbbrev);	//有
 					}
-			}
-			console.log("myContent: " + myContent);
-			console.log("myContent typeof: " + typeof myContent);	// string
+				})
+				myCoach = parseInt( $('#eID').val() );
+				$.ajax({
+					type: "get",
+					url: "/api/Employees/" + myCoach,
+					success: function (data){
+						//alert(data.eEngName);
+						$('#addeID').val(data.eEngName);
+					}
+				})
+				myRoom = parseInt($('#roomID').val());
+				$.ajax({
+					type: "get",
+					url: "/api/Rooms/" + myRoom,
+					success: function (data){
+						$('#addroomID').val(data.roomName);
+					}
+				})
+				var TotalLession = parseInt($('#cTotalLession').val());
 
-			document.getElementById('addContent').innerHTML= myContent ;
-			//$('#addContent').value(myContent);
+				for (var n = 0; n < TotalLession; n++) {
+					var temp = "date" + (n + 1).toString();
+					console.log("3. temp: ");
+					console.log(temp);
+					console.log(typeof temp);
+					myDayList2[n] = document.getElementById(temp).value ;
+					weekStr[n] = getChineseDay2(new Date(myDayList2[n]));
+				}
+				console.log("4. myDayList2 : ");
+				console.log(myDayList2);
+				console.log("4. weekStr : ");
+				console.log(weekStr);
+				for(var n=0; n<TotalLession; n++){
+					if( n==0 )   myContent += '<p>' ;
+					myContent +=  myDayList2[n] + " (" + weekStr[n] + ") 、";
+						if ( n == (TotalLession-1) ){
+							myContent = myContent.substr(0, myContent.length - 1);
+						myContent += '。</p>';
+						}else{
+							if( (n%2) == 1 )   myContent += '</p><br><p>';
+						}
+				}
+				console.log("myContent: " + myContent);
+				console.log("myContent typeof: " + typeof myContent);	// string
 
-			// 打開表單
-			addClassModal.style.display = "block";
+				document.getElementById('addContent').innerHTML= myContent ;
+				//$('#addContent').value(myContent);
+
+				// 打開表單
+				addClassModal.style.display = "block";
+			
+
 		})
 
 
@@ -733,7 +738,7 @@
 			mytID = $('#tID').val();
 			tLession = parseInt($('#cTotalLession').val());
 			console.log("tLession: " + tLession);
-			console.log("mytID: " + mytID);
+			//console.log("mytID: " + mytID);
 
 			for(var n=0; n< tLession; n++){
 				temp = "date" + (n + 1).toString();

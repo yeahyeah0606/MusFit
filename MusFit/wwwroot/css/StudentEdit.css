@@ -976,18 +976,8 @@ textarea.form-control-lg {
     position: relative;
 }
 
-.student-edit-form {
-    position: relative;
-}
-
-    .student-edit-form .student-edit-form-left {
-        position: relative;
-        text-align: center;
-    }
-
-    .student-edit-form .student-edit-form-right {
-        text-align: center;
-    }
+.
+ 
 
 .card-body .photoFile input {
     vertical-align: middle;
@@ -1008,14 +998,19 @@ textarea.form-control-lg {
 
 
 
-.from-group label {
+.card-body label {
     font-size: 18px;
     display: inline-block;
-    width: 100px;
+    width: 105px;
     text-align: justify;
     text-align-last: justify;
     vertical-align: middle;
 }
+
+.form-control::placeholder {
+    opacity: 0.6;
+}
+
 
 .form-control {
     -webkit-appearance: none;
@@ -1033,6 +1028,7 @@ textarea.form-control-lg {
     padding: 0.3rem 0.85rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     width: 100%;
+    margin:0px 20px;
 }
 
 .from-group input :disabled {
@@ -1042,43 +1038,23 @@ textarea.form-control-lg {
     margin-top: 20px;
 }
 
-.card-body .mb-0 {
-    display: flex;
-    text-align: center;
-    margin-top: 50px;
+
+
+#btnCanael{
+    background-color:#cdcfd0;
 }
 
-.card-body .btnSave a {
-    flex: 1;
-    align-items: center;
-    background-color: #666666;
-    color: white;
+#btnReset:hover {
+    opacity: 0.7;
 }
 
-.card-body .btnCancel a {
-    flex: 1;
-    align-items: flex-start;
-    background-color: #d3d3d3;
-    color: black;
+#btnSave:hover {
+    opacity: 0.7;
 }
 
 
-.card-body a {
-    font-size: 20px;
-    border-radius: 4px;
-    border-color: transparent;
-    width: 80%;
-    height: 38px;
-    float: right;
-}
-
-
-a:active {
-    border-color: transparent;
-    background-color: #88888888;
-}
 
 a:hover {
     border-color: transparent;
-    background-color: #88888888;
+    opacity: 0.7;
 }

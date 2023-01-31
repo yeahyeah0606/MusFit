@@ -518,8 +518,8 @@ namespace MusFit.Controllers
 
         public IActionResult EmployeeSearch(string ENumber, string EName, string EAccount)
         {
-            var queryResult = (from e in _context.Employees
-                               where e.ENumber == ENumber || e.EName == EName || e.EAccount == EAccount
+            var queryResult = (from e in _context.Employees 
+                               where (e.ENumber == ENumber || e.EName == EName || e.EAccount == EAccount ) && (e.EResignDate == null || e.EResignDate > DateTime.Now)
                                select new EmployeeViewModel()
                                {
                                    ENumber = e.ENumber,

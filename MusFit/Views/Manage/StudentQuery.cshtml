@@ -6,44 +6,35 @@
 
 <link rel="stylesheet" href="~/css/StudentQuery.css">
 
-<main class="justify-content-center">
-    <div class="d-flex justify-content-center pt-3 pr-3">
-        <h4> 查詢會員</h4>
-    </div>
+<main class="student-form" >
+    <h4> 查詢會員</h4>
+    <div class="student-content col-12" name="student-form" method="get" action="@Url.Action("StudentQuery","Manage")">
+            
+        @{
+            if (message != "")
+            {
+                    <h6 id="error" style="color: #FF88C1"><b>@ViewData["error"]</b></h6>
 
-    <div class="row student-content justify-content-center  ">
-        <div class="student-form" name="student-form" method="get" action="@Url.Action("StudentQuery","Manage")">
-            <div class="from-group mb-4">
-                <label class="text-left" asp-for="SNumber">會員編號</label><br>
-                <input asp-for="SNumber" class="form-control" type="text" name="SNumber" value="">
-            </div>
-            <div class="from-group mb-4">
-                <label asp-for="SName">會員姓名</label><br>
-                <input asp-for="SName" class="form-control" type="text" name="SName" value="">
-            </div>
-            <div class="from-group mb-4">
-                <label asp-for="SAccount">帳號</label><br>
-                <input asp-for="SAccount" class="form-control" type="text" name="SAccount" value="">
+            }
+            else
+            {
+                    <h6 id="success" style="color:rgb(14, 34, 62);"><b>請輸入任一資訊進行查詢</b></h6>
 
-                @{
-                    if (message != "")
-                    {
-                        <p id="error" style="color: #FF88C1"><b>@ViewData["error"]</b></p>
-
-                    }
-                    else
-                    {
-                        <p id="success" style="color:rgb(14, 34, 62);"><b>*請輸入任一資訊進行查詢</b></p>
-
-                    }
-                }
-
-            </div>
-            <div class="from-group mb-4">
-                <button id="query" class="btn btn-info" type="button" onclick="QueryStudent()">查詢</button>
-            </div>
+            }
+        }
+        <div class="content" style="margin-left: 0%;">
+            <label asp-for="SNumber">會員編號</label>
+            <input asp-for="SNumber" type="text" name="SNumber" value="">
+            <label asp-for="SName">會員姓名</label>
+            <input asp-for="SName" type="text" name="SName" value="">
+            <label asp-for="SAccount">會員帳號</label>
+            <input asp-for="SAccount" type="text" name="SAccount" value="">
+            <button id="query" type="button" onclick="QueryStudent()">查詢</button>
         </div>
+        
+     
     </div>
+    
 </main>
 
 @section Scripts{

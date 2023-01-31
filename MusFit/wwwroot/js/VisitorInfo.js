@@ -122,7 +122,7 @@
                 hasNext: currentPage < pageTotal,  // has next page
             }
             displayData(data);
-            pageBtn(page);
+            pageBtn(page, nowPage);
         }
 
         function displayData(data){
@@ -134,9 +134,9 @@
                 if (o.gender == false) { gender = '女'; } else { gender = '男'; }
                 tableRow += `<tr class="result">
                                         <td>${o.name}</td>
-                                        <td>${gender}</td>
-                                        <td>${o.phone}</td>
-                                        <td>${o.mail}</td>
+                                        <td class="gender">${gender}</td>
+                                        <td class="phone">${o.phone}</td>
+                                        <td class="mail">${o.mail}</td>
                                         <td>${o.className}</td>
                                         <td>${date}(${o.weekday.substring(2)})</td>
                                         <td>
@@ -149,25 +149,66 @@
             $('#myTable').append(tableRow);
         }
 
-        function pageBtn(page) {
-            let str = '';
-            const total = page.pageTotal;
+        function pageBtn(page, nowPage) {
+                const totalPage = page.pageTotal;
+                let pagination = document.querySelector('#pageid');
+                var pageHtml = "", prevButton, nextButton;
+                let pageIndex = parseInt(nowPage);
 
-            // if current page > 1 or not
-            if (page.hasPage) { str += `<li class="page-item"><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`; }
-            else { str += `<li class="page-item disabled"><span class="page-link">&laquo;</span></li>`; }
+                if (page.hasPage) {
+                    prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`;
+                } else {
+                    prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#"  data-page="${pageIndex}">&laquo;</a></li>`;
+                }
+                if (page.hasNext) {
+                    nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${Number(page.currentPage) + 1}">&raquo;</a></li>`;
+                } else {
+                    nextButton = `<li class='list-items' id='btnNext'><a class="page-link" href="#" data-page="${pageIndex}" >&raquo;</a></li>`;
+                }
 
-            // pages (current page = data-page)
-            for (let i = 1; i <= total; i++) {
-                if (Number(page.currentPage) === i) { str += `<li class="page-item active"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`; }
-                else { str += `<li class="page-item"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`; }
-            };
+                let firstPage = `<li class='list-items' pagenumber=1><a class="page-link" href="#" data-page="${i}">1</a></li>`;
+                let lastPage = `<li class='list-items' pagenumber=${totalPage}><a class="page-link" href="#" data-page="${totalPage}">${totalPage}</a></li>`;
+                let leftOmitPage = `<li class='list-items' id='btnGoLeft'><a class="page-link" href="#" data-page="${i}">...</a></li>`;
+                let rightOmitPage = `<li class='list-items' id='btnGoRight'><a class="page-link" href="#" data-page="${totalPage}">...</a></li>`;
+                pageHtml = prevButton;
 
-            // if current page < total page or not
-            if (page.hasNext) { str += `<li class="page-item"><a class="page-link" href="#" data-page="${Number(page.currentPage) + 1}">&raquo;</a></li>`; }
-            else { str += `<li class="page-item disabled"><span class="page-link">&raquo;</span></li>`; }
-
-            pageid.innerHTML = str;
+                if (totalPage <= 10) {
+                    // totalPage is less than 10 pages
+                    for (let i = 1; i <= totalPage; i++) {
+                        pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+                    }
+                }
+                else if (pageIndex <= 8) {
+                    // if currentPage is at the start
+                    for (let i = 1; i <= 9; i++) {
+                        pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+                    }
+                    pageHtml += rightOmitPage;
+                    pageHtml += lastPage;
+                }
+                else if (pageIndex > totalPage - 7) {
+                    // if currentPage is at the end
+                    pageHtml += firstPage;
+                    pageHtml += leftOmitPage;
+                    for (let i = totalPage - 8; i <= totalPage; i++) {
+                        pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+                    }
+                }
+                else {
+                    // if currentPage is in middle
+                    pageHtml += firstPage;
+                    pageHtml += leftOmitPage;
+                    for (let i = pageIndex - 3; i <= pageIndex + 3; i++) {
+                        pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+                    }
+                    pageHtml += rightOmitPage;
+                    pageHtml += lastPage;
+                }
+                pageHtml += nextButton;
+                pagination.innerHTML = pageHtml;
+                if (totalPage != 0) {
+                    document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
+                }
         }
 
         function switchPage(e) {
@@ -209,9 +250,9 @@
                 $('.result').remove();
                 if (queryInput != "") {
                     myAJAX(AjaxType.GET, "/api/classorders/guestorders/", findVisitorsRevservation);
-                } else {
+                } else if (queryStartDate != "" && queryEndDate != "") {
                     myAJAX(AjaxType.GET, "/api/classorders/guestorders/datequery/" + queryStartDate + "/" + queryEndDate, findReservationsByQueryDate);
-                }
+                } 
             } 
         })
         function findVisitorsRevservation(data){        
@@ -289,6 +330,7 @@
             else if (!reg.test(phone)) { valPhoneMessage.style.display = "block"; $('#confirmValPhone').focus(); }
             else if (!IsEmail(mail)) { valMailMessage.style.display = "block"; $('#confirmValMail').focus(); }
             else {
+                console.log(GetFormData($('#createForm')));
                 myAJAX(AjaxType.POST, "/api/students/", showMessage("已存檔"),"application/json", JSON.stringify(GetFormData($('#createForm'))));
             }
         })
@@ -352,14 +394,21 @@
              $('#name').val(e.sName);
              $('#phone').val(e.sPhone);
              $('#mail').val(e.sMail);
-             $('#sNumber').val(e.sNumber);
-             $('#sContactor').val(e.sContactor);
-             $('#sContactPhone').val(e.sContactPhone);
-             $('#sPhoto').val(e.sPhoto);
-             $('#sAddress').val(e.sAddress);
-             $('#sAccount').val(e.sAccount);
-             $('#sPassword').val(e.sPassword);
-             $('#sToken').val(e.sToken);
+            $('#sNumber').val(e.sNumber);
+            if (e.sContactor == null) { $('#sContactor').val("null") }
+            else { $('#sContactor').val(e.sContactor); }
+            if (e.sContactPhone == null) { $('#sContactPhone').val("null") }
+            else { $('#sContactPhone').val(e.sContactPhone); }
+            if (e.sPhoto == null) { $('#sPhoto').val("null") }
+            else { $('#sPhoto').val(e.sPhoto); }
+            if (e.sAddress == null) { $('#sAddress').val("null") }
+            else { $('#sAddress').val(e.sAddress); }
+            if (e.sAccount == null) { $('#sAccount').val("null") }
+            else { $('#sAccount').val(e.sAccount); }
+            if (e.sPassword == null) { $('#sPassword').val("null") }
+            else { $('#sPassword').val(e.sPassword); }
+            if (e.sToken == null) { $('#sToken').val("null") }
+            else { $('#sToken').val(e.sToken); }
              if (e.sBirth == null) { $('#sBirth').val("null"); }
              else { $('#sBirth').val(e.sBirth); }
              if (e.sJoinDate == null) { $('#sJoinDate').val("null"); }

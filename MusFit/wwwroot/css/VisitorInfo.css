@@ -2,15 +2,19 @@
     padding: 40px 10px;
 }
 
+
 table {
-    border-spacing: 0;
-    width: 100%;
-    border: 1px solid #625e5e;
+    width: 98%;
+    overflow: hidden;
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+    border-collapse: collapse;
     margin: 0px auto;
 }
 
 .title {
-    background-color: #a5c0e4;
+    background-color: #9092AD;
+    color: #fff;
 }
 
 th, td {
@@ -65,7 +69,7 @@ button:hover {
 }
 
 #btnQuery, #btnShowAll {
-    background-color: #8a8a8d;
+    background-color: #6B7BA7;
 }
 
 .edit {
@@ -183,7 +187,7 @@ form a {
 
 #btnCreateConfirm, #btnEditConfirm, #btnconfirmdelete, #btnCreateReserveConfirm {
     color: #fff;
-    background: #a764b2;
+    background: #6B7BA7;
     padding: 5px 10px;
     margin: 10px 5px;
     border: none;
@@ -215,7 +219,7 @@ form a {
 .btnConfirmMessage {
     width: 20%;
     margin: auto;
-    background-color: #8a8a8d;
+    background-color: #6B7BA7;
 }
 
  .btnConfirmMessage:focus{
@@ -229,13 +233,39 @@ form a {
 
 #validationModal, #valPhoneModal, #valMailModal, #deleteContent, #valVisitorModal,
 #noDataModal, #errorModal, #successModal {
-    width: 30%;
+    width: 400px;
 }
 
 
 .pagination .active a {
-    background-color: #8a8a8d !important;
+    background-color: #666ea2 !important;
     border:none;
+}
+
+.pagination a {
+    color: #fff !important;
+    background-color: #9092AD;
+}
+
+.pagination a:hover{
+    background-color: #b4a9b9 !important;
+}
+
+@media(max-width: 1170px){
+    .mail {display: none; }
+    .searchArea span, input[type=date]{display:none;}
+    #queryinfo{width: 55%; }
+}
+
+@media(max-width: 737px){
+    .gender, .phone {display: none;}
+}
+
+@media(max-width: 547px){
+    .edit{ margin-bottom: 5px;}
+    #queryinfo { width: 45%;}
+    #queryinfo::placeholder{font-size: 13px;}
+    .searchArea button, .createArea button{font-size:14px; padding: 5px 6px;}
 }
 
 

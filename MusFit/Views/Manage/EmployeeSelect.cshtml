@@ -19,7 +19,7 @@
                 <hr class="my-0" />
 
                 <div class="card-body">
-                    <div class="row employee-select-form mx-sm-3 mb-2 form-inline"
+                    <div class="row employee-select-form  form-inline" style="width:90%;"
                           name="employee-select-form" method="get" action="">
                         <div class="col-6 employee-select-form-left">
                             <div class="from-group mb-4">
@@ -47,20 +47,20 @@
                                 @{
                                     if (Model.EGender == false)
                                     {
-                                                <input asp-for="EGender" class="form-control" type="text"
-                                       name="EGender" value="女" disabled>
+                                            <input asp-for="EGender" class="form-control" type="text"
+                                                name="EGender" value="女" disabled>
                                     }
                                     else
                                     {
-                                                <input asp-for="EGender" class="form-control" type="text"
-                                       name="EGender" value="男" disabled>
+                                            <input asp-for="EGender" class="form-control" type="text"
+                                            name="EGender" value="男" disabled>
                                     }
                                 }
                             </div>
-                            <div class="from-group mb-4">
+                            <div class="from-group mb-4" >
                                 <label asp-for="EBirth">生日</label>
                                 <input asp-for="EBirth" class="form-control" type="date"
-                                       name="EBirth" disabled>
+                                       name="EBirth" disabled style="width:245px;">
                             </div>
                             <div class="from-group mb-4">
                                 <label asp-for="EIdentityNumber">身分證</label>
@@ -82,56 +82,60 @@
                                 <input asp-for="EAddress" class="form-control" type="text"
                                        name="EAddress" disabled>
                             </div>
-                            <div class="from-group ">
-                            </div>
+                            <div class="mb-5 "></div>
                         </div>
 
-                        <div class="col-6 employee-select-form-right">
+                        <div class="col-6 employee-select-form-right" style="text-align:left;">
                             <div class="from-group mb-4">
                                 <label asp-for="EIsCoach">職位</label>
                                 @{
                                     if (Model.EIsCoach == true)
                                     {
-                                                <input asp-for="EIsCoach" class="form-control" type="text"
+                                                                <input asp-for="EIsCoach" class="form-control" type="text"
                                        name="EIsCoach" value="教練" disabled>
                                     }
                                     else
                                     {
-                                                <input asp-for="EIsCoach" class="form-control" type="text"
+                                                                <input asp-for="EIsCoach" class="form-control" type="text"
                                        name="EIsCoach" value="行政人員" disabled>
                                     }
                                 }
 
                             </div>
-                            <div class="from-group mb-4">
-                                <label>課程項目</label>
-                                @using (Html.BeginForm("EmployeeSelect", "Manage"))
-                                {
-
-                                    foreach (var item in Model.AvailableLession)
+                            <div class="row from-group mb-4" style="text-align:left;margin:0px;">
+                                <div class="col-6"> 
+                                    <label>課程項目</label>
+                                </div>
+                                <div class="col-6">
+                                    @using (Html.BeginForm("EmployeeSelect", "Manage"))
                                     {
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" name="SelectedLession" value="@item.Value" disabled
-                                                       @if(Model.SelectedLession.Contains(item.Value))
-                                                       {
-                                                            <text> checked </text>
-                                                       }
-                                                 /> @item.Text
-                                                    </label>
-                                                </div>
+
+                                        foreach (var item in Model.AvailableLession)
+                                        {
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="SelectedLession" value="@item.Value" disabled
+                                                   @if(Model.SelectedLession.Contains(item.Value))
+                                                   {
+                                            <text> checked </text>
+                                            }
+                                            /> @item.Text
+                                                </label>
+                                            </div>
+                                        }
                                     }
-                                }
+                                </div>
+                                
                             </div>
                             <div class="from-group mb-4">
                                 <label asp-for="EEnrollDate">入職日期</label>
                                 <input asp-for="EEnrollDate" class="form-control" type="date"
-                                       name="EEnrollDate" disabled>
+                                       name="EEnrollDate" disabled style="width:245px;">
                             </div>
                             <div class="from-group mb-4">
                                 <label asp-for="EResignDate">離職日期</label>
                                 <input asp-for="EResignDate" class="form-control" type="date"
-                                       name="EResignDate" disabled>
+                                       name="EResignDate" disabled style="width:245px;">
                             </div>
                             <div class="from-group mb-4">
                                 <label asp-for="EContactor">緊急聯絡人</label>
@@ -143,17 +147,17 @@
                                 <input asp-for="EContactorPhone" class="form-control" type="tel"
                                        name="EContactorPhone" disabled>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group"  >
                                 <label asp-for="EExplain" class="label-style">風格描述</label>
                                 <textarea asp-for="EExplain" class="form-control" rows="5" cols="20" disabled>
                                     </textarea>
                             </div>
                             <div class="row from-group mb-4 btnDiv">
                                 <div class="col-6">
-                                    <a id="btnEdit" type="button" name="edit" onclick="EditEmployee()">編輯</a>
+                                    <a id="btnEdit" type="button" name="edit" class="btn btn-dark" onclick="EditEmployee()">編輯</a>
                                 </div>
                                 <div class="col-6">
-                                    <a href="@Url.Action("EmployeeQuery","Manage")" id="btnReturn" type="button" name="return">返回</a>
+                                    <a href="@Url.Action("EmployeeQuery","Manage")" id="btnReturn" class="btn btn-cancel" type="button" name="return">返回</a>
                                 </div>
                             </div>
                         </div>

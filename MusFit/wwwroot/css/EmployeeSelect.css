@@ -441,6 +441,7 @@ textarea.form-control-lg {
 
 
 .card-body label {
+    margin-right: 20px;
     font-size: 18px;
     display: inline-block;
     width: 100px;
@@ -449,9 +450,7 @@ textarea.form-control-lg {
     vertical-align: middle;
 }
 
-.card-body .label-style {
-    margin-left: 10px;
-}
+
 
 .form-control {
     -webkit-appearance: none;
@@ -471,24 +470,22 @@ textarea.form-control-lg {
     width: 100%;
 }
 
-.card-body button {
-    background-color: #666666;
-    color: white;
-    font-size: 20px;
-    border-radius: 4px;
-    border-color: transparent;
-    height: 38px;
-    float: right;
-    margin-right: 30px;
-    margin-top: 20px;
+
+#btnEdit{
+    color:white;
 }
 
-button:active {
-    border-color: transparent;
-    background-color: #88888888;
+#btnReturn {
+    background-color: #cdcfd0;
 }
 
-button:hover {
+
+
+#btnReturn:hover {
     border-color: transparent;
-    background-color: #88888888;
+    opacity: 0.7;
+}
+
+#btnEdit:hover {
+    opacity: 0.7;
 }

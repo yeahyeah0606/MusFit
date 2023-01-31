@@ -27,11 +27,11 @@ body::-webkit-scrollbar {
 
 body::-webkit-scrollbar-thumb {
     border-radius: 100px;
-    background-color: #9a9797;
+    background-color: #9092AD;
 }
 
- body::-webkit-scrollbar-track {
-    background-color: #ccc6c6;
+body::-webkit-scrollbar-track {
+    background-color: #BCBDCD;
 }
 
 
@@ -39,7 +39,7 @@ body::-webkit-scrollbar-thumb {
     height: 15%;
     width: 80%;
     position: fixed;
-    background-color: #bcbbbb;
+    background-color: #BCBDCD;
     box-shadow: 5px 5px 5px rgba(0,0,0,0.15);
     padding: 18px 30px;
     margin-left: 20%;
@@ -57,7 +57,7 @@ body::-webkit-scrollbar-thumb {
 
 /*side-bar*/
 .side-bar {
-    background-color: #8a8a8d;
+    background-color: #9092AD;
     backdrop-filter: blur(15);
     width: 20%;
     height: 100vh;
@@ -93,8 +93,8 @@ body::-webkit-scrollbar-thumb {
 }
 
 .side-bar .menu .item a:hover {
-        background-color: #626161;
-        transition: 0.3s ease;
+    background-color: #6B7BA7;
+    transition: 0.3s ease;
 }
 
 
@@ -105,13 +105,19 @@ body::-webkit-scrollbar-thumb {
     transition: 0.3s ease;
 }
 
+
 .side-bar .menu .item .sub-menu {
-        background-color: #a4a1a1;
-        display: none;
+    background-color: #6B7BA7;
+    display: none;
+}
+
+.side-bar .menu .item .sub-menu a:hover{
+    background-color: #919ac9;
+    opacity: 0.9;
 }
 
 .active {
-    background-color: #626161;
+    background-color: #66708D;
 }
 
 .side-bar .menu .item .sub-menu a {
@@ -164,7 +170,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 #logout {
-    background-color: #626161;
+    background-color: #6B7BA7;
     color: #fff;
     padding: 5px 10px;
     border: none;
@@ -175,13 +181,13 @@ body::-webkit-scrollbar-thumb {
 
 hr{
     margin: 0px 10px;
-    border-color: #4a4949;
+    border-color: #66719f;
     border-radius: 2%;
 }
 
 #logout:hover {
-    background-color: #b3b1b1;
-    color: #514f4f;
+    background-color: #5d6d8e;
+    color: #8d89cc;
     opacity: 0.9;
 }
 

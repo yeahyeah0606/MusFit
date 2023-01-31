@@ -42,7 +42,6 @@
     background-color: #fff;
     border-bottom: 0 solid transparent;
     margin-bottom: 0;
-    padding: 1rem 1.25rem
 }
 
     .card-header:first-child {
@@ -52,7 +51,6 @@
 .card-footer {
     background-color: #fff;
     border-top: 0 solid transparent;
-    padding: 1rem 1.25rem
 }
 
     .card-footer:last-child {
@@ -62,8 +60,6 @@
 .card-header-tabs {
     border-bottom: 0;
     margin-bottom: -1rem;
-    margin-left: -.625rem;
-    margin-right: -.625rem
 }
 
     .card-header-tabs .nav-link.active {
@@ -71,10 +67,7 @@
         border-bottom-color: #fff
     }
 
-.card-header-pills {
-    margin-left: -.625rem;
-    margin-right: -.625rem
-}
+
 
 .card-img-overlay {
     border-radius: .25rem;
@@ -83,7 +76,8 @@
     padding: 1rem;
     position: absolute;
     right: 0;
-    top: 0
+    top: 0;
+    
 }
 
 .card-img, .card-img-bottom, .card-img-top {
@@ -1001,18 +995,9 @@ textarea.form-control-lg {
     position: relative;
 }
 
-.student-add-form {
-    position: relative;
-}
 
-    .student-add-form .student-add-form-left {
-        position: relative;
-        text-align: center;
-    }
 
-    .student-add-form .student-add-form-right {
-        text-align: center;
-    }
+    
 
 .card-body .photoFile input {
     vertical-align: middle;
@@ -1026,23 +1011,18 @@ textarea.form-control-lg {
 .card-body img {
     height: 200px;
     width: 200px;
-    border: 2px solid #000;
 }
 
 .form-group .unloadFile {
     border-radius: 50px;
 }
 
-/*.studentGender {
-    display: flex;
-}*/
-
-/*.genderLabel, .jobLabel, .typeLabel {
-    margin-left: 4px;
-    margin-right: 6px;
-}*/
+.form-control::placeholder {
+    opacity:0.7;
+}
 
 .from-group label {
+    margin-right:20px;
     font-size: 18px;
     display: inline-block;
     width: 100px;
@@ -1101,7 +1081,6 @@ textarea.form-control-lg {
     font-size: 20px;
     border-radius: 4px;
     border-color: transparent;
-    width: 50%;
     height: 38px;
     justify-content: center;
     background-color: #666666;
@@ -1109,9 +1088,11 @@ textarea.form-control-lg {
 }
 
 
+
 button:active {
     border-color: transparent;
     background-color: #88888888;
+    
 }
 
 button:hover {

@@ -6,42 +6,35 @@
 
 <link rel="stylesheet" href="~/css/EmployeeQuery.css">
 
-<main role="main">
-    <div class="d-flex justify-content-center pt-3 pr-3">
-        <h4>查詢員工</h4>
-    </div>
+<main class="employee-form" >
+    <h4>查詢員工</h4>
+    <div class="employee-content col-12" method="get" action="@Url.Action("EmployeeQuery","Manage")">
+        @{
+            if (message != "")
+            {
+                    <h6 id="error" style="color: #FF88C1"><b>@ViewData["error"]</b></h6>
 
-    <div class="row employee-content justify-content-center">
-        <div class="employee-form" name="employee-form" method="get" action="@Url.Action("EmployeeQuery","Manage")">
-            <div class="from-group mb-4">
-                <label asp-for="ENumber">員工編號</label><br>
-                <input asp-for="ENumber" class="form-control" type="text" name="ENumber" value="">
-            </div>
-            <div class="from-group mb-4">
-                <label asp-for="EName">員工姓名</label><br>
-                <input asp-for="EName" class="form-control" type="text" name="EName" value="">
-            </div>
-            <div class="from-group mb-4">
-                <label asp-for="EAccount">帳號</label><br>
-                <input asp-for="EAccount" class="form-control" type="text" name="EAccount" value="">
-                @{
-                    if (message != "")
-                    {
-                        <p id="error" style="color: #FF88C1"><b>@ViewData["error"]</b></p>
+            }
+            else
+            {
+                    <h6 id="success" style="color:rgb(14, 34, 62);"><b>請輸入任一資訊進行查詢</b></h6>
 
-                    }
-                    else
-                    {
-                        <p id="success" style="color:rgb(14, 34, 62);"><b>*請輸入任一資訊進行查詢</b></p>
+            }
+        }
 
-                    }
-                }
-            </div>
-            <div class="from-group mb-4">
-                <button id="query" class="btn btn-info" type="button" onclick="QueryEmployee()">查詢</button>
-            </div>
+        <div class="content" style="margin-left: 0%;">
+            <label asp-for="ENumber">員工編號</label>
+            <input asp-for="ENumber" type="text" name="ENumber" value="">
+            <label asp-for="EName">員工姓名</label>
+            <input asp-for="EName" type="text" name="EName" value="">
+            <label asp-for="EAccount">員工帳號</label>
+            <input asp-for="EAccount" type="text" name="EAccount" value="">
+            <button id="query" type="button" onclick="QueryEmployee()">查詢</button>
         </div>
+        
+
     </div>
+ 
 </main>
 
 @section Scripts{

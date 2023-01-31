@@ -30,7 +30,7 @@
 							@{
 								if (message != "")
                                 {
-										<span id="error" style="color: red"><b>@ViewData["success"]</b></span>
+											<span id="error" style="color: red"><b>@ViewData["success"]</b></span>
                                 }
 							}
 							<div class="form-group mb-4">
@@ -69,12 +69,12 @@
 							</div>
 							<div class="form-group mb-4">
 								<label asp-for="EBirth">生日</label>
-								<input asp-for="EBirth" class="form-control" type="date"><br>
+								<input asp-for="EBirth" class="form-control" type="date" style="width:247px;"><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EBirth"
 									  data-valmsg-replace="true" asp-validation-for="EBirth"></span>
 							</div>
-							<div class="from-group mb-4">
-                                <label asp-for="EIdentityNumber">身分證</label>
+							<div class="from-group mb-4" style="margin-left:-100px;">
+                                <label asp-for="EIdentityNumber" >身分證</label>
 								<input asp-for="EIdentityNumber" class="form-control" type="text"
 									   name="EIdentityNumber"><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EIdentityNumber"
@@ -136,13 +136,13 @@
                             </div>
 							<div class="form-group mb-4">
 								<label asp-for="EEnrollDate">入職日期</label>
-								<input asp-for="EEnrollDate" class="form-control" type="date"><br>
+								<input asp-for="EEnrollDate" class="form-control" type="date" style="width:247px;"><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EEnrollDate"
 									  data-valmsg-replace="true" asp-validation-for="EEnrollDate"></span>
 							</div>
 							<div class="form-group mb-4">
 								<label asp-for="EResignDate">離職日期</label>
-								<input asp-for="EResignDate" class="form-control" type="date"><br>
+								<input asp-for="EResignDate" class="form-control" type="date" style="width:247px;"><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EResignDate"
 									  data-valmsg-replace="true" asp-validation-for="EResignDate"></span>
 							</div>
@@ -158,7 +158,7 @@
 								<span class="field-validation-valid text-danger" data-valmsg-for="EContactorPhone"
 									  data-valmsg-replace="true" asp-validation-for="EContactorPhone"></span>
 							</div>
-							<div class="form-group mb-4">
+							<div class="form-group mb-4" style="margin-left:-15px;">
 								<label asp-for="EExplain" class="label-style">風格描述</label>
 								<textarea asp-for="EExplain" class="form-control" rows="5" cols="22"></textarea><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EExplain"

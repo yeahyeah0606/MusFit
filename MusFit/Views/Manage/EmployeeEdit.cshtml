@@ -23,9 +23,9 @@
 				<hr class="my-0" />
 
 				<div class="card-body">
-					<div class="row employee-edit-form mx-sm-3 mb-2 form-inline"
+					<div class="row employee-edit-form form-inline" style="width:90%;"
                           name="employee-edit-form" method="get" action="">
-						<div class="col-6 employee-edit-form-left">
+						<div class="col-6 employee-edit-form-left" style="text-align:left;">
 							<div class="form-group mb-4">
 								<label asp-for="ENumber">員工編號</label>
 								<input asp-for="ENumber" class="form-control w-65" type="text" readonly>
@@ -51,22 +51,22 @@
 							<div class="form-group mb-4">
 								<label asp-for="EGender">性別</label>
 								<label class="form-check-label" id="EGender">
-									<input asp-for="EGender" class="form-check-input" type="radio" value="false">女
+									<input asp-for="EGender" class="form-check-input" style="width:50px;" type="radio" value="false">女
 								</label>
 
 								<label class="form-check-label" id="EGender">
-									<input asp-for="EGender" class="form-check-input" type="radio" value="true">男
+									<input asp-for="EGender" class="form-check-input" style="width:50px;margin-left:10px;" type="radio" value="true">男
 								</label><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EGender"
 									  data-valmsg-replace="true" asp-validation-for="EGender"></span>
 							</div>
 							<div class="form-group mb-4">
 								<label asp-for="EBirth">生日</label>
-								<input asp-for="EBirth" class="form-control" type="date"><br>
+								<input asp-for="EBirth" class="form-control" style="width:247px;" type="date"><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EBirth"
 									  data-valmsg-replace="true" asp-validation-for="EBirth"></span>
 							</div>
-							<div class="from-group mb-4">
+							<div class="from-group mb-4" >
                                 <label asp-for="EIdentityNumber">身分證</label>
 								<input asp-for="EIdentityNumber" class="form-control" type="text"
 									   name="EIdentityNumber"><br>
@@ -91,8 +91,7 @@
 								<span class="field-validation-valid text-danger" data-valmsg-for="EAddress"
 									  data-valmsg-replace="true" asp-validation-for="EAddress"></span>
 							</div>
-							<div class="form-group ">
-							</div>
+							<div class="mb-5"></div>
 						</div>
 
 						<div class="col-6 employee-edit-form-right">
@@ -108,33 +107,39 @@
 								<span class="field-validation-valid text-danger" data-valmsg-for="EIsCoach"
 									  data-valmsg-replace="true" asp-validation-for="EIsCoach"></span>
 							</div>
-							<div class="form-group mb-4">
-								@using (Html.BeginForm("EEdit", "Manage"))
-                                {
-                                    foreach (var item in Model.AvailableLession)
-                                    {
-                                        <div class="checkbox" asp-for="AvailableLession">
-                                            <label>
-                                                <input type="checkbox" name="SelectedLession" value="@item.Value"
-                                                       @if(Model.SelectedLession.Contains(item.Value))
-                                                       {
-                                                            <text> checked </text>
-                                                       }
-                                                 /> @item.Text
-                                            </label>
-                                        </div>
-                                    }
-                                }
+							<div class="row form-group mb-4" style="text-align:left;margin:0px;">
+								<div class="col-6">
+									<label>課程項目</label>
+								</div>
+								<div class="col-6">
+
+									@using (Html.BeginForm("EEdit", "Manage"))
+									{
+										foreach (var item in Model.AvailableLession)
+										{
+											<div class="checkbox" asp-for="AvailableLession">
+												<label>
+													<input type="checkbox" name="SelectedLession" value="@item.Value"
+														   @if(Model.SelectedLession.Contains(item.Value))
+														   {
+																<text> checked </text>
+														   }
+													 /> @item.Text
+												</label>
+											</div>
+										}
+									}
+								</div>
                             </div>
 							<div class="form-group mb-4">
 								<label asp-for="EEnrollDate">入職日期</label>
-								<input asp-for="EEnrollDate" class="form-control" type="date"><br>
+								<input asp-for="EEnrollDate" class="form-control" style="width:247px;"  type="date"><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EEnrollDate"
 									  data-valmsg-replace="true" asp-validation-for="EEnrollDate"></span>
 							</div>
 							<div class="form-group mb-4">
 								<label asp-for="EResignDate">離職日期</label>
-								<input asp-for="EResignDate" class="form-control" type="date"><br>
+								<input asp-for="EResignDate" class="form-control" style="width:247px;"  type="date"><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EResignDate"
 									  data-valmsg-replace="true" asp-validation-for="EResignDate"></span>
 							</div>
@@ -151,35 +156,33 @@
 									  data-valmsg-replace="true" asp-validation-for="EContactorPhone"></span>
 							</div>
 							<div class="form-group mb-4">
-								<label asp-for="EExplain" class="label-style">風格描述</label>
+								<label asp-for="EExplain" class="label-style" style="margin-left:0px;">風格描述</label>
 								<textarea asp-for="EExplain" class="form-control" rows="5" cols="22"></textarea><br>
 								<span class="field-validation-valid text-danger" data-valmsg-for="EExplain"
 									  data-valmsg-replace="true" asp-validation-for="EExplain"></span>
 							</div>
-							<div class="row form-group mb-0">
+						</div>
+					</div>
+					<div class="row allButton" style="width:90%;">
+						<div class="col-8">
+                            <div class="form-group form-inline mt-4">
+                                <label asp-for="EPassword">密碼重設</label>
+                                <input asp-for="EPassword" class="form-control" type="text" value="" readonly>
+								<button id="btnReset" type="button" name="save" class="btn btn-dark ml-2"  onclick="ResetPassword()">密碼重設</button>
+                            </div>
+
+
+						</div>
+						<div class="col-4">
+							<div class="row form-group ">
 								<div class="col-6 btn-edit">
-									<button id="btnSave" type="submit" name="save">儲存</button>
+									<button id="btnSave" type="submit" name="save" class="btn btn-dark">儲存</button>
 								</div>
 								<div class="col-6 btn-cancel">
-									<a href="@Url.Action("EmployeeQuery","Manage")" id="btnCanael" type="button" name="cancel">取消</a>
+									<a href="@Url.Action("EmployeeQuery","Manage")" id="btnCancel" type="button" name="cancel" class="btn btn-cancel">取消</a>
 								</div>
 							</div>
-							
-						</div>
-						<hr class="my-0" />
-						<div>
-							<div>
-								<h5>密碼重設</h5>
-							</div>
-							<div class="form-group mb-4">
-								<label asp-for="EPassword">密碼</label>
-								<input asp-for="EPassword" class="form-control w-25" type="text" value="" readonly>
-							</div>
-							<div class="form-group mb-0">
-								<div class=" btn-edit">
-									<button id="btnSave" type="button" name="save" class="w-100" onclick="ResetPassword()">密碼重設</button>
-								</div>
-							</div>
+
 						</div>
 					</div>
 				</div>

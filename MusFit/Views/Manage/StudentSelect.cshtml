@@ -22,7 +22,7 @@
                 <hr class="my-0" />
 
                 <div class="card-body">
-                    <div class="row student-select-form mx-sm-3 mb-2 form-inline"
+                    <div class="row student-select-form form-inline" style="width:90%;"
                          name="student-select-form" method="get" action="">
                         <div class="col-6 student-select-form-left">
                             <div class="from-group mb-4">
@@ -40,19 +40,19 @@
                                 @{
                                     if (Model.SGender == false)
                                     {
-                                        <input asp-for="SGender" class="form-control" type="text"
+                                                    <input asp-for="SGender" class="form-control" type="text"
                                        name="SGender" value="女" disabled>
                                     }
                                     else
                                     {
-                                        <input asp-for="SGender" class="form-control" type="text"
+                                                    <input asp-for="SGender" class="form-control" type="text"
                                        name="SGender" value="男" disabled>
                                     }
                                 }
                             </div>
                             <div class="from-group mb-4">
                                 <label asp-for="SBirth">生日</label>
-                                <input asp-for="SBirth" class="form-control" type="date"
+                                <input asp-for="SBirth" class="form-control" style="width:250px;" type="date"
                                        name="SBirth" disabled>
                             </div>
                             <div class="from-group mb-4">
@@ -70,7 +70,7 @@
                         <div class="col-6 student-select-form-right">
                             <div class="from-group mb-4">
                                 <label asp-for="SJoinDate">入會日期</label>
-                                <input asp-for="SJoinDate" class="form-control w-50" type="date"
+                                <input asp-for="SJoinDate" class="form-control" style="width:250px;" type="date"
                                        name="SJoinDate" disabled>
                             </div>
                             <div class="from-group mb-4">

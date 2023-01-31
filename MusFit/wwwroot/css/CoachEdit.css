@@ -1062,21 +1062,16 @@ textarea.form-control-lg {
     margin-top: 20px;
 }
 
-
-.card-body .btn-edit button {
-    flex: 1;
-    align-items: center;
+.form-control[readonly]:focus {
+    border-color: white;
+    box-shadow: 0 0px 0px, 0 0 0px transparent;
 }
 
 
-.card-body button {
-    font-size: 20px;
-    border-radius: 4px;
-    border-color: transparent;
-    width: 80%;
-    height: 38px;
-    float: right;
-}
+
+
+
+
 
 
 button:active {

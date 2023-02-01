@@ -41,50 +41,50 @@
                 @{                                     
                      if (userName == "Coach"){
                             <div class="item">
-                                <a class="sub-btn" href="#"><i class='fas fa-user-cog'></i>個人管理<i class="fas fa-angle-right dropdown"></i></a>
+                                <a class="sub-btn" href="#"><i class='fas fa-user-cog icon'></i>個人管理<i class="fas fa-angle-right dropdown"></i></a>
                                 <div class="sub-menu">
                                     <a href="/Manage/CoachEdit/@TempData.Peek("eId")" class="sub-item">編輯個人資料</a>
                                     <a href="/Manage/CoachPasswordEdit/@TempData.Peek("eId")" class="sub-item">編輯個人密碼</a>
                                 </div>
                             </div>
-                            <div class="item"><a href="/Manage/QueryRoomManage"><i class="fa-solid fa-landmark"></i>教室管理</a></div>
-                            <div class="item"><a href="/Manage/QueryClassRecord"><i class='far fa-edit'></i>課程紀錄查詢</a></div>
-                            <div class="item"><a href="/Manage/InBodyRecordQuery"><i class='fas fa-dumbbell'></i>InBody紀錄查詢</a></div>
-                            <div class="item"><a  href="/Manage/CoachSchedule/@TempData.Peek("eId")"><i class="fa-regular fa-calendar-days"></i>我的班表</a></div>
+                             <div class="item"><a href="/Manage/QueryRoomManage"><i class="fa-solid fa-landmark icon"></i>教室管理</a></div>
+                             <div class="item"><a href="/Manage/QueryClassRecord"><i class='far fa-edit icon'></i>課程紀錄查詢</a></div>
+                             <div class="item"><a href="/Manage/InBodyRecordQuery"><i class='fas fa-dumbbell icon'></i>InBody紀錄查詢</a></div>
+                             <div class="item"><a href="/Manage/CoachSchedule/@TempData.Peek("eId")"><i class="fa-regular fa-calendar-days icon"></i>我的班表</a></div>
                             <p id="copyright_coach">Copyright © 2023 MusFit. All rights reserved.</p>
                     }
                     else{
                             <div class="item">
-                                <a class="sub-btn" href="#"><i class='fas fa-user-cog'></i>會員管理<i class="fas fa-angle-right dropdown"></i></a>
+                            <a class="sub-btn" href="#"><i class='fas fa-user-cog icon'></i>會員管理<i class="fas fa-angle-right dropdown"></i></a>
                                 <div class="sub-menu">
                                     <a href="/Manage/StudentQuery" class="sub-item">查詢會員</a>
                                     <a href="/Manage/StudentAdd" class="sub-item">新增會員</a>
                                 </div>
                             </div>
                             <div class="item">
-                                <a class="sub-btn" href="#"><i class="fa-sharp fa-solid fa-book"></i>課程管理<i class="fas fa-angle-right dropdown"></i></a>
+                            <a class="sub-btn" href="#"><i class="fa-sharp fa-solid fa-book icon"></i>課程管理<i class="fas fa-angle-right dropdown"></i></a>
                                 <div class="sub-menu">
                                 <a href="/Manage/SignupClass1" class="sub-item">查詢(報名)課程</a>
                                 <a href="/Manage/AddClassManage1" class="sub-item">新增課程</a>
                                 <a href="/Manage/ShopMemberList" class="sub-item">購課會員清單</a>
                                 </div>         
                              </div>
-                            <div class="item"><a href="/Manage/QueryRoomManage"><i class="fa-solid fa-landmark"></i>教室管理</a> </div>
-                            <div class="item"><a href="/Manage/QueryClassRecord"><i class='far fa-edit'></i>課程紀錄查詢</a> </div>
-                            <div class="item"><a href="/Manage/InBodyRecordQuery"><i class='fas fa-dumbbell'></i>InBody紀錄查詢</a></div>
+                            <div class="item"><a href="/Manage/QueryRoomManage"><i class="fa-solid fa-landmark icon"></i>教室管理</a> </div>
+                            <div class="item"><a href="/Manage/QueryClassRecord"><i class='far fa-edit icon'></i>課程紀錄查詢</a> </div>
+                            <div class="item"><a href="/Manage/InBodyRecordQuery"><i class='fas fa-dumbbell icon'></i>InBody紀錄查詢</a></div>
                             <div class="item">
-                                <a class="sub-btn" href="#"><i class='fas fa-id-badge'></i>員工管理<i class="fas fa-angle-right dropdown"></i></a>
+                            <a class="sub-btn" href="#"><i class='fas fa-id-badge icon'></i>員工管理<i class="fas fa-angle-right dropdown"></i></a>
                                 <div class="sub-menu">
                                     <a href="/Manage/EmployeeQuery" class="sub-item">查詢員工</a>
                                     <a href="/Manage/EmployeeAdd" class="sub-item">新增員工</a>
                                     <a href="/Manage/EditPassword" class="sub-item">修改密碼</a>
                                 </div>                    
                             </div>
-                            <div class="item"><a href="/Manage/CoachScheduleQuery"><i class="fa-regular fa-calendar-days"></i>員工班表</a> </div>
-                            <div class="item"><a href="/Manage/VisitorInfo"><i class='far fa-address-card'></i>訪客資料</a> </div>
-                            <div class="item"><a href="/Manage/News"><i class='far fa-bell'></i>最新消息</a> </div>
-                            <div class="item"><a href="#"><i class="fa-solid fa-heart"></i>課程介紹</a> </div>
-                            <div class="item"><a href="/Manage/KnowledgeColumn"><i class="fa-solid fa-lightbulb"></i>知識專欄</a></div>
+                            <div class="item"><a href="/Manage/CoachScheduleQuery"><i class="fa-regular fa-calendar-days icon"></i>員工班表</a> </div>
+                            <div class="item"><a href="/Manage/VisitorInfo"><i class='far fa-address-card icon'></i>訪客資料</a> </div>
+                            <div class="item"><a href="/Manage/News"><i class='far fa-bell icon'></i>最新消息</a> </div>
+                            <div class="item"><a href="/Manage/ClassIntroduce"><i class="fa-solid fa-heart icon"></i>課程介紹</a> </div>
+                            <div class="item"><a href="/Manage/KnowledgeColumn"><i class="fa-solid fa-lightbulb icon"></i>知識專欄</a></div>
                             <p id="copyright">Copyright © 2023 MusFit. All rights reserved.</p>
                     }
                 }

@@ -4,11 +4,9 @@
     text-align: center;
 }
 
-
 h3 {
     color: #434040;
 }
-
 
 form {
     width: 100%;
@@ -25,7 +23,6 @@ form {
     margin: 40px auto;
     padding: 0px 20px;
 }
-
 
 .level-row {
     text-align: left;
@@ -167,6 +164,7 @@ input[type=checkbox] {
     font-size: 16px;
     padding: 5px 10px;
     height: 35px;
+    width: 70px;
     transition: all 0.5s;
     cursor: pointer;
     margin-left: 20px;
@@ -182,6 +180,7 @@ input[type=checkbox] {
     font-size: 16px;
     padding: 5px 10px;
     height: 35px;
+    width: 70px;
     transition: all 0.5s;
     cursor: pointer;
     margin-left: 20px;
@@ -197,6 +196,7 @@ input[type=checkbox] {
     font-size: 16px;
     padding: 5px 10px;
     height: 35px;
+    width:70px;
     transition: all 0.5s;
     cursor: pointer;
     margin-left: 20px;
@@ -220,7 +220,7 @@ input[type=checkbox] {
     justify-content: center;
 }
 
-button {
+/*button {
     color: #fff;
     background-color: #c0bcbc;
     outline: none;
@@ -228,11 +228,11 @@ button {
     padding: 5px 10px;
     margin-left: 20px;
     border-radius: 3px;
-}
+}*/
 
-button:hover {
+/*button:hover {
     opacity: 0.9;
-}
+}*/
 
 input[type="submit"] {
     color: #fff;
@@ -243,9 +243,9 @@ input[type="submit"] {
     border-radius: 3px;
 }
 
-    input[type="submit"]:hover {
-        opacity: 0.9;
-    }
+input[type="submit"]:hover {
+    opacity: 0.9;
+}
 
 .form-control {
     -webkit-appearance: none;
@@ -264,12 +264,13 @@ input[type="submit"] {
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     width: 100%;
 }
+
 /*懸浮視窗  visitor information*/
 /*-----------------------------------------------------------------*/
 .modal {
     display: none;
     position: fixed;
-    z-index: 3;
+    z-index: 6;
     padding-top: 100px;
     left: 0;
     top: 0;
@@ -296,7 +297,6 @@ input[type="submit"] {
     margin: 20px auto;
     padding: 0px 20px;
 }
-
 
 input[type=text] {
     border: solid 1px #a4a1a1;
@@ -328,22 +328,6 @@ form a {
     bottom: 35px;
 }
 
-#btnCreateConfirm, #btnSignupConfirm, #btnconfirmdelete, #btnCreateReserveConfirm {
-    color: #fff;
-    background: #a764b2;
-    padding: 5px 10px;
-    margin: 10px 5px;
-    border: none;
-    border-radius: 3px;
-    outline: none;
-}
-
-
-    #btnconfirm:hover, #btnconfirmdelete:hover, #btncanceldelete, #btnCreateReserveConfirm:hover,
-    #btnCreateConfirm:hover {
-        opacity: 0.9;
-    }
-
 .close {
     color: #aaaaaa;
     position: absolute;
@@ -353,20 +337,30 @@ form a {
     font-weight: bold;
 }
 
-    .close:hover, .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-    }
+.close:hover, .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 #noDataModal, #errorModal, #successModal {
     width: 30%;
 }
 
 .btnConfirmMessage {
-    width: 20%;
-    margin: auto;
+    display: inline-block;
+    border-radius: 4px;
     background-color: #8a8a8d;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px 10px;
+    height: 35px;
+    width: 70px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin-left: 40%;
 }
 
 .test_box {

@@ -67,7 +67,6 @@
 			<input type="hidden" id="editeID" name="editeID" />
 			<input type="hidden" id="hidden-oStatus" name="hidden-oStatus" />
 
-
 			<div class="row">
 				<div class="column">
 					<label for="editNumber">編&emsp;號</label>
@@ -118,40 +117,60 @@
 
 @*show error message *@
 <div id="errorMessage" class="modal">
-
 	<div id="errorModal" class="modal-content">
 		<span class="close" onclick="closeModel()">&times;</span>
 		<p>請輸入查詢條件!!</p>
 		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
-
 </div>
 
 @*success delete operation*@
 <div id="successMessage" class="modal">
-
 	<div id="successModal" class="modal-content">
 		<span class="close" onclick="closeSuccessModel()">&times;</span>
 		<p>已刪除</p>
 		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
 	</div>
-
 </div>
 
 @*success update operation*@
 <div id="updateMessage" class="modal">
-
 	<div id="successModal" class="modal-content">
 		<span class="close" onclick="closeSuccessModel()">&times;</span>
 		<p>已更新付款狀態</p>
 		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
 	</div>
+</div>
 
+@*query No Data*@
+<div id="showNoDataModal" class="modal">
+		<div id="errorModal" class="modal-content">
+			<span class="close" onclick="closeModel()">&times;</span>
+			<p>沒有查到相關資料</p>
+			<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
+@*had refunded *@
+<div id="hadRefundModal" class="modal">
+	<div id="errorModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>退款後不可更動，只能重新報名！</p>
+		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
+
+@*end of course*@
+<div id="endofClassModal" class="modal">
+	<div id="errorModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>該課程已經結束，不可更動</p>
+		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
 </div>
 
 @*刪除 information*@
 <div id="deleteModal" class="modal">
-
 	<div class="modal-content">
 		<span class="close" id="leaveCreate">&times;</span>
 		<form id="deleteForm">
@@ -165,7 +184,6 @@
 			<button class="cancel" id="cancelCreate">取消</button>
 		</form>
 	</div>
-
 </div>
 
 @section Scripts{
@@ -177,7 +195,10 @@
 			document.getElementById("deleteForm").reset();
 		}
 
+
+		// 取消
 		document.getElementById('cancelCreate').addEventListener('click', closeModel);
+		document.getElementById('cancelCreate').addEventListener('click', FormClear);
 		document.getElementById('leaveCreate').addEventListener('click', closeModel);
 		document.getElementById('leaveCreate').addEventListener('click', FormClear);
 
@@ -186,16 +207,15 @@
 			editModal.style.display = "none";
 			deleteModal.style.display = "none";
 			errorMessage.style.display = "none";
-
+			showNoDataModal.style.display = "none";
+			hadRefundModal.style.display = "none";
+			endofClassModal.style.display = "none";
 		}
 
 		function closeSuccessModel() {
 			$('#successMessage').css("display", "none");
 			myrefresh();
 		}
-
-		// 取消
-		document.getElementById('cancelCreate').addEventListener('click', closeModel);
 
 		// 分頁功能
 		const pageid = document.getElementById('pageid');
@@ -223,7 +243,6 @@
 
 			const minData = (currentPage * perpage) - perpage + 1;
 			const maxData = (currentPage * perpage);
-
 			// dynamic data array according to current page
 			const data = [];
 
@@ -346,9 +365,6 @@
 			let pagination = document.querySelector('#pageid');
 			var pageHtml = "", prevButton, nextButton;
 			let pageIndex = parseInt(nowPage);
-			//pageIndex =9;
-
-			console.log("裡面pageIndex : " + pageIndex);   // ok
 			if (page.hasPage) {
 				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`;
 			} else {
@@ -409,11 +425,9 @@
 			url: "/api/ClassOrders/memberList",
 			success: function (data) {
 				jsonData = data;
-				//console.log( jsonData);
 				pagination(jsonData, 1);
 			}
 		})
-
 
 		// 查詢 會員編號
 		var mySid;
@@ -421,7 +435,6 @@
 		$('#btnQuery').click(function () {
 			var sNumberinfo = $('#sNumber').val();
 			var cNumberinfo = $('#cNumber').val();
-			//count = 0;
 
 			if (sNumberinfo == "" && cNumberinfo == "") {
 				$('#errorMessage').css("display", "block");
@@ -444,8 +457,8 @@
 						pagination(jsonData, 1);
 						//沒有查到資料
 						if (count == 0) {
-							alert("沒有查到相關資料");
-							//$('#showNoDataModal').css("display", "block");
+							//alert("沒有查到相關資料");
+							$('#showNoDataModal').css("display", "block");
 						}
 					}
 				})
@@ -541,8 +554,9 @@
 			var UpdateCid, UpdateSid, endDate, mytoday;
 			var hidStatus =$('#hidden-oStatus').val();
 			if( hidStatus=="退款" ){
-				alert("退款後不可更動，只能重新報名！");
+				//alert("退款後不可更動，只能重新報名！");
 				$('#editModal').css("display", "none");
+				$('#hadRefundModal').css("display", "block");
 			}else{
 				//查看是否課程已上完
 				UpdateCid = $('#editCid').val();
@@ -555,10 +569,10 @@
 						endDate = new Date(data[0].endDate).getTime() + 8 * 3600 * 1000;
 						mytoday = new Date().getTime() + 8 * 3600 * 1000;
 						if( mytoday > endDate ){
-							alert("該課程已經結束，不可更動");
-						$('#editModal').css("display", "none");
+							//console.log("該課程已經結束，不可更動");
+							$('#editModal').css("display", "none");
+							$('#endofClassModal').css("display", "block");
 						}else{
-							console.log("該課程可更動");
 							if (Status1 || Status2 || Status3) {
 								UpdateSid = $('#editSid').val();
 								UpdateCid = $('#editCid').val();
@@ -649,9 +663,7 @@
 													data: JSON.stringify(updateData),
 													success: function (data) {
 														//alert("已更動Order囉");
-														//flag1 = true;
 														console.log("Status3 : " + Status3);
-														//if (Status3) { flag2 = true; }
 														$('#editModal').css("display", "none");
 														$('#updateMessage').css("display", "block");
 													}
@@ -660,7 +672,7 @@
 											})
 										}
 									})
-										//ClassRecord     給cID + sID-----> crID
+									//ClassRecord     給cID + sID-----> crID
 									$.ajax({
 										type: "get",
 										//GET: api/ClassRecords/crIDfilter/12/1039
@@ -685,11 +697,8 @@
 							}
 						}
 					}
-				})
-
-					
+				})	
 			}
-
 		})
 
 		// Delete 打開  單筆 Order
@@ -720,7 +729,6 @@
 							// DELETE: api/ClassRecords/5
 							url: "/api/ClassRecords/" + crID,
 							success: function (e) {
-								//alert("已刪除ClassRecords囉");
 							}
 						})
 					})
@@ -795,22 +803,10 @@
 						contentType: "application/json",
 						data: JSON.stringify(classData),
 						success: function (data) {
-							//alert("有成功更改");
 						}
 					})
 				}
-
 			})
-
-		}
-
-		function getTodayDate() {
-			var fullDate = new Date();
-			var yyyy = fullDate.getFullYear();
-			var MM = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
-			var dd = fullDate.getDate() < 10 ? ("0" + fullDate.getDate()) : fullDate.getDate();
-			var today = yyyy + "-" + MM + "-" + dd;
-			return today;
 		}
 
 		function myrefresh()

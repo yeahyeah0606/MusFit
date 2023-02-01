@@ -5,36 +5,38 @@
 }
 <link rel="stylesheet" href="~/css/QueryClassRecord.css" />
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-	<h1>&nbsp;&nbsp;&nbsp;課程紀錄 查詢</h1>
-	<hr>
-	<input type="hidden" id="editcrID" name="editcrID" />
-	<input type="hidden" id="editcID" name="editcID" />
-	<input type="hidden" id="editsID" name="editsID" />
-	<input type="hidden" id="editctID" name="editctID" />
+<div class="record">
+	<div class="topQuery">
+		<h1>&nbsp;&nbsp;&nbsp;課程紀錄 查詢</h1>
+		<hr>
+		<input type="hidden" id="editcrID" name="editcrID" />  
+		<input type="hidden" id="editcID" name="editcID" />
+		<input type="hidden" id="editsID" name="editsID" />
+		<input type="hidden" id="editctID" name="editctID" />
 
-	<br>
-	&nbsp;&nbsp;&nbsp;
-	&nbsp;&nbsp;&nbsp;
-	<label for="cID">課程名稱: </label>&nbsp;
-	<select id="cID" name="cID" class="lession-select">
-		<option value="none" selected disabled hidden>請選擇</option>
-	</select>
-	&nbsp; ( 必填 ) &nbsp;&nbsp;&nbsp;
-		<br><br>
-	&nbsp;&nbsp;&nbsp;
-	&nbsp;&nbsp;&nbsp;
-	<label for="sName">會員姓名: </label>&nbsp;
-	<input type="text" class="sName" id="sName" placeholder="輸入姓名">
-	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
-	<label for="ctLession">&nbsp;&nbsp;堂&nbsp;&nbsp;&nbsp;&nbsp;數: &nbsp; </label>&nbsp;
-	<input type="text" class="ctLession" id="ctLession" placeholder="輸入堂數">
+		<br>
+		&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;
+		<label for="cID">課程名稱: </label>&nbsp;
+		<select id="cID" name="cID" class="lession-select">
+			<option value="none" selected disabled hidden>請選擇</option>
+		</select>
+		&nbsp; ( 必填 ) &nbsp;&nbsp;&nbsp;
+			<br><br>
+		&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;
+		<label for="sName">會員姓名: </label>&nbsp;
+		<input type="text" class="sName" id="sName" placeholder="輸入姓名">
+		 &nbsp;&nbsp;&nbsp;
+		<label for="ctLession">&nbsp;&nbsp;堂&nbsp;&nbsp;&nbsp;&nbsp;數: &nbsp; </label>&nbsp;
+		<input type="text" class="ctLession" id="ctLession" placeholder="輸入堂數">
 
-	&nbsp; ( 選填 ) &nbsp;&nbsp;&nbsp;
-	<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
-	<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
-	<br><br>
+		 &nbsp;&nbsp;&nbsp;
+		<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+		<br>
+		<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
+	</div>
 
-	<div class="record">
 		<table style="width:100%">
 			<thead>
 				<tr>
@@ -78,7 +80,7 @@
 					<input type="text" id="editNumber" readonly="readonly" />
 				</div>
 				<div class="column">
-					<label for="editName">姓&emsp;名</label>
+					<label for="editName">姓&emsp;名&emsp;</label>
 					<input type="text" id="editName" readonly="readonly" />
 				</div>
 			</div>
@@ -117,47 +119,47 @@
 			</div>
 			<br>
 			<input type="button" id="btnEditConfirm"  value="確定" />
-			<button class="cancel" id="cancelCreate">取消</button>
+			<button class="cancel" id="cancelCreate" onclick="closeModel()">取消</button>
 		</form>
 	</div>
 
 </div>
 
-
-
 @*query No Data*@
 <div id="showNoDataModal" class="modal">
-
 	<div id="noDataModal" class="modal-content">
 		<span class="close" onclick="closeModel()">&times;</span>
-		<p>查無資料</p>
-		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+		<p>沒有查到相關資料</p>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
-
 </div>
 
 @*show error message *@
 <div id="errorMessage" class="modal">
-
 	<div id="errorModal" class="modal-content">
 		<span class="close" onclick="closeModel()">&times;</span>
 		<p>請輸入查詢條件!!</p>
 		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
-
 </div>
 
 @*update operation*@
 <div id="updateMessage" class="modal">
-
 	<div id="updateModal" class="modal-content">
 		<span class="close" onclick="closeSuccessModel()">&times;</span>
 		<p>已存檔</p>
 		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
 	</div>
-
 </div>
 
+@*query No Data*@
+<div id="setConditionModal" class="modal">
+	<div id="noDataModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>請設定查詢條件，至少需要填寫【課程名稱】</p>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
+	</div>
+</div>
 
 @section Scripts{
 	<script>
@@ -166,18 +168,20 @@
 		function FormClear() {
 			document.getElementById("editForm").reset();
 		}
-
-		//var editModal = document.getElementById("editModal");
-		//var errorMessage = document.getElementById('errorMessage');
-
+		
+		// 取消
 		document.getElementById('cancelCreate').addEventListener('click', closeModel);
 		document.getElementById('leaveCreate').addEventListener('click', closeModel);
+		document.getElementById('cancelCreate').addEventListener('click', FormClear);
 		document.getElementById('leaveCreate').addEventListener('click', FormClear);
 
 		//cancel-action
 		function closeModel() {
 			editModal.style.display = "none";
 			errorMessage.style.display = "none";
+			showNoDataModal.style.display = "none";
+			setConditionModal.style.display = "none";
+
 		}
 
 		function closeSuccessModel() {
@@ -185,8 +189,6 @@
 			myrefresh();
 		}
 
-		// 取消
-		document.getElementById('cancelCreate').addEventListener('click', closeModel);
 
 		// 取出所有的課程名稱
 		$.ajax({
@@ -311,7 +313,7 @@
 									<td>${attendance}</td>
 									<td>${content}</td>
 									<td>
-										<button class="button" style="vertical-align:middle"  onclick=openEditModel(${x.crID}) >
+										<button class="button" id="btnEdit" style="vertical-align:middle"  onclick=openEditModel(${x.crID}) >
 										<span>編輯</span>
 										</button>
 										</td>
@@ -409,8 +411,8 @@
 				if (myctLession == "") myctLession = 99;
 
 				if ( mycID == 9999 ) {
-					//$('#errorMessage').css("display", "block");
-					alert("請設定查詢條件，至少需要填寫【課程名稱】");
+					//alert("請設定查詢條件，至少需要填寫【課程名稱】");
+					$('#setConditionModal').css("display", "block");
 				}
 				else {
 						$.ajax({
@@ -422,8 +424,8 @@
 								pagination(jsonData, 1);
 								//沒有查到資料
 								if (count == 0) {
-									alert("沒有查到相關資料");
-									//$('#showNoDataModal').css("display", "block");
+									//alert("沒有查到相關資料");
+									$('#showNoDataModal').css("display", "block");
 								}
 							}
 						})
@@ -439,11 +441,9 @@
 					// GET: api/ClassRecords/crID/1
 					url: "/api/ClassRecords/crID/" + crID,
 					success: function (data) {
-						//alert("ok");
 						console.log(data);
 						data.forEach(function (x) {
 							var date = new Date(x.ctDate).toLocaleDateString();
-							//console.log(Status);
 							if (x.crAttendance == true) {
 								$('input[name="editAttend"]')[0].checked = true;
 							} else {
@@ -458,7 +458,6 @@
 							$('#editcrID').val(crID);
 							$('#editsID').val(x.sID);
 							$('#editctID').val(x.classTimeId);
-
 						})
 
 					}
@@ -507,6 +506,9 @@
 							//myrefresh();
 						}
 					})
+
+					//  ?? 加  更改orderTime  (因為需要排序最新的在上面)
+
 
 				}
 			})

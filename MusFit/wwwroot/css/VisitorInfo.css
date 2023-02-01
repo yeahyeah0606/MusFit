@@ -1,5 +1,5 @@
 ﻿.myContent {
-    padding: 40px 10px;
+    padding: 20px 10px;
 }
 
 
@@ -25,11 +25,6 @@ th, td {
 
 tr:nth-child(even) {
     background-color: #f2f2f2
-}
-
-h2 {
-    color: #434040;
-    text-align: center;
 }
 
 .searchArea {
@@ -139,12 +134,19 @@ button:hover {
     padding: 0px 20px;
 }
 
+input:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px white inset;
+    -webkit-text-fill-color: #000;
+}
+
 
 input[type=text], select {
     border: solid 1px #a4a1a1;
     border-radius: 5px;
+    height: 30px;
     padding: 2px 5px;
     outline: none;
+    width: 63%;
 }
 
 input[type=text]:focus, input[type=date]:focus, select:focus {
@@ -152,13 +154,10 @@ input[type=text]:focus, input[type=date]:focus, select:focus {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(135, 206, 250, 0.6);
 }
 
-select{
-    width: 60%;
-}
 
 #create_gender_col {
     position: relative;
-    right: 21px;
+    right: 30px;
 }
 
 #gender_col {
@@ -175,8 +174,9 @@ input[type=radio] {
     width: 24%;
 }
 
-#queryinfo::placeholder{
-    opacity:0.7;
+
+input[type=text]::placeholder{
+    opacity: 0.7;
 }
 
 input[type="date"]:not(.has-value):before {
@@ -242,10 +242,10 @@ form a {
     outline:none;
 }
 
-    .star {
-        color: red;
-        font-size: 16px;
-    }
+.star {
+    color: red;
+    font-size: 16px;
+}
 
 #validationModal, #valPhoneModal, #valMailModal, #deleteContent, #valVisitorModal,
 #noDataModal, #errorModal, #successModal {
@@ -275,12 +275,15 @@ form a {
 
 @media(max-width: 800px){
     .modal-content{width: 600px; margin-top:-60px;}
-    input[type=text],select{width: 60%;}
-    .row,.column{margin: 7px;}
+    input[type=text],select{width: 60%; height: 30px; }
+    .row {margin: 3px;}
+    .column{margin: 7px;}
     #gender_col {position:relative; left: -71px;}
     #create_gender_col{ right: 68px;}
     #create_mail_col {right: 6px; }
     .createmodals {margin: auto;}
+    hr{margin-bottom: 20px;}
+    table{margin-top: 20px;}
 }
 
 @media(max-width: 737px){
@@ -294,7 +297,6 @@ form a {
     .searchArea button, .createArea button{font-size:14px; padding: 5px 6px;}
     .modal-content { width: 420px;}
     input[type=text], select { width: 73%;}
-    .row, .column {margin: 7px;}
     #gender_col { left: -37px; }
     #moreDetail{font-size: 14px; position: relative; bottom: -6px; margin:auto 0px; padding: 5px 10px; }
     #create_gender_col {left:-36px;}

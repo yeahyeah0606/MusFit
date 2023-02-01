@@ -8,16 +8,13 @@
 
 }
 <div class="contentheader">
-        <h1>最新消息列表</h1>
+    <h1>最新消息列表</h1>
 </div>
-    <hr>
+<hr>
 <div>
-     <div>
+    <div>
         <button class="btn" id="addbtn" type="button" data-target="#addModal" data-toggle="modal">
-            新增文章
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-            </svg>
+            <span >新增文章</span>
         </button>
     </div>
 
@@ -118,7 +115,7 @@
         </div>
     </div>
 
-      <div>
+    <div>
         <div id="divnavlink">
             <ul id="ulnavlink">
 
@@ -150,133 +147,155 @@
     <div class="allnews" id="news">
         <div class="searchdiv justify-content-end" style="margin-left:85%;">
             <label for="checkuntake">未下架</label>
-            <input type="checkbox" id="checkuntake" onclick="checkuntake()">
+            <input type="checkbox" class="uncheckedbox" id="checkuntake" onclick="checkuntake()">
 
             <label for="checktake">已下架</label>
-            <input type="checkbox" id="checktake" onclick="checktaken()">
+            <input type="checkbox" class="checkedbox" id="checktake" onclick="checktaken()">
 
 
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">
-                        <input type="checkbox">
-                    </th>
-                    <th scope="col">標題</th>
-                    <th scope="col">發布時間</th>
-                    <th scope="col">下架時間</th>
-                    <th scope="col" style="text-align:center;">操作</th>
-                    <th>下架</th>
-                </tr>
-            </thead>
-            <tbody id="newsbody">
-                @{
+        <div class="tablediv">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            選擇
+                        </th>
+                        <th scope="col">標題</th>
+                        <th scope="col">發布時間</th>
+                        <th scope="col">下架時間</th>
+                        <th scope="col" style="text-align:center;">操作</th>
+                        <th>下架</th>
+                    </tr>
+                </thead>
+                <tbody id="newsbody">
+                    <tr class="selectalldiv">
+                        <th>
+                            <input id="newsselectall" type="checkbox" onclick="newsselectall()" disabled>
+                        </th>
+                        
+                        <td class="deletesvg" hidden>
+                            <button onclick="newsselectdelete()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16" style="color:#897F9E;">
+                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                                </svg>
+                            </button>
+
+                        </td>
+                    </tr>
+                    @{
 
 
-
-                    var newlist = 0;
-                    var query1 = from mynews in Model
-                                 where mynews.NCategory == "最新消息"
-                                 select mynews;
-                    foreach (var item in query1)
-                    {
-                        newlist++;
-
-                            @if (item.NTakeDownTime != null)
+                        var newtakencount = 0;
+                        var newlist = 0;
+                        var query1 = from mynews in Model
+                                     where mynews.NCategory == "最新消息"
+                                     select mynews;
+                        foreach (var item in query1)
                         {
-                            var result = DateTime.Compare(@item.NTakeDownTime.Value, DateTime.Today);
-                                @if (result < 0)
+                            newlist++;
+
+                                                            @if (item.NTakeDownTime != null)
                             {
-                                    <tr class="trtaken">
-                                        <th>@item.NId</th>
-                                        <td>
-                                            @item.NTitle
-                                        </td>
-                                        <td>@item.NPostDate</td>
-                                        <td class="showTakeDown">@item.NTakeDownTime</td>
+                                var result = DateTime.Compare(@item.NTakeDownTime.Value, DateTime.Today);
+                                                                @if (result < 0)
+                                {
+                                    newtakencount++;
+                                                                    <tr class="trtaken">
+                                                                        <th><input type="checkbox" class="newsdeletecheck" onclick="newsselect()" /></th>
+                                                                        <td class="newsid" hidden>@item.NId</td>
+                                                                        <td>
+                                                                            @item.NTitle
+                                                                        </td>
+                                                                        <td>@item.NPostDate</td>
+                                                                        <td class="showTakeDown">@item.NTakeDownTime</td>
 
-                                        <td style="padding-left:5%;">
-                                            <button id="@item.NId" onclick="newEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#newEditModal" data-toggle="modal">編輯</button>
+                                                                        <td style="padding-left:5%;">
+                                                                            <button id="@item.NId" onclick="newEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#newEditModal" data-toggle="modal">編輯</button>
 
 
-                                            <button id="newsdeletebtn" class="btnDelete btn" onclick="newsdeleteget(@item.NId)" data-target="#newsdeleteModal" data-toggle="modal">刪除</button>
+                                                                            <button id="newsdeletebtn" class="btnDelete btn" onclick="newsdeleteget(@item.NId)" data-target="#newsdeleteModal" data-toggle="modal">刪除</button>
 
 
-                                        </td>
+                                                                        </td>
 
-                                        <td style="">
-                                            <input id="@item.NId" class="tdcheckbox" name="checkdata" type="checkbox" value="on" checked disabled>
+                                                                        <td >
+                                                                            <input id="@item.NId" class="tdcheckbox" name="checkdata" type="checkbox" value="on" checked disabled>
 
-                                        </td>
+                                                                        </td>
 
-                                    </tr>
+                                                                    </tr>
+                                }
+                                else
+                                {
+                                                                    <tr class="truntaken">
+                                                                        <th><input type="checkbox" disabled /></th>
+                                                                        <td>
+                                                                            @item.NTitle
+                                                                        </td>
+                                                                        <td>@item.NPostDate</td>
+                                                                        <td class="showTakeDown">@item.NTakeDownTime</td>
+
+                                                                        <td style="padding-left:5%;">
+                                                                            <button id="@item.NId" onclick="newEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#newEditModal" data-toggle="modal">編輯</button>
+
+
+                                                                            <button id="newsdeletebtn" onclick="newsdeleteget(@item.NId)" class="btnDelete btn" data-target="#newsdeleteModal" data-toggle="modal" disabled>刪除</button>
+
+
+                                                                        </td>
+
+                                                                        <td style="">
+                                                                            <input id="@item.NId" class="tdcheckbox" name="checkdata" type="checkbox" disabled>
+
+                                                                        </td>
+
+                                                                    </tr>
+                                }
                             }
                             else
                             {
-                                    <tr class="truntaken">
-                                        <th>@item.NId</th>
-                                        <td>
-                                            @item.NTitle
-                                        </td>
-                                        <td>@item.NPostDate</td>
-                                        <td class="showTakeDown">@item.NTakeDownTime</td>
+                                                                <tr class="truntaken">
+                                                                    <th><input type="checkbox" disabled /></th>
 
-                                        <td style="padding-left:5%;">
-                                            <button id="@item.NId" onclick="newEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#newEditModal" data-toggle="modal">編輯</button>
+                                                                    <td>
+                                                                        @item.NTitle
+                                                                    </td>
+                                                                    <td>@item.NPostDate</td>
+                                                                    <td class="showTakeDown">@item.NTakeDownTime</td>
 
-
-                                            <button id="newsdeletebtn" onclick="newsdeleteget(@item.NId)" class="btnDelete btn" data-target="#newsdeleteModal" data-toggle="modal" disabled>刪除</button>
+                                                                    <td style="padding-left:5%;">
+                                                                        <button id="@item.NId" onclick="newEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#newEditModal" data-toggle="modal">編輯</button>
 
 
-                                        </td>
+                                                                        <button id="newsdeletebtn" onclick="newsdeleteget(@item.NId)" class="btnDelete btn" data-target="#newsdeleteModal" data-toggle="modal" disabled>刪除</button>
 
-                                        <td style="">
-                                            <input id="@item.NId" class="tdcheckbox" name="checkdata" type="checkbox" disabled>
 
-                                        </td>
+                                                                    </td>
 
-                                    </tr>
+                                                                    <td style="">
+                                                                        <input id="@item.NId" class="tdcheckbox" name="checkdata" type="checkbox" disabled>
+
+                                                                    </td>
+
+                                                                </tr>
                             }
                         }
-                        else
-                        {
-                                <tr class="truntaken">
-                                    <th>@item.NId</th>
-                                    <td>
-                                        @item.NTitle
-                                    </td>
-                                    <td>@item.NPostDate</td>
-                                    <td class="showTakeDown">@item.NTakeDownTime</td>
 
-                                    <td style="padding-left:5%;">
-                                        <button id="@item.NId" onclick="newEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#newEditModal" data-toggle="modal">編輯</button>
+                                                        <tr hidden>
+                                                            <td hidden class="newscount"> @newlist</td>
+                                                        </tr>
+                                                        <tr hidden>
+                                                            <td hidden class="newtakencount"> @newtakencount</td>
+                                                        </tr>
 
-
-                                        <button id="newsdeletebtn" onclick="newsdeleteget(@item.NId)" class="btnDelete btn" data-target="#newsdeleteModal" data-toggle="modal" disabled>刪除</button>
-
-
-                                    </td>
-
-                                    <td style="">
-                                    <input id="@item.NId" class="tdcheckbox" name="checkdata" type="checkbox" disabled>
-
-                                    </td>
-
-                                </tr>
-                        }
                     }
 
-                        <tr hidden>
-                            <td hidden class="newscount"> @newlist</td>
-                        </tr>
-
-                }
 
 
-
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
         <div class="modal fade" id="newEditModal" tabindex="-1" aria-labelledby="newEditModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -355,8 +374,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-6">
+                            <div class="row" style=" width:100%;" >
+                                <div class="col-2">
+                                    <label for="newsEId">發布員工</label>
+                                </div>
+                                <div class="col-2">
                                     <select id="newsEId" class="Employeeselect" size="1">
                                         @foreach (var item in ViewBag.querydata)
                                         {
@@ -381,19 +403,28 @@
 
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"> 最新消息-刪除</h5>
-                    </div>
+                    @*               <div class="modal-header">
+                    <h5 class="modal-title"> 最新消息-刪除</h5>
+                    </div>*@
 
                     <input type="hidden" id="newsdeleteID">
                     <div class="modal-body">
-                        <h5>確定要刪除嗎?</h5>
-                        <input type="hidden" class="deletebtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16" style="color:#D65C67; margin-left:40%; margin-top:5%;">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                        <br>
+                        <br>
+                        <h5 class="deleteword">確定要刪除嗎?</h5>
+                        <p class="deletedescribe">刪除後紀錄則永久刪除</p>
+
+                        <div class="Modaldeletebtndiv">
+                            <button class="Modaldeletebtn btn" onclick="back()">取消</button>
+                            <button class="Modaldeletebtn btn" onclick="newsdelete()">確定</button>
+                        </div>
+
                     </div>
-                    <div class="modal-footer">
-                        <button class="btn" onclick="back()">取消</button>
-                        <button class="btn" onclick="newsdelete()">確定</button>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -408,17 +439,19 @@
 
         <div class="searchdiv justify-content-end" style="margin-left:85%;">
             <label for="lessioncheckuntake">未下架</label>
-            <input type="checkbox" id="lessioncheckuntake" onclick="lessioncheckuntake()">
+            <input type="checkbox" class="uncheckedbox" id="lessioncheckuntake" onclick="lessioncheckuntake()">
 
             <label for="lessionchecktake">已下架</label>
-            <input type="checkbox" id="lessionchecktake" onclick="lessionchecktake()">
+            <input type="checkbox" class="checkedbox" id="lessionchecktake" onclick="lessionchecktake()">
 
 
         </div>
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col"> <input type="checkbox"></th>
+                    <th scope="col">
+                        選擇
+                    </th>
                     <th scope="col">標題</th>
                     <th scope="col">發布時間</th>
                     <th scope="col">下架時間</th>
@@ -428,6 +461,20 @@
                 </tr>
             </thead>
             <tbody id="lessionbody">
+                <tr class="selectalldiv">
+                    <th>
+                        <input id="leesionselectall" type="checkbox" onclick="lessionselectall()" disabled>
+
+                    </th>
+                    <td class="deletesvg" hidden>
+                        <button onclick="lessionselectdelete()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16" style="color:#897F9E;">
+                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                            </svg>
+                        </button>
+
+                    </td>
+                </tr>
                 @{
 
                     var lessionlist = 0;
@@ -437,86 +484,90 @@
                     foreach (var item in query2)
                     {
                         lessionlist++;
-                            @if (item.NTakeDownTime != null)
+                                                        @if (item.NTakeDownTime != null)
                         {
                             var result = DateTime.Compare(@item.NTakeDownTime.Value, DateTime.Today);
-                                @if (result < 0)
+                                                            @if (result < 0)
                             {
 
-                                    <tr class="lessiontrtaken">
-                                        <th>@item.NId</th>
-                                        <td>
-                                            @item.NTitle
-                                        </td>
-                                        <td>@item.NPostDate</td>
-                                        <td class="showTakeDown">@item.NTakeDownTime</td>
+                                                                <tr class="lessiontrtaken">
+                                                                    <th><input type="checkbox" class="lessiondeletecheck" onclick="lessionselect()" /></th>
 
-                                        <td style="padding-left:5%;">
-                                            <button id="@item.NId" onclick="lessionEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#lessionEditModal" data-toggle="modal">編輯</button>
-                                            <button id="lessionsDeletebtn" class="btnDelete btn" onclick="lessionsdeleteget(@item.NId)" data-target="#lessiondeleteModal" data-toggle="modal">刪除</button>
+                                                                    <th class="lessionid" hidden>@item.NId</th>
+                                                                    <td>
+                                                                        @item.NTitle
+                                                                    </td>
+                                                                    <td>@item.NPostDate</td>
+                                                                    <td class="showTakeDown">@item.NTakeDownTime</td>
 
-                                        </td>
+                                                                    <td style="padding-left:5%;">
+                                                                        <button id="@item.NId" onclick="lessionEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#lessionEditModal" data-toggle="modal">編輯</button>
+                                                                        <button id="lessionsDeletebtn" class="btnDelete btn" onclick="lessionsdeleteget(@item.NId)" data-target="#lessiondeleteModal" data-toggle="modal">刪除</button>
 
-                                        <td style="">
+                                                                    </td>
 
-                                        <input id="@item.NId" class="lessionscheckbox" name="checkdata" type="checkbox" checked disabled>
+                                                                    <td style="">
 
-                                        </td>
-                                    </tr>
+                                                                        <input id="@item.NId" class="lessionscheckbox" name="checkdata" type="checkbox" checked disabled>
+
+                                                                    </td>
+                                                                </tr>
                             }
                             else
                             {
-                                    <tr class="lessiontruntaken">
-                                        <th>@item.NId</th>
-                                        <td>
-                                            @item.NTitle
-                                        </td>
-                                        <td>@item.NPostDate</td>
-                                        <td class="showTakeDown">@item.NTakeDownTime</td>
+                                                                <tr class="lessiontruntaken">
+                                                                    <th><input type="checkbox" disabled /></th>
+                                                                   
+                                                                    <td>
+                                                                        @item.NTitle
+                                                                    </td>
+                                                                    <td>@item.NPostDate</td>
+                                                                    <td class="showTakeDown">@item.NTakeDownTime</td>
 
-                                        <td style="padding-left:5%;">
-                                            <button id="@item.NId" onclick="lessionEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#lessionEditModal" data-toggle="modal">編輯</button>
-                                            <button id="lessionsDeletebtn" class="btnDelete btn" onclick="lessionsdeleteget(@item.NId)" disabled data-target="#lessiondeleteModal" data-toggle="modal">刪除</button>
+                                                                    <td style="padding-left:5%;">
+                                                                        <button id="@item.NId" onclick="lessionEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#lessionEditModal" data-toggle="modal">編輯</button>
+                                                                        <button id="lessionsDeletebtn" class="btnDelete btn" onclick="lessionsdeleteget(@item.NId)" disabled data-target="#lessiondeleteModal" data-toggle="modal">刪除</button>
 
-                                        </td>
+                                                                    </td>
 
-                                        <td style="">
+                                                                    <td style="">
 
-                                            <input id="@item.NId" class="lessionscheckbox" name="checkdata" type="checkbox" disabled>
+                                                                        <input id="@item.NId" class="lessionscheckbox" name="checkdata" type="checkbox" disabled>
 
-                                        </td>
-                                    </tr>
+                                                                    </td>
+                                                                </tr>
                             }
 
                         }
                         else
                         {
-                                <tr class="lessiontruntaken">
-                                    <th>@item.NId</th>
-                                    <td>
-                                        @item.NTitle
-                                    </td>
-                                    <td>@item.NPostDate</td>
-                                    <td class="showTakeDown">@item.NTakeDownTime</td>
+                                                            <tr class="lessiontruntaken">
+                                                                    <th><input type="checkbox" disabled /></th>
+                                                                
+                                                                <td>
+                                                                    @item.NTitle
+                                                                </td>
+                                                                <td>@item.NPostDate</td>
+                                                                <td class="showTakeDown">@item.NTakeDownTime</td>
 
-                                    <td style="padding-left:5%;">
-                                        <button id="@item.NId" onclick="lessionEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#lessionEditModal" data-toggle="modal">編輯</button>
-                                        <button id="lessionsDeletebtn" class="btnDelete btn" onclick="lessionsdeleteget(@item.NId)" disabled data-target="#lessiondeleteModal" data-toggle="modal">刪除</button>
+                                                                <td style="padding-left:5%;">
+                                                                    <button id="@item.NId" onclick="lessionEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#lessionEditModal" data-toggle="modal">編輯</button>
+                                                                    <button id="lessionsDeletebtn" class="btnDelete btn" onclick="lessionsdeleteget(@item.NId)" disabled data-target="#lessiondeleteModal" data-toggle="modal">刪除</button>
 
-                                    </td>
+                                                                </td>
 
-                                    <td style="">
+                                                                <td style="">
 
-                                    <input id="@item.NId" class="lessionscheckbox" name="checkdata" type="checkbox" disabled>
+                                                                    <input id="@item.NId" class="lessionscheckbox" name="checkdata" type="checkbox" disabled>
 
-                                    </td>
-                                </tr>
+                                                                </td>
+                                                            </tr>
                         }
                     }
 
-                        <tr hidden>
-                            <td hidden class="lessioncount"> @lessionlist</td>
-                        </tr>
+                                                    <tr hidden>
+                                                        <td hidden class="lessioncount"> @lessionlist</td>
+                                                    </tr>
                 }
 
 
@@ -600,8 +651,11 @@
                                 </div>
 
                             </div>
-                            <div class="row">
-                                <div class="col-6">
+                            <div class="row" style="width:100%;">
+                                    <div class="col-2">
+                                    <label for="lessionsEId">發布員工</label>
+                                </div>
+                                <div class="col-3">
                                     <select id="lessionsEId" class="Employeeselect" size="1">
                                         @foreach (var item in ViewBag.querydata)
                                         {
@@ -626,19 +680,24 @@
 
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"> 課程公告-刪除</h5>
-                    </div>
 
                     <input type="hidden" id="lessiondeleteID">
                     <div class="modal-body">
-                        <h5>確定要刪除嗎?</h5>
-                        <input type="hidden" class="deletebtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16" style="color:#D65C67; margin-left:40%; margin-top:5%;">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                              <br>
+                        <br>
+                        <h5 class="deleteword">確定要刪除嗎?</h5>
+                        <p class="deletedescribe">刪除後紀錄則永久刪除</p>
+
+                         <div class="Modaldeletebtndiv">
+                              <button class="Modaldeletebtn btn" onclick="back()">取消</button>
+                            <button class="Modaldeletebtn btn" onclick="lessionsdelete()">確定</button>
+                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button class="btn" onclick="back()">取消</button>
-                        <button class="btn" onclick="lessionsdelete()">確定</button>
-                    </div>
+      
                 </div>
             </div>
         </div>
@@ -653,17 +712,17 @@
 
         <div class="searchdiv justify-content-end" style="margin-left:85%;">
             <label for="activitycheckuntake">未下架</label>
-            <input type="checkbox" id="activitycheckuntake" onclick="activitycheckuntake()">
+            <input type="checkbox" class="uncheckedbox" id="activitycheckuntake" onclick="activitycheckuntake()">
 
             <label for="activitychecktake">已下架</label>
-            <input type="checkbox" id="activitychecktake" onchange="activitychecktake()">
+            <input type="checkbox" class="checkedbox" id="activitychecktake" onchange="activitychecktake()">
         </div>
 
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">
-                        <input type="checkbox">
+                        選擇
                     </th>
                     <th scope="col">標題</th>
                     <th scope="col">發布時間</th>
@@ -673,7 +732,23 @@
 
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="activitybody">
+
+                <tr class="selectalldiv">
+                    <th>
+                        <input id="activityselectall" type="checkbox" onclick="activityselectall()" disabled>
+
+                    </th>
+                    <td class="deletesvg" hidden>
+                        <button onclick="activityselectdelete()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16" style="color:#897F9E;">
+                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                            </svg>
+                        </button>
+
+                    </td>
+                </tr>
+
                 @{
                     var activitylist = 0;
                     var query3 = from myactivity in Model
@@ -683,89 +758,92 @@
                     {
                         activitylist++;
 
-                            @if (item.NTakeDownTime != null)
+                                                        @if (item.NTakeDownTime != null)
                         {
                             var result = DateTime.Compare(@item.NTakeDownTime.Value, DateTime.Today);
-                                @if (result < 0)
+                                                            @if (result < 0)
                             {
-                                    <tr class="activitytrtake">
-                                        <th>@item.NId</th>
-                                        <td>
-                                            @item.NTitle
-                                        </td>
-                                        <td>@item.NPostDate</td>
-                                        <td id="activityTakeDown" class="showTakeDown">@item.NTakeDownTime</td>
+                                                                <tr class="activitytrtake">
+                                                                    <th><input type="checkbox" class="activitydeletecheck" onclick="activityselect()" /></th>
+                                                                    <th class="activityid" hidden>@item.NId</th>
+                                                                    <td>
+                                                                        @item.NTitle
+                                                                    </td>
+                                                                    <td>@item.NPostDate</td>
+                                                                    <td id="activityTakeDown" class="showTakeDown">@item.NTakeDownTime</td>
 
-                                        <td style="padding-left:5%;">
-                                            <button onclick="activityEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#activityEditModal" data-toggle="modal">編輯</button>
-
-
-                                            <button class="btnDelete btn" onclick="activitydeleteget(@item.NId) " data-target="#activitydeleteModal" data-toggle="modal">刪除</button>
+                                                                    <td style="padding-left:5%;">
+                                                                        <button onclick="activityEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#activityEditModal" data-toggle="modal">編輯</button>
 
 
-                                        </td>
+                                                                        <button class="btnDelete btn" onclick="activitydeleteget(@item.NId) " data-target="#activitydeleteModal" data-toggle="modal">刪除</button>
 
-                                        <td style="">
 
-                                            <input id="@item.NId" class="activitycheckbox" name="checkdata" type="checkbox" checked disabled>
-                                        </td>
-                                    </tr>
+                                                                    </td>
+
+                                                                    <td style="">
+
+                                                                        <input id="@item.NId" class="activitycheckbox" name="checkdata" type="checkbox" checked disabled>
+                                                                    </td>
+                                                                </tr>
                             }
                             else
                             {
-                                    <tr class="activitytruntake">
-                                        <th>@item.NId</th>
-                                        <td>
-                                            @item.NTitle
-                                        </td>
-                                        <td>@item.NPostDate</td>
-                                        <td id="activityTakeDown" class="showTakeDown">@item.NTakeDownTime</td>
+                                                                <tr class="activitytruntake">
+                                                                                                       <th><input type="checkbox" disabled /></th>
 
-                                        <td style="padding-left:5%;">
-                                            <button onclick="activityEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#activityEditModal" data-toggle="modal">編輯</button>
+                                                                    <td>
+                                                                        @item.NTitle
+                                                                    </td>
+                                                                    <td>@item.NPostDate</td>
+                                                                    <td id="activityTakeDown" class="showTakeDown">@item.NTakeDownTime</td>
 
-
-                                            <button class="btnDelete btn" onclick="activitydeleteget(@item.NId)" data-target="#activitydeleteModal" data-toggle="modal" disabled>刪除</button>
+                                                                    <td style="padding-left:5%;">
+                                                                        <button onclick="activityEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#activityEditModal" data-toggle="modal">編輯</button>
 
 
-                                        </td>
+                                                                        <button class="btnDelete btn" onclick="activitydeleteget(@item.NId)" data-target="#activitydeleteModal" data-toggle="modal" disabled>刪除</button>
 
-                                        <td style="">
 
-                                            <input id="@item.NId" class="activitycheckbox" name="checkdata" type="checkbox" disabled>
-                                        </td>
-                                    </tr>
+                                                                    </td>
+
+                                                                    <td style="">
+
+                                                                        <input id="@item.NId" class="activitycheckbox" name="checkdata" type="checkbox" disabled>
+                                                                    </td>
+                                                                </tr>
                             }
                         }
                         else
                         {
-                                <tr class="activitytruntake">
-                                    <th>@item.NId</th>
-                                    <td>
-                                        @item.NTitle
-                                    </td>
-                                    <td>@item.NPostDate</td>
-                                    <td id="activityTakeDown" class="showTakeDown">@item.NTakeDownTime</td>
+                                                            <tr class="activitytruntake">
+                                                                <th><input type="checkbox" disabled /></th>
 
-                                    <td style="padding-left:5%;">
-                                        <button onclick="activityEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#activityEditModal" data-toggle="modal">編輯</button>
+                                                                <td>
+                                                                    @item.NTitle
+                                                                </td>
+                                                                <td>@item.NPostDate</td>
+                                                                <td id="activityTakeDown" class="showTakeDown">@item.NTakeDownTime</td>
 
-
-                                        <button class="btnDelete btn" onclick="activitydeleteget(@item.NId)" data-target="#activitydeleteModal" data-toggle="modal" disabled>刪除</button>
+                                                                <td style="padding-left:5%;">
+                                                                    <button onclick="activityEdit(@item.NId)" class="btnEdit btn" type="button" data-target="#activityEditModal" data-toggle="modal">編輯</button>
 
 
-                                    </td>
+                                                                    <button class="btnDelete btn" onclick="activitydeleteget(@item.NId)" data-target="#activitydeleteModal" data-toggle="modal" disabled>刪除</button>
 
-                                    <td style="">
 
-                                    <input id="@item.NId" class="activitycheckbox" name="checkdata" type="checkbox" disabled>
-                                    </td>
-                                </tr>
+                                                                </td>
+
+                                                                <td style="">
+
+                                                                    <input id="@item.NId" class="activitycheckbox" name="checkdata" type="checkbox" disabled>
+                                                                </td>
+                                                            </tr>
                         }
                     }
-                        <tr hidden>
-                            <td class="activitycount" hidden>@activitylist</td>
-                        </tr>
+                                                    <tr hidden>
+                                                        <td class="activitycount" hidden>@activitylist</td>
+                                                    </tr>
                 }
 
 
@@ -852,8 +930,11 @@
 
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-6">
+                            <div class="row" style="width:100%;">
+                                    <div class="col-2">
+                                    <label for="activityEId">發布員工</label>
+                                </div>
+                                <div class="col-3">
                                     <select id="activityEId" class="Employeeselect" size="1">
                                         @foreach (var item in ViewBag.querydata)
                                         {
@@ -879,18 +960,22 @@
 
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"> 課程公告-刪除</h5>
-                </div>
 
                 <input type="hidden" id="activitydeleteID">
                 <div class="modal-body">
-                    <h5>確定要刪除嗎?</h5>
-                    <input type="hidden" class="deletebtn">
-                </div>
-                <div class="modal-footer">
-                    <button class="btn" onclick="back()">取消</button>
-                    <button class="btn" onclick="activitydelete()">確定</button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16" style="color:#D65C67; margin-left:40%; margin-top:5%;">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                    </svg>
+                    <br>
+                    <br>
+                    <h5 class="deleteword">確定要刪除嗎?</h5>
+                    <p class="deletedescribe">刪除後紀錄則永久刪除</p>
+
+                     <div class="Modaldeletebtndiv">
+                         <button class="Modaldeletebtn btn" onclick="back()">取消</button>
+                    <button class="Modaldeletebtn btn" onclick="activitydelete()">確定</button>
+                     </div>
                 </div>
             </div>
         </div>
@@ -1469,7 +1554,6 @@
                 contentType: "application/json",
                 data: JSON.stringify(addData),
                 success: function () {
-
                     window.location = "/Manage/News"
                 },
 
@@ -1523,8 +1607,9 @@
 
 @*Delete*@
 <script>
-    //最新消息
+    //最新消息-單筆刪除
     var newsdeleteid = $('#newsdeleteID').val()
+
     function newsdelete() {
 
 
@@ -1544,7 +1629,34 @@
 
     }
 
-    //課程公告
+    //最新消息-選擇器刪除
+    var newsdeletelist = document.getElementsByClassName('newsid')
+    var newsselectdeletebox = document.getElementsByClassName('newsdeletecheck')
+    function newsselectdelete() {
+
+        for (var i = 0; i <= newsdeletelist.length; i++) {
+
+            if (newsselectdeletebox[i].checked) {
+
+                $.ajax({
+                    type: "Delete",
+                    url: "/api/News/" + newsdeletelist[i].innerHTML,
+                    success: function (data) {
+                        console.log('ok')
+                        window.location = "/Manage/News"
+                    },
+                    error: function () {
+                        console.log("error")
+                        console.log(newsdeletelist[i].innerHTML)
+                    }
+                });
+
+            }
+        }
+
+    }
+
+    //課程公告-單筆刪除
 
     function lessionsdelete() {
 
@@ -1564,6 +1676,34 @@
 
     }
 
+    //課程公告-選擇器刪除
+    var lessiondeletelist = document.getElementsByClassName('lessionid')
+    var lessiondeletebox = document.getElementsByClassName('lessiondeletecheck')
+    function lessionselectdelete() {
+
+        for (var i = 0; i <= lessiondeletelist.length; i++) {
+
+            if (lessiondeletebox[i].checked) {
+
+                $.ajax({
+                    type: "Delete",
+                    url: "/api/News/" + lessiondeletelist[i].innerHTML,
+                    success: function (data) {
+                        console.log('ok')
+                        window.location = "/Manage/News"
+                    },
+                    error: function () {
+                        console.log("error")
+                        console.log(lessiondeletelist[i].innerHTML)
+                    }
+                });
+
+            }
+        }
+
+    }
+
+
     //活動消息
     function activitydelete() {
 
@@ -1580,15 +1720,44 @@
         });
 
     }
+
+        //活動消息-選擇器刪除
+    var actdeletelist = document.getElementsByClassName('activityid')
+    var actdeletebox = document.getElementsByClassName('activitydeletecheck')
+    function activityselectdelete() {
+
+        for (var i = 0; i <= actdeletelist.length; i++) {
+
+            if (actdeletebox[i].checked) {
+
+                $.ajax({
+                    type: "Delete",
+                    url: "/api/News/" + actdeletelist[i].innerHTML,
+                    success: function (data) {
+                        console.log('ok')
+                        window.location = "/Manage/News"
+                    },
+                    error: function () {
+                        console.log("error")
+                        console.log(actdeletelist[i].innerHTML)
+                    }
+                });
+
+            }
+        }
+
+    }
 </script>
 
-
+@*判斷是否下架*@
 <script>
 
     //news未下架
     function checkuntake() {
 
         if ($('#checkuntake').is(":checked")) {
+            document.getElementById("checktake").disabled = true;
+
             var newscount = parseInt($('.newscount').text())
             var check = $('.tdcheckbox');
             for (var i = 0; i < newscount; i++) {
@@ -1602,6 +1771,7 @@
             }
         } else {
             $('.trtaken').show()
+            document.getElementById("checktake").disabled = false;
 
         }
 
@@ -1612,6 +1782,9 @@
     function checktaken() {
 
         if ($('#checktake').is(":checked")) {
+            document.getElementById("checkuntake").disabled = true;
+            document.getElementById("newsselectall").disabled = false;
+
             var newscount = parseInt($('.newscount').text())
             var check = $('.tdcheckbox');
             for (var i = 0; i < newscount; i++) {
@@ -1625,6 +1798,8 @@
             }
         } else {
             $('.truntaken').show()
+            document.getElementById("checkuntake").disabled = false;
+            document.getElementById("newsselectall").disabled = true;
 
         }
     }
@@ -1633,6 +1808,8 @@
     function lessioncheckuntake() {
 
         if ($('#lessioncheckuntake').is(":checked")) {
+            document.getElementById("lessionchecktake").disabled = true;
+
             var lessioncount = parseInt($('.lessioncount').text())
             var check = $('.lessionscheckbox');
             for (var i = 0; i < lessioncount; i++) {
@@ -1646,6 +1823,7 @@
             }
         } else {
             $('.lessiontrtaken').show()
+            document.getElementById("lessionchecktake").disabled = false;
 
         }
 
@@ -1655,6 +1833,9 @@
     function lessionchecktake() {
 
         if ($('#lessionchecktake').is(":checked")) {
+            document.getElementById("lessioncheckuntake").disabled = true;
+            document.getElementById("leesionselectall").disabled = false;
+
             var lessioncount = parseInt($('.lessioncount').text())
             var check = $('.lessionscheckbox');
             for (var i = 0; i < lessioncount; i++) {
@@ -1668,6 +1849,9 @@
             }
         } else {
             $('.lessiontruntaken').show()
+            document.getElementById("lessioncheckuntake").disabled = false;
+            document.getElementById("leesionselectall").disabled = true;
+
 
         }
     }
@@ -1676,6 +1860,8 @@
     function activitycheckuntake() {
 
         if ($('#activitycheckuntake').is(":checked")) {
+            document.getElementById("activitychecktake").disabled = true;
+
             var activitycount = parseInt($('.activitycount').text())
             var check = $('.activitycheckbox');
             for (var i = 0; i < activitycount; i++) {
@@ -1689,6 +1875,7 @@
             }
         } else {
             $('.activitytrtake').show()
+            document.getElementById("activitychecktake").disabled = false;
 
         }
 
@@ -1698,6 +1885,9 @@
     function activitychecktake() {
 
         if ($('#activitychecktake').is(":checked")) {
+            document.getElementById("activitycheckuntake").disabled = true;
+            document.getElementById("activityselectall").disabled = false;
+
             var activitycount = parseInt($('.activitycount').text())
             var check = $('.activitycheckbox');
             for (var i = 0; i < activitycount; i++) {
@@ -1711,6 +1901,8 @@
             }
         } else {
             $('.activitytruntake').show()
+            document.getElementById("activitycheckuntake").disabled = false;
+            document.getElementById("activityselectall").disabled = true;
 
         }
     }
@@ -1722,6 +1914,85 @@
     function back() {
         window.location = "/Manage/News"
     }
+</script>
+
+@*多選顯示垃圾桶*@
+<script>
+    //最新消息-全選顯示圾桶
+
+    function newsselectall() {
+        if ($('#newsselectall').is(":checked")) {
+            $('.trtaken .newsdeletecheck').prop('checked', true);
+            $('#newsbody .deletesvg').attr("hidden", false)
+
+        } else {
+            $('.trtaken .newsdeletecheck').prop('checked', false);
+            $('#newsbody .deletesvg').attr("hidden", true)
+
+        }
+    }
+
+    //課程公告-全選顯示圾桶
+    function lessionselectall() {
+        if ($('#leesionselectall').is(":checked")) {
+            $('.lessiontrtaken .lessiondeletecheck').prop('checked', true);
+            $('#lessionbody .deletesvg').attr("hidden", false)
+
+        } else {
+            $('.lessiontrtaken .lessiondeletecheck').prop('checked', false);
+            $('#lessionbody .deletesvg').attr("hidden", true)
+
+        }
+    }
+
+     //活動消息-全選顯示圾桶
+    function activityselectall() {
+        if ($('#activityselectall').is(":checked")) {
+            $('.activitytrtake .activitydeletecheck').prop('checked', true);
+            $('#activitybody .deletesvg').attr("hidden", false)
+
+        } else {
+            $('.activitytrtake .activitydeletecheck').prop('checked', false);
+            $('#activitybody .deletesvg').attr("hidden", true)
+
+        }
+    }
+
+
+    //最新消息-多選顯示垃圾桶
+    function newsselect() {
+        if ($('.trtaken .newsdeletecheck').is(":checked")) {
+            $('#newsbody .deletesvg').attr("hidden", false)
+
+        } else {
+            $('#newsbody .deletesvg').attr("hidden", true)
+
+        }
+    }
+
+    //課程公告-多選顯示垃圾桶
+    function lessionselect() {
+        if ($('.lessiontrtaken .lessiondeletecheck').is(":checked")) {
+            $('#lessionbody .deletesvg').attr("hidden", false)
+
+        } else {
+            $('#lessionbody .deletesvg').attr("hidden", true)
+
+        }
+    }
+
+        //活動消息-多選顯示垃圾桶
+    function activityselect() {
+        if ($('.activitytrtake .activitydeletecheck').is(":checked")) {
+            $('#activitybody .deletesvg').attr("hidden", false)
+
+        } else {
+            $('#activitybody .deletesvg').attr("hidden", true)
+
+        }
+    }
+
+
 </script>
 
 

@@ -210,7 +210,13 @@ tr:nth-of-type(even) td {
     padding: 0px 20px;
 }
 
-
+input[type=date] {
+    width: 24%;
+    border-radius: 5px;
+    border: solid 1px #a4a1a1;
+    padding: 2px 5px;
+    outline: none;
+}
 
 input[type=text], select {
     border: solid 1px #a4a1a1;

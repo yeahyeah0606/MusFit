@@ -56,7 +56,7 @@ h3 {
 
 #btnconfirm {
     color: #fff;
-    background: #4383c1;
+    background: #6B7BA7;
     padding: 5px 10px;
     margin: 10px 5px;
     border: none;
@@ -64,9 +64,9 @@ h3 {
     outline: none;
 }
 
-    #btnconfirm:hover {
-        opacity: 0.9;
-    }
+#btnconfirm:hover {
+    opacity: 0.9;
+}
 
 
 .close {

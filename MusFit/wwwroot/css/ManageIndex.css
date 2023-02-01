@@ -122,7 +122,7 @@ body::-webkit-scrollbar-track {
 
 .side-bar .menu .item .sub-menu a {
     font-size: 15px;
-    padding-left: 50px;
+    padding-left: 60px;
 }
 
 .rotate {
@@ -160,9 +160,10 @@ body::-webkit-scrollbar-track {
     color: #fff;
 }
 
-.menu i {
-    font-size: 14px;
+.icon {
+    width: 20px;
 }
+
 
 .identity {
     padding:28px 25px;
@@ -186,9 +187,8 @@ hr{
 }
 
 #logout:hover {
-    background-color: #5d6d8e;
-    color: #8d89cc;
-    opacity: 0.9;
+    background-color: #D37CA5;
+    opacity: 0.8;
 }
 
 #logout:focus{
@@ -267,11 +267,11 @@ fieldset {
 }
 
 .odd {
-    background-image: linear-gradient(to top right, #f2ed73, #d3ce61);
+    background-image: linear-gradient(to top right, #D37CA5, #efb9ef);
 }
 
 .even {
-    background-image: linear-gradient(to top right, #9a9797, #dfd9d9);
+    background-image: linear-gradient(to top right, #ad94c7, #d7b4ef);
 }
 
 .golden_crown {

@@ -10,17 +10,15 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
 
-<div class="mycontain" id="classintroduce">
-    <div class="contentheader">
-        <h5>課程介紹管理列表</h5>
-    </div>
+<div class="contentheader">
+    <h1>課程介紹管理列表</h1>
+</div>
+
+<hr>
 
     <div>
         <button class="btn" id="addbtn" type="button" data-target="#addModal" data-toggle="modal">
-            新增文章
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-            </svg>
+            <span >新增文章</span>
         </button>
     </div>
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
@@ -149,8 +147,6 @@
         </div>
     </div>
 
-    <hr>
-
     <br>
 
     <div id="divnavlink">
@@ -163,6 +159,11 @@
             </li>
         </ul>
     </div>
+
+<div class="mycontain" id="classintroduce">
+
+
+
 
     <div class="allclass" id="cardio">
         <div class="searchdiv justify-content-end" style="margin-left:85%;">
@@ -177,7 +178,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col"><input id="cardioallcheckbox" type="checkbox" onclick="cardioselectall()" disabled></th>
+                    <th scope="col">選擇</th>
                     <th scope="col">課程類型</th>
                     <th scope="col">課程名稱</th>
                     <th scope="col">發布時間</th>
@@ -186,7 +187,21 @@
                     <th scope="col">課程是否結束</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="cardiobody">
+                <tr class="selectalldiv">
+                    <th>
+                        <input id="cardioallcheckbox" type="checkbox" onclick="cardioselectall()" disabled>
+                    </th>
+
+                    <td class="deletesvg" hidden>
+                        <button onclick="cardioselectdelete()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16" style="color:#897F9E;">
+                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                            </svg>
+                        </button>
+
+                    </td>
+                </tr>
 
                 @{
                     var cardiocount = 0;
@@ -200,14 +215,15 @@
                             if (result < 0)
                             {
                                         <tr class="trtaken">
-                                            <td><input class="cardioselectbox" type="checkbox" disabled></td>
+                                            <td><input class="cardioselectbox" type="checkbox" onclick="cardioselect()" ></td>
+                                            <td class="cardioselectid" hidden>@item.InId</td>
                                             <td>@item.InCategory</td>
                                             <td>@item.InTitle</td>
                                             <td>@item.InDate</td>
                                             <td>@item.lastDate</td>
                                             <td>
                                                 <button id="cardioEdit" class="btnEdit btn" type="button" data-target="#cardioEditModal" data-toggle="modal" onclick="cardioget(@item.InId)">編輯</button>
-                                                <button id="cardioDelete" class="btnDelete btn" onclick="cardiodelete(@item.InId)">刪除</button>
+                                        <button id="cardioDelete" class="btnDelete btn" data-target="#cardioDeleteModal" data-toggle="modal" onclick="cardiodeleteget(@item.InId)">刪除</button>
                                             </td>
                                             <td>
                                                 <input type="checkbox" class="cardiocheckbox" checked disabled>
@@ -217,14 +233,14 @@
                             else
                             {
                                         <tr class="truntaken">
-                                            <td><input class="cardioselectbox" type="checkbox" disabled></td>
+                                            <td><input type="checkbox" disabled></td>
 
                                             <td>@item.InCategory</td>
                                             <td>@item.InTitle</td>
                                             <td>@item.InDate</td>
                                             <td>
                                                 <button id="cardioEdit" class="btnEdit btn" type="button" data-target="#cardioEditModal" data-toggle="modal" onclick="cardioget(@item.InId)">編輯</button>
-                                                <button id="cardioDelete" class="btnDelete btn" onclick="cardiodelete(@item.InId)">刪除</button>
+                                        <button id="cardioDelete" class="btnDelete btn" data-target="#cardioDeleteModal" data-toggle="modal" onclick="cardiodeleteget(@item.InId)">刪除</button>
                                             </td>
                                             <td>
                                                 <input type="checkbox" class="cardiocheckbox" disabled>
@@ -359,12 +375,53 @@
             </div>
         </div>
 
+     @*   cardio delete modal*@
+        <div class="modal fade" id="cardioDeleteModal" tabindex="-1" aria-labelledby="cardioDeleteModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+         
+
+                    <input type="hidden" id="cardiodeleteID">
+                    <div class="modal-body">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16" style="color:#D65C67; margin-left:40%; margin-top:5%;">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                        <br>
+                        <br>
+                        <h5 class="deleteword">確定要刪除嗎?</h5>
+                        <p class="deletedescribe">刪除後紀錄則永久刪除</p>
+
+                        <div class="Modaldeletebtndiv">
+                            <button class="Modaldeletebtn btn" onclick="back()">取消</button>
+                            <button class="Modaldeletebtn btn" onclick="cardiodelete()">確定</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="allclass" id="yoga" style="display:none">
+
+        <div class="searchdiv justify-content-end" style="margin-left:85%;">
+            <label for="yogacheckuntake">未下架</label>
+            <input type="checkbox" id="yogacheckuntake" onclick="yogacheckuntake()">
+
+            <label for="yogachecktake">已下架</label>
+            <input type="checkbox" id="yogachecktake" onclick="yogachecktaken()">
+
+
+        </div>
+
         <table class="table">
             <thead>
                 <tr>
+                    <th scope="col">選擇</th>
                     <th scope="col">課程類型</th>
                     <th scope="col">課程名稱</th>
                     <th scope="col">發布時間</th>
@@ -374,45 +431,66 @@
 
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="yogabody">
+
+                <tr class="selectalldiv">
+                    <th>
+                        <input id="yogaallcheckbox" type="checkbox" onclick="yogaselectall()" disabled>
+                    </th>
+
+                    <td class="deletesvg" hidden>
+                        <button onclick="yogaselectdelete()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16" style="color:#897F9E;">
+                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                            </svg>
+                        </button>
+
+                    </td>
+                </tr>
+
                 @{
 
-
+                    var yogalistcount = 0;
                     foreach (var item in ViewBag.viewModeldata)
                     {
                         if (item.LcId == 4 || item.LcId == 5 || item.LcId == 6)
                         {
-
+                            yogalistcount++;
                             var result = DateTime.Compare(@item.lastDate, DateTime.Today);
 
                             if (result < 0)
                             {
-                                        <tr>
+                                        <tr class="yogatrtaken">
+                                    <td><input class="yogaselectbox" type="checkbox" onclick="yogaselect()"></td>
+                                    <td class="yogaselectid" hidden>@item.InId</td>
+
                                             <td>@item.InCategory</td>
                                             <td>@item.InTitle</td>
                                             <td>@item.InDate</td>
                                             <td>@item.lastDate</td>
                                             <td>
                                                 <button id="yogaEdit" class="btnEdit btn" type="button" data-target="#yogaEditModal" data-toggle="modal" onclick="yogaget(@item.InId)">編輯</button>
-                                                <button id="yogaDelete" class="btnDelete btn" onclick="yogadelete(@item.InId)">刪除</button>
+                                        <button id="yogaDelete" class="btnDelete btn" onclick="yogadeleteget(@item.InId)" data-target="#yogaDeleteModal" data-toggle="modal">刪除</button>
                                             </td>
                                             <td>
-                                                <input type="checkbox" checked disabled>
+                                                <input type="checkbox" class="yogacheckbox" checked disabled>
                                             </td>
                                         </tr>
                             }
                             else
                             {
-                                        <tr>
+                                        <tr class="yogatruntaken">
+                                    <td><input type="checkbox" disabled></td>
+
                                             <td>@item.InCategory</td>
                                             <td>@item.InTitle</td>
                                             <td>@item.InDate</td>
                                             <td>
                                                 <button id="yogaEdit" class="btnEdit btn" type="button" data-target="#yogaEditModal" data-toggle="modal" onclick="yogaget(@item.InId)">編輯</button>
-                                                <button id="yogaDelete" class="btnDelete btn" onclick="yogadelete(@item.InId)">刪除</button>
+                                        <button id="yogaDelete" class="btnDelete btn" onclick="yogadeleteget(@item.InId)" data-target="#yogaDeleteModal" data-toggle="modal">刪除</button>
                                             </td>
                                             <td>
-                                                <input type="checkbox" disabled>
+                                                <input type="checkbox" class="yogacheckbox" disabled>
                                             </td>
                                         </tr>
 
@@ -421,7 +499,9 @@
 
                     }
 
-
+                    <tr hidden>
+                        <td id="yogacount">@yogalistcount</td>
+                    </tr>
 
                 }
 
@@ -533,6 +613,35 @@
                         <button class="btn">取消</button>
                         <button class="btn" onclick="yogaput()">確定</button>
                     </div>
+                </div>
+            </div>
+        </div>
+
+             @*   yoga delete modal*@
+        <div class="modal fade" id="yogaDeleteModal" tabindex="-1" aria-labelledby="yogaDeleteModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+         
+
+                    <input type="hidden" id="yogadeleteID">
+                    <div class="modal-body">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16" style="color:#D65C67; margin-left:40%; margin-top:5%;">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                        <br>
+                        <br>
+                        <h5 class="deleteword">確定要刪除嗎?</h5>
+                        <p class="deletedescribe">刪除後紀錄則永久刪除</p>
+
+                        <div class="Modaldeletebtndiv">
+                            <button class="Modaldeletebtn btn" onclick="back()">取消</button>
+                            <button class="Modaldeletebtn btn" onclick="yogadelete()">確定</button>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -895,40 +1004,123 @@
     }
 </script>
 
+@*Delete Get*@
+<script>
+    function cardiodeleteget(id) {
+        $.ajax({
+            type: "get",
+            url: "/api/ClassIntroduces/" + id,
+            success: function (data) {
+                $('#cardiodeleteID').val(data.inId)
+                console.log($('#cardiodeleteID').val())
+            }
+        })
+    }
+
+    function yogadeleteget(id) {
+        $.ajax({
+            type: "get",
+            url: "/api/ClassIntroduces/" + id,
+            success: function (data) {
+                $('#yogadeleteID').val(data.inId)
+                console.log($('#yogadeleteID').val())
+            }
+        })
+    }
+</script>
+
+
+
+
 @*Delete*@
 <script>
-    function yogadelete(id) {
+    //yoga-單筆刪除
+    function yogadelete() {
 
-        if (confirm('確定要刪除此筆資料嗎?')) {
-            $.ajax({
-                type: "Delete",
-                url: "/api/ClassIntroduces/" + id,
-                success: function (data) {
-                    console.log('ok')
-                    window.location = "/Manage/ClassIntroduce"
-                },
-                error: function () {
-                    console.log("error")
-                }
-            });
+        $.ajax({
+            type: "Delete",
+            url: "/api/ClassIntroduces/" + $('#yogadeleteID').val(),
+            success: function (data) {
+                console.log('ok')
+                window.location = "/Manage/ClassIntroduce"
+            },
+            error: function () {
+                console.log("error")
+                console.log($('#yogadeleteID').val())
+            }
+        });
+    }
+
+    //yoga-選擇器刪除
+    var yogadeletelist = document.getElementsByClassName('yogaselectid')
+    var yogaselectdeletebox = document.getElementsByClassName('yogaselectbox')
+    function yogaselectdelete() {
+
+        for (var i = 0; i <= yogadeletelist.length; i++) {
+
+            if (yogaselectdeletebox[i].checked) {
+
+                $.ajax({
+                    type: "Delete",
+                    url: "/api/ClassIntroduces/" + yogadeletelist[i].innerHTML,
+                    success: function (data) {
+                        console.log('ok')
+                        window.location = "/Manage/ClassIntroduce"
+                    },
+                    error: function () {
+                        console.log("error")
+                        console.log(yogadeletelist[i].innerHTML)
+                    }
+                });
+
+            }
         }
 
     }
 
-    function cardiodelete(id) {
 
-        if (confirm('確定要刪除此筆資料嗎?')) {
-            $.ajax({
-                type: "Delete",
-                url: "/api/ClassIntroduces/" + id,
-                success: function (data) {
-                    console.log('ok')
-                    window.location = "/Manage/ClassIntroduce"
-                },
-                error: function () {
-                    console.log("error")
-                }
-            });
+    //cardio 單筆刪除
+
+    function cardiodelete() {
+
+        $.ajax({
+            type: "Delete",
+            url: "/api/ClassIntroduces/" + $('#cardiodeleteID').val(),
+            success: function (data) {
+                console.log('ok')
+                window.location = "/Manage/ClassIntroduce"
+            },
+            error: function () {
+                console.log("error")
+                console.log($('#cardiodeleteID').val())
+            }
+        });
+    }
+
+
+    //cario-選擇器刪除
+    var cardiodeletelist = document.getElementsByClassName('cardioselectid')
+    var cardioselectdeletebox = document.getElementsByClassName('cardioselectbox')
+    function cardioselectdelete() {
+
+        for (var i = 0; i <= cardiodeletelist.length; i++) {
+
+            if (cardioselectdeletebox[i].checked) {
+
+                $.ajax({
+                    type: "Delete",
+                    url: "/api/ClassIntroduces/" + cardiodeletelist[i].innerHTML,
+                    success: function (data) {
+                        console.log('ok')
+                        window.location = "/Manage/ClassIntroduce"
+                    },
+                    error: function () {
+                        console.log("error")
+                        console.log(cardiodeletelist[i].innerHTML)
+                    }
+                });
+
+            }
         }
 
     }
@@ -940,7 +1132,7 @@
 
 
 
-    //未下架
+    //cardio未下架
     function cardiocheckuntake() {
 
         if ($('#cardiocheckuntake').is(":checked")) {
@@ -967,8 +1159,7 @@
 
     }
 
-    //已下架
-    //cardio
+    //cardio已下架
     function cardiochecktaken() {
 
         if ($('#cardiochecktake').is(":checked")) {
@@ -992,7 +1183,62 @@
             $('.truntaken').show()
             document.getElementById("cardiocheckuntake").disabled = false;
             document.getElementById("cardioallcheckbox").disabled = true;
-            $('.trtaken .cardioselectbox').attr('disabled', true);
+
+        }
+    }
+
+
+    //yoga未下架
+    function yogacheckuntake() {
+
+        if ($('#yogacheckuntake').is(":checked")) {
+            document.getElementById("yogachecktake").disabled = true;
+
+            var yogacount = parseInt($('#yogacount').text())
+            var check = $('.yogacheckbox');
+            for (var i = 0; i < yogacount; i++) {
+                if (check[i].checked) {
+                    $('.yogatrtaken').hide()
+                    console.log("ok")
+                } else {
+                    console.log("no")
+                    console.log(yogacount)
+
+                }
+            }
+        } else {
+            $('.yogatrtaken').show()
+            document.getElementById("yogachecktake").disabled = false;
+
+        }
+
+
+    }
+
+    //yoga已下架
+    function yogachecktaken() {
+
+        if ($('#yogachecktake').is(":checked")) {
+            document.getElementById("yogacheckuntake").disabled = true;
+
+            document.getElementById("yogaallcheckbox").disabled = false;
+            $('.yogatrtaken .yogaselectbox').attr('disabled', false);
+
+            var yogacount = parseInt($('#yogacount').text())
+            var check = $('.yogacheckbox');
+            for (var i = 0; i < yogacount; i++) {
+                if (check[i].checked) {
+
+                    console.log("ok")
+                } else {
+                    console.log("no")
+                    $('.yogatruntaken').hide()
+                }
+            }
+        } else {
+            $('.yogatruntaken').show()
+            document.getElementById("yogacheckuntake").disabled = false;
+            document.getElementById("yogaallcheckbox").disabled = true;
 
         }
     }
@@ -1011,17 +1257,54 @@
         document.getElementById("cardiochecktake").disabled = false;
     }
 
-    //勾th的checkbox,為全選
+    //cardio全選
     function cardioselectall(){
         if ($('#cardioallcheckbox').is(":checked")) {
-            $('.trtaken .cardioselectbox').prop('checked', true)
-            console.log($('#cardioallcheckbox').is(":checked"))
+            $('#cardiobody .deletesvg').attr("hidden", false)
+            $('.trtaken .cardioselectbox').prop('checked', true);
+
         } else {
-            $('.trtaken .cardioselectbox').prop('checked', false)
+            $('#cardiobody .deletesvg').attr("hidden", true)
+            $('.trtaken .cardioselectbox').prop('checked', false);
 
         }
     }
 
+    //cardio多選
+    function cardioselect() {
+        if ($('.trtaken .cardioselectbox').is(":checked")) {
+            $('#cardiobody .deletesvg').attr("hidden", false)
+
+        } else {
+            $('#cardiobody .deletesvg').attr("hidden", true)
+
+        }
+    }
+
+
+    //yoga全選
+    function yogaselectall() {
+        if ($('#yogaallcheckbox').is(":checked")) {
+            $('#yogabody .deletesvg').attr("hidden", false)
+            $('.yogatrtaken .yogaselectbox').prop('checked', true);
+
+        } else {
+            $('#yogabody .deletesvg').attr("hidden", true)
+            $('.yogatrtaken .yogaselectbox').prop('checked', false);
+
+        }
+    }
+
+    //yoga多選
+    function yogaselect() {
+        if ($('.yogatrtaken .yogaselectbox').is(":checked")) {
+            $('#yogabody .deletesvg').attr("hidden", false)
+
+        } else {
+            $('#yogabody .deletesvg').attr("hidden", true)
+
+        }
+    }
 </script>
 
 

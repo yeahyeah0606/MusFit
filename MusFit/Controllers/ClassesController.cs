@@ -161,7 +161,7 @@ namespace MusFit.Controllers
 						  join e in _context.Employees on c.EId equals e.EId
 						  join r in _context.Rooms on c.RoomId equals r.RoomId
 						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
-						  where ct.CtLession == 1 && ct.CtDate >= date_start
+						  where ct.CtLession == 1 && ct.CtDate >= date_start && c.CId != 11
 								&& ct.CtDate <= date_end && lc.LcId == lcID
 						  orderby c.CNumber ascending
 						  select new
@@ -188,7 +188,7 @@ namespace MusFit.Controllers
 						  join e in _context.Employees on c.EId equals e.EId
 						  join r in _context.Rooms on c.RoomId equals r.RoomId
 						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
-						  where ct.CtLession == 1 && ct.CtDate >= date_start
+						  where ct.CtLession == 1 && ct.CtDate >= date_start && c.CId != 11
 									&& ct.CtDate <= date_end && e.EId == eID
 						  orderby c.CNumber ascending
 						  select new
@@ -215,7 +215,7 @@ namespace MusFit.Controllers
 						  join e in _context.Employees on c.EId equals e.EId
 						  join r in _context.Rooms on c.RoomId equals r.RoomId
 						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
-						  where ct.CtLession == 1 && ct.CtDate >= date_start
+						  where ct.CtLession == 1 && ct.CtDate >= date_start && c.CId != 11
 									&& ct.CtDate <= date_end
 						  orderby c.CNumber ascending
 						  select new
@@ -242,7 +242,7 @@ namespace MusFit.Controllers
 						  join e in _context.Employees on c.EId equals e.EId
 						  join r in _context.Rooms on c.RoomId equals r.RoomId
 						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
-						  where ct.CtLession == 1 && e.EId == eID && lc.LcId == lcID
+						  where ct.CtLession == 1 && e.EId == eID && lc.LcId == lcID && c.CId != 11
 						  orderby c.CNumber ascending
 						  select new
 						  {
@@ -268,7 +268,7 @@ namespace MusFit.Controllers
 						  join e in _context.Employees on c.EId equals e.EId
 						  join r in _context.Rooms on c.RoomId equals r.RoomId
 						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
-						  where ct.CtLession == 1 && lc.LcId == lcID
+						  where ct.CtLession == 1 && lc.LcId == lcID && c.CId != 11
 						  orderby c.CNumber ascending
 						  select new
 						  {
@@ -294,7 +294,7 @@ namespace MusFit.Controllers
 						  join e in _context.Employees on c.EId equals e.EId
 						  join r in _context.Rooms on c.RoomId equals r.RoomId
 						  join lc in _context.LessionCategories on c.LcId equals lc.LcId
-						  where ct.CtLession == 1 && e.EId == eID
+						  where ct.CtLession == 1 && e.EId == eID && c.CId != 11
 						  orderby c.CNumber ascending
 						  select new
 						  {

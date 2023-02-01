@@ -2,11 +2,8 @@
         var createReserveModal = document.getElementById("createReserveModal");
         var editModal = document.getElementById("editModal");
         var deleteModal = document.getElementById("deleteModal");
-        var errorMessage = document.getElementById('errorMessage');
-        var validationMessage = document.getElementById('validationMessage');
-        var valPhoneMessage = document.getElementById('valPhoneMessage');
-        var valiMailMessage = document.getElementById('valMailMessage');
-        var valVisitorMessage = document.getElementById('valVisitorMessage');
+        var remind = document.getElementById("emptyInputRemind");
+        var errorValidation = document.getElementById("errorValidationMessage");
         const pageid = document.getElementById('pageid');
         var reg = /^(09)[0-9]{8}$/;
 
@@ -14,16 +11,6 @@
         function FormClear() {
             document.getElementById("createForm").reset();
             document.getElementById("createOrder").reset();
-        }
-
-        //close modals
-        function closeModal() {
-            createModal.style.display = "none";
-            editModal.style.display = "none";
-            deleteModal.style.display = "none";
-            showNoDataModal.style.display = "none";
-            createReserveModal.style.display = "none";
-            errorMessage.style.display = "none";
         }
 
         document.getElementById('cancelCreate').addEventListener('click', closeModal);
@@ -34,6 +21,7 @@
         document.getElementById('cancelReservation').addEventListener('click', FormClear);
         document.getElementById('leaveReservation').addEventListener('click', closeModal);
         document.getElementById('leaveReservation').addEventListener('click', FormClear);
+
 
         pageid.addEventListener('click', switchPage);
 
@@ -57,10 +45,48 @@
 
         //close validation remind modal
         function closeValidationModel() {
-            validationMessage.style.display = "none";
-            valPhoneMessage.style.display = "none";
-            valMailMessage.style.display = "none";
-            valVisitorMessage.style.display = "none";
+            remind.style.display = "none";
+            errorValidation.style.display = "none";
+        }
+        
+        //close modals
+        function closeModal() {
+            createModal.style.display = "none";
+            createReserveModal.style.display = "none";
+            editModal.style.display = "none";
+            deleteModal.style.display = "none";
+            $('#errorMessage').css("display", "none");
+        }
+
+        //show savechanges message
+        function showMessage(message) {
+            $('#createModal').css("display", "none");
+            $('#createReserveModal').css("display", "none");
+            $('#deleteModal').css("display", "none");
+            $('#editModal').css("display", "none");
+            $('#message').text(message);
+            $('#messageModal').css("display", "block");
+            $('#confirmMessage').focus();
+}
+
+        // show error
+        function errorMessage(message) {
+            $('#error').text(message);
+            $('#errorMessage').css("display", "block");
+            $('#confirmError').focus();
+}
+
+        // show validation error
+        function validationMessage(message) {
+            $('#validation').text(message);
+            $('#errorValidationMessage').css("display", "block");
+            $('#confirmErrorValidation').focus();
+}
+
+        // show empty input remind message
+        function emptyInputRemind() {
+            $('#emptyInputRemind').css("display", "block");
+            $('#confirmRemind').focus();
         }
 
         //close success message modal
@@ -72,11 +98,19 @@
         function postEmptyClassOrderAndClassRecord(x) {
             $('#visitorSId').val(x[0].sId);
             var classRecords = { sId: $('#visitorSId').val(), classTimeId: 63 };
-            var classOrders = { sId: $('#visitorSId').val(), classTimeId: 63, orderTime: new Date().toJSON().slice(0, 19),orderStatus: '體驗',eId:1 };
+            var date = new Date();
+            var localDate = addHours(date, 8);
+            var orderTime = localDate.toJSON().slice(0, 19);
+            var classOrders = { sId: $('#visitorSId').val(), classTimeId: 63, orderTime: orderTime,orderStatus: '體驗',eId:1 };
             myAJAX(AjaxType.POST, "/api/classorders/", null, "application/json", JSON.stringify(classOrders));
             myAJAX(AjaxType.POST, "/api/classrecords/", null, "application/json", JSON.stringify(classRecords));
-        }
+}
 
+        // get local datetime
+        function addHours(date, hours) {
+            date.setHours(date.getHours() + hours);
+            return date;
+        }
 
         //email format validation
         function IsEmail(email) {
@@ -257,8 +291,7 @@
             queryStartDate = $('#startDate').val();
             queryEndDate = $('#endDate').val();
             if (queryInput == "" && queryStartDate == "" && queryEndDate == "") {
-                $('#errorMessage').css("display", "block");
-                $('#confirmError').focus();
+                errorMessage("請輸入查詢條件!!!");
             }
             else {
                 $('.result').remove();
@@ -279,8 +312,7 @@
             })
             pagination(queryData, 1);
             if (flag == false) {
-                $('#showNoDataModal').css("display", "block");
-                $('#confirmNoData').focus();
+                errorMessage("查無資料");
             }
         }
         function findReservationsByQueryDate(data) {
@@ -293,8 +325,7 @@
             }
             pagination(queryData, 1);
             if (flag == false) {
-                $('#showNoDataModal').css("display", "block");
-                $('#confirmNoData').focus();
+                errorMessage("查無資料");
             }
         }
 
@@ -328,7 +359,7 @@
                 var option = `<option value="${c.cName}">${c.cName}</option>`;
                 $('#new_className').append(option);
             })
-        }
+}
 
         //create visitor
         $('#btnCreateConfirm').click(function () {
@@ -340,25 +371,22 @@
             $('#CreateMail').val(mail);
 
             if (name == "" || phone == "" || mail == "" || $('input:radio[name=sGender]:checked').val() == 0) {
-                validationMessage.style.display = "block"; $('#confirmValidation').focus(); }
-            else if (!reg.test(phone)) { valPhoneMessage.style.display = "block"; $('#confirmValPhone').focus(); }
-            else if (!IsEmail(mail)) { valMailMessage.style.display = "block"; $('#confirmValMail').focus(); }
+                emptyInputRemind(); }
+            else if (!reg.test(phone)) { validationMessage("手機輸入格式有誤!!"); }
+            else if (!IsEmail(mail)) { validationMessage("信箱輸入格式有誤!!"); }
             else {
-                myAJAX(AjaxType.POST, "/api/students/", showMessage("已存檔"), "application/json", JSON.stringify(GetFormData($('#createForm'))));
+                var name = $('#CreateName').val();
+                var phone = $('#CreatePhone').val();
+                myAJAX(AjaxType.GET, "/api/students/findGuestsIfExist/" + name + "/" + phone, createVisitorInformation);
             }
         })
-
-
-        function showMessage(message){
-            $('#createModal').css("display", "none");
-            $('#createReserveModal').css("display", "none");
-            $('#deleteModal').css("display", "none");
-            $('#editModal').css("display", "none");  
-            $('#message').text(message);
-            $('#messageModal').css("display", "block");
-            $('#confirmMessage').focus();
+        function createVisitorInformation(x) {
+            if (x == false) {
+                myAJAX(AjaxType.POST, "/api/students/", showMessage("已存檔"), "application/json", JSON.stringify(GetFormData($('#createForm'))));
+            } else {
+                validationMessage("訪客已存在，請勿重複建立!!");
+            }
         }
-
 
         //create reservation
         $('#btnCreateReserveConfirm').click(function () {
@@ -366,12 +394,14 @@
             var new_classDate = $('#new_classDate').val();
             var classRecords = { sId: $('#new_sID').val(), classTimeId: $('#new_classTimeId').val() };
 
-            if ($('#new_sID').val() == "") { valVisitorMessage.style.display = "block"; $('#confirmValVisitor').focus(); }
-            else if (new_className == null || new_classDate == null) { validationMessage.style.display = "block"; $('#confirmValidation').focus(); }
+            if ($('#new_sID').val() == "") { validationMessage("查無訪客資料，請先建立訪客資訊!!"); }
+            else if (new_className == null || new_classDate == null) { emptyInputRemind(); }
             else {
                 $('#new_orderStatus').val('體驗');
-
-                $('#new_orderTime').val(new Date().toJSON().slice(0, 19));
+                var date = new Date();
+                var localDate = addHours(date, 8);
+                var orderTime = localDate.toJSON().slice(0, 19);
+                $('#new_orderTime').val(orderTime);
                 // create classrecords
                 myAJAX(AjaxType.POST, "/api/classrecords/", null, "application/json", JSON.stringify(classRecords));
                 // create reservations
@@ -500,14 +530,15 @@
             var classRecords = { crId: crID, sId: $('#sId').val(), classTimeId: $('#classTimeId').val(), crAttendance: crAttendance, crContent: crContent };
 
             if (name == "" || phone == "" || mail == "" || $('input:radio[name=sGender]:checked').val() == 0
-                || className == null || classDate == null) {
-                validationMessage.style.display = "block";
-            }
-            else if (!reg.test(phone)) { valPhoneMessage.style.display = "block"; $('#confirmValPhone').focus(); }
-            else if (!IsEmail(mail)) { valMailMessage.style.display = "block"; $('#confirmValMail').focus(); }
+                || className == null || classDate == null) { emptyInputRemind(); }
+            else if (!reg.test(phone)) { validationMessage("手機輸入格式有誤!!"); }
+            else if (!IsEmail(mail)) { validationMessage("信箱輸入格式有誤!!"); }
             else {
                 var orderId = $('#orderId').val();
-                $('#orderTime').val(new Date().toJSON().slice(0, 19));
+                var date = new Date();
+                var localDate = addHours(date, 8);
+                var orderTime = localDate.toJSON().slice(0, 19);
+                $('#orderTime').val(orderTime);
 
                 // edit reservation order
                 myAJAX(AjaxType.PUT, "/api/classorders/" + orderId, null, "application/json", JSON.stringify(GetFormData($('#editOrder'))))

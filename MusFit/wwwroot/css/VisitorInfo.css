@@ -247,9 +247,10 @@ form a {
     font-size: 16px;
 }
 
-#validationModal, #valPhoneModal, #valMailModal, #deleteContent, #valVisitorModal,
-#noDataModal, #errorModal, #successModal {
+#emptyInputRemindModal, #errorValidationModal, #deleteContent,
+#errorModal, #successModal {
     width: 400px;
+    margin-top: 80px;
 }
 
 

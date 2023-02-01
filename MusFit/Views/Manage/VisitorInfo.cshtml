@@ -223,65 +223,35 @@
 
 </div>
 
-@*query No Data*@
-<div id="showNoDataModal" class="modal">
-
-    <div id="noDataModal" class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <p>查無資料</p>
-        <button id="confirmNoData" class="btnConfirmMessage" onclick="closeModal()">確定</button>
-    </div>
-
-</div>
-
 @*show error message *@
 <div id="errorMessage" class="modal">
 
     <div id="errorModal" class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
-        <p>請輸入查詢條件!!</p>
+        <p id="error"></p>
         <button id="confirmError" class="btnConfirmMessage" onclick="closeModal()">確定</button>
     </div>
 
 </div>
 
 @*show validation message*@
-<div id="validationMessage" class="modal">
+<div id="emptyInputRemind" class="modal">
 
-    <div id="validationModal" class="modal-content">
+    <div id="emptyInputRemindModal" class="modal-content">
         <span class="close" onclick="closeValidationModel()">&times;</span>
-        <p><span class="star">* </span>為必選欄位!!!</p>
-        <button id="confirmValidation" class="btnConfirmMessage" onclick="closeValidationModel()">確定</button>
+        <p><span class="star">* </span>為必填欄位!!!</p>
+        <button id="confirmRemind" class="btnConfirmMessage" onclick="closeValidationModel()">確定</button>
     </div>
 
 </div>
 
-<div id="valPhoneMessage" class="modal">
+@*show error validation message*@
+<div id="errorValidationMessage" class="modal">
 
-    <div id="valPhoneModal" class="modal-content">
+    <div id="errorValidationModal" class="modal-content">
         <span class="close" onclick="closeValidationModel()">&times;</span>
-        <p>手機格式輸入有誤!!</p>
-        <button id="confirmValPhone" class="btnConfirmMessage" onclick="closeValidationModel()">確定</button>
-    </div>
-
-</div>
-
-<div id="valMailMessage" class="modal">
-
-    <div id="valMailModal" class="modal-content">
-        <span class="close" onclick="closeValidationModel()">&times;</span>
-        <p>信箱格式輸入有誤!!</p>
-        <button id="confirmValMail" class="btnConfirmMessage" onclick="closeValidationModel()">確定</button>
-    </div>
-
-</div>
-
-<div id="valVisitorMessage" class="modal">
-
-    <div id="valVisitorModal" class="modal-content">
-        <span class="close" onclick="closeValidationModel()">&times;</span>
-        <p>查無訪客資料，請先建立訪客資訊!!</p>
-        <button id="confirmValVisitor" class="btnConfirmMessage" onclick="closeValidationModel()">確定</button>
+        <p id="validation"></p>
+        <button id="confirmErrorValidation" class="btnConfirmMessage" onclick="closeValidationModel()">確定</button>
     </div>
 
 </div>
@@ -302,11 +272,11 @@
 @section Scripts{
     <script src="~/js/VisitorInfo.js"></script>
     <script>
+
         function AddStudent() {
             var student = $('#phone').val();
             window.location.href = '@Url.Action("SAdd", "Manage")?SPhone=' + student;
         }
-
 
     </script>
 }

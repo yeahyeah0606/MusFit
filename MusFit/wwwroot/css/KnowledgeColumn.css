@@ -172,3 +172,13 @@ a:focus {
     background-color: #9092AD;
     color: #ffff;
 }
+
+.emojiselectbar {
+    border: none;
+    background-color: #EFEFEF;
+}
+
+    .emojiselectbar:focus {
+        border: none;
+        background-color: #EFEFEF;
+    }

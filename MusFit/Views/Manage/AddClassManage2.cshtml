@@ -428,21 +428,21 @@
 							var n = 2*k+1, m = 2*k+2;
 							var template =
 								`
-										<div class="row">
-											<div class="column">
-												<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-																<label id="date" for="date${n}">${n}.&emsp;</label>
-														<input type="date" id="date${n}" />
-												<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-											</div>
-											<div class="column">
-												<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
-														<label id="date" for="date${m}">${m}.&emsp;</label>
-														<input type="date" id="date${m}" />
-												<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
-											</div>
+									<div class="row">
+										<div class="column">
+											<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+															<label id="date" for="date${n}">${n}.&emsp;</label>
+													<input type="date" id="date${n}" />
+											<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
 										</div>
-											`;
+										<div class="column">
+											<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>
+													<label id="date" for="date${m}">${m}.&emsp;</label>
+													<input type="date" id="date${m}" />
+											<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
+										</div>
+									</div>
+								`;
 							$("#date-body").append(template);
 						}
 						var template2 =
@@ -657,7 +657,6 @@
 					}
 					console.log("myContent: " + myContent);
 					document.getElementById('addContent').innerHTML= myContent ;
-
 					// 打開表單
 					addClassModal.style.display = "block";			
 				}

@@ -977,7 +977,9 @@ textarea.form-control-lg {
     position: relative;
 }
 
-
+input[type="radio"] {
+    accent-color: #9092AD;
+}
 
 .card-body .photoFile input {
     vertical-align: middle;

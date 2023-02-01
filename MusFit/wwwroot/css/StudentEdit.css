@@ -1064,7 +1064,9 @@ textarea.form-control-lg {
         box-shadow: 0 0px 0px , 0 0 0px transparent;
     }
 
-
+input[type="radio"] {
+    accent-color: #9092AD;
+}
 
 #btnCanael{
     background-color:#cdcfd0;

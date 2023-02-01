@@ -1022,7 +1022,10 @@ textarea.form-control-lg {
         width: 100px;
         height: 100%;
     }
-    
+
+input[type="radio"] {
+    accent-color: #9092AD;
+}
 
 .card-body .photoFile input {
     vertical-align: middle;

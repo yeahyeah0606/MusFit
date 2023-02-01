@@ -1030,6 +1030,10 @@ textarea.form-control-lg {
         height: 100%;
     }
 
+input[type="radio"] {
+    accent-color: #9092AD;
+}
+
 .card-body label {
     margin-right: 20px;
     font-size: 18px;

@@ -56,6 +56,17 @@
     cursor: pointer;
     margin: 1px;
 }
+
+/*.cancel {
+    background-color: #9092AD;
+    color: #fff;
+    padding: 5px 10px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+}*/
+
 .button {
     display: inline-block;
     border-radius: 4px;
@@ -209,6 +220,7 @@ select {
 
 input[type=radio] {
     margin: auto 25px;
+    accent-color: #9092AD;
 }
 
 form input[type=text] {
@@ -257,7 +269,7 @@ form a {
 
 #cancelCreate {
     color: #fff;
-    background: #c0bcbc;
+    background: #9092AD;
     padding: 5px 10px;
     margin: 10px 5px;
     border: none;

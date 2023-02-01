@@ -1,16 +1,3 @@
-/* text欄位 樣式 */
-/*input[type=text] {
-    width: 15%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 1px solid #555;
-    outline: none;
-    font-size: 16px;
-    height: 30px;
-}
-*/
-
 /* 查詢 button 樣式 */
 #btnQuery {
     display: inline-block;
@@ -44,7 +31,7 @@
 }
 
 .cancel {
-    background-color: #c0bcbc;
+    background-color: #9092AD;
     color: #fff;
     padding: 5px 10px;
     margin: 10px 5px;
@@ -236,6 +223,7 @@ select {
 
 input[type=radio] {
     margin: auto 25px;
+    accent-color: #9092AD;
 }
 
 form input[type=text] {

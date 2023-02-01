@@ -16,9 +16,10 @@
 		<form class="employee-edit-form justify-content-center" method="post" action="@Url.Action("CEdit","Manage")" enctype="multipart/form-data">
 			<div class="card mb-6">
 				<div class="card-body text-center">
-					<img src="@string.Format("data:image/png;base64,{0}", Model.EPhoto)" class="img-fluid rounded-circle" id="myPhoto" width="180" height="200">
+					<img src="@string.Format("data:image/png;base64,{0}", Model.EPhoto)" class="img-fluid rounded-circle" id="myPhoto" width="200" height="200">
 					<div class="form-group photoFile">
-						<input type="file" class="w-100" asp-for="EPhoto" id="EPhoto" accept=".png, .jpg, .jpeg" onchange='imgUploadCheck(this)' />
+						<span>請選擇</span>
+						<input type="file" asp-for="EPhoto" id="EPhoto" accept=".png, .jpg, .jpeg" onchange='imgUploadCheck(this)' />
 					</div>
 				</div>
 				<hr class="my-0" />
@@ -40,19 +41,19 @@
 							<div class="form-group mb-4">
 								<label asp-for="EAccount">帳號</label>
 								<input asp-for="EAccount" class="form-control" type="text"><br>
-								<span class="field-validation-valid text-danger" data-valmsg-for="EAccount"
+								<span class="field-validation-valid text-danger mt-2" data-valmsg-for="EAccount"
                                           data-valmsg-replace="true" asp-validation-for="EAccount"></span>
 							</div>
 							<div class="form-group mb-4">
 								<label asp-for="EName">員工姓名 </label>
 								<input asp-for="EName" class="form-control" type="text"><br>
-								<span class="field-validation-valid text-danger" data-valmsg-for="EName"
+								<span class="field-validation-valid text-danger mt-2" data-valmsg-for="EName"
 									  data-valmsg-replace="true" asp-validation-for="EName"></span>
 							</div>
 							<div class="form-group mb-4">
 								<label asp-for="EEngName">員工英文名 </label>
 								<input asp-for="EEngName" class="form-control" type="text"><br>
-								<span class="field-validation-valid text-danger" data-valmsg-for="EEngName"
+								<span class="field-validation-valid text-danger mt-2" data-valmsg-for="EEngName"
 									  data-valmsg-replace="true" asp-validation-for="EEngName"></span>
 							</div>
 							<div class="form-group mb-4">
@@ -64,38 +65,38 @@
 								<label class="form-check-label" id="EGender">
 									<input asp-for="EGender" class="form-check-input" type="radio" value="true">男
 								</label><br>
-								<span class="field-validation-valid text-danger" data-valmsg-for="EGender"
+								<span class="field-validation-valid text-danger mt-2" data-valmsg-for="EGender"
 									  data-valmsg-replace="true" asp-validation-for="EGender"></span>
 							</div>
 							<div class="form-group mb-4">
 								<label asp-for="EBirth">生日</label>
 								<input asp-for="EBirth" class="form-control" type="date" style="width:247px;"><br>
-								<span class="field-validation-valid text-danger" data-valmsg-for="EBirth"
+								<span class="field-validation-valid text-danger mt-2" data-valmsg-for="EBirth"
 									  data-valmsg-replace="true" asp-validation-for="EBirth"></span>
 							</div>
 							<div class="from-group mb-4" >
                                 <label asp-for="EIdentityNumber" >身分證</label>
 								<input asp-for="EIdentityNumber" class="form-control" type="text"
 									   name="EIdentityNumber"><br>
-								<span class="field-validation-valid text-danger" data-valmsg-for="EIdentityNumber"
+								<span class="field-validation-valid text-danger mt-2" data-valmsg-for="EIdentityNumber"
 									  data-valmsg-replace="true" asp-validation-for="EIdentityNumber"></span>
                             </div>
 							<div class="form-group mb-4">
 								<label asp-for="EPhone">手機號碼</label>
 								<input asp-for="EPhone" class="form-control" type="tel"><br>
-								<span class="field-validation-valid text-danger" data-valmsg-for="EPhone"
+								<span class="field-validation-valid text-danger mt-2" data-valmsg-for="EPhone"
 									  data-valmsg-replace="true" asp-validation-for="EPhone"></span>
 							</div>
 							<div class="form-group mb-4">
 								<label asp-for="EMail">電子郵件</label>
 								<input asp-for="EMail" class="form-control" type="email"><br>
-								<span class="field-validation-valid text-danger" data-valmsg-for="EMail"
+								<span class="field-validation-valid text-danger mt-2" data-valmsg-for="EMail"
                                           data-valmsg-replace="true" asp-validation-for="EMail"></span>
 							</div>
 							<div class="form-group mb-4">
 								<label asp-for="EAddress">地址</label>
 								<input asp-for="EAddress" class="form-control" type="text"><br>
-								<span class="field-validation-valid text-danger" data-valmsg-for="EAddress"
+								<span class="field-validation-valid text-danger mt-2" data-valmsg-for="EAddress"
 									  data-valmsg-replace="true" asp-validation-for="EAddress"></span>
 							</div>
 							<div class="mb-5 ">

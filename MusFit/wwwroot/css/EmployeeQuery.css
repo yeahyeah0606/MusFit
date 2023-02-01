@@ -33,9 +33,9 @@ input:focus {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(135, 206, 250, 0.6);
 }
 
-.content {
-    width: inherit;
-    text-align: center;
+.myform {
+    width: inherit !important;
+    text-align: center !important;
 }
 
 .employee-form {
@@ -87,20 +87,4 @@ input:-webkit-autofill {
 
 
 
-@media(max-width:1000px) {
-    body {
-        width: auto;
-    }
-}
 
-@media(max-width:800px) {
-    body {
-        width: auto;
-    }
-}
-
-@media(max-width:600px) {
-    body {
-        width: auto;
-    }
-}

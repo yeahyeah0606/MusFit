@@ -1,0 +1,180 @@
+﻿.knowledgecontentheader {
+    margin-left: 5%;
+    margin-top: 2%;
+}
+
+
+.mycontain {
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.mycontainer {
+    max-width: 100%
+}
+
+
+table {
+    overflow: hidden;
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 0 0 9px rgba(0, 0, 0, 0.35);
+    font-family: 'Oswald', sans-serif;
+    border-collapse: collapse;
+}
+
+    table thead {
+        background-color: #9092AD;
+        color: #ffffff;
+        width: 25vw;
+        height: 65px;
+    }
+
+#addbtn {
+    border: solid;
+    border-width: 0.5px;
+    margin-left: 1%;
+    margin-top: 1%;
+}
+
+    #addbtn span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+        text-align: center;
+    }
+
+        #addbtn span:after {
+            content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-file-earmark-plus-fill' viewBox='0 0 16 16'%3E%3Cpath d='M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM8.5 7v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 1 0z'/%3E%3C/svg%3E");
+            opacity: 0;
+            top: 0;
+            right: -40px;
+            transition: 0.5s;
+            padding-left: 3px;
+        }
+
+    #addbtn:hover span {
+        padding-left: 5px;
+    }
+
+        #addbtn:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+.textbox {
+    border-color: #AA5973;
+    border-radius: 5px;
+    border-width: 1px;
+}
+
+    .textbox:focus {
+        border: none;
+    }
+
+textarea {
+    border: none;
+    background-color: #ffff;
+    border-radius: 5px;
+    width: 95%;
+    margin-left: 2%;
+    margin-top: 2%;
+    resize: none;
+}
+
+    textarea:focus {
+        outline: none;
+    }
+
+
+
+.titleinput {
+    border-style: solid;
+    border-color: #EFEFEF;
+    border-width: 0.5px;
+    width: 100%;
+    height: 50px;
+    font-size: 18px;
+    margin-left: 2%;
+    border-radius: 5px;
+}
+
+    .titleinput:focus {
+        outline: none;
+    }
+
+
+
+.divtextarea {
+    background-color: #ffff;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    height: 600px;
+    width: 100%;
+    margin-left: 2%;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #EFEFEF;
+}
+
+
+.titlelabel {
+    margin-left: 2%;
+    width: 100%;
+    margin-top: 2%;
+}
+
+
+.contenteditorbar {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-color: #EFEFEF;
+    border-style: solid;
+    border-width: 2px;
+    height: 50px;
+    width: 100%;
+    margin-left: 2%;
+    border-bottom: none;
+    background-color: #EFEFEF;
+}
+
+    .contenteditorbar .uploadlabel {
+        padding-left: 2%;
+        padding-top: 10px;
+    }
+
+a:focus {
+    border-style: solid;
+    border-width: 5px;
+}
+
+.deleteword {
+    text-align: center;
+    color: #737373;
+}
+
+.deletedescribe {
+    text-align: center;
+    font-size: 12px;
+    color: #CBCBCB;
+}
+
+.Modaldeletebtndiv {
+    margin-left: 37%;
+}
+
+.Modaldeletebtn {
+    background-color: #9092AD;
+    color: #ffff;
+}
+
+.emojiselectbar {
+    border: none;
+    background-color: #EFEFEF;
+}
+
+    .emojiselectbar:focus {
+        border: none;
+        background-color: #EFEFEF;
+    }
+

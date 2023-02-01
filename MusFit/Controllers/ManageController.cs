@@ -19,6 +19,7 @@ using System.Xml.Linq;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Routing;
 using System.Dynamic;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MusFit.Controllers
 {
@@ -1394,7 +1395,15 @@ namespace MusFit.Controllers
         }
 
 
+        public IActionResult KnowledgeDraft()
+        {
+
+            return View();
+        }
+
     }
+
+
 
     //將匿名類別擴充
     public static class ExpandoExtensions

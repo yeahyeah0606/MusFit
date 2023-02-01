@@ -8,7 +8,7 @@
 
 <main class="employee-form" >
     <h4>查詢員工</h4>
-    <div class="employee-content col-12" method="get" action="@Url.Action("EmployeeQuery","Manage")">
+    <div class="employee-content" method="get" action="@Url.Action("EmployeeQuery","Manage")">
         @{
             if (message != "")
             {
@@ -22,7 +22,7 @@
             }
         }
 
-        <div class="content" style="margin-left: 0%;">
+        <div class="myform" >
             <label asp-for="ENumber">員工編號</label>
             <input asp-for="ENumber" type="text" name="ENumber" value="">
             <label asp-for="EName">員工姓名</label>

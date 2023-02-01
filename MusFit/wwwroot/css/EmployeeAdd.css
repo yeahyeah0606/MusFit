@@ -1007,9 +1007,35 @@ textarea.form-control-lg {
     border-radius: 50% !important;
 }
 
+.photoFile {
+    overflow: hidden;
+    position: relative;
+    display: block;
+    background-color: #E3E3F1;
+    color: black;
+    text-align: center;
+    -web-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 5px;
+    padding: 10px 30px;
+    font-size: 18px;
+    font-family: Arial,Microsoft JhengHei;
+    width: 15%;
+    margin: 5px auto;
+}
 
+    .photoFile input {
+        position: absolute;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100%;
+    }
 
 .card-body img {
+    border: 2px solid #E3E3F1;
     height: 200px;
     width: 200px;
 }

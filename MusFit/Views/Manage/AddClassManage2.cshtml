@@ -85,7 +85,6 @@
 
 @*確認新增 information*@
 <div id="addClassModal" class="modal">
-
 	<div class="modal-content">
 		<span class="close" id="leaveCreate">&times;</span>
 		<form id="addClassForm">
@@ -95,6 +94,9 @@
 			<input type="hidden" id="tID" name="tID" value="@tID" />
 			<input type="hidden" id="cTotalLession" name="cTotalLession" value="@cTotalLession" />
 			<input type="hidden" id="eID" name="eID" value="@eID" />
+			<input type="hidden" id="cprice" name="cprice" value="@cprice" />
+			<input type="hidden" id="cName" name="cName" value="@cName" />
+			<input type="hidden" id="cExcept" name="cExcept" value="@cExcept" />
 			<input type="hidden" id="lcAbbrev" name="lcAbbrev" />
 
 			<div class="row">
@@ -144,7 +146,6 @@
 			<div class="row">
 					<div class="column">
 						<label >課程日期</label>
-						@*<span class="date-span">&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; </span>*@
 						<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
 						<p>&emsp;&emsp;&emsp;&emsp;&emsp;</p>
 					</div>
@@ -161,27 +162,22 @@
 			</div>
 			<p>&emsp;確定要新增課程嗎?</p>
 			<br>
-			<input type="button" id="btnAddConfirm" value="確定" />
-			<button class="cancel" id="cancelCreate" onclick="closeModel()">取消</button>
+			@*<input type="button" id="btnAddConfirm" value="確定" />*@
 		</form>
+		<div class="buttonRow">
+				<button id="btnAddConfirm" >確定</button>
+				<button class="cancel" id="cancelCreate">取消</button>
+			</div>
+
 	</div>
 
-</div>
-
-@*success operation*@
-<div id="successMessage" class="modal">
-	<div id="successModal" class="modal-content">
-		<span class="close" onclick="closeSuccessModel()">&times;</span>
-		<p>已存檔</p>
-		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
-	</div>
 </div>
 
 @*沒有開始日期*@
 <div id="noStartDateModal" class="modal">
 	<div id="noDataModal" class="modal-content">
 		<span class="close" onclick="closeModel()">&times;</span>
-		<p>請先選擇開課日</p>
+		<p>請先選擇開課日</p><br>
 		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
 </div>
@@ -190,7 +186,7 @@
 <div id="needTwoModal" class="modal">
 	<div id="noDataModal" class="modal-content">
 		<span class="close" onclick="closeModel()">&times;</span>
-		<p>請先選取兩個【星期】，再按【選取】</p>
+		<p>請先選取兩個【星期】，再按【選取】</p><br>
 		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
 </div>
@@ -199,7 +195,7 @@
 <div id="notSelectDateModal" class="modal">
 	<div id="noDataModal" class="modal-content">
 		<span class="close" onclick="closeModel()">&times;</span>
-		<p>請先按下【日期選取】，才能新增</p>
+		<p>請先按下【日期選取】，才能新增</p><br>
 		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
 </div>
@@ -256,12 +252,6 @@
 			successInsertModal.style.display = "none";
 			window.location = "/Manage/SignupClass1";
 		}
-
-		function closeSuccessModel() {
-			$('#successMessage').css("display", "none");
-			location.reload();
-		}
-
 
 		var dateStart, wNumber, c;
 		$('#btnInsert').click(function () {

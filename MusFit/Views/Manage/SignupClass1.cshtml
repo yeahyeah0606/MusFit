@@ -393,7 +393,8 @@
 								success: function (data) {
 									if (data.cActual < data.cExpect){
 										window.location.href = '@Url.Action("SignupClass2","Manage")?id=' + cID;
-									}else{
+									}
+									else{
 										//alert("該課程人數已滿，請報名其他課程");
 										$('#fullPeopleModal').css("display", "block");
 									}

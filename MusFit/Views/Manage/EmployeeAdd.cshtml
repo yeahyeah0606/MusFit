@@ -1,6 +1,7 @@
 ﻿@model MusFit.ViewModels.EmployeeViewModel
 @{
     ViewData["Title"] = "新增員工";
+    var message = (string)ViewData["error"] ?? string.Empty;
 }
 
 <link rel="stylesheet" href="~/css/EmployeeAdd.css">
@@ -14,7 +15,7 @@
         <form class="employee-edit-form justify-content-center" method="post" action="@Url.Action("EmployeeAdd","Manage")" enctype="multipart/form-data">
             <div class="card mb-6">
                 <div class="card-body text-center">
-                    <img src="@string.Format("data:image/png;base64,{0}", Model.EPhoto)" class="img-fluid rounded-circle" id="myPhoto" width="200" height="200">
+                    <img src="" class="img-fluid rounded-circle" id="myPhoto" width="200" height="200">
                     <div class="form-group photoFile">
                         <span>請選擇</span>
                         <input type="file" asp-for="EPhoto" id="EPhoto" accept=".png, .jpg, .jpeg" onchange='imgUploadCheck(this)' />
@@ -25,12 +26,12 @@
                 <div class="card-body">
                     <div class="row employee-edit-form  form-inline" style="width:90%;"
                           name="employee-edit-form" method="get" action="">
-                        <p id="error" style="color:red;" hidden>員工已存在!</p>
                         <div class="col-6 employee-edit-form-left" style="text-align:left;">
                             <div class="from-group mb-4">
+                                <p id="error" style="color:red;" hidden>員工已存在!</p>
                                 <label asp-for="EIdentityNumber">身分證</label>
                                 <input asp-for="EIdentityNumber" class="form-control" type="text"
-                                        onchange="GetEmployeeData()">
+                                       onchange="GetEmployeeData()">
                                 <span class="field-validation-valid text-danger mt-2" data-valmsg-for="EIdentityNumber"
                                         data-valmsg-replace="true" asp-validation-for="EIdentityNumber"></span>
                             </div>
@@ -126,7 +127,7 @@
 
                             <div class="row from-group mb-4" style="text-align:left;margin:0px;">
                                 <div class="col-6">
-                                    <label asp-for="AvailableLession">課程</label>
+                                    <label >課程</label>
                                 </div>
                                 <div class="col-6">
                                     @using (Html.BeginForm("EEdit", "Manage"))
@@ -143,9 +144,18 @@
                                                 </label>
                                             </div>
                                         }
+
+                                        
                                     }
-                                    <span class="field-validation-valid text-danger mt-2" data-valmsg-for="AvailableLession"
-                                          data-valmsg-replace="true" asp-validation-for="AvailableLession"></span>
+
+                                    @{
+                                        if (message != "")
+                                        {
+                                            <p id="error" style="color: red"><b>@ViewData["error"]</b></p>
+
+                                        }
+                                    }
+                                   
 
                                 </div>
                                 

@@ -105,6 +105,24 @@ namespace MusFit.Controllers
 		}
 		#endregion
 
+		#region 單一課程的所有ctLession
+		// GET: api/ClassTimes/getLession/1
+		[HttpGet("getLession/{id}")]
+		public async Task<ActionResult<IEnumerable<dynamic>>> GetctLession(int id)
+		{
+			var obj = from c in _context.Classes
+					  join ct in _context.ClassTimes on c.CId equals ct.CId
+					  where  c.CId == id
+                      orderby ct.CtLession
+					  select new
+					  {
+						  cID = id,
+						  ctLession = ct.CtLession
+					  };
+			return await obj.ToListAsync();
+		}
+		#endregion
+
 		//---------------------------------------------------------  君 END  ------------------------------------------------------------
 
 		// PUT: api/ClassTimes/5

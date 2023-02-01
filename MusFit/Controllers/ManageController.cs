@@ -170,34 +170,52 @@ namespace MusFit.Controllers
 
         public IActionResult StudentSearch(string SNumber, string SName, string SAccount)
         {
-            var queryResult = (from s in _context.Students
-                               where s.SIsStudentOrNot == true && (s.SNumber == SNumber || s.SName == SName || s.SAccount == SAccount)
-                               select new StudentViewModel()
-                               {
-                                   SId = s.SId,
-                                   SNumber = s.SNumber,
-                                   SName = s.SName,
-                                   SMail = s.SMail,
-                                   SBirth = s.SBirth,
-                                   SGender = s.SGender,
-                                   SContactor = s.SContactor,
-                                   SContactPhone = s.SContactPhone,
-                                   SPhoto = s.SPhoto,
-                                   SAddress = s.SAddress,
-                                   SPhone = s.SPhone,
-                                   SAccount = s.SAccount,
-                                   SToken = s.SToken,
-                                   SJoinDate = s.SJoinDate,
-                                   SIsStudentOrNot = s.SIsStudentOrNot
-                               }).FirstOrDefault();
+            var queryResult = _context.Students.Where(x => x.SIsStudentOrNot == true);
+            if (!string.IsNullOrEmpty(SNumber))
+            {
+                queryResult = queryResult.Where(x => x.SNumber == SNumber);
+            }
 
-            if (queryResult == null)
+            if (!string.IsNullOrEmpty(SName))
+            {
+                queryResult = queryResult.Where(x => x.SName == SName);
+            }
+
+            if (!string.IsNullOrEmpty(SAccount))
+            {
+                queryResult = queryResult.Where(x => x.SAccount == SAccount);
+            }
+
+            if (!queryResult.Any() || queryResult.Count() > 1)
             {
                 ViewData["error"] = "*請輸入正確會員資料*";
                 return View("StudentQuery");
             }
 
-            return View("StudentSelect", queryResult);
+           
+
+            var result = (from s in queryResult 
+                        select new StudentViewModel()
+                        {
+                            SId = s.SId,
+                            SNumber = s.SNumber,
+                            SName = s.SName,
+                            SMail = s.SMail,
+                            SBirth = s.SBirth,
+                            SGender = s.SGender,
+                            SContactor = s.SContactor,
+                            SContactPhone = s.SContactPhone,
+                            SPhoto = s.SPhoto,
+                            SAddress = s.SAddress,
+                            SPhone = s.SPhone,
+                            SAccount = s.SAccount,
+                            SToken = s.SToken,
+                            SJoinDate = s.SJoinDate,
+                            SIsStudentOrNot = s.SIsStudentOrNot
+                        }).FirstOrDefault();
+
+            
+            return View("StudentSelect", result);
         }
 
         [HttpPost]
@@ -424,7 +442,7 @@ namespace MusFit.Controllers
 
 
                 //轉換 password -> sha2_256 比較
-                string sPassword = studentViewModel.SBirth.ToString().Replace("-", "").Replace("-", "");
+                string sPassword = ((DateTime)studentViewModel.SBirth).ToString("yyyyMMdd");
                 byte[] data = Encoding.GetEncoding(1252).GetBytes(sPassword);
                 var sha = new SHA256Managed();
                 byte[] bytesEncode = sha.ComputeHash(data);
@@ -518,9 +536,30 @@ namespace MusFit.Controllers
 
         public IActionResult EmployeeSearch(string ENumber, string EName, string EAccount)
         {
-            var queryResult = (from e in _context.Employees 
-                               where (e.ENumber == ENumber || e.EName == EName || e.EAccount == EAccount ) && (e.EResignDate == null || e.EResignDate > DateTime.Now)
-                               select new EmployeeViewModel()
+            var queryResult = _context.Employees.Where(e =>e.EResignDate == null || e.EResignDate > DateTime.Now);
+            if (!string.IsNullOrEmpty(ENumber))
+            {
+                queryResult = queryResult.Where(x => x.ENumber == ENumber);
+            }
+
+            if (!string.IsNullOrEmpty(EName))
+            {
+                queryResult = queryResult.Where(x => x.EName == ENumber);
+            }
+
+            if (!string.IsNullOrEmpty(EAccount))
+            {
+                queryResult = queryResult.Where(x => x.EAccount == ENumber);
+            }
+
+            if (!queryResult.Any() || queryResult.Count() > 1)
+            {
+                ViewData["error"] = "*請輸入正確會員資料*";
+                return View("EmployeeQuery");
+            }
+
+            var result = (from e in queryResult
+                          select new EmployeeViewModel()
                                {
                                    ENumber = e.ENumber,
                                    EName = e.EName,
@@ -541,14 +580,10 @@ namespace MusFit.Controllers
                                    EExplain = e.EExplain
                                }).FirstOrDefault();
 
-            if (queryResult == null)
-            {
-                ViewData["error"] = "*請輸入正確會員資料*";
-                return View("EmployeeQuery");
-            }
+
 
             //全部課程
-            queryResult.AvailableLession = GetLession();
+            result.AvailableLession = GetLession();
 
             var employeeLessionResult = (from e in _context.Employees
                                          join cs in _context.CoachSpecials on e.EId equals cs.EId into esc
@@ -557,9 +592,9 @@ namespace MusFit.Controllers
                                          select cs.LcId.ToString()
                                ).ToList();
             //已選課程
-            queryResult.SelectedLession = employeeLessionResult;
+            result.SelectedLession = employeeLessionResult;
 
-            return View("EmployeeSelect", queryResult);
+            return View("EmployeeSelect", result);
         }
 
 
@@ -706,7 +741,6 @@ namespace MusFit.Controllers
                     }
 
 
-
                     var oldCoachSpecials = (from e in _context.Employees
                                             join cs in _context.CoachSpecials on e.EId equals cs.EId into esc
                                             from cs in esc.DefaultIfEmpty()
@@ -714,9 +748,13 @@ namespace MusFit.Controllers
                                             select cs
                                    ).ToList();
 
-                    //移除一個List
-                    _context.CoachSpecials.RemoveRange(oldCoachSpecials);
-                    _context.SaveChanges();
+                    if (oldCoachSpecials.Count() > 1)
+                    {
+                        //移除一個List
+                        _context.CoachSpecials.RemoveRange(oldCoachSpecials);
+                        _context.SaveChanges();
+                    }
+                    
 
 
                     var NewCoachSpecials = new List<CoachSpecial>();
@@ -770,10 +808,10 @@ namespace MusFit.Controllers
         {
             var json = "";
             var employeeResult = await (from e in _context.Employees
-                                        join cs in _context.CoachSpecials on e.EId equals cs.EId into esc
-                                        from cs in esc.DefaultIfEmpty()
+                                        //join cs in _context.CoachSpecials on e.EId equals cs.EId into esc
+                                        //from cs in esc.DefaultIfEmpty()
                                         where e.EIdentityNumber == employee.EIdentityNumber
-                                        select cs).FirstOrDefaultAsync();
+                                        select e).FirstOrDefaultAsync();
 
             if (employeeResult != null)
             {
@@ -803,14 +841,20 @@ namespace MusFit.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-
+                    
                     return View("EmployeeAdd");
                 }
                 else
                 {
+                    if (employeeViewModel.EIsCoach == true && !employeeViewModel.SelectedLession.Any())
+                    {
+                        
 
+                        ViewData["error"] = "您需要選擇課程!";
+                        return View("EmployeeAdd", employeeViewModel);
+                    }
                     // 轉換 password -> sha2_256 比較
-                    string ePassword = employeeViewModel.EBirth.ToString().Replace("-", "").Replace("-", "");
+                    string ePassword = ((DateTime)employeeViewModel.EBirth).ToString("yyyyMMdd");
                     byte[] data = Encoding.GetEncoding(1252).GetBytes(ePassword);
                     var sha = new SHA256Managed();
                     byte[] bytesEncode = sha.ComputeHash(data);

@@ -603,14 +603,14 @@
     document.getElementById('addPostDate').valueAsDate = new Date();
     function addform1() {
 
-        var date = new Date($('#exampleModal .postdate').val())
+        var date = new Date($('#addModal .postdate').val())
 
 
         var addData = {
-            kTitle: $('#exampleModal .titleinput').val(),
-            kContent: $('#exampleModal #addcontent').val(),
+            kTitle: $('#addModal .titleinput').val(),
+            kContent: $('#addModal #addcontent').val(),
             kDate: date,
-            kAuthor: $('#exampleModal .author').val(),
+            kAuthor: $('#addModal .author').val(),
             kPhoto1: photodata,
             kPhoto2: photodata2,
 
@@ -618,9 +618,9 @@
         };
 
 
-        if ($('#exampleModal .titleinput').val() != "") {
-            if ($('#exampleModal #addcontent').val() != "") {
-                if ($('#exampleModal .author').val()) {
+        if ($('#addModal .titleinput').val() != "") {
+            if ($('#addModal #addcontent').val() != "") {
+                if ($('#addModal .author').val()) {
                     $.ajax({
                         type: "Post",
                         url: "/api/KnowledgeColumns",

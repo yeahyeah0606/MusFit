@@ -104,6 +104,12 @@
             var classOrders = { sId: $('#visitorSId').val(), classTimeId: 63, orderTime: orderTime,orderStatus: '體驗',eId:1 };
             myAJAX(AjaxType.POST, "/api/classorders/", null, "application/json", JSON.stringify(classOrders));
             myAJAX(AjaxType.POST, "/api/classrecords/", null, "application/json", JSON.stringify(classRecords));
+}
+
+        // get local datetime
+        function addHours(date, hours) {
+            date.setHours(date.getHours() + hours);
+            return date;
         }
 
         //email format validation
@@ -546,10 +552,6 @@
             }
         })
 
-        function addHours(date, hours) {
-            date.setHours(date.getHours() + hours);       
-            return date;
-        }
         //open delete modal
         function opendeleteModel(orderID, classRecordID) {
             $('#delOrderID').val(orderID);

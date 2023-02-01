@@ -45,6 +45,18 @@ namespace MusFit.Controllers
             return await guests.ToListAsync();
         }
 
+
+        [HttpGet("findGuestsIfExist/{name}/{phone}")]
+        public bool findGuestsIfExist(string name, string phone)
+        {
+            var result = _context.Students.FirstOrDefault(x => x.SName == name && x.SPhone == phone);
+            if (result == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
         [HttpGet("studentNumber/")]
         public IActionResult GetStudentNumber()
         {

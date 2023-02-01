@@ -1276,7 +1276,7 @@
         if (putbase64String == "") {
             myphoto = $("#newEditModal .imagebox").attr('src');
         } else {
-            myphoto = `data:${putfile.type}; base64, ${putbase64String} `;
+            myphoto = `data:${putfile.type};base64,${putbase64String} `;
         }
 
         var updatedData = {
@@ -1357,7 +1357,7 @@
         if (lessionbase64String == "") {
             myphoto1 = $("#lessionEditModal .imagebox").attr('src');
         } else {
-            myphoto1 = `data:${lessionfile.type}; base64, ${lessionbase64String} `;
+            myphoto1 = `data:${lessionfile.type};base64,${lessionbase64String} `;
         }
 
 
@@ -1440,7 +1440,7 @@
         if (activitybase64String == "") {
             myphoto2 = $("#activityEditModal .imagebox").attr('src');
         } else {
-            myphoto2 = `data:${activityfile.type}; base64, ${activitybase64String} `;
+            myphoto2 = `data:${activityfile.type};base64,${activitybase64String} `;
         }
 
         var updatedData = {

@@ -98,7 +98,10 @@
         function postEmptyClassOrderAndClassRecord(x) {
             $('#visitorSId').val(x[0].sId);
             var classRecords = { sId: $('#visitorSId').val(), classTimeId: 63 };
-            var classOrders = { sId: $('#visitorSId').val(), classTimeId: 63, orderTime: new Date().toJSON().slice(0, 19),orderStatus: '體驗',eId:1 };
+            var date = new Date();
+            var localDate = addHours(date, 8);
+            var orderTime = localDate.toJSON().slice(0, 19);
+            var classOrders = { sId: $('#visitorSId').val(), classTimeId: 63, orderTime: orderTime,orderStatus: '體驗',eId:1 };
             myAJAX(AjaxType.POST, "/api/classorders/", null, "application/json", JSON.stringify(classOrders));
             myAJAX(AjaxType.POST, "/api/classrecords/", null, "application/json", JSON.stringify(classRecords));
         }
@@ -389,7 +392,10 @@
             else if (new_className == null || new_classDate == null) { emptyInputRemind(); }
             else {
                 $('#new_orderStatus').val('體驗');
-                $('#new_orderTime').val(new Date().toJSON().slice(0, 19));
+                var date = new Date();
+                var localDate = addHours(date, 8);
+                var orderTime = localDate.toJSON().slice(0, 19);
+                $('#new_orderTime').val(orderTime);
                 // create classrecords
                 myAJAX(AjaxType.POST, "/api/classrecords/", null, "application/json", JSON.stringify(classRecords));
                 // create reservations
@@ -523,7 +529,10 @@
             else if (!IsEmail(mail)) { validationMessage("信箱輸入格式有誤!!"); }
             else {
                 var orderId = $('#orderId').val();
-                $('#orderTime').val(new Date().toJSON().slice(0, 19));
+                var date = new Date();
+                var localDate = addHours(date, 8);
+                var orderTime = localDate.toJSON().slice(0, 19);
+                $('#orderTime').val(orderTime);
 
                 // edit reservation order
                 myAJAX(AjaxType.PUT, "/api/classorders/" + orderId, null, "application/json", JSON.stringify(GetFormData($('#editOrder'))))
@@ -537,6 +546,10 @@
             }
         })
 
+        function addHours(date, hours) {
+            date.setHours(date.getHours() + hours);       
+            return date;
+        }
         //open delete modal
         function opendeleteModel(orderID, classRecordID) {
             $('#delOrderID').val(orderID);

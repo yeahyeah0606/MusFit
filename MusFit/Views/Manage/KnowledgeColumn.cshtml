@@ -396,7 +396,7 @@
         var image = $('<img>').attr({ src: e.target.result, onclick: "cancelbutton()", class: "addimagebox", style: "width:100%; height:100%; object-fit:contain; margin-top:2%; border-radius:5px; ", id: "image1" });
 
         $(image).appendTo(imagediv)
-        $(imagediv).prependTo('#exampleModal .divtextarea');
+        $(imagediv).prependTo('#addModal .divtextarea');
         // if there are more files run the file reader again
 
         if (i < numFiles) {
@@ -416,7 +416,7 @@
         var image = $('<img>').attr({ src: e.target.result, onclick: "cancelbutton1()", class: "addimagebox", style: "width:100%; height:100%; object-fit:contain; margin-right:95%; margin-top:2%; border-radius:5px;", id: "image2" });
 
         $(image).appendTo(imagediv)
-        $(imagediv).prependTo('#exampleModal .divtextarea');
+        $(imagediv).prependTo('#addModal .divtextarea');
         // if there are more files run the file reader again
 
         if (b < numFiles) {
@@ -429,7 +429,8 @@
     }
 
 
-    function addphoto() {
+    function addphoto() { 
+        console.log('a')
         var apple = document.getElementById('addphoto1')
         var cat = document.getElementById('addphoto2')
         i = 0;
@@ -603,14 +604,14 @@
     document.getElementById('addPostDate').valueAsDate = new Date();
     function addform1() {
 
-        var date = new Date($('#exampleModal .postdate').val())
+        var date = new Date($('#addModal .postdate').val())
 
 
         var addData = {
-            kTitle: $('#exampleModal .titleinput').val(),
-            kContent: $('#exampleModal #addcontent').val(),
+            kTitle: $('#addModal .titleinput').val(),
+            kContent: $('#addModal #addcontent').val(),
             kDate: date,
-            kAuthor: $('#exampleModal .author').val(),
+            kAuthor: $('#addModal .author').val(),
             kPhoto1: photodata,
             kPhoto2: photodata2,
 
@@ -618,9 +619,9 @@
         };
 
 
-        if ($('#exampleModal .titleinput').val() != "") {
-            if ($('#exampleModal #addcontent').val() != "") {
-                if ($('#exampleModal .author').val()) {
+        if ($('#addModal .titleinput').val() != "") {
+            if ($('#addModal #addcontent').val() != "") {
+                if ($('#addModal .author').val()) {
                     $.ajax({
                         type: "Post",
                         url: "/api/KnowledgeColumns",

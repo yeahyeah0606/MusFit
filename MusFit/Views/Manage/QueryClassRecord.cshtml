@@ -18,7 +18,7 @@
 		&nbsp;&nbsp;&nbsp;
 		&nbsp;&nbsp;&nbsp;
 		<label for="cID">課程名稱: </label>&nbsp;
-		<select id="cID" name="cID" class="lession-select">
+		<select id="cID" name="cID" class="class-select" onchange="lessionSelect()" required>
 			<option value="none" selected disabled hidden>請選擇</option>
 		</select>
 		&nbsp; ( 必填 ) &nbsp;&nbsp;&nbsp;
@@ -29,8 +29,9 @@
 		<input type="text" class="sName" id="sName" placeholder="輸入姓名">
 		 &nbsp;&nbsp;&nbsp;
 		<label for="ctLession">&nbsp;&nbsp;堂&nbsp;&nbsp;&nbsp;&nbsp;數: &nbsp; </label>&nbsp;
-		<input type="text" class="ctLession" id="ctLession" placeholder="輸入堂數">
-
+		<select id="ctLession" name="ctLession" class="lession-select" >
+			<option value="none" selected disabled hidden>請選擇</option>
+		</select>
 		 &nbsp;&nbsp;&nbsp;
 		<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
 		<br>
@@ -200,11 +201,33 @@
 				$('#cID').children("option").filter("[value != none]").remove();
 				data.forEach(function (x) {
 					//console.log("名稱: " + x.cName);
-					option = `<option value="${x.cID}">${x.cName}</option>`;
+					option = `<option value="${x.cID}">【${x.cNumber}】 ${x.cName}</option>`;
 					$('#cID').append(option);
 				})
 			})
 		})
+
+		//onchange 堂數
+        var mycID;
+		function lessionSelect() {
+            mycID = $('#cID').val();
+            $('#ctLession').val("");
+            $.ajax({
+                type: "get",
+				// GET: api/ClassTimes/getLession/1
+				url: "/api/ClassTimes/getLession/" + mycID,
+                success: (function (data) {
+                    var option;
+					$('#ctLession').children("option").filter("[value != none]").remove();
+					option = `<option value="99">全部</option>`;
+					$('#ctLession').append(option);
+                    data.forEach(function (x) {
+						option = `<option value="${x.ctLession}">${x.ctLession}</option>`;
+						$('#ctLession').append(option);
+                    })
+                })
+            })
+        }
 
 		// 分頁功能
 		const pageid = document.getElementById('pageid');
@@ -408,7 +431,7 @@
 
 				if (mycID == null) mycID = 9999;
 				if (mysName == "") mysName = "沒填姓名";
-				if (myctLession == "") myctLession = 99;
+				if (myctLession == "99") myctLession = 99;
 
 				if ( mycID == 9999 ) {
 					//alert("請設定查詢條件，至少需要填寫【課程名稱】");

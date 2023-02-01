@@ -10,8 +10,11 @@
 		<hr>
 		<br>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<label for="cNumber">課程編號: </label>&nbsp;
-		<input type="text" class="memberID-input" id="cNumber" name="cNumber" placeholder="ex: AB001">
+		<label for="cNumber">課程名稱: </label>&nbsp;
+		<select id="cNumber" name="cNumber" class="lession-select">
+			<option value="none" selected disabled hidden>請選擇</option>
+		</select>
+		@*<input type="text" class="memberID-input" id="cNumber" name="cNumber" placeholder="ex: AB001">*@
 		&nbsp;&nbsp;&nbsp;&nbsp
 		<label for="sNumber">會員編號: </label>&nbsp;
 		<input type="text" class="memberID-input" id="sNumber" name="sNumber" placeholder="ex: S0001">
@@ -216,6 +219,22 @@
 			$('#successMessage').css("display", "none");
 			myrefresh();
 		}
+
+		// 取出所有的課程名稱
+		$.ajax({
+			type: "get",
+			// GET: api/Classes/classList
+			url: "/api/Classes/classList",
+			success: (function (data) {
+				var option;
+				$('#cNumber').children("option").filter("[value != none]").remove();
+				data.forEach(function (x) {
+					//console.log("名稱: " + x.cName);
+					option = `<option value="${x.cNumber}">【${x.cNumber}】 ${x.cName}</option>`;
+					$('#cNumber').append(option);
+				})
+			})
+		})
 
 		// 分頁功能
 		const pageid = document.getElementById('pageid');
@@ -436,7 +455,7 @@
 			var sNumberinfo = $('#sNumber').val();
 			var cNumberinfo = $('#cNumber').val();
 
-			if (sNumberinfo == "" && cNumberinfo == "") {
+			if (sNumberinfo == "" && cNumberinfo == null ) {
 				$('#errorMessage').css("display", "block");
 			}
 			else {

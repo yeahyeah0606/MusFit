@@ -13,7 +13,7 @@
         <fieldset>
             <div class="row">
                 <div class="column">
-                    <label class="space-style" for="lcID">課程項目</label>
+                    <label class="space-style" for="lcID" onclick="putData()">課程項目</label>
                     <select asp-for="lcID" onchange="coachSelect()" required>
                         <option value="none" selected disabled hidden>請選擇</option>
                         <option value="1">&emsp;飛輪&emsp;</option>
@@ -127,6 +127,19 @@
                 })
             })
         }
+
+    function putData(){
+        $("#lcID").val(4);
+        $("#cName").val("瑜珈-年後活力班");
+        $("#tID").val(15);
+        $("#cTotalLession").val(5);
+        $('#eID').children("option").filter("[value != none]").remove();
+        var option = `<option value="12">Ben</option>`;
+        $('#eID').append(option);
+        $("#eID").val(12);
+        $("#cprice").val(4200);
+        $("#cExcept").val(10);
+    }
 
      function myrefresh()
     {

@@ -6,8 +6,14 @@
 }
 
 /*  下拉式選單 樣式 */
+.class-select {
+    width: 250px;
+    height: 35px;
+    padding: 5px;
+}
+
 .lession-select {
-    width: 150px;
+    width: 100px;
     height: 35px;
     padding: 5px;
 }
@@ -204,7 +210,13 @@ tr:nth-of-type(even) td {
     padding: 0px 20px;
 }
 
-
+input[type=date] {
+    width: 24%;
+    border-radius: 5px;
+    border: solid 1px #a4a1a1;
+    padding: 2px 5px;
+    outline: none;
+}
 
 input[type=text], select {
     border: solid 1px #a4a1a1;
@@ -227,7 +239,7 @@ form input[type=text] {
     background-color: #ddd;
 }
 
-form input[type=text]:focus, select:focus{
+form input[type=text]:focus{
     background-color: #ddd;
 /* border-color: rgba(135, 206, 250, 0.8);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(135, 206, 250, 0.6);*/

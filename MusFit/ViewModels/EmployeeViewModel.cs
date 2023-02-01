@@ -86,7 +86,7 @@ namespace MusFit.ViewModels
         public string EIdentityNumber { get; set; }
         public IList<string> SelectedLession { get; set; }
 
-       
+        
         public IList<SelectListItem> AvailableLession { get; set; }
 
         public EmployeeViewModel()

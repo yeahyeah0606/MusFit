@@ -7,11 +7,21 @@
 
 /*  下拉式選單 樣式 */
 .lession-select {
-    width: 150px;
+    width: 15%;
     height: 35px;
-    padding: 5px;
+    border-radius: 5px;
+    border: solid 1px #a4a1a1;
+    padding: 2px 5px;
+    outline: none;
 }
 
+input[type=date]{
+    width: 20%;
+    border-radius: 5px;
+    border: solid 1px #a4a1a1;
+    padding: 2px 5px;
+    outline: none;
+}
 /* 查詢 button 樣式 */
 
 #btnQuery {
@@ -130,8 +140,17 @@ tr:nth-of-type(even) td {
 }
 /* 上一頁 下一頁 樣式 */
 .pagination .active a {
-    background-color: #8a8a8d !important;
+    background-color: #666ea2 !important;
     border: none;
+}
+
+.pagination a {
+    color: #fff !important;
+    background-color: #9092AD;
+}
+
+.pagination a:hover {
+    background-color: #b4a9b9 !important;
 }
 /*懸浮視窗  visitor information*/
 /*-----------------------------------------------------------------*/
@@ -174,4 +193,5 @@ tr:nth-of-type(even) td {
     font-size: 28px;
     font-weight: bold;
 }
+
 

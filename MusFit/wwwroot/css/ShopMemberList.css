@@ -6,7 +6,7 @@
 
 /*  下拉式選單 樣式 */
 .lession-select {
-    width: 150px;
+    width: 250px;
     height: 35px;
     padding: 5px;
 }
@@ -156,8 +156,17 @@ tr:nth-of-type(even) td {
 }
 /* 上一頁 下一頁 樣式 */
 .pagination .active a {
-    background-color: #8a8a8d !important;
+    background-color: #666ea2 !important;
     border: none;
+}
+
+.pagination a {
+    color: #fff !important;
+    background-color: #9092AD;
+}
+
+.pagination a:hover {
+    background-color: #b4a9b9 !important;
 }
 
 /*懸浮視窗  visitor information*/
@@ -212,7 +221,7 @@ form input[type=text] {
     background-color: #ddd;
 }
 
-form input[type=text]:focus, select:focus {
+form input[type=text]:focus {
     background-color: #ddd;
 /*    border-color: rgba(135, 206, 250, 0.8);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(135, 206, 250, 0.6);*/

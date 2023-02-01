@@ -63,6 +63,10 @@ form {
 
 input[type=date] {
     width: 30%;
+    border-radius: 5px;
+    border: solid 1px #a4a1a1;
+    padding: 2px 5px;
+    outline: none;
 }
 
 select {
@@ -311,7 +315,7 @@ input[type=radio] {
     margin: auto 25px;
 }
 
-form input[type=text]:focus, select:focus {
+form input[type=text]:focus {
     background-color: #ddd;
 }
 

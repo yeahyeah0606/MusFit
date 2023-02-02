@@ -111,8 +111,9 @@ namespace MusFit.Controllers
         {
             var obj = from o in _context.ClassOrders
                       join s in _context.Students on o.SId equals s.SId
-                      join t in _context.ClassTimes on o.ClassTimeId equals t.ClassTimeId
-                      join c in _context.Classes on t.CId equals c.CId
+                      join ct in _context.ClassTimes on o.ClassTimeId equals ct.ClassTimeId
+                      join c in _context.Classes on ct.CId equals c.CId
+					  join t in _context.Terms on ct.TId equals t.TId
                       where o.OrderId == id
                       select new
                       {
@@ -123,11 +124,13 @@ namespace MusFit.Controllers
                           phone = s.SPhone,
                           mail = s.SMail,
                           cID = c.CId,
-                          timeID = t.ClassTimeId,
+                          timeID = ct.ClassTimeId,
                           className = c.CName,
                           eID = o.EId,
-                          date = t.CtDate,
-                          weekday = t.Weekday,
+                          date = ct.CtDate,
+                          weekday = ct.Weekday,
+						  startTime = t.TStartTime.ToString().Substring(0, 5),
+                          endTime = t.TEndTime.ToString().Substring(0, 5),
                           orderStatus = o.OrderStatus,
                           orderTime = o.OrderTime
                       };

@@ -265,8 +265,8 @@ form a {
     background-color: #9092AD;
 }
 
-.pagination a:hover{
-    background-color: #b4a9b9 !important;
+.pagination a:hover {
+    background-color: #666ea2 !important;
 }
 
 @media(max-width: 1170px){

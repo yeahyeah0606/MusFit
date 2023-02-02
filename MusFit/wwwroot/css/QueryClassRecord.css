@@ -63,16 +63,6 @@
     margin: 1px;
 }
 
-/*.cancel {
-    background-color: #9092AD;
-    color: #fff;
-    padding: 5px 10px;
-    margin: 10px 5px;
-    border: none;
-    border-radius: 3px;
-    outline: none;
-}*/
-
 .button {
     display: inline-block;
     border-radius: 4px;
@@ -173,8 +163,17 @@ tr:nth-of-type(even) td {
 }
 /* 上一頁 下一頁 樣式 */
 .pagination .active a {
-    background-color: #8a8a8d !important;
+    background-color: #666ea2 !important;
     border: none;
+}
+
+.pagination a {
+    color: #fff !important;
+    background-color: #9092AD;
+}
+
+.pagination a:hover {
+    background-color: #b4a9b9 !important;
 }
 
 /*懸浮視窗  visitor information*/

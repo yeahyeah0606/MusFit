@@ -162,9 +162,22 @@ tr:nth-of-type(even) td {
     padding-left: 80%;
 }
 /* 上一頁 下一頁 樣式 */
-.pagination .active a {
+/*.pagination .active a {
     background-color: #8a8a8d !important;
     border: none;
+}*/
+.pagination .active a {
+    background-color: #666ea2 !important;
+    border: none;
+}
+
+.pagination a {
+    color: #fff !important;
+    background-color: #9092AD;
+}
+
+.pagination a:hover {
+    background-color: #b4a9b9 !important;
 }
 
 /*懸浮視窗  visitor information*/

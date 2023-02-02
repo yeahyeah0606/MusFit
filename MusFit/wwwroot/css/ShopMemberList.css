@@ -156,8 +156,17 @@ tr:nth-of-type(even) td {
 }
 /* 上一頁 下一頁 樣式 */
 .pagination .active a {
-    background-color: #8a8a8d !important;
+    background-color: #666ea2 !important;
     border: none;
+}
+
+.pagination a {
+    color: #fff !important;
+    background-color: #9092AD;
+}
+
+.pagination a:hover {
+    background-color: #666ea2 !important;
 }
 
 /*懸浮視窗  visitor information*/

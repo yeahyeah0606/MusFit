@@ -9,55 +9,53 @@
 	<div class="topQuery">
 		<h1>&nbsp;&nbsp;&nbsp;課程紀錄 查詢</h1>
 		<hr>
-		<input type="hidden" id="editcrID" name="editcrID" />  
+		<input type="hidden" id="editcrID" name="editcrID" />
 		<input type="hidden" id="editcID" name="editcID" />
 		<input type="hidden" id="editsID" name="editsID" />
 		<input type="hidden" id="editctID" name="editctID" />
-
 		<br>
 		&nbsp;&nbsp;&nbsp;
 		&nbsp;&nbsp;&nbsp;
 		<label for="cID">課程名稱: </label>&nbsp;
 		<select id="cID" name="cID" class="class-select" onchange="lessionSelect()" required>
-			<option value="none" selected disabled hidden>請選擇</option>
 		</select>
 		&nbsp; ( 必填 ) &nbsp;&nbsp;&nbsp;
-			<br><br>
+		<br><br>
 		&nbsp;&nbsp;&nbsp;
 		&nbsp;&nbsp;&nbsp;
 		<label for="sName">會員姓名: </label>&nbsp;
 		<input type="text" class="sName" id="sName" placeholder="輸入姓名">
-		 &nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;
 		<label for="ctLession">&nbsp;&nbsp;堂&nbsp;&nbsp;&nbsp;&nbsp;數: &nbsp; </label>&nbsp;
-		<select id="ctLession" name="ctLession" class="lession-select" >
-			<option value="none" selected disabled hidden>請選擇</option>
+		<select id="ctLession" name="ctLession" class="lession-select">
+			<option value="99">全部</option>
 		</select>
-		 &nbsp;&nbsp;&nbsp;
-		<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+		&nbsp;&nbsp;&nbsp;
+		<button class="button" style="vertical-align:middle" id="btnQuery" onclick="btnQuery()"><span>查詢</span> </button>
 		<br>
 		<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
 	</div>
 
-		<table style="width:100%">
-			<thead>
-				<tr>
-					<th>會員編號</th>
-					<th>姓名</th>
-					<th>日期</th>
-					<th>課程類型</th>
-					<th>課程名稱</th>
-					<th>時段</th>
-					<th>堂數</th>
-					<th>出缺席</th>
-					<th>課程內容</th>
-					<th>操作</th>
-				</tr>
-			</thead>
-			<tbody id="crbody">
-			</tbody>
-		</table>
-		<br />
-	</div>
+	<table style="width:100%">
+		<thead>
+			<tr>
+				<th>會員編號</th>
+				<th>姓名</th>
+				<th>日期</th>
+				<th>課程類型</th>
+				<th>課程名稱</th>
+				<th>時段</th>
+				<th>堂數</th>
+				<th>出缺席</th>
+				<th>課程內容</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody id="crbody">
+		</tbody>
+	</table>
+	<br />
+</div>
 
 @*pagination*@
 <div class="d-flex justify-content-center">
@@ -119,7 +117,7 @@
 				</div>
 			</div>
 			<br>
-			<input type="button" id="btnEditConfirm"  value="確定" />
+			<input type="button" id="btnEditConfirm" value="確定" />
 			<button class="cancel" id="cancelCreate" onclick="closeModel()">取消</button>
 		</form>
 	</div>
@@ -149,7 +147,7 @@
 	<div id="updateModal" class="modal-content">
 		<span class="close" onclick="closeSuccessModel()">&times;</span>
 		<p>已存檔</p>
-		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeArchiveModel()">確定</button>
 	</div>
 </div>
 
@@ -169,7 +167,7 @@
 		function FormClear() {
 			document.getElementById("editForm").reset();
 		}
-		
+
 		// 取消
 		document.getElementById('cancelCreate').addEventListener('click', closeModel);
 		document.getElementById('leaveCreate').addEventListener('click', closeModel);
@@ -182,7 +180,6 @@
 			errorMessage.style.display = "none";
 			showNoDataModal.style.display = "none";
 			setConditionModal.style.display = "none";
-
 		}
 
 		function closeSuccessModel() {
@@ -190,6 +187,12 @@
 			myrefresh();
 		}
 
+		function closeArchiveModel() {
+			$('#updateMessage').css("display", "none");
+			var Archpageid = document.getElementById('pageid');
+			btnQuery();
+			Archpageid.addEventListener('click', switchPage);
+		}
 
 		// 取出所有的課程名稱
 		$.ajax({
@@ -199,8 +202,9 @@
 			success: (function (data) {
 				var option;
 				$('#cID').children("option").filter("[value != none]").remove();
+				option = `<option value="9999">全部</option>`;
+				$('#cID').append(option);
 				data.forEach(function (x) {
-					//console.log("名稱: " + x.cName);
 					option = `<option value="${x.cID}">【${x.cNumber}】 ${x.cName}</option>`;
 					$('#cID').append(option);
 				})
@@ -208,143 +212,143 @@
 		})
 
 		//onchange 堂數
-        var mycID;
+		var mycID;
 		function lessionSelect() {
-            mycID = $('#cID').val();
-            $('#ctLession').val("");
-            $.ajax({
-                type: "get",
+			mycID = $('#cID').val();
+			$('#ctLession').val("");
+			$.ajax({
+				type: "get",
 				// GET: api/ClassTimes/getLession/1
 				url: "/api/ClassTimes/getLession/" + mycID,
-                success: (function (data) {
-                    var option;
+				success: (function (data) {
+					var option;
 					$('#ctLession').children("option").filter("[value != none]").remove();
 					option = `<option value="99">全部</option>`;
 					$('#ctLession').append(option);
-                    data.forEach(function (x) {
+					data.forEach(function (x) {
 						option = `<option value="${x.ctLession}">${x.ctLession}</option>`;
 						$('#ctLession').append(option);
-                    })
-                })
-            })
-        }
+					})
+				})
+			})
+		}
 
 		// 分頁功能
-		const pageid = document.getElementById('pageid');
+		var pageid = document.getElementById('pageid');
 		pageid.addEventListener('click', switchPage);
 		var nowpage;
 
 		function switchPage(n) {
-            n.preventDefault();
-            const nowpage = n.target.dataset.page; // nowpage = "data-page"
+			n.preventDefault();
+			const nowpage = n.target.dataset.page; // nowpage = "data-page"
 			console.log("nowpage:" + nowpage);
-            pagination(jsonData, nowpage);
-        }
+			pagination(jsonData, nowpage);
+		}
 
 		// 計算分頁數
 		var page;
-        function pagination(jsonData, nowPage) {
+		function pagination(jsonData, nowPage) {
 
-            const dataTotal = jsonData.length;
-            const perpage = 5;
-            const pageTotal = Math.ceil(dataTotal / perpage);
+			const dataTotal = jsonData.length;
+			const perpage = 5;
+			const pageTotal = Math.ceil(dataTotal / perpage);
 
-            let currentPage = nowPage;
+			let currentPage = nowPage;
 			// 當"當前頁數"比"總頁數"大的時候，"當前頁數"就等於"總頁數"
-            if (currentPage > pageTotal) { currentPage = pageTotal; }
+			if (currentPage > pageTotal) { currentPage = pageTotal; }
 
-            const minData = (currentPage * perpage) - perpage + 1;
-            const maxData = (currentPage * perpage);
+			const minData = (currentPage * perpage) - perpage + 1;
+			const maxData = (currentPage * perpage);
 
-            // dynamic data array according to current page
-            const data = [];
+			// dynamic data array according to current page
+			const data = [];
 
-            jsonData.forEach((item, index) => {
-                const num = index + 1;
+			jsonData.forEach((item, index) => {
+				const num = index + 1;
 				// 當 num 比 minData 大且又小於 maxData 就push進去新陣列。
-                if (num >= minData && num <= maxData) { data.push(item); }
-            })
-            page = {
-                pageTotal,
-                currentPage,
-                hasPage: currentPage > 1,  // has previous page
-                hasNext: currentPage < pageTotal,  // has next page
-            }
-            displayData(data);
+				if (num >= minData && num <= maxData) { data.push(item); }
+			})
+			page = {
+				pageTotal,
+				currentPage,
+				hasPage: currentPage > 1,  // has previous page
+				hasNext: currentPage < pageTotal,  // has next page
+			}
+			displayData(data);
 			pageBtn(page, nowPage);
 			console.log(`全部資料:${dataTotal} 每一頁顯示:${perpage}筆 總頁數:${pageTotal}`);
 			document.getElementById("dataNum").innerText = `全部 :  共 ${dataTotal} 筆`;
-        }
+		}
 
 		function displayData(data) {
 			var tableRow;
 			data.forEach(function (x) {
-					var term, attendance, content;
-					if (x.crAttendance == true) { attendance = "Y"; } else { attendance = "N"; }
-					if (x.crContent == null) { content = ""; } else { content = x.crContent; }
+				var term, attendance, content;
+				if (x.crAttendance == true) { attendance = "Y"; } else { attendance = "N"; }
+				if (x.crContent == null) { content = ""; } else { content = x.crContent; }
 				switch (x.tId) {
-						case 9:
-							term = "09:00 ~ 10:00";
-							break;
-						case 10:
-							term = "10:00 ~ 11:00";
-							break;
-						case 11:
-							term = "11:00 ~ 12:00";
-							break;
-						case 13:
-							term = "13:00 ~ 14:00";
-							break;
-						case 14:
-							term = "14:00 ~ 15:00";
-							break;
-						case 15:
-							term = "15:00 ~ 16:00";
-							break;
-						case 16:
-							term = "16:00 ~ 17:00";
-							break;
-						case 17:
-							term = "17:00 ~ 18:00";
-							break;
-						case 18:
-							term = "18:00 ~ 19:00";
-							break;
-						case 19:
-							term = "19:00 ~ 20:00";
-							break;
-						case 20:
-							term = "20:00 ~ 21:00";
-							break;
-						case 21:
-							term = "21:00 ~ 22:00";
-							break;
-						default:
+					case 9:
+						term = "09:00 ~ 10:00";
+						break;
+					case 10:
+						term = "10:00 ~ 11:00";
+						break;
+					case 11:
+						term = "11:00 ~ 12:00";
+						break;
+					case 13:
+						term = "13:00 ~ 14:00";
+						break;
+					case 14:
+						term = "14:00 ~ 15:00";
+						break;
+					case 15:
+						term = "15:00 ~ 16:00";
+						break;
+					case 16:
+						term = "16:00 ~ 17:00";
+						break;
+					case 17:
+						term = "17:00 ~ 18:00";
+						break;
+					case 18:
+						term = "18:00 ~ 19:00";
+						break;
+					case 19:
+						term = "19:00 ~ 20:00";
+						break;
+					case 20:
+						term = "20:00 ~ 21:00";
+						break;
+					case 21:
+						term = "21:00 ~ 22:00";
+						break;
+					default:
 
-					}
-					var date = new Date(x.ctDate).toLocaleDateString();
-					tableRow += 
-							`
-								<tr class="result">
-									<td>${x.sNumber}</td>
-									<td>${x.sName}</td>
-									<td>${date}</td>
-									<td>${x.lcType}</td>
-									<td>${x.cName}</td>
-									<td>${term}</td>
-									<td>${x.ctLession}</td>
-									<td>${attendance}</td>
-									<td>${content}</td>
-									<td>
-										<button class="button" id="btnEdit" style="vertical-align:middle"  onclick=openEditModel(${x.crID}) >
-										<span>編輯</span>
-										</button>
-										</td>
-								</tr>
-								`;
+				}
+				var date = new Date(x.ctDate).toLocaleDateString();
+				tableRow +=
+					`
+										<tr class="result">
+											<td>${x.sNumber}</td>
+											<td>${x.sName}</td>
+											<td>${date}</td>
+											<td>${x.lcType}</td>
+											<td>${x.cName}</td>
+											<td>${term}</td>
+											<td>${x.ctLession}</td>
+											<td>${attendance}</td>
+											<td>${content}</td>
+											<td>
+												<button class="button" id="btnEdit" style="vertical-align:middle"  onclick=openEditModel(${x.crID}) >
+												<span>編輯</span>
+												</button>
+												</td>
+										</tr>
+										`;
 				count++;
 			})
-			
+
 			$('.result').remove();
 			$('#crbody').append(tableRow);
 		}
@@ -354,9 +358,7 @@
 			let pagination = document.querySelector('#pageid');
 			var pageHtml = "", prevButton, nextButton;
 			let pageIndex = parseInt(nowPage);
-			//pageIndex =9;
 
-			console.log("裡面pageIndex : " + pageIndex);   // ok
 			if (page.hasPage) {
 				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`;
 			} else {
@@ -386,164 +388,154 @@
 				}
 				pageHtml += rightOmitPage;
 				pageHtml += lastPage;
-			} else if (pageIndex > ( totalPage - 7 )) {
+			} else if (pageIndex > (totalPage - 7)) {
 				//總頁數大於10頁且當前頁接近總頁數
 				pageHtml += firstPage;
 				pageHtml += leftOmitPage;
-				for (let i =( totalPage - 8); i <= totalPage; i++) {
+				for (let i = (totalPage - 8); i <= totalPage; i++) {
 					pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
 				}
 			} else {
 				//當前頁在中間
 				pageHtml += firstPage;
 				pageHtml += leftOmitPage;
-				for (let i = (pageIndex - 3); i <=( pageIndex + 3); i++) {
+				for (let i = (pageIndex - 3); i <= (pageIndex + 3); i++) {
 					pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
-					//console.log("pageIndex: " + pageIndex);	
 				}
 				pageHtml += rightOmitPage;
 				pageHtml += lastPage;
 			}
 			pageHtml += nextButton;
 			pagination.innerHTML = pageHtml;
-			if(totalPage!=0)
+			if (totalPage != 0)
 				document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
 		}
 
-			//  全部show
+		//  全部show
 		var dataData = [];
+		$.ajax({
+			type: "get",
+			url: "/api/ClassRecords/allRecords/",
+			success: function (data) {
+				jsonData = data;
+				pagination(jsonData, 1);
+			}
+		})
+
+		// 查詢
+		var mycID, myctLession, mysName, count;
+		function btnQuery() {
+			count = 0;
+			mycID = $('#cID').val();
+			myctLession = $('#ctLession').val();
+			mysName = $('#sName').val();
+
+			if (mycID == "9999") mycID = 9999;
+
+			if (mysName == "") mysName = "沒填姓名";
+			if (myctLession == "99") myctLession = 99;
 			$.ajax({
 				type: "get",
-				url: "/api/ClassRecords/allRecords/",
-					success: function (data) {
+				// GET: /api/ClassRecords/RecordQuery/1/鄧紫棋/1
+				url: "/api/ClassRecords/RecordQuery/" + mycID + "/" + mysName + "/" + myctLession,
+				success: function (data) {
 					jsonData = data;
 					pagination(jsonData, 1);
+					//沒有查到資料
+					if (count == 0) {
+						//alert("沒有查到相關資料");
+						$('#showNoDataModal').css("display", "block");
+					}
 				}
 			})
+		}
 
-			// 查詢 
-			var mycID, myctLession, mysName, count;
-			$('#btnQuery').click(function () {
-				count = 0;
-				mycID = $('#cID').val();
-				myctLession = $('#ctLession').val();
-				mysName = $('#sName').val();
-
-				if (mycID == null) mycID = 9999;
-				if (mysName == "") mysName = "沒填姓名";
-				if (myctLession == "99") myctLession = 99;
-
-				if ( mycID == 9999 ) {
-					//alert("請設定查詢條件，至少需要填寫【課程名稱】");
-					$('#setConditionModal').css("display", "block");
-				}
-				else {
-						$.ajax({
-							type: "get",
-							// GET: /api/ClassRecords/RecordQuery/1/鄧紫棋/1
-							url: "/api/ClassRecords/RecordQuery/" + mycID + "/" + mysName + "/" + myctLession ,
-							success: function (data) {
-								jsonData = data;
-								pagination(jsonData, 1);
-								//沒有查到資料
-								if (count == 0) {
-									//alert("沒有查到相關資料");
-									$('#showNoDataModal').css("display", "block");
-								}
-							}
-						})
-					}
-				
-			})
-
-			// editform 打開  orID的紀錄
-			function openEditModel(crID) {
-				SingleCrID = crID;
-				$.ajax({
-					type: "get",
-					// GET: api/ClassRecords/crID/1
-					url: "/api/ClassRecords/crID/" + crID,
-					success: function (data) {
-						console.log(data);
-						data.forEach(function (x) {
-							var date = new Date(x.ctDate).toLocaleDateString();
-							if (x.crAttendance == true) {
-								$('input[name="editAttend"]')[0].checked = true;
-							} else {
-								$('input[name="editAttend"]')[1].checked = true;
-							}
-							$('#editNumber').val(x.sNumber);
-							$('#editName').val(x.sName);
-							$('#editDate').val(date);
-							$('#editCName').val(x.cName);
-							$('#editTotalLession').val(x.ctLession);
-							$('#editContent').val(x.crContent);
-							$('#editcrID').val(crID);
-							$('#editsID').val(x.sID);
-							$('#editctID').val(x.classTimeId);
-						})
-
-					}
-				})
-				editModal.style.display = "block";
-			}
-
-			//確定編輯
-			$('#btnEditConfirm').click(function (SingleCrID) {
-				console.log("確定編輯");
-				var Attend1 = $('input[name=editAttend]')[0].checked;
-				var Attend2 = $('input[name=editAttend]')[1].checked;
-				if (Attend1 || Attend2) {
-					var UpdatecrID = parseInt($('#editcrID').val() );
-					var UpdatectID = parseInt($('#editctID').val());
-					var UpdateSid = parseInt($('#editsID').val());
-					var UpdateContent = $('#editContent').val();
-					console.log(UpdatecrID);
-					console.log(UpdatectID);
-					console.log(UpdateSid);
-					console.log(UpdateContent);
-
-					var UpdateAttend;
-					if (Attend1) { UpdateAttend = true; } else { UpdateAttend = false; }
-					console.log(UpdateAttend);
-
-					var updateData = {
-						crId: UpdatecrID,
-						classTimeId: UpdatectID,
-						sId: UpdateSid,
-						crAttendance: UpdateAttend,
-						crContent:  UpdateContent
-					};
-
-					$.ajax({
-						type: "PUT",
-						//PUT: api/ClassRecords/1
-						url: "/api/ClassRecords/" + UpdatecrID,
-						dataType: "json",
-						contentType: "application/json",
-						data: JSON.stringify(updateData),
-						success: function (data) {
-							$('#editModal').css("display", "none");
-							//alert("有成功更改");
-							$('#updateMessage').css("display", "block");
-							//myrefresh();
+		// editform 打開  orID的紀錄
+		function openEditModel(crID) {
+			SingleCrID = crID;
+			$.ajax({
+				type: "get",
+				// GET: api/ClassRecords/crID/1
+				url: "/api/ClassRecords/crID/" + crID,
+				success: function (data) {
+					console.log(data);
+					data.forEach(function (x) {
+						var date = new Date(x.ctDate).toLocaleDateString();
+						if (x.crAttendance == true) {
+							$('input[name="editAttend"]')[0].checked = true;
+						} else {
+							$('input[name="editAttend"]')[1].checked = true;
 						}
+						$('#editNumber').val(x.sNumber);
+						$('#editName').val(x.sName);
+						$('#editDate').val(date);
+						$('#editCName').val(x.cName);
+						$('#editTotalLession').val(x.ctLession);
+						$('#editContent').val(x.crContent);
+						$('#editcrID').val(crID);
+						$('#editsID').val(x.sID);
+						$('#editctID').val(x.classTimeId);
 					})
 
-					//  ?? 加  更改orderTime  (因為需要排序最新的在上面)
-
-
 				}
 			})
+			editModal.style.display = "block";
+		}
 
-			function moveToEnd() {
-				document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
-			}
+		//確定編輯
+		$('#btnEditConfirm').click(function (SingleCrID) {
+			console.log("確定編輯");
+			var Attend1 = $('input[name=editAttend]')[0].checked;
+			var Attend2 = $('input[name=editAttend]')[1].checked;
+			if (Attend1 || Attend2) {
+				var UpdatecrID = parseInt($('#editcrID').val());
+				var UpdatectID = parseInt($('#editctID').val());
+				var UpdateSid = parseInt($('#editsID').val());
+				var UpdateContent = $('#editContent').val();
+				console.log(UpdatecrID);
+				console.log(UpdatectID);
+				console.log(UpdateSid);
+				console.log(UpdateContent);
 
-			function myrefresh()
-			{
-				window.location.reload();
+				var UpdateAttend;
+				if (Attend1) { UpdateAttend = true; } else { UpdateAttend = false; }
+				console.log(UpdateAttend);
+
+				var updateData = {
+					crId: UpdatecrID,
+					classTimeId: UpdatectID,
+					sId: UpdateSid,
+					crAttendance: UpdateAttend,
+					crContent: UpdateContent
+				};
+
+				$.ajax({
+					type: "PUT",
+					//PUT: api/ClassRecords/1
+					url: "/api/ClassRecords/" + UpdatecrID,
+					dataType: "json",
+					contentType: "application/json",
+					data: JSON.stringify(updateData),
+					success: function (data) {
+						$('#editModal').css("display", "none");
+						//alert("有成功更改");
+						$('#updateMessage').css("display", "block");
+						//myrefresh();
+					}
+				})
+
+
+
 			}
+		})
+
+		function moveToEnd() {
+			document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
+		}
+
+		function myrefresh() {
+			window.location.reload();
+		}
 
 	</script>
 

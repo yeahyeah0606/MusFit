@@ -108,8 +108,7 @@ namespace MusFit.Controllers
 						join c in _context.Classes on ct.CId equals c.CId
 						join lc in _context.LessionCategories on c.LcId equals lc.LcId
 						join t in _context.Terms on ct.TId equals t.TId
-						//from o in _context.ClassOrders
-						//where cr.SId == o.SId && cr.ClassTimeId == o.ClassTimeId
+						where c.CId != 11
 						orderby ct.CtDate, s.SId ascending
 						//where ct.CtDate <= DateTime.Now
 						select new
@@ -135,16 +134,43 @@ namespace MusFit.Controllers
 		[HttpGet("RecordQuery/{cID}/{sName}/{ctLession}")]
 		public async Task<ActionResult<IEnumerable<dynamic>>> RecordsQuery(int cID, string sName, int ctLession)
 		{
-			if (cID != 9999 && sName != "沒填姓名" && ctLession != 99)
+			if (cID == 9999 && sName == "沒填姓名" && ctLession == 99)
 			{
-				//  課程id + 姓名 + 堂數
 				var query = from cr in _context.ClassRecords
 							join s in _context.Students on cr.SId equals s.SId
 							join ct in _context.ClassTimes on cr.ClassTimeId equals ct.ClassTimeId
 							join c in _context.Classes on ct.CId equals c.CId
 							join lc in _context.LessionCategories on c.LcId equals lc.LcId
 							join t in _context.Terms on ct.TId equals t.TId
-							where c.CId == cID && s.SName == sName && ct.CtLession == ctLession
+							//from o in _context.ClassOrders
+							//where cr.SId == o.SId && cr.ClassTimeId == o.ClassTimeId
+							orderby ct.CtDate, s.SId ascending
+							//where ct.CtDate <= DateTime.Now
+							select new
+							{
+								CrID = cr.CrId,
+								SNumber = s.SNumber,
+								SName = s.SName,
+								CtDate = ct.CtDate,
+								LcType = lc.LcType,
+								CName = c.CName,
+								TId = t.TId,
+								CtLession = ct.CtLession,
+								CrAttendance = cr.CrAttendance,
+								CrContent = cr.CrContent
+							};
+				return await query.ToListAsync();
+			}
+			else if (cID == 9999 && sName != "沒填姓名" && ctLession == 99)
+			{
+				//  全部課程 +姓名
+				var query = from cr in _context.ClassRecords
+							join s in _context.Students on cr.SId equals s.SId
+							join ct in _context.ClassTimes on cr.ClassTimeId equals ct.ClassTimeId
+							join c in _context.Classes on ct.CId equals c.CId
+							join lc in _context.LessionCategories on c.LcId equals lc.LcId
+							join t in _context.Terms on ct.TId equals t.TId
+							where s.SName == sName && c.CId != 11
 							orderby ct.CtDate, s.SId ascending
 							select new
 							{
@@ -162,9 +188,9 @@ namespace MusFit.Controllers
 							};
 				return await query.ToListAsync();
 			}
-			else if (cID != 9999 && sName != "沒填姓名")
+			else if (cID != 9999 && sName != "沒填姓名" && ctLession != 99)
 			{
-				//  課程id + 姓名 
+				//  課程id + 姓名 + 堂數
 				var query = from cr in _context.ClassRecords
 							join s in _context.Students on cr.SId equals s.SId
 							join ct in _context.ClassTimes on cr.ClassTimeId equals ct.ClassTimeId
@@ -172,6 +198,7 @@ namespace MusFit.Controllers
 							join lc in _context.LessionCategories on c.LcId equals lc.LcId
 							join t in _context.Terms on ct.TId equals t.TId
 							where c.CId == cID && s.SName == sName
+							 		 && c.CId != 11 && ctLession == ct.CtLession
 							orderby ct.CtDate, s.SId ascending
 							select new
 							{
@@ -188,16 +215,42 @@ namespace MusFit.Controllers
 							};
 				return await query.ToListAsync();
 			}
-			else if (cID != 9999 && ctLession != 99)
+			else if (cID != 9999 && sName != "沒填姓名" && ctLession == 99)
 			{
-				//  課程id + 堂數
+				//  課程id + 姓名 
 				var query = from cr in _context.ClassRecords
 							join s in _context.Students on cr.SId equals s.SId
 							join ct in _context.ClassTimes on cr.ClassTimeId equals ct.ClassTimeId
 							join c in _context.Classes on ct.CId equals c.CId
 							join lc in _context.LessionCategories on c.LcId equals lc.LcId
 							join t in _context.Terms on ct.TId equals t.TId
-							where c.CId == cID && ct.CtLession == ctLession
+							where c.CId == cID && s.SName == sName && c.CId != 11
+							orderby ct.CtDate, s.SId ascending
+							select new
+							{
+								CrID = cr.CrId,
+								SNumber = s.SNumber,
+								SName = s.SName,
+								CtDate = ct.CtDate,
+								LcType = lc.LcType,
+								CName = c.CName,
+								TId = t.TId,
+								CtLession = ct.CtLession,
+								CrAttendance = cr.CrAttendance,
+								CrContent = cr.CrContent
+							};
+				return await query.ToListAsync();
+			}
+			else if (cID != 9999 && sName == "沒填姓名" && ctLession != 99)
+			{
+				// 課程id +堂數
+				var query = from cr in _context.ClassRecords
+							join s in _context.Students on cr.SId equals s.SId
+							join ct in _context.ClassTimes on cr.ClassTimeId equals ct.ClassTimeId
+							join c in _context.Classes on ct.CId equals c.CId
+							join lc in _context.LessionCategories on c.LcId equals lc.LcId
+							join t in _context.Terms on ct.TId equals t.TId
+							where c.CId == cID && ctLession == ct.CtLession && c.CId != 11
 							orderby ct.CtDate, s.SId ascending
 							select new
 							{
@@ -216,14 +269,14 @@ namespace MusFit.Controllers
 			}
 			else
 			{
-				// 課程id
+				// 課程id +全部堂數
 				var query = from cr in _context.ClassRecords
 							join s in _context.Students on cr.SId equals s.SId
 							join ct in _context.ClassTimes on cr.ClassTimeId equals ct.ClassTimeId
 							join c in _context.Classes on ct.CId equals c.CId
 							join lc in _context.LessionCategories on c.LcId equals lc.LcId
 							join t in _context.Terms on ct.TId equals t.TId
-							where c.CId == cID
+							where c.CId == cID && c.CId != 11
 							orderby ct.CtDate, s.SId ascending
 							select new
 							{
@@ -240,112 +293,7 @@ namespace MusFit.Controllers
 							};
 				return await query.ToListAsync();
 			}
-
 		}
-
-		#endregion
-
-		#region 紀錄 只塞選日期
-		//  GET:  api/ClassRecords/date/2022-12-01/2023-02-28
-		[HttpGet("date/{dateStart}/{dateEnd}")]
-		public async Task<ActionResult<IEnumerable<dynamic>>> GetRecord1(string dateStart, string dateEnd)
-		{
-			var date_start = Convert.ToDateTime(dateStart);
-			var date_end = Convert.ToDateTime(dateEnd);
-
-			var query = from cr in _context.ClassRecords
-						join s in _context.Students on cr.SId equals s.SId
-						join ct in _context.ClassTimes on cr.ClassTimeId equals ct.ClassTimeId
-						join c in _context.Classes on ct.CId equals c.CId
-						join lc in _context.LessionCategories on c.LcId equals lc.LcId
-						join t in _context.Terms on ct.TId equals t.TId
-						where ct.CtDate >= date_start && ct.CtDate <= date_end
-						orderby ct.CtDate, s.SId ascending
-						select new
-						{
-							CrID = cr.CrId,
-							SNumber = s.SNumber,
-							SName = s.SName,
-							CtDate = ct.CtDate,
-							LcType = lc.LcType,
-							CName = c.CName,
-							TId = t.TId,
-							CtLession = ct.CtLession,
-							CrAttendance = cr.CrAttendance,
-							CrContent = cr.CrContent
-						};
-			return await query.ToListAsync();
-		}
-
-		#endregion
-
-		#region 紀錄 塞選 日期 + 姓名
-		//  GET:  api/ClassRecords/date/2022-12-01/2023-02-28/鄧紫棋
-		[HttpGet("date/{dateStart}/{dateEnd}/{sName}")]
-		public async Task<ActionResult<IEnumerable<dynamic>>> GetRecord2(string dateStart, string dateEnd, string sName)
-		{
-			var date_start = Convert.ToDateTime(dateStart);
-			var date_end = Convert.ToDateTime(dateEnd);
-
-			var query = from cr in _context.ClassRecords
-						join s in _context.Students on cr.SId equals s.SId
-						join ct in _context.ClassTimes on cr.ClassTimeId equals ct.ClassTimeId
-						join c in _context.Classes on ct.CId equals c.CId
-						join lc in _context.LessionCategories on c.LcId equals lc.LcId
-						join t in _context.Terms on ct.TId equals t.TId
-						where ct.CtDate >= date_start && ct.CtDate <= date_end && s.SName == sName
-						orderby ct.CtDate, s.SId ascending
-						select new
-						{
-							CrID = cr.CrId,
-							SNumber = s.SNumber,
-							SName = s.SName,
-							CtDate = ct.CtDate,
-							LcType = lc.LcType,
-							CName = c.CName,
-							TId = t.TId,
-							CtLession = ct.CtLession,
-							CrAttendance = cr.CrAttendance,
-							CrContent = cr.CrContent
-						};
-			return await query.ToListAsync();
-		}
-
-		#endregion
-
-		#region 紀錄 塞選 日期 + 姓名 + 堂數
-		//  GET:  api/ClassRecords/date/2022-12-01/2023-02-28/鄧紫棋/1
-		[HttpGet("date/{dateStart}/{dateEnd}/{sName}/{ctLession}")]
-		public async Task<ActionResult<IEnumerable<dynamic>>> GetRecord3(string dateStart, string dateEnd, string sName, int ctLession)
-		{
-			var date_start = Convert.ToDateTime(dateStart);
-			var date_end = Convert.ToDateTime(dateEnd);
-
-			var query = from cr in _context.ClassRecords
-						join s in _context.Students on cr.SId equals s.SId
-						join ct in _context.ClassTimes on cr.ClassTimeId equals ct.ClassTimeId
-						join c in _context.Classes on ct.CId equals c.CId
-						join lc in _context.LessionCategories on c.LcId equals lc.LcId
-						join t in _context.Terms on ct.TId equals t.TId
-						where ct.CtDate >= date_start && ct.CtDate <= date_end
-									&& s.SName == sName && ct.CtLession == ctLession
-						orderby ct.CtDate, s.SId ascending
-						select new
-						{
-							CrID = cr.CrId,
-							SNumber = s.SNumber,
-							SName = s.SName,
-							CtDate = ct.CtDate,
-							LcType = lc.LcType,
-							CName = c.CName,
-							TId = t.TId,
-							CtLession = ct.CtLession,
-							CrAttendance = cr.CrAttendance,
-							CrContent = cr.CrContent
-						};
-			return await query.ToListAsync();
-		}
-
 		#endregion
 
 		#region 單筆紀錄的相關資訊

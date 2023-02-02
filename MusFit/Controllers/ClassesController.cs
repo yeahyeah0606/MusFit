@@ -27,6 +27,16 @@ namespace MusFit.Controllers
             return await _context.Classes.ToListAsync();
         }
 
+        [HttpGet("getClassesAvailable/")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetClassesAvailable()
+        {
+			var result = from c in _context.Classes
+						 join ct in _context.ClassTimes on c.CId equals ct.CId
+						 where ct.CtLession == c.CTotalLession && ct.CtDate > DateTime.Now
+						 select c;
+            return await result.ToListAsync();
+        }
+
         [HttpGet("operationPercentage/")]
         public IActionResult GetOperationPercentage()
         {
@@ -66,7 +76,7 @@ namespace MusFit.Controllers
 					  join e in _context.Employees on c.EId equals e.EId
 					  join r in _context.Rooms on c.RoomId equals r.RoomId
 					  join lc in _context.LessionCategories on c.LcId equals lc.LcId
-					  where ct.CtLession == 1 && c.CId !=11
+					  where ct.CtLession == 1 && c.CId != 11
 					  orderby ct.CtDate descending
 					  select new
 					  {
@@ -312,142 +322,6 @@ namespace MusFit.Controllers
 				return await obj.ToListAsync();
 			}
 
-		}
-		#endregion
-
-		#region 課程 只有塞選日期
-		// GET: api/Classes/date/2023-01-01/2023-02-01
-		[HttpGet("date/{dateStart}/{dateEnd}")]
-		public async Task<ActionResult<IEnumerable<dynamic>>> GetClassQuery1(string dateStart, string dateEnd)
-		{
-			var date_start = Convert.ToDateTime(dateStart);
-			var date_end = Convert.ToDateTime(dateEnd);
-
-			var obj = from c in _context.Classes
-					  join ct in _context.ClassTimes on c.CId equals ct.CId
-					  join t in _context.Terms on ct.TId equals t.TId
-					  join e in _context.Employees on c.EId equals e.EId
-					  join r in _context.Rooms on c.RoomId equals r.RoomId
-					  join lc in _context.LessionCategories on c.LcId equals lc.LcId
-					  where ct.CtLession == 1 && ct.CtDate >= date_start
-								&& ct.CtDate <= date_end
-					  orderby c.CNumber ascending
-					  select new
-					  {
-						  cID = c.CId,
-						  cNumber = c.CNumber,
-						  cName = c.CName,
-						  ctDate = ct.CtDate,
-						  tID = t.TId,
-						  eEngName = e.EEngName,
-						  roomName = r.RoomName,
-						  cTotalLession = c.CTotalLession,
-						  cExpect = c.CExpect,
-						  cActual = c.CActual
-					  };
-			return await obj.ToListAsync();
-		}
-		#endregion
-
-		#region 課程 塞選日期 + 課程項目
-		// GET: api/Classes/date/2022-12-01/2023-02-01/2
-		[HttpGet("date/{dateStart}/{dateEnd}/{lcID}")]
-		public async Task<ActionResult<IEnumerable<dynamic>>> GetClassQuery2(string dateStart, string dateEnd, int lcID)
-		{
-			var date_start = Convert.ToDateTime(dateStart);
-			var date_end = Convert.ToDateTime(dateEnd);
-
-			var obj = from c in _context.Classes
-					  join ct in _context.ClassTimes on c.CId equals ct.CId
-					  join t in _context.Terms on ct.TId equals t.TId
-					  join e in _context.Employees on c.EId equals e.EId
-					  join r in _context.Rooms on c.RoomId equals r.RoomId
-					  join lc in _context.LessionCategories on c.LcId equals lc.LcId
-					  where ct.CtLession == 1 && ct.CtDate >= date_start
-								&& ct.CtDate <= date_end && lc.LcId == lcID
-					  orderby c.CNumber ascending
-					  select new
-					  {
-						  cID = c.CId,
-						  cNumber = c.CNumber,
-						  cName = c.CName,
-						  ctDate = ct.CtDate,
-						  tID = t.TId,
-						  eEngName = e.EEngName,
-						  roomName = r.RoomName,
-						  cTotalLession = c.CTotalLession,
-						  cExpect = c.CExpect,
-						  cActual = c.CActual
-					  };
-			return await obj.ToListAsync();
-		}
-		#endregion
-
-		#region 課程 塞選日期 + 教練
-		// GET: api/Classes/dateCoach/2022-12-01/2023-02-01/2
-		[HttpGet("dateCoach/{dateStart}/{dateEnd}/{eID}")]
-		public async Task<ActionResult<IEnumerable<dynamic>>> GetClassQuery3(string dateStart, string dateEnd, int eID)
-		{
-			var date_start = Convert.ToDateTime(dateStart);
-			var date_end = Convert.ToDateTime(dateEnd);
-
-			var obj = from c in _context.Classes
-					  join ct in _context.ClassTimes on c.CId equals ct.CId
-					  join t in _context.Terms on ct.TId equals t.TId
-					  join e in _context.Employees on c.EId equals e.EId
-					  join r in _context.Rooms on c.RoomId equals r.RoomId
-					  join lc in _context.LessionCategories on c.LcId equals lc.LcId
-					  where ct.CtLession == 1 && ct.CtDate >= date_start
-								&& ct.CtDate <= date_end && e.EId == eID
-					  orderby c.CNumber ascending
-					  select new
-					  {
-						  cID = c.CId,
-						  cNumber = c.CNumber,
-						  cName = c.CName,
-						  ctDate = ct.CtDate,
-						  tID = t.TId,
-						  eEngName = e.EEngName,
-						  roomName = r.RoomName,
-						  cTotalLession = c.CTotalLession,
-						  cExpect = c.CExpect,
-						  cActual = c.CActual
-					  };
-			return await obj.ToListAsync();
-		}
-		#endregion
-
-		#region 課程 塞選日期 + 課程項目 + 教練 
-		// GET: api/Classes/dateCoach/2022-12-01/2023-02-01/4/2
-		[HttpGet("dateCoach/{dateStart}/{dateEnd}/{lcID}/{eID}")]
-		public async Task<ActionResult<IEnumerable<dynamic>>> GetClassQuery4(string dateStart, string dateEnd, int lcID, int eID)
-		{
-			var date_start = Convert.ToDateTime(dateStart);
-			var date_end = Convert.ToDateTime(dateEnd);
-
-			var obj = from c in _context.Classes
-					  join ct in _context.ClassTimes on c.CId equals ct.CId
-					  join t in _context.Terms on ct.TId equals t.TId
-					  join e in _context.Employees on c.EId equals e.EId
-					  join r in _context.Rooms on c.RoomId equals r.RoomId
-					  join lc in _context.LessionCategories on c.LcId equals lc.LcId
-					  where ct.CtLession == 1 && ct.CtDate >= date_start
-								&& ct.CtDate <= date_end && lc.LcId == lcID && e.EId == eID
-					  orderby c.CNumber ascending
-					  select new
-					  {
-						  cID = c.CId,
-						  cNumber = c.CNumber,
-						  cName = c.CName,
-						  ctDate = ct.CtDate,
-						  tID = t.TId,
-						  eEngName = e.EEngName,
-						  roomName = r.RoomName,
-						  cTotalLession = c.CTotalLession,
-						  cExpect = c.CExpect,
-						  cActual = c.CActual
-					  };
-			return await obj.ToListAsync();
 		}
 		#endregion
 

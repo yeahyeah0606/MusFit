@@ -135,9 +135,13 @@ button {
     border-radius: 3px;
 }
 
-    button:hover {
-        opacity: 0.9;
-    }
+button:focus{
+    outline: none;
+}
+
+button:hover {
+    opacity: 0.9;
+}
 
 #btndelete {
     background-color: #c44f4f;
@@ -174,11 +178,11 @@ button {
     font-weight: bold;
 }
 
-    .close:hover, .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-    }
+.close:hover, .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 #btnconfirmdelete {
     color: #fff;
@@ -190,9 +194,9 @@ button {
     outline: none;
 }
 
-    #btnconfirmdelete:hover {
-        opacity: 0.9;
-    }
+#btnconfirmdelete:hover {
+    opacity: 0.9;
+}
 
 #successModal, #deleteInBody {
     width: 400px;
@@ -202,4 +206,9 @@ button {
     width: 20%;
     margin: auto;
     background-color: #6B7BA7;
+}
+
+
+#btndelete:focus, #btnconfirmdelete:focus, #btnConfirmMessage:focus{
+    outline: none;
 }

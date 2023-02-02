@@ -52,6 +52,7 @@ namespace MusFit.Controllers
 					  join e in _context.Employees on co.EId equals e.EId
 					  join lc in _context.LessionCategories on co.LcId equals lc.LcId
 					  where co.LcId == lcID
+                      orderby e.EId ascending
 					  select new
 					  {
 						  csID = co.CsId,

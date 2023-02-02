@@ -1,0 +1,523 @@
+﻿<link rel="stylesheet" href="~/css/KnowlegeDraft.css">
+
+<div class="knowledgecontentheader">
+    <h1>知識專欄-草稿列表</h1>
+</div>
+
+<hr>
+<div>
+    <button class="btn" id="addbtn" type="button" data-target="#addModal" data-toggle="modal">
+        <span>新增草稿</span>
+    </button>
+</div>
+
+<br>
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> 知識專欄-新增</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+
+                    <div class="row" style="width:95%; margin-left:1%;">
+                        <div class="col-2">
+                            <label for="">草稿建立日期</label>
+                            <input type="date" name="kDate" class="postdate" id="addPostDate" />
+                        </div>
+                    </div>
+
+                    <div class="row" style="width:95%; margin-left:1%;">
+                        <div class="col-1">
+                            <label for="addModalTitle" id="addtitlelabel" class="titlelabel">
+                                標題
+                            </label>
+                        </div>
+                        <div class="col-12">
+                            <input type="text" id="addModalTitle" name="nTitle" class="titleinput" placeholder="請輸入標題(必填)" maxlength="20">
+                        </div>
+                    </div>
+                    <div class="row" style="width:95%; margin-left:2%;">
+                        <div class="col-1">
+                            <label for="editor1">內容</label>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="contenteditorbar">
+                                <div style="margin-right:85%;">
+                                    <label class="uploadlabel" for="adduploadfile">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                                            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                            <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
+                                        </svg>
+                                    </label>
+                                    <input type="file" class="form-control-file btn " id="adduploadfile" name="kPhoto" accept=".png, .jpg, .jpeg" onchange="addphoto()" style="display:none" multiple>
+
+                                    <a class="emojiselectbar" onclick="addemojibox()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-emoji-smile" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                            <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z" />
+                                        </svg>
+                                    </a>
+
+
+
+                                </div>
+
+
+                            </div>
+
+                            <div id="addemoji" style="display: none; margin-left:0px; " data-popper-placement="right">
+                                <a class="addemojicancel" onclick="addemojicancel()" style="margin-left:90%;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                    </svg>
+                                </a>
+                                <ul id="addemojiList" style="display:flex; flex-wrap: wrap; list-style:none; overflow:auto; width:200px; height:300px;">
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12">
+                            <div style=" width: 100%; ">
+
+                                <div class="divtextarea">
+
+                                    <textarea name="kContent" id="addcontent" rows="11" placeholder="請輸入內容(必填)" maxlength="500"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="width:95%; margin-left:2%; margin-top:1%;">
+                        <div class="col-4">
+                            <input type="text" id="author" placeholder="請輸入作者名(必填)">
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="back()">取消</button>
+                <button class="btn" onclick="addform1()">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mycontain">
+    <div class=" mycontainer">
+        <table class="table">
+            <thead>
+                <tr>
+
+                    <th>專欄標題</th>
+                    <th> 草稿建立時間</th>
+                    <th>內容</th>
+                    <th>作者</th>
+                    <th> 操作</th>
+                </tr>
+            </thead>
+            <tbody id="draftlist">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@*
+    edit modal
+    *@
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> 知識專欄-編輯</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <input type="hidden" id="editModalID">
+                    </div>
+                    <div class="row" style="width:95%; margin-left:1%;">
+                        <div class="col-2">
+                            <label for="">草稿建立日期</label>
+                            <input type="date" name="nPostdate" class="postdate" id="editPostDate" disabled />
+                        </div>
+                    </div>
+
+                    <div class="row" style="width:95%; margin-left:1%;">
+                        <div class="col-1">
+                            <label for="editModalTitle" id="editTitleLabel" class="titlelabel">
+                                標題
+                            </label>
+                        </div>
+                        <div class="col-12">
+                            <input type="text" id="editModalTitle" name="nTitle" class="titleinput" placeholder="請輸入標題(必填)" maxlength="20">
+                        </div>
+                    </div>
+                    <div class="row" style="width:95%; margin-left:2%;">
+                        <div class="col-1">
+
+                            <label for="editor1">內容</label>
+
+                        </div>
+
+                        <div class="col-12">
+                            <div class="contenteditorbar">
+                                <label class="uploadlabel" for="edituploadfile" style="margin-right:95%;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
+                                    </svg>
+                                </label>
+                                <input type="file" class="form-control-file btn " id="edituploadfile" name="nPhoto" accept=".png, .jpg, .jpeg" style="display:none" onchange="editphoto()">
+                            </div>
+                        </div>
+
+
+                        <div class="col-12">
+                            <div style=" width: 100%; ">
+
+                                <div class="divtextarea">
+                                    <textarea name="kContent" id="edittextarea" rows="11" placeholder="請輸入內容(必填)" maxlength="500"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="width:95%; margin-top:1%;">
+                        <div class="col-4">
+                            <input type="text" id="editauthor" placeholder="請輸入作者名(必填)">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="back()">取消</button>
+                <button class="btn" onclick="editform()">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*刪除Modal*@
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <input type="hidden" id="deleteID">
+            <div class="modal-body">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16" style="color:#D65C67; margin-left:40%; margin-top:5%;">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                </svg>
+                <br>
+                <br>
+                <h5 class="deleteword">確定要刪除嗎?</h5>
+                <p class="deletedescribe">刪除後紀錄則永久刪除</p>
+
+                <div class="Modaldeletebtndiv">
+                    <button class="Modaldeletebtn btn" onclick="back()">取消</button>
+                    <button class="Modaldeletebtn btn" onclick="draftDelete()">確定</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*取消返回鍵*@
+<script>
+
+    function back() {
+        window.location = "/Manage/KnowledgeDraft"
+    }
+</script>
+
+@*新增圖片上傳*@
+<script>
+
+    var photolink
+    var reader = new FileReader();
+    var reader1 = new FileReader();
+    var file;
+    var i = 0;
+    var b = 0;
+    var numFiles = 0;
+    var k = 0;
+    var photodata;
+    var photodata2;
+    var e = 0;
+    function readfile(file) {
+        k++;
+        reader.readAsDataURL(file)
+
+    }
+
+    function readfile1(file) {
+        e++;
+
+        reader1.readAsDataURL(file)
+
+
+
+    }
+
+
+
+    reader.onload = function (e) {
+        i++;
+
+        var imagediv = $('<div>').attr({ class: "addimagediv", style: "width:200px; height:200px; object-fit:contain;  margin-top:2%; border-radius:5px;display:inline-block;position:relative;", id: "addphoto1" });
+        var image = $('<img>').attr({ src: e.target.result, onclick: "cancelbutton()", class: "addimagebox", style: "width:100%; height:100%; object-fit:contain; margin-top:2%; border-radius:5px; ", id: "image1" });
+
+        $(image).appendTo(imagediv)
+        $(imagediv).prependTo('#addModal .divtextarea');
+        // if there are more files run the file reader again
+
+        if (i < numFiles) {
+            // pass `File` at index `i` within `FileList` to `readFile`
+            readfile(file.item(i));
+        }
+
+        photodata = e.target.result;
+
+
+    }
+
+    reader1.onload = function (e) {
+        b++;
+
+        var imagediv = $('<div>').attr({ class: "addimagediv", style: "width:200px; height:200px; object-fit:contain;  margin-top:2%; border-radius:5px;display:inline-block;", id: "addphoto2" });
+        var image = $('<img>').attr({ src: e.target.result, onclick: "cancelbutton1()", class: "addimagebox", style: "width:100%; height:100%; object-fit:contain; margin-right:95%; margin-top:2%; border-radius:5px;", id: "image2" });
+
+        $(image).appendTo(imagediv)
+        $(imagediv).prependTo('#addModal .divtextarea');
+        // if there are more files run the file reader again
+
+        if (b < numFiles) {
+            // pass `File` at index `i` within `FileList` to `readFile`
+            readfile1(file.item(b));
+        }
+
+        photodata2 = e.target.result;
+        console.log(photodata2)
+    }
+
+
+    function addphoto() {
+        console.log('a')
+        var apple = document.getElementById('addphoto1')
+        var cat = document.getElementById('addphoto2')
+        i = 0;
+        b = 0;
+        file = document.getElementById('adduploadfile').files
+        // get the number of files
+        numFiles = file.length;
+        // pass first `File` to `readFile`
+
+        if (apple == null) {
+            readfile(file.item(i));
+        } else if (cat == null) {
+            readfile1(file.item(b));
+        } else {
+            alert('圖片已達上限')
+        }
+    }
+
+    var clickcount = 0;
+    function cancelbutton() {
+        clickcount++;
+
+
+        if (clickcount % 2 != 0) {
+
+            document.getElementById('image1').style = "width:100%; height:100%; object-fit:contain;  margin-top:2%; border-radius:5px; border-width:5px; border-style:solid; border-color:#705CBB;"
+
+            var deletebtn1 = $('<button>').attr({ id: "deleteicon1", style: "border-width:0.5px; background-color:#705CBB; color:#ffff; border-color:#705CBB; border-radius:25% 25% 25% 25% ; position: absolute;", onclick: "deletephoto1()" })
+            $(deletebtn1.text('刪除')).prependTo('#addphoto1')
+
+        } else {
+
+
+            document.getElementById('image1').style = "width:100%; height:100%; object-fit:contain;  margin-top:2%; border-radius:5px;"
+            document.getElementById('deleteicon1').remove();
+        }
+
+    }
+
+    var clickcount1 = 0;
+    function cancelbutton1() {
+        clickcount1++;
+
+
+        if (clickcount1 % 2 != 0) {
+
+            document.getElementById('image2').style = "width:100%; height:100%; object-fit:contain;  margin-top:2%; border-radius:5px; border-width:5px; border-color:#705CBB; border-style:solid;"
+            var deletebtn2 = $('<button>').attr({ id: "deleteicon2", style: "border-width:0.5px; background-color:#705CBB; color:#ffff; border-color:#705CBB; border-radius:25% 25% 25% 25% ; position: absolute;", onclick: "deletephoto2()" })
+            $(deletebtn2.text('刪除')).prependTo('#addphoto2')
+
+
+        } else {
+
+            document.getElementById('image2').style = "width:100%; height:100%; object-fit:contain;  margin-top:2%; border-radius:5px;"
+            document.getElementById('deleteicon2').remove();
+
+
+        }
+
+    }
+
+
+    function deletephoto1() {
+        document.getElementById('image1').remove();
+        document.getElementById('deleteicon1').remove();
+        document.getElementById('addphoto1').remove();
+    }
+
+    function deletephoto2() {
+        document.getElementById('image2').remove();
+        document.getElementById('deleteicon2').remove();
+        document.getElementById('addphoto2').remove();
+    }
+</script>
+
+
+@section Scripts{
+    <script>
+        function addemojibox() {
+
+            $('#addemoji').attr({ style: "display: block; margin-left: 10%; position: absolute;  z-index:6; border:solid; background-color:#ffff; border-radius:5px; border-color:#B4B2B2; border-width:0.5px; box-shadow: 0 0 9px rgba(0, 0, 0, 0.35); " })
+
+        }
+
+        function addemojicancel() {
+            $('#addemoji').attr({ style: "display: none; margin-left:0px; " })
+
+        }
+
+    </script>
+
+    @*fetch emoji*@
+    <script>
+        var addtextarea = document.getElementById('addcontent');
+        var emojiList = document.getElementById('addemojiList');
+        fetch('https://emoji-api.com/emojis?access_key=884f4afa230b3e2e7325a5c6b8951d53f5b28d5e')
+            .then(response => response.json())
+
+            .then(data => loadEmoji(data))
+
+        function loadEmoji(data) {
+
+            data.forEach(emoji => {
+                var li = document.createElement('li');
+                li.setAttribute('emoji-name', emoji.slug);
+                li.textContent = emoji.character;
+                li.addEventListener('click', event => {
+
+
+                    addtextarea.value += li.textContent;
+
+
+
+                });
+                emojiList.appendChild(li);
+            })
+
+        }
+
+
+    </script>
+
+
+
+    @*新增草稿*@
+
+    <script>
+        var draft = [];
+        if (localStorage.getItem('draft')) {
+            draft = JSON.parse(localStorage.getItem('draft'));
+        }
+
+        addDraft();
+
+
+        function addDraft() {
+
+            $('#draftlist').empty();
+            draft.forEach((drafts, index) => {
+
+                var draftdata= JSON.stringify(drafts);
+
+                console.log(drafts)
+                $('#draftlist').append(`<tr><td>${drafts['title']}</td> <td>${drafts['postdate']}</td> <td>${drafts['content']}</td> <td>${drafts['author']}</td> <td><button class="btn deletebtn" data-target="#deleteModal" data-toggle="modal" onclick="draftDeleteget(${index})">刪除</button> <button data-target="#editModal" data-toggle="modal" onclick="editModalget(${index},${draftdata})" class="btn editbtn">編輯</button> </td>  </tr>`)
+
+
+
+            })
+        }
+
+        function addform1() {
+            var newdraft = {
+                title: $('#addModalTitle').val(),
+                content: $('#addcontent').val(),
+                postdate: $('#addPostDate').val(),
+                author: $('#author').val(),
+                photo1: photodata,
+                photo2: photodata2
+            };
+
+            draft.push(newdraft);
+            localStorage.setItem('draft', JSON.stringify(draft));
+            addDraft();
+            window.location = "/Manage/KnowledgeDraft";
+
+        }
+
+
+    </script>
+
+    @*    將id傳到deleteModal*@
+    <script>
+
+        function draftDeleteget(index) {
+            $('#deleteID').val(index);
+        }
+
+    </script>
+
+    @*    刪除草稿*@
+    <script>
+        var deleteid = $('#deleteID').val();
+        function draftDelete() {
+            console.log(deleteid);
+            draft.splice(deleteid, 1);
+            localStorage.setItem("draft", JSON.stringify(draft));
+            addDraft();
+            window.location = "/Manage/KnowledgeDraft";
+        }
+    </script>
+
+    @*  編輯草稿-Modal取資料*@
+    <script>
+        function editModalget(index, data) {
+            var data1 = JSON.stringify(data)
+            console.log(data['postdate']);
+            $('#editModalID').val(index);
+            $('#editPostDate').val(data['postdate']);
+            $('#editModalTitle').val(data['title']);
+            $('#edittextarea').val(data['content']);
+            $('#editauthor').val(data['author']);
+
+        }
+    </script>
+
+}
+

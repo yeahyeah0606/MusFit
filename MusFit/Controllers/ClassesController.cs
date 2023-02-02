@@ -27,6 +27,16 @@ namespace MusFit.Controllers
             return await _context.Classes.ToListAsync();
         }
 
+        [HttpGet("getClassesAvailable/")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetClassesAvailable()
+        {
+			var result = from c in _context.Classes
+						 join ct in _context.ClassTimes on c.CId equals ct.CId
+						 where ct.CtLession == c.CTotalLession && ct.CtDate > DateTime.Now
+						 select c;
+            return await result.ToListAsync();
+        }
+
         [HttpGet("operationPercentage/")]
         public IActionResult GetOperationPercentage()
         {

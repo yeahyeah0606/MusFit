@@ -19,7 +19,7 @@
 		<label for="sNumber">會員編號: </label>&nbsp;
 		<input type="text" class="memberID-input" id="sNumber" name="sNumber" placeholder="ex: S0001">
 		&nbsp;&nbsp;&nbsp;
-		<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+		<button class="button" style="vertical-align:middle" id="btnQuery" onclick="btnQuery()"><span>查詢</span> </button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<button class="button" id="btnSignup" style="vertical-align:middle" onclick="location.href = '@Url.Action("SignupClass1","Manage")' ">
 			<span>報名</span>
@@ -141,7 +141,7 @@
 	<div id="successModal" class="modal-content">
 		<span class="close" onclick="closeSuccessModel()">&times;</span>
 		<p>已更新付款狀態</p>
-		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
+		<button class="btnConfirmMessage" onclick="closeArchiveModel()">確定</button>
 	</div>
 </div>
 
@@ -220,6 +220,13 @@
 			myrefresh();
 		}
 
+		function closeArchiveModel() {
+			$('#updateMessage').css("display", "none");
+			var Archpageid = document.getElementById('pageid');
+			btnQuery();
+			Archpageid.addEventListener('click', switchPage);
+		}
+
 		// 取出所有的課程名稱
 		$.ajax({
 			type: "get",
@@ -237,13 +244,13 @@
 		})
 
 		// 分頁功能
-		const pageid = document.getElementById('pageid');
+		var pageid = document.getElementById('pageid');
 		pageid.addEventListener('click', switchPage);
 		var nowpage;
 
 		function switchPage(n) {
 			n.preventDefault();
-			const nowpage = n.target.dataset.page; // nowpage = "data-page"
+			var nowpage = n.target.dataset.page; // nowpage = "data-page"
 			console.log("nowpage:" + nowpage);
 			pagination(jsonData, nowpage);
 		}
@@ -341,7 +348,7 @@
 									term = "19:00 ~ 20:00";
 									break;
 								case 20:
-									term = "20: 00 ~21: 00";
+									term = "20:00 ~ 21:00";
 									break;
 								case 21:
 									term = "21:00 ~ 22:00";
@@ -451,7 +458,7 @@
 		// 查詢 會員編號
 		var mySid;
 		var count;
-		$('#btnQuery').click(function () {
+		function btnQuery(){
 			var sNumberinfo = $('#sNumber').val();
 			var cNumberinfo = $('#cNumber').val();
 
@@ -483,7 +490,7 @@
 				})
 
 			}
-		})
+		}
 
 
 		// editform 打開 編輯 單筆 Order

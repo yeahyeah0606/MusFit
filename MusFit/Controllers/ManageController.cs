@@ -20,6 +20,10 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Routing;
 using System.Dynamic;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Authorization;
+using System.Net.Mail;
+using System.Net;
+using System.Web;
 
 namespace MusFit.Controllers
 {
@@ -103,6 +107,190 @@ namespace MusFit.Controllers
             HttpContext.Session.Remove("UserName");
 
             return RedirectToAction("Login");
+        }
+
+        public IActionResult ForgetPwd()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgetPwd(Employee employee)
+        {
+            if (employee.EMail != null)
+            {
+                var query = await _context.Employees.FirstOrDefaultAsync(x => x.EMail == employee.EMail);
+                if (query == null)
+                {
+                    ViewData["error"] = "此會員不存在，請重新查詢!";
+                    return View();
+                }
+                else
+                {
+                    var EmployeeResult = await _context.Employees.FirstOrDefaultAsync(x => x.EMail == employee.EMail);
+
+                    // 取得系統自定密鑰
+                    string SecretKey = "myKey";
+
+                    // 產生帳號+時間驗證碼
+                    string sVerify = EmployeeResult.EMail + "|" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+
+                    // 將驗證碼使用 3DES 加密
+                    TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
+                    MD5 md5 = new MD5CryptoServiceProvider();
+                    byte[] buf = Encoding.UTF8.GetBytes(SecretKey);
+                    byte[] result = md5.ComputeHash(buf);
+                    string md5Key = BitConverter.ToString(result).Replace("-", "").ToLower().Substring(0, 24);
+                    DES.Key = UTF8Encoding.UTF8.GetBytes(md5Key);
+                    DES.Mode = CipherMode.ECB;
+                    ICryptoTransform DESEncrypt = DES.CreateEncryptor();
+                    byte[] Buffer = UTF8Encoding.UTF8.GetBytes(sVerify);
+                    sVerify = Convert.ToBase64String(DESEncrypt.TransformFinalBlock(Buffer, 0, Buffer.Length)); // 3DES 加密後驗證碼
+
+                    // 將加密後密碼使用網址編碼處理
+                    sVerify = HttpUtility.UrlEncode(sVerify);
+
+                    //網站網址
+                    string webPath = Request.Scheme + "://" + Request.Host + Url.Content("~/");
+
+                    // 從信件連結回到重設密碼頁面
+                    string receivePage = "Manage/ResetPassword";
+
+                    // 信件內容範本
+                    string mailContent = "請點擊以下連結，返回網站重新設定密碼，逾期 30 分鐘後，此連結將會失效。<br><br>";
+                    mailContent = mailContent + "<a href='" + webPath + receivePage + "?verify=" + sVerify + "'  target='_blank'>點此連結</a>";
+
+                    // 信件主題
+                    string mailSubject = "重設密碼申請信";
+
+                    // Google 發信帳號密碼
+                    string GoogleMailUserID = "xc1120215@gmail.com";
+                    string GoogleMailUserPwd = "igosdtssppcuelwd";
+
+                    // 使用 Google Mail Server 發信
+                    string SmtpServer = "smtp.gmail.com";
+                    int SmtpPort = 587;
+                    MailMessage mms = new MailMessage();
+                    mms.From = new MailAddress(GoogleMailUserID);
+                    mms.Subject = mailSubject;
+                    mms.Body = mailContent;
+                    mms.IsBodyHtml = true;
+                    mms.SubjectEncoding = Encoding.UTF8;
+                    mms.To.Add(new MailAddress(EmployeeResult.EMail));
+                    using (SmtpClient client = new SmtpClient(SmtpServer, SmtpPort))
+                    {
+                        client.EnableSsl = true;
+                        client.Credentials = new NetworkCredential(GoogleMailUserID, GoogleMailUserPwd);//寄信帳密 
+                        client.Send(mms); //寄出信件
+                    }
+
+                    ViewData["message"] = "請至信箱查收重設密碼連結信件!!";
+
+
+                    return View("ForgetPwd");
+                }
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public IActionResult ResetPassword(string verify)
+        {
+            // 由信件連結回來會帶參數 verify
+            if (verify == "")
+            {
+                ViewData["ErrorMsg"] = "缺少驗證碼";
+                return View();
+            }
+
+            // 取得系統自定密鑰
+            string SecretKey = "myKey";
+            try
+            {
+                // 使用 3DES 解密驗證碼
+                TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
+                MD5 md5 = new MD5CryptoServiceProvider();
+                byte[] buf = Encoding.UTF8.GetBytes(SecretKey);
+                byte[] md5result = md5.ComputeHash(buf);
+                string md5Key = BitConverter.ToString(md5result).Replace("-", "").ToLower().Substring(0, 24);
+                DES.Key = UTF8Encoding.UTF8.GetBytes(md5Key);
+                DES.Mode = CipherMode.ECB;
+                DES.Padding = System.Security.Cryptography.PaddingMode.PKCS7;
+                ICryptoTransform DESDecrypt = DES.CreateDecryptor();
+                byte[] Buffer = Convert.FromBase64String(verify);
+                string deCode = UTF8Encoding.UTF8.GetString(DESDecrypt.TransformFinalBlock(Buffer, 0, Buffer.Length));
+
+                verify = deCode; //解密後還原資料
+            }
+            catch (Exception ex)
+            {
+                ViewData["ErrorMsg"] = "驗證碼錯誤";
+                return View();
+            }
+
+            // 取出帳號
+            string EMail = verify.Split('|')[0];
+
+            // 取得重設時間
+            string ResetTime = verify.Split('|')[1];
+
+            // 檢查時間是否超過 30 分鐘
+            DateTime dResetTime = Convert.ToDateTime(ResetTime);
+            TimeSpan TS = new System.TimeSpan(DateTime.Now.Ticks - dResetTime.Ticks);
+            double diff = Convert.ToDouble(TS.TotalMinutes);
+            if (diff > 30)
+            {
+                ViewData["ErrorMsg"] = "超過驗證碼有效時間，請重寄驗證碼";
+                return View();
+            }
+            // 驗證碼檢查成功，加入 Session
+            HttpContext.Session.SetString("EMail", EMail);
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel password)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View("ResetPassword");
+            }
+            else
+            {
+                try
+                {
+                    if (password.NewPassword != password.CheckPassword)
+                    {
+                        ViewData["errorNew"] = "新密碼與確認密碼不符!";
+                        return View("ResetPassword");
+                    }
+                    else
+                    {
+                        // 轉換 password -> sha2_256 比較 (轉使用者輸入的新密碼)
+                        byte[] data = Encoding.GetEncoding(1252).GetBytes(password.NewPassword);
+                        var sha = new SHA256Managed();
+                        byte[] bytesEncode = sha.ComputeHash(data);
+
+                        string EMail = HttpContext.Session.GetString("EMail") ?? "Guest";
+
+                        var query = await _context.Employees.FirstOrDefaultAsync(x => x.EMail == EMail);
+
+                        query.EPassword = bytesEncode;
+                        await _context.SaveChangesAsync();
+
+                        return View("Login", query);
+                    }
+
+                }
+                catch (System.Exception e)
+                {
+                    throw e;
+                }
+            }
         }
 
         [Authentication]

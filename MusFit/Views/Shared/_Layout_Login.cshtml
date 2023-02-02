@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>登入 - 後台管理系統</title>
+    <link rel="icon" href="~/Images/MusFit_logo.png" type=image/png sizes="100x100">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/ManageLogin.css" />
+</head>
+<body>
+<div class="container">
+
+        @*-----------------title-----------------*@
+        <div class=logo-area>
+            <a href="#" class="logo">MusFit - 後台管理系統</a>
+        </div>
+        @RenderBody()
+
+</div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

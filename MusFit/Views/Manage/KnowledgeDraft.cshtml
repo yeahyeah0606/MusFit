@@ -9,6 +9,10 @@
     <button class="btn" id="addbtn" type="button" data-target="#addModal" data-toggle="modal">
         <span>新增草稿</span>
     </button>
+
+        <button class="btn" id="goback" type="button" onclick="goback()">
+        <span>返回知識專欄列表</span>
+    </button>
 </div>
 
 <br>
@@ -198,7 +202,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn" onclick="back()">取消</button>
-                <button class="btn" onclick="editform()">確定</button>
+                <button class="btn" onclick="editput()">確定</button>
             </div>
         </div>
     </div>
@@ -225,6 +229,34 @@
                 <div class="Modaldeletebtndiv">
                     <button class="Modaldeletebtn btn" onclick="back()">取消</button>
                     <button class="Modaldeletebtn btn" onclick="draftDelete()">確定</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*發文Modal*@
+<div class="modal fade" id="PostModal" tabindex="-1" aria-labelledby="PostModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <input hidden id="draftPostID">
+            <div class="modal-body">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16" style="color:#906D87; margin-left:40%; margin-top:5%;">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                    <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                </svg>
+                <br>
+                <br>
+                <h5 class="deleteword">確定要發布嗎?</h5>
+                <p class="deletedescribe">發布後紀錄則移至知識專欄列表編輯</p>
+
+                <div class="Modaldeletebtndiv">
+                    <button class="Modaldeletebtn btn" onclick="back()">取消</button>
+                    <button class="Modaldeletebtn btn" onclick="Postsure()">確定</button>
                 </div>
 
             </div>
@@ -389,8 +421,161 @@
     }
 </script>
 
+@*編輯圖片上傳*@
+<script>
+    var a;
+    var c;
+    var filecounts = 0;
+    var putreader = new FileReader();
+    var putreader1 = new FileReader();
+    var g = 0;
+    var t = 0;
+    var putfile;
+    var putphoto1;
+    var putphoto2;
+
+    function editphoto() {
+        var bee = document.getElementById('editphoto1');
+        var dog = document.getElementById('editphoto2');
+        a = 0;
+        c = 0;
+        putfile = document.getElementById('edituploadfile').files
+        // get the number of files
+        filecounts = putfile.length;
+        // pass first `File` to `readFile`
+
+
+        if (bee == null) {
+            putreadfile(putfile.item(a));
+        } else if (dog == null) {
+            putreadfile1(putfile.item(c));
+        } else {
+            alert('圖片已達上限')
+        }
+    }
+
+    function putreadfile(file) {
+        g++;
+        putreader.readAsDataURL(file)
+
+    }
+
+    function putreadfile1(file) {
+        t++;
+
+        putreader1.readAsDataURL(file)
+
+    }
+
+
+    putreader.onload = function (e) {
+        a++;
+
+        var imagediv = $('<div>').attr({ class: "editimagediv", style: "width:200px; height:200px; object-fit:contain;  margin-top:2%; border-radius:5px;display:inline-block", id: "editphoto1" });
+        var image = $('<img>').attr({ src: e.target.result, onclick: "editcancelbutton()", class: "editimagebox", style: "margin-right:95%;width:100%; height:100%; object-fit:contain;  margin-top:2%; border-radius:5px;", id: "editimage1" });
+
+        $(image).appendTo(imagediv)
+        $(imagediv).prependTo('#editModal .divtextarea');
+        // if there are more files run the file reader again
+
+        if (a < filecounts) {
+            // pass `File` at index `i` within `FileList` to `readFile`
+            putreadfile(putfile.item(a));
+        }
+
+        console.log(e.target.result)
+        putphoto1 = e.target.result;
+    }
+
+    putreader1.onload = function (e) {
+        c++;
+
+        var imagediv = $('<div>').attr({ class: "editimagediv", style: "width:200px; height:200px; object-fit:contain; margin-top:2%; border-radius:5px;display:inline-block", id: "editphoto2" });
+        var image = $('<img>').attr({ src: e.target.result, onclick: "editcancelbutton1()", class: "editimagebox", style: "margin-right:95%;width:100%; height:100%; object-fit:contain;  margin-top:2%; border-radius:5px;", id: "editimage2" });
+
+        $(image).appendTo(imagediv)
+        $(imagediv).prependTo('#editModal .divtextarea');
+        // if there are more files run the file reader again
+
+        if (c < filecounts) {
+            // pass `File` at index `i` within `FileList` to `readFile`
+            putreadfile1(putfile.item(c));
+        }
+        console.log(e.target.result)
+        putphoto2 = e.target.result;
+
+
+    }
+
+
+</script>
+
+@*編輯圖片刪除*@
+<script>
+
+    var editclick1 = 0;
+    function editcancelbutton1() {
+        editclick1++;
+
+
+        if (editclick1 % 2 != 0) {
+
+            document.getElementById('editimage2').style = "width:100%; height:100%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px; border-width:5px; border-color:#705CBB; border-style:solid;"
+            var editdelete2 = $('<button>').attr({ id: "editdeleteicon2", style: "border-width:0.5px; background-color:#705CBB; color:#ffff; border-color:#705CBB; border-radius:25% 25% 25% 25% ; position: absolute;", onclick: "editdeletephoto2()" })
+            $(editdelete2.text('刪除')).prependTo('#editphoto2')
+
+
+        } else {
+
+            document.getElementById('editimage2').style = "width:100%; height:100%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px;"
+            document.getElementById('editdeleteicon2').remove();
+
+
+        }
+
+    }
+
+
+    var editclick = 0;
+    function editcancelbutton() {
+        editclick++;
+
+
+        if (editclick % 2 != 0) {
+
+            document.getElementById('editimage1').style = "width:100%; height:100%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px; border-width:5px; border-color:#705CBB; border-style:solid;"
+            var editdelete1 = $('<button>').attr({ id: "editdeleteicon1", style: "border-width:0.5px; background-color:#705CBB; color:#ffff; border-color:#705CBB; border-radius:25% 25% 25% 25% ; position: absolute;", onclick: "editdeletephoto1()" })
+            $(editdelete1.text('刪除')).prependTo('#editphoto1')
+
+
+        } else {
+
+            document.getElementById('editimage1').style = "width:100%; height:100%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px;"
+            document.getElementById('editdeleteicon1').remove();
+
+
+        }
+
+    }
+
+    function editdeletephoto1() {
+        document.getElementById('editimage1').remove();
+        document.getElementById('editdeleteicon1').remove();
+        document.getElementById('editphoto1').remove();
+        console.log(document.getElementById('editphoto1') == null)
+    }
+
+    function editdeletephoto2() {
+        document.getElementById('editimage2').remove();
+        document.getElementById('editdeleteicon2').remove();
+        document.getElementById('editphoto2').remove();
+    }
+
+</script>
 
 @section Scripts{
+
+   @* add emoji fetch*@
     <script>
         function addemojibox() {
 
@@ -409,7 +594,7 @@
     <script>
         var addtextarea = document.getElementById('addcontent');
         var emojiList = document.getElementById('addemojiList');
-        fetch('https://emoji-api.com/emojis?access_key=884f4afa230b3e2e7325a5c6b8951d53f5b28d5e')
+        fetch('/*https://emoji-api.com/emojis?access_key=884f4afa230b3e2e7325a5c6b8951d53f5b28d5e*/')
             .then(response => response.json())
 
             .then(data => loadEmoji(data))
@@ -454,10 +639,10 @@
             $('#draftlist').empty();
             draft.forEach((drafts, index) => {
 
-                var draftdata= JSON.stringify(drafts);
+                var draftdata = JSON.stringify(drafts);
 
                 console.log(drafts)
-                $('#draftlist').append(`<tr><td>${drafts['title']}</td> <td>${drafts['postdate']}</td> <td>${drafts['content']}</td> <td>${drafts['author']}</td> <td><button class="btn deletebtn" data-target="#deleteModal" data-toggle="modal" onclick="draftDeleteget(${index})">刪除</button> <button data-target="#editModal" data-toggle="modal" onclick="editModalget(${index},${draftdata})" class="btn editbtn">編輯</button> </td>  </tr>`)
+                $('#draftlist').append(`<tr><td>${drafts['kTitle']}</td> <td>${drafts['kDate']}</td> <td>${drafts['kContent']}</td> <td>${drafts['kAuthor']}</td> <td><button class="btn deletebtn" data-target="#deleteModal" data-toggle="modal" onclick="draftDeleteget(${index})">刪除</button> <button data-target="#editModal" data-toggle="modal" onclick="editModalget(${index})" class="btn editbtn">編輯</button> <button class="btn postbtn" data-target="#PostModal" data-toggle="modal" onclick="postget(${index})">發布</button></td>  </tr>`)
 
 
 
@@ -466,12 +651,12 @@
 
         function addform1() {
             var newdraft = {
-                title: $('#addModalTitle').val(),
-                content: $('#addcontent').val(),
-                postdate: $('#addPostDate').val(),
-                author: $('#author').val(),
-                photo1: photodata,
-                photo2: photodata2
+                kTitle: $('#addModalTitle').val(),
+                kContent: $('#addcontent').val(),
+                kDate: $('#addPostDate').val(),
+                kAuthor: $('#author').val(),
+                kPhoto1: photodata,
+                kPhoto2: photodata2
             };
 
             draft.push(newdraft);
@@ -483,6 +668,8 @@
 
 
     </script>
+
+
 
     @*    將id傳到deleteModal*@
     <script>
@@ -507,15 +694,157 @@
 
     @*  編輯草稿-Modal取資料*@
     <script>
-        function editModalget(index, data) {
-            var data1 = JSON.stringify(data)
-            console.log(data['postdate']);
+        function editModalget(index) {
+            console.log(draft[index])
+            var draftdata = draft[index];
             $('#editModalID').val(index);
-            $('#editPostDate').val(data['postdate']);
-            $('#editModalTitle').val(data['title']);
-            $('#edittextarea').val(data['content']);
-            $('#editauthor').val(data['author']);
+            $('#editModalTitle').val(draftdata['kTitle']);
+            $('#edittextarea').val(draftdata['kContent']);
+            $('#editPostDate').val(draftdata['kDate']);
+            $('#editimage2').attr({ src: draftdata['kPhoto2'] });
+            $('#editauthor').val(draftdata['kAuthor']);
+            $('#editimage1').attr({ src: draftdata['kPhoto1'] });
 
+            if (draftdata['photo1'] != null && $('#editphoto1').length == 0) {
+                var editphotodiv1 = $('<div>').attr({ class: "editimagediv", style: "width:200px; height:200px; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px;display:inline-block", id: "editphoto1" });
+                var editphoto1 = $('<img>').attr({ src: draftdata['photo1'], onclick: "editcancelbutton()", class: "editimagebox", style: "width:100%; height:100%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px;", id: "editimage1" });
+                $(editphoto1).appendTo(editphotodiv1)
+                $(editphotodiv1).prependTo('#editModal .divtextarea');
+
+
+            } else {
+                //console.log($('#editphoto1').length);
+
+            }
+
+
+            if (draftdata['photo2'] != null && $('#editphoto2').length == 0) {
+                var editphotodiv2 = $('<div>').attr({ class: "editimagediv", style: "width:200px; height:200px; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px;display:inline-block", id: "editphoto2" });
+                var editphoto2 = $('<img>').attr({ src: draftdata['photo2'], onclick: "editcancelbutton1()", class: "editimagebox", style: "width:100%; height:100%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px;", id: "editimage2" });
+                $(editphoto2).appendTo(editphotodiv2)
+                $(editphotodiv2).prependTo('#editModal .divtextarea');
+            } else {
+                //console.log('no')
+            }
+
+
+
+        }
+    </script>
+
+    @*編輯送出資料*@
+    <script>
+        var editModalId = parseInt($('#editModalID').val());
+        function editput() {
+
+            var putphotodata1;
+            if ($('#editphoto1').length != 0) {
+                console.log($('#editphoto1').length)
+                if (putphoto1 == null) {
+                    putphotodata1 = $('#editimage1').attr('src')
+
+                } else {
+                    putphotodata1 = putphoto1;
+
+                }
+            } else {
+                putphotodata1 = null;
+            }
+
+            var putphotodata2;
+            if ($('#editphoto2').length != 0) {
+                console.log($('#editphoto2').length)
+
+                if (putphoto2 == null) {
+                    putphotodata2 = $('#editimage2').attr('src')
+                } else {
+                    putphotodata2 = putphoto2;
+                }
+            } else {
+                putphotodata2 = null;
+            }
+
+            var editItem = {
+                kTitle: $('#editModalTitle').val(),
+                kContent: $('#edittextarea').val(),
+                kDate: $('#editPostDate').val(),
+                kAuthor: $('#editauthor').val(),
+                kPhoto1: putphotodata1,
+                kPhoto2: putphotodata2
+
+            };
+
+
+            console.log(editModalId);
+            draft.splice(editModalId, 1);
+            draft.splice(editModalId, 0, editItem)
+            localStorage.setItem("draft", JSON.stringify(draft));
+            addDraft();
+            window.location = "/Manage/KnowledgeDraft";
+        }
+
+    </script>
+
+    @*   發布*@
+    <script>
+        var draftpostid;
+        @*  發布草稿-Modal取資料*@
+            function postget(index) {
+                $('#draftPostID').val(index);
+                draftpostid = index;
+
+            }
+
+
+        @*發布草稿資料*@
+            function Postsure() {
+
+                draftpostdata = draft[draftpostid];
+
+                const todaydate = new Date();
+                todaydate.setHours(8, 0, 0, 0);
+
+                draftpost = {
+
+                    kTitle: draftpostdata['kTitle'],
+                    kContent: draftpostdata['kContent'],
+                    kDate: todaydate,
+                    kAuthor: draftpostdata['kAuthor'],
+                    kPhoto1: draftpostdata['kPhoto1'],
+                    kPhoto2: draftpostdata['kPhoto2']
+
+                }
+
+                $.ajax({
+                    type: "Post",
+                    url: "/api/KnowledgeColumns",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(draftpost),
+                    success: function () {
+
+                        draft.splice(draftpostid, 1)
+                        localStorage.setItem("draft", JSON.stringify(draft));
+                        addDraft();
+                        window.location = "/Manage/KnowledgeColumn"
+
+                    },
+
+                    error: function (xhr, textStatus, errorThrown) {
+
+                        console.log(draftpost)
+
+                    }
+                });
+
+            }
+
+
+    </script>
+
+    <script>
+        function goback(){
+            window.location="/Manage/KnowledgeColumn";
         }
     </script>
 

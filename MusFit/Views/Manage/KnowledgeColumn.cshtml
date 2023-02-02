@@ -12,6 +12,10 @@
     <button class="btn" id="addbtn" type="button" data-target="#addModal" data-toggle="modal">
         <span>新增文章</span>
     </button>
+
+    <button class="btn" id="godraft" onclick="godraft()" type="button">
+        <span>前往草稿列表</span>
+    </button>
 </div>
 
 
@@ -128,8 +132,8 @@
 
                 <div class="Modaldeletebtndiv">
                     <button class="Modaldeletebtn btn" onclick="back()">取消</button>
-                    
-                    <button class="Modaldeletebtn btn" onclick="location.href='/Manage/KnowledgeDraft'">確定</button>
+
+                    <button class="Modaldeletebtn btn" onclick="savedraft()">確定</button>
                 </div>
             </div>
         </div>
@@ -158,18 +162,18 @@
                 @{
                     foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @item.KColumnId
-                            </td>
-                            <td>@item.KTitle</td>
-                            <td>@item.KDate</td>
-                            <td>
-                                <button class="btn" type="button" data-target="#editModal" data-toggle="modal" onclick="getbutton(@item.KColumnId)">編輯</button>
-                                <button class="btn" type="button" data-target="#deleteModal" data-toggle="modal" onclick="deletebtn(@item.KColumnId)">刪除</button>
-                            </td>
+                                                    <tr>
+                                                        <td>
+                                                            @item.KColumnId
+                                                        </td>
+                                                        <td>@item.KTitle</td>
+                                                        <td>@item.KDate</td>
+                                                        <td>
+                                                            <button class="btn editbtn" type="button" data-target="#editModal" data-toggle="modal" onclick="getbutton(@item.KColumnId)">編輯</button>
+                                                            <button class="btn deletebtn" type="button" data-target="#deleteModal" data-toggle="modal" onclick="deletebtn(@item.KColumnId)">刪除</button>
+                                                        </td>
 
-                        </tr>
+                                                    </tr>
                     }
                 }
 
@@ -217,17 +221,39 @@
 
                             <div class="col-12">
                                 <div class="contenteditorbar">
-                                    <label class="uploadlabel" for="edituploadfile" style="margin-right:95%;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
-                                            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-                                            <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
-                                        </svg>
-                                    </label>
-                                    <input type="file" class="form-control-file btn " id="edituploadfile" name="nPhoto" accept=".png, .jpg, .jpeg" style="display:none" onchange="editphoto()">
+                                     <div style="margin-right:85%;">
+
+                                        <label class="uploadlabel" for="edituploadfile" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
+                                            </svg>
+                                        </label>
+                                        <input type="file" class="form-control-file btn " id="edituploadfile" name="nPhoto" accept=".png, .jpg, .jpeg" style="display:none" onchange="editphoto()">
+
+                                        <a class="emojiselectbar" onclick="editemojibox()">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-emoji-smile" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z" />
+                                            </svg>
+                                        </a>
+
+                                     </div>
+                                   
+
                                 </div>
+
+                                <div id="editemoji" style="display: none; margin-left:0px; " data-popper-placement="right">
+                                    <a class="editemojicancel" onclick="editemojicancel()" style="margin-left:90%;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                        </svg>
+                                    </a>
+                                    <ul id="editemojiList" style="display:flex; flex-wrap: wrap; list-style:none; overflow:auto; width:200px; height:300px;">
+                                    </ul>
+                                </div>
+
                             </div>
-
-
                             <div class="col-12">
                                 <div style=" width: 100%; ">
 
@@ -236,44 +262,57 @@
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
 
-                        <div class="row" style="width:95%; margin-top:1%;">
-                            <div class="col-4">
-                                <input type="text" class="author" placeholder="請輸入作者名(必填)">
-                            </div>
-                        </div>
 
-                    </form>
+
+               
+
+                <div class="row" style="width:95%; margin-top:1%;">
+                    <div class="col-4">
+                        <input type="text" class="author" placeholder="請輸入作者名(必填)">
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn" onclick="back()">取消</button>
-                    <button class="btn" onclick="editform()">確定</button>
-                </div>
+
+                </form>
+         
+            </div>
+            <div class="modal-footer">
+                <button class="btn cancelbtn" onclick="back()">取消</button>
+                <button class="btn surebtn" onclick="editform()">確定</button>
             </div>
         </div>
     </div>
+</div>
 
-    @* delete modal*@
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+@* delete modal*@
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
 
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"> 知識專欄-刪除</h5>
+<div class="modal-dialog">
+        <div class="modal-content">
+
+            <input type="hidden" id="deleteid">
+            <div class="modal-body">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16" style="color:#D65C67; margin-left:40%; margin-top:5%;">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                </svg>
+                <br>
+                <br>
+                <h5 class="deleteword">確定要刪除嗎?</h5>
+                <p class="deletedescribe">刪除後紀錄則永久刪除</p>
+
+                <div class="Modaldeletebtndiv">
+                    <button class="Modaldeletebtn btn" onclick="back()">取消</button>
+                    <button class="Modaldeletebtn btn" onclick="deleteokbtn()">確定</button>
                 </div>
 
-                <div class="modal-body">
-                    <h5>確定要刪除嗎?</h5>
-                    <input type="hidden" class="deletebtn">
-                </div>
-                <div class="modal-footer">
-                    <button class="btn" onclick="back()">取消</button>
-                    <button class="btn" onclick="deleteokbtn()">確定</button>
-                </div>
             </div>
+
         </div>
     </div>
+</div>
 </div>
 
 
@@ -756,8 +795,8 @@
             type: "get",
             url: "/api/KnowledgeColumns/" + deleteid,
             success: function (data) {
-                $('#deleteModal .deletebtn').val(data.kColumnId)
-                console.log($('#deleteModal .deletebtn').val())
+                $('#deleteid').val(data.kColumnId)
+                console.log($('#deleteid').val())
             },
             error: function (e) {
                 console.log('error')
@@ -775,7 +814,7 @@
 
         $.ajax({
             type: "delete",
-            url: "/api/KnowledgeColumns/" + $('#deleteModal .deletebtn').val(),
+            url: "/api/KnowledgeColumns/" + $('#deleteid').val(),
             success: function (e) {
                 window.location = "/Manage/KnowledgeColumn"
             },
@@ -788,6 +827,8 @@
 </script>
 
 @section Scripts{
+
+    @*add表情箱顯示*@
     <script>
         function addemojibox() {
             console.log(100)
@@ -801,19 +842,19 @@
         }
 
     </script>
-}
 
-    @*fetch*@
+
+    @*add-fetch*@
     <script>
         var addtextarea = document.getElementById('addcontent');
         var emojiList = document.getElementById('addemojiList');
-        fetch('https://emoji-api.com/emojis?access_key=884f4afa230b3e2e7325a5c6b8951d53f5b28d5e')
+        fetch('/*https://emoji-api.com/emojis?access_key=884f4afa230b3e2e7325a5c6b8951d53f5b28d5e*/')
             .then(response => response.json())
 
             .then(data => loadEmoji(data))
 
         function loadEmoji(data) {
-           
+
             data.forEach(emoji => {
                 var li = document.createElement('li');
                 li.setAttribute('emoji-name', emoji.slug);
@@ -828,3 +869,82 @@
 
 
     </script>
+
+    
+    @*edit表情箱顯示*@
+    <script>
+        function editemojibox() {
+            console.log(100)
+            $('#editemoji').attr({ style: "display: block; margin-left: 10%; position: absolute;  z-index:6; border:solid; background-color:#ffff; border-radius:5px; border-color:#B4B2B2; border-width:0.5px; box-shadow: 0 0 9px rgba(0, 0, 0, 0.35); " })
+
+        }
+
+        function editemojicancel() {
+            $('#editemoji').attr({ style: "display: none; margin-left:0px; " })
+
+        }
+
+    </script>
+
+
+    @*edit-fetch*@
+    <script>
+        var edittextarea = document.getElementById('edittextarea');
+        var editemojiList = document.getElementById('editemojiList');
+        fetch('/*https://emoji-api.com/emojis?access_key=884f4afa230b3e2e7325a5c6b8951d53f5b28d5e*/')
+            .then(response => response.json())
+
+            .then(data => edirloadEmoji(data))
+
+        function edirloadEmoji(data) {
+
+            data.forEach(emoji => {
+                var li = document.createElement('li');
+                li.setAttribute('emoji-name', emoji.slug);
+                li.textContent = emoji.character;
+                li.addEventListener('click', event => {
+                    edittextarea.value += li.textContent;
+                });
+                editemojiList.appendChild(li);
+            })
+
+        }
+
+
+    </script>
+
+   @* 儲存草稿*@
+    <script>
+        var draft=[];
+             if (localStorage.getItem('draft')) {
+            draft = JSON.parse(localStorage.getItem('draft'));
+        }
+
+        function savedraft() {
+
+            console.log(1);
+            var newdraft = {
+                kTitle: $('#addModal .titleinput').val(),
+                kContent: $('#addModal #addcontent').val(),
+                kDate: $('#addModal .postdate').val(),
+                kAuthor: $('#addModal .author').val(),
+                kPhoto1: photodata,
+                kPhoto2: photodata2,
+            };
+
+            draft.push(newdraft);
+            localStorage.setItem('draft', JSON.stringify(draft));
+            window.location = "/Manage/KnowledgeDraft";
+
+        }
+
+
+    </script>
+
+    @*前往草稿列表*@
+    <script>
+        function godraft(){
+            window.location="/Manage/KnowledgeDraft";
+        }
+    </script>
+ }

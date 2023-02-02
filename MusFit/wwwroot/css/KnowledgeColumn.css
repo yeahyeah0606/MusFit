@@ -30,6 +30,8 @@ table {
     border-width: 0.5px;
     margin-left: 1%;
     margin-top: 1%;
+    background-color: #6B7BA7;
+    color: #ffff;
 }
 
     #addbtn span {
@@ -41,7 +43,7 @@ table {
     }
 
         #addbtn span:after {
-            content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-file-earmark-plus-fill' viewBox='0 0 16 16'%3E%3Cpath d='M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM8.5 7v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 1 0z'/%3E%3C/svg%3E");
+            content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-file-earmark-plus-fill' viewBox='0 0 16 16' style='color:%23ffff%3B'%3E%3Cpath d='M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM8.5 7v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 1 0z'/%3E%3C/svg%3E");
             opacity: 0;
             top: 0;
             right: -40px;
@@ -51,12 +53,52 @@ table {
 
     #addbtn:hover span {
         padding-left: 5px;
+       
     }
 
         #addbtn:hover span:after {
             opacity: 1;
             right: 0;
+            
         }
+
+#godraft {
+    border: solid;
+    border-width: 0.5px;
+    margin-left: 1%;
+    margin-top: 1%;
+    background-color: #6B7BA7;
+    color: #ffff;
+}
+
+    #godraft span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+        text-align: center;
+    }
+
+        #godraft span:after {
+            content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-box-arrow-in-right' viewBox='0 0 16 16' style='color:%23ffff%3B'%3E%3Cpath fill-rule='evenodd' d='M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z'/%3E%3Cpath fill-rule='evenodd' d='M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z'/%3E%3C/svg%3E");
+            opacity: 0;
+            top: 0;
+            right: -40px;
+            transition: 0.5s;
+            padding-left: 3px;
+        }
+
+    #godraft:hover span {
+        padding-left: 5px;
+    }
+
+        #godraft:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+
+
 
 .textbox {
     border-color: #AA5973;
@@ -183,3 +225,40 @@ a:focus {
         background-color: #EFEFEF;
     }
 
+.deletebtn {
+    background-color: #ce7b7b;
+    color: #ffff;
+}
+
+    .deletebtn:hover {
+        background-color: #ce7b7b;
+        color: #ffff;
+    }
+
+.editbtn {
+    background-color: #96ba9a;
+    color: #ffff;
+}
+
+    .editbtn:hover {
+        background-color: #96ba9a;
+        color: #ffff;
+    }
+
+.cancelbtn {
+    background-color: #C09DC2;
+    color: #ffff;
+}
+    .cancelbtn:hover {
+        background-color: #C09DC2;
+        color: #ffff;
+    }
+
+.surebtn {
+    background-color: #986E8D;
+    color: #ffff;
+}
+    .surebtn:hover {
+        background-color: #986E8D;
+        color: #ffff;
+    }

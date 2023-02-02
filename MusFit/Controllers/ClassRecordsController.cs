@@ -142,10 +142,8 @@ namespace MusFit.Controllers
 							join c in _context.Classes on ct.CId equals c.CId
 							join lc in _context.LessionCategories on c.LcId equals lc.LcId
 							join t in _context.Terms on ct.TId equals t.TId
-							//from o in _context.ClassOrders
-							//where cr.SId == o.SId && cr.ClassTimeId == o.ClassTimeId
+							where c.CId != 11
 							orderby ct.CtDate, s.SId ascending
-							//where ct.CtDate <= DateTime.Now
 							select new
 							{
 								CrID = cr.CrId,

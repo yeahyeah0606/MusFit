@@ -152,7 +152,7 @@ namespace MusFit.Controllers
 					   join t in _context.Terms on ct.TId equals t.TId
 					   join r in _context.Rooms on c.RoomId equals r.RoomId
 					   orderby o.OrderId, ct.CtDate descending
-					   where s.SIsStudentOrNot == true & ct.CtLession == 1 && c.CId != 11
+					   where s.SIsStudentOrNot == true && ct.CtLession == 1 && c.CId != 11
 					   select new
 					   {
 						   sNumber = s.SNumber,

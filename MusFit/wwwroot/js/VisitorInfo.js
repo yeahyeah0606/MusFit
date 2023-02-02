@@ -366,7 +366,7 @@
                 if (c.cId != 11) { option = `<option value="${c.cName}">${c.cName}</option>`; }
                 $('#new_className').append(option);
             })
-}
+        }
 
         //create visitor
         $('#btnCreateConfirm').click(function () {
@@ -535,13 +535,15 @@
                  var option;
                  var date = new Date(t.ctDate).toLocaleDateString();
                  var weekday = t.weekday.substring(2);
+                 var today = new Date();
+                 var classDate = new Date(t.ctDate);
                  if (t.cId == classID) {
                      if (t.classTimeId == classTimeID) {                        
                          // classID == 63 means no appointment yet
                          if (classTimeID == 63) { option = `<option value="0" selected hidden disabled>----------尚未預約----------</option>`; }
                          else { option = `<option value="${t.ctDate}" selected>${date}(${weekday}) ${t.startTime}~${t.endTime}</option>`;}
                      }
-                    else { option = `<option value="${t.ctDate}">${date}(${weekday}) ${t.startTime}~${t.endTime}</option>`; }
+                     else if (classDate > today) { option = `<option value="${t.ctDate}">${date}(${weekday}) ${t.startTime}~${t.endTime}</option>`; }
                   }
                  $('#classDate').append(option);
              })

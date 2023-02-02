@@ -33,7 +33,7 @@
 			<option value="none" selected disabled hidden>請選擇</option>
 		</select>
 		 &nbsp;&nbsp;&nbsp;
-		<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+		<button class="button" style="vertical-align:middle" id="btnQuery" onclick="btnQuery()"><span>查詢</span> </button>
 		<br>
 		<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
 	</div>
@@ -149,7 +149,7 @@
 	<div id="updateModal" class="modal-content">
 		<span class="close" onclick="closeSuccessModel()">&times;</span>
 		<p>已存檔</p>
-		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
+		<button class="btnConfirmMessage" id="btnConfirmMessage" onclick="closeArchiveModel()">確定</button>
 	</div>
 </div>
 
@@ -182,7 +182,6 @@
 			errorMessage.style.display = "none";
 			showNoDataModal.style.display = "none";
 			setConditionModal.style.display = "none";
-
 		}
 
 		function closeSuccessModel() {
@@ -190,6 +189,12 @@
 			myrefresh();
 		}
 
+		function closeArchiveModel() {
+			$('#updateMessage').css("display", "none");
+			var Archpageid = document.getElementById('pageid');
+			btnQuery();
+			Archpageid.addEventListener('click', switchPage);
+		}
 
 		// 取出所有的課程名稱
 		$.ajax({
@@ -200,7 +205,6 @@
 				var option;
 				$('#cID').children("option").filter("[value != none]").remove();
 				data.forEach(function (x) {
-					//console.log("名稱: " + x.cName);
 					option = `<option value="${x.cID}">【${x.cNumber}】 ${x.cName}</option>`;
 					$('#cID').append(option);
 				})
@@ -230,7 +234,7 @@
         }
 
 		// 分頁功能
-		const pageid = document.getElementById('pageid');
+		var pageid = document.getElementById('pageid');
 		pageid.addEventListener('click', switchPage);
 		var nowpage;
 
@@ -354,9 +358,7 @@
 			let pagination = document.querySelector('#pageid');
 			var pageHtml = "", prevButton, nextButton;
 			let pageIndex = parseInt(nowPage);
-			//pageIndex =9;
 
-			console.log("裡面pageIndex : " + pageIndex);   // ok
 			if (page.hasPage) {
 				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`;
 			} else {
@@ -399,7 +401,6 @@
 				pageHtml += leftOmitPage;
 				for (let i = (pageIndex - 3); i <=( pageIndex + 3); i++) {
 					pageHtml += `<li class='list-items' pagenumber=${i}><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
-					//console.log("pageIndex: " + pageIndex);	
 				}
 				pageHtml += rightOmitPage;
 				pageHtml += lastPage;
@@ -423,7 +424,7 @@
 
 			// 查詢 
 			var mycID, myctLession, mysName, count;
-			$('#btnQuery').click(function () {
+			function btnQuery(){
 				count = 0;
 				mycID = $('#cID').val();
 				myctLession = $('#ctLession').val();
@@ -454,7 +455,7 @@
 						})
 					}
 				
-			})
+			}
 
 			// editform 打開  orID的紀錄
 			function openEditModel(crID) {
@@ -530,7 +531,6 @@
 						}
 					})
 
-					//  ?? 加  更改orderTime  (因為需要排序最新的在上面)
 
 
 				}

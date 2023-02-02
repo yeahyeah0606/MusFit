@@ -358,7 +358,8 @@
         }
         function getAllClassName(data){
             data.forEach(function (c) {
-                var option = `<option value="${c.cName}">${c.cName}</option>`;
+                var option;
+                if (c.cId != 11) { option = `<option value="${c.cName}">${c.cName}</option>`; }
                 $('#new_className').append(option);
             })
 }

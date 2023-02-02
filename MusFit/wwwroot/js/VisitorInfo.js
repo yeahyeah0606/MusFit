@@ -92,6 +92,8 @@
         //close success message modal
         function closeSuccessModel() {
             $('#messageModal').css("display", "none");
+
+            // post new visitor's blank classorder and classrecord
             if ($('#CreateName').val() != "") { myAJAX(AjaxType.GET, "/api/students/guestsName/" + $('#CreateName').val(), postEmptyClassOrderAndClassRecord);}
             location.reload();
         }

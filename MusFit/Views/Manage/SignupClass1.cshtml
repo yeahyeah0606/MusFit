@@ -46,7 +46,7 @@
 		</select>
 	&nbsp;&nbsp;&nbsp;
 
-<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+<button class="button" style="vertical-align:middle" id="btnQuery" onclick="btnQuery()"><span>查詢</span> </button>
 	<br>
 	<span class="total-member" id="dataNum">全部 :  共 0 筆 </span>
 		</div>
@@ -144,7 +144,7 @@
 	<div id="successModal" class="modal-content">
 		<span class="close" onclick="closeSuccessModel()">&times;</span>
 		<p>已刪除</p>
-		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
+			<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
 	</div>
 </div>
 
@@ -170,20 +170,20 @@
 
 		function closeSuccessModel() {
 			$('#successMessage').css("display", "none");
-				//myrefresh();
+			myrefresh();
 		}
 
 		// 取消
 		document.getElementById('cancelCreate').addEventListener('click', closeModel);
 
 		// 分頁功能
-		const pageid = document.getElementById('pageid');
+		var pageid = document.getElementById('pageid');
 		pageid.addEventListener('click', switchPage);
 		var nowpage;
 
 		function switchPage(n) {
 			n.preventDefault();
-			const nowpage = n.target.dataset.page; // nowpage = "data-page"
+			var nowpage = n.target.dataset.page; // nowpage = "data-page"
 			console.log("nowpage:" + nowpage);
 			pagination(jsonData, nowpage);
 		}
@@ -410,7 +410,8 @@
 
 			// 查詢  課程項目
 			var mydateStart, mydateEnd, myeID, mylcID, count;
-			$('#btnQuery').click(function () {
+			//$('#btnQuery').click(function () {
+			function btnQuery(){
 				count = 0;
 				mydateStart = $('#dateStart').val();    //  xxxx-xx-xx
 				mydateEnd = $('#dateEnd').val();
@@ -447,7 +448,7 @@
 							}
 						})
 				}
-			})
+			}
 
 			// Delete 打開  單一課程
 			function openDeleteModel(cID) {

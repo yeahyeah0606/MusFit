@@ -111,8 +111,9 @@ namespace MusFit.Controllers
         {
             var obj = from o in _context.ClassOrders
                       join s in _context.Students on o.SId equals s.SId
-                      join t in _context.ClassTimes on o.ClassTimeId equals t.ClassTimeId
-                      join c in _context.Classes on t.CId equals c.CId
+                      join ct in _context.ClassTimes on o.ClassTimeId equals ct.ClassTimeId
+                      join c in _context.Classes on ct.CId equals c.CId
+					  join t in _context.Terms on ct.TId equals t.TId
                       where o.OrderId == id
                       select new
                       {
@@ -123,11 +124,13 @@ namespace MusFit.Controllers
                           phone = s.SPhone,
                           mail = s.SMail,
                           cID = c.CId,
-                          timeID = t.ClassTimeId,
+                          timeID = ct.ClassTimeId,
                           className = c.CName,
                           eID = o.EId,
-                          date = t.CtDate,
-                          weekday = t.Weekday,
+                          date = ct.CtDate,
+                          weekday = ct.Weekday,
+						  startTime = t.TStartTime.ToString().Substring(0, 5),
+                          endTime = t.TEndTime.ToString().Substring(0, 5),
                           orderStatus = o.OrderStatus,
                           orderTime = o.OrderTime
                       };
@@ -149,7 +152,7 @@ namespace MusFit.Controllers
 					   join t in _context.Terms on ct.TId equals t.TId
 					   join r in _context.Rooms on c.RoomId equals r.RoomId
 					   orderby o.OrderId, ct.CtDate descending
-					   where s.SIsStudentOrNot == true & ct.CtLession == 1
+					   where s.SIsStudentOrNot == true && ct.CtLession == 1 && c.CId != 11
 					   select new
 					   {
 						   sNumber = s.SNumber,
@@ -207,8 +210,38 @@ namespace MusFit.Controllers
 		[HttpGet("memList/{cNumber}/{sNumber}")]
 		public async Task<ActionResult<IEnumerable<dynamic>>> GetSingleMemberList2(string cNumber, string sNumber)
 		{
-			if (cNumber != "C9999" && sNumber != "S9999")
+			if (cNumber == "C9999" && sNumber == "S9999")
 			{
+				// 全部課程 + 全部人
+				var obj = (from o in _context.ClassOrders
+						   join s in _context.Students on o.SId equals s.SId
+						   join ct in _context.ClassTimes on o.ClassTimeId equals ct.ClassTimeId
+						   join c in _context.Classes on ct.CId equals c.CId
+						   join lc in _context.LessionCategories on c.LcId equals lc.LcId
+						   join t in _context.Terms on ct.TId equals t.TId
+						   join r in _context.Rooms on c.RoomId equals r.RoomId
+						   orderby o.OrderId, ct.CtDate descending
+						   where s.SIsStudentOrNot == true && ct.CtLession == 1 && c.CId !=11
+						   select new
+						   {
+							   sNumber = s.SNumber,
+							   sName = s.SName,
+							   ctDate = ct.CtDate,
+							   lcType = lc.LcType,
+							   cName = c.CName,
+							   tID = t.TId,
+							   roomName = r.RoomName,
+							   CTotalLession = c.CTotalLession,
+							   oOrderStatus = o.OrderStatus,
+							   cID = c.CId,
+							   sID = s.SId,
+							   orderID = o.OrderId
+						   }).Distinct().OrderByDescending(x => x.orderID);
+				return await obj.ToListAsync();
+			}
+			else if (cNumber == "C9999" && sNumber != "S9999")
+			{
+				// 全部課程 +特定會員
 				var obj = (from o in _context.ClassOrders
 						   join s in _context.Students on o.SId equals s.SId
 						   join ct in _context.ClassTimes on o.ClassTimeId equals ct.ClassTimeId
@@ -218,7 +251,7 @@ namespace MusFit.Controllers
 						   join r in _context.Rooms on c.RoomId equals r.RoomId
 						   orderby o.OrderId, ct.CtDate descending
 						   where s.SIsStudentOrNot == true & ct.CtLession == 1
-										&& c.CNumber == cNumber && s.SNumber == sNumber
+									 && c.CId != 11 && s.SNumber == sNumber
 						   select new
 						   {
 							   sNumber = s.SNumber,
@@ -236,8 +269,9 @@ namespace MusFit.Controllers
 						   }).Distinct().OrderByDescending(x => x.oorderID);
 				return await obj.ToListAsync();
 			}
-			else if (cNumber != "C9999")
+			else if (cNumber != "C9999" && sNumber == "S9999")
 			{
+				// 特定課程 + 全部人
 				var obj = (from o in _context.ClassOrders
 						   join s in _context.Students on o.SId equals s.SId
 						   join ct in _context.ClassTimes on o.ClassTimeId equals ct.ClassTimeId
@@ -246,7 +280,8 @@ namespace MusFit.Controllers
 						   join t in _context.Terms on ct.TId equals t.TId
 						   join r in _context.Rooms on c.RoomId equals r.RoomId
 						   orderby o.OrderId, ct.CtDate descending
-						   where s.SIsStudentOrNot == true & ct.CtLession == 1 && c.CNumber == cNumber
+						   where s.SIsStudentOrNot == true & ct.CtLession == 1
+									 && c.CId != 11 && c.CNumber == cNumber
 						   select new
 						   {
 							   sNumber = s.SNumber,
@@ -266,6 +301,7 @@ namespace MusFit.Controllers
 			}
 			else
 			{
+				// 特定課程  特定人
 				var obj = (from o in _context.ClassOrders
 						   join s in _context.Students on o.SId equals s.SId
 						   join ct in _context.ClassTimes on o.ClassTimeId equals ct.ClassTimeId
@@ -274,7 +310,9 @@ namespace MusFit.Controllers
 						   join t in _context.Terms on ct.TId equals t.TId
 						   join r in _context.Rooms on c.RoomId equals r.RoomId
 						   orderby o.OrderId, ct.CtDate descending
-						   where s.SIsStudentOrNot == true & ct.CtLession == 1 && s.SNumber == sNumber
+						   where s.SIsStudentOrNot == true & ct.CtLession == 1
+									&& c.CNumber == cNumber && s.SNumber == sNumber
+									&& c.CId != 11
 						   select new
 						   {
 							   sNumber = s.SNumber,

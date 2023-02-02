@@ -92,6 +92,8 @@
         //close success message modal
         function closeSuccessModel() {
             $('#messageModal').css("display", "none");
+
+            // post new visitor's blank classorder and classrecord
             if ($('#CreateName').val() != "") { myAJAX(AjaxType.GET, "/api/students/guestsName/" + $('#CreateName').val(), postEmptyClassOrderAndClassRecord);}
             location.reload();
         }
@@ -175,11 +177,15 @@
             var weekday;
             var dateInfo;
             data.forEach(function (o) {
+                var today = new Date();
+                var classDate = new Date(o.date);
+                var editStr;
                 date = new Date(o.date).toLocaleDateString();
                 weekday = o.weekday.substring(2);
                 dateInfo = `${date}(${weekday})`;
                 if (o.gender == false) { gender = '女'; } else { gender = '男'; }
                 if (o.timeID == 63) { o.className = "尚未預約"; dateInfo = "尚未預約"; }
+                if (classDate > today) { editStr = "編輯"; } else { editStr = "查看"; }
                 tableRow += `<tr class="result">
                                         <td>${o.name}</td>
                                         <td class="gender">${gender}</td>
@@ -188,7 +194,7 @@
                                         <td>${o.className}</td>
                                         <td>${dateInfo}</td>
                                         <td>
-                                        <button class="edit" onclick=openEditModel(${o.sID},${o.orderID})> 編輯 </button>
+                                        <button class="edit" onclick=openEditModel(${o.sID},${o.orderID})> ${editStr} </button>
                                         <button class="delete" onclick = "opendeleteModel(${o.orderID},${o.classRecordID})" > 刪除 </button>
                                         </td>
                                     </tr>`; 
@@ -352,14 +358,15 @@
             $('#new_className').children("option").filter("[value != none]").remove();
             $('#visitorName').children("option").filter("[value != none]").remove();
             $('#new_classDate').children("option").filter("[value != none]").remove();
-            myAJAX(AjaxType.GET, "/api/classes/",getAllClassName);
+            myAJAX(AjaxType.GET, "/api/classes/GetClassesAvailable/",getAllClassName);
         }
         function getAllClassName(data){
             data.forEach(function (c) {
-                var option = `<option value="${c.cName}">${c.cName}</option>`;
+                var option;
+                if (c.cId != 11) { option = `<option value="${c.cName}">${c.cName}</option>`; }
                 $('#new_className').append(option);
             })
-}
+        }
 
         //create visitor
         $('#btnCreateConfirm').click(function () {
@@ -463,19 +470,47 @@
              if (e.sGender == false) { $('input[name=sGender]')[1].checked = true; }
              else { $('input[name=sGender]')[0].checked = true; }
         }
-        function getVisitorReservationsInfo(x){
-            $('#orderId').val(x[0].orderID);
-            $('#eId').val(x[0].eID);
-            $('#orderStatus').val(x[0].orderStatus);
-            $('#sID').val(x[0].sID);
-            classID = x[0].cID;
-            classTimeID = x[0].timeID;
-            // get reserve classname
-            myAJAX(AjaxType.GET, "/api/classes/", getVisitorReserveClassName);
-            // get reserve classdate
-            myAJAX(AjaxType.GET, "/api/classTimes/term/", getVisitorReserveClassDate);
-            // get reservation classrecords
-            myAJAX(AjaxType.GET, "/api/classrecords/sId/classTimeID/" + x[0].sID + "/" + x[0].timeID, getVisitorReserveClassRecords);
+        function getVisitorReservationsInfo(x) {
+            var today = new Date();
+            var classDate = new Date(x[0].date);
+            // if reservation date is expired
+            if (classDate <= today) {
+                var date = new Date(x[0].date).toLocaleDateString();
+                var weekday = x[0].weekday.substring(2);
+                var classOp = `<option selected>${x[0].className}</option>`;
+                var dateOp = `<option selected>${date}(${weekday}) ${x[0].startTime}~${x[0].endTime}</option>`;
+                $('#className').append(classOp);
+                $('#classDate').append(dateOp);
+                $('#status').val(false);
+                $('#editForm :input').attr('readonly', 'readonly');
+                $('#editForm :radio').attr('disabled', 'disabled');
+                $('#editForm :input').css('color', 'gray');
+                $('#className').attr('disabled', 'disabled');
+                $('#classDate').attr('disabled', 'disabled');
+                $('#editOrder span').css('display', 'none');
+            }
+            else {
+                $('#status').val(true);
+                $('#editForm :input').removeAttr('readonly', 'readonly');
+                $('#editForm :radio').removeAttr('disabled', 'disabled');
+                $('#editForm :input').css('color', 'black');
+                $('#className').removeAttr('disabled', 'disabled');
+                $('#classDate').removeAttr('disabled', 'disabled');
+                $('#editOrder span').css('display', 'inline');
+
+                $('#orderId').val(x[0].orderID);
+                $('#eId').val(x[0].eID);
+                $('#orderStatus').val(x[0].orderStatus);
+                $('#sID').val(x[0].sID);
+                classID = x[0].cID;
+                classTimeID = x[0].timeID;
+                // get reserve classname
+                myAJAX(AjaxType.GET, "/api/classes/getClassesAvailable", getVisitorReserveClassName);
+                // get reserve classdate
+                myAJAX(AjaxType.GET, "/api/classTimes/term/", getVisitorReserveClassDate);
+                // get reservation classrecords
+                myAJAX(AjaxType.GET, "/api/classrecords/sId/classTimeID/" + x[0].sID + "/" + x[0].timeID, getVisitorReserveClassRecords);
+            }
         }
         function getVisitorReserveClassName(data){
             $('#className').empty();
@@ -496,17 +531,19 @@
         }
         function getVisitorReserveClassDate(data){
              $('#classDate').empty();
-             data.forEach(function (t) {
+            data.forEach(function (t) {
                  var option;
                  var date = new Date(t.ctDate).toLocaleDateString();
-                 var weeday = t.weekday.substring(2);
+                 var weekday = t.weekday.substring(2);
+                 var today = new Date();
+                 var classDate = new Date(t.ctDate);
                  if (t.cId == classID) {
-                     if (t.classTimeId == classTimeID) {
+                     if (t.classTimeId == classTimeID) {                        
                          // classID == 63 means no appointment yet
                          if (classTimeID == 63) { option = `<option value="0" selected hidden disabled>----------尚未預約----------</option>`; }
-                         else { option = `<option value="${t.ctDate}" selected>${date}(${weeday}) ${t.startTime}~${t.endTime}</option>`;}
+                         else { option = `<option value="${t.ctDate}" selected>${date}(${weekday}) ${t.startTime}~${t.endTime}</option>`;}
                      }
-                    else { option = `<option value="${t.ctDate}">${date}(${weeday}) ${t.startTime}~${t.endTime}</option>`; }
+                     else if (classDate > today) { option = `<option value="${t.ctDate}">${date}(${weekday}) ${t.startTime}~${t.endTime}</option>`; }
                   }
                  $('#classDate').append(option);
              })
@@ -519,36 +556,42 @@
 
         //edit reservation information
         $('#btnEditConfirm').click(function () {       
-            var name = $('#name').val().trim();
-            var phone = $('#phone').val().trim();
-            var mail = $('#mail').val().trim();
-            $('#name').val(name);
-            $('#phone').val(phone);
-            $('#mail').val(mail);
-            var className = $('#className').val();
-            var classDate = $('#classDate').val();
-            var classRecords = { crId: crID, sId: $('#sId').val(), classTimeId: $('#classTimeId').val(), crAttendance: crAttendance, crContent: crContent };
+            // if edition is available
+            if ($('#status').val() == "true") {
+                var name = $('#name').val().trim();
+                var phone = $('#phone').val().trim();
+                var mail = $('#mail').val().trim();
+                $('#name').val(name);
+                $('#phone').val(phone);
+                $('#mail').val(mail);
+                var className = $('#className').val();
+                var classDate = $('#classDate').val();
+                var classRecords = { crId: crID, sId: $('#sId').val(), classTimeId: $('#classTimeId').val(), crAttendance: crAttendance, crContent: crContent };
 
-            if (name == "" || phone == "" || mail == "" || $('input:radio[name=sGender]:checked').val() == 0
-                || className == null || classDate == null) { emptyInputRemind(); }
-            else if (!reg.test(phone)) { validationMessage("手機輸入格式有誤!!"); }
-            else if (!IsEmail(mail)) { validationMessage("信箱輸入格式有誤!!"); }
+                if (name == "" || phone == "" || mail == "" || $('input:radio[name=sGender]:checked').val() == 0
+                    || className == null || classDate == null) { emptyInputRemind(); }
+                else if (!reg.test(phone)) { validationMessage("手機輸入格式有誤!!"); }
+                else if (!IsEmail(mail)) { validationMessage("信箱輸入格式有誤!!"); }
+                else {
+                    var orderId = $('#orderId').val();
+                    var date = new Date();
+                    var localDate = addHours(date, 8);
+                    var orderTime = localDate.toJSON().slice(0, 19);
+                    $('#orderTime').val(orderTime);
+
+                    // edit reservation order
+                    myAJAX(AjaxType.PUT, "/api/classorders/" + orderId, null, "application/json", JSON.stringify(GetFormData($('#editOrder'))))
+
+                    // edit classorder's classtimeID
+                    myAJAX(AjaxType.PUT, "/api/classrecords/" + crID, null, "application/json", JSON.stringify(classRecords));
+
+                    // edit visitor information
+                    var sId = $('#sId').val();
+                    myAJAX(AjaxType.PUT, "/api/students/" + sId, showMessage("已存檔"), "application/json", JSON.stringify(GetFormData($('#editForm'))))
+                }
+            }
             else {
-                var orderId = $('#orderId').val();
-                var date = new Date();
-                var localDate = addHours(date, 8);
-                var orderTime = localDate.toJSON().slice(0, 19);
-                $('#orderTime').val(orderTime);
-
-                // edit reservation order
-                myAJAX(AjaxType.PUT, "/api/classorders/" + orderId, null, "application/json", JSON.stringify(GetFormData($('#editOrder'))))
-
-                // edit classorder's classtimeID
-                myAJAX(AjaxType.PUT, "/api/classrecords/" + crID, null, "application/json", JSON.stringify(classRecords));
-
-                // edit visitor information
-                var sId = $('#sId').val();
-                myAJAX(AjaxType.PUT, "/api/students/" + sId, showMessage("已存檔"), "application/json", JSON.stringify(GetFormData($('#editForm'))))
+                closeModal();
             }
         })
 
@@ -605,9 +648,13 @@
             $('#classTimeId').val(data[0].classTimeId);
             data.forEach(function (t) {
                 var option;
+                var today = new Date();
+                var classDate = new Date(t.ctDate);
                 var date = new Date(t.ctDate).toLocaleDateString();
                 var weeday = t.weekday.substring(2);
-                option = `<option value="${t.ctDate}">${date}(${weeday}) ${t.startTime}~${t.endTime}</option>`;
+                if (classDate >= today) {
+                    option = `<option value="${t.ctDate}">${date}(${weeday}) ${t.startTime}~${t.endTime}</option>`;
+                }
                 $('#classDate').append(option);
                 $('#new_classDate').append(option);
             })

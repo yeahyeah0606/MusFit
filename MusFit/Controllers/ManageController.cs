@@ -748,7 +748,7 @@ namespace MusFit.Controllers
                                             select cs
                                    ).ToList();
 
-                    if (oldCoachSpecials.Count() > 1)
+                    if (oldCoachSpecials.Count() > 0)
                     {
                         //移除一個List
                         _context.CoachSpecials.RemoveRange(oldCoachSpecials);

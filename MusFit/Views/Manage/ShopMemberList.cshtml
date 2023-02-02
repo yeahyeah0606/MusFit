@@ -12,14 +12,14 @@
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<label for="cNumber">課程名稱: </label>&nbsp;
 		<select id="cNumber" name="cNumber" class="lession-select">
-			<option value="none" selected disabled hidden>請選擇</option>
+			<option value="C9999">全部</option>
 		</select>
 		@*<input type="text" class="memberID-input" id="cNumber" name="cNumber" placeholder="ex: AB001">*@
 		&nbsp;&nbsp;&nbsp;&nbsp
 		<label for="sNumber">會員編號: </label>&nbsp;
 		<input type="text" class="memberID-input" id="sNumber" name="sNumber" placeholder="ex: S0001">
 		&nbsp;&nbsp;&nbsp;
-		<button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
+		<button class="button" style="vertical-align:middle" id="btnQuery" onclick="btnQuery()"><span>查詢</span> </button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<button class="button" id="btnSignup" style="vertical-align:middle" onclick="location.href = '@Url.Action("SignupClass1","Manage")' ">
 			<span>報名</span>
@@ -87,17 +87,17 @@
 				</div>
 				<div class="column">
 					<label for="editCName">課程名稱</label>
-					<input type="text"  class="form-input" id="editCName" readonly="readonly" />
+					<input type="text" class="form-input" id="editCName" readonly="readonly" />
 				</div>
 			</div>
 			<div class="row">
 				<div class="column">
 					<label for="editTerm">時&emsp;段</label>
-					<input type="text"  class="form-input" id="editTerm" readonly="readonly" />
+					<input type="text" class="form-input" id="editTerm" readonly="readonly" />
 				</div>
 				<div class="column">
 					<label for="editTotalLession">堂&emsp;數&emsp;</label>
-					<input type="text"  class="form-input" id="editTotalLession" readonly="readonly" />
+					<input type="text" class="form-input" id="editTotalLession" readonly="readonly" />
 				</div>
 			</div>
 			<div class="row">
@@ -141,16 +141,16 @@
 	<div id="successModal" class="modal-content">
 		<span class="close" onclick="closeSuccessModel()">&times;</span>
 		<p>已更新付款狀態</p>
-		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
+		<button class="btnConfirmMessage" onclick="closeArchiveModel()">確定</button>
 	</div>
 </div>
 
 @*query No Data*@
 <div id="showNoDataModal" class="modal">
-		<div id="errorModal" class="modal-content">
-			<span class="close" onclick="closeModel()">&times;</span>
-			<p>沒有查到相關資料</p>
-			<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
+	<div id="errorModal" class="modal-content">
+		<span class="close" onclick="closeModel()">&times;</span>
+		<p>沒有查到相關資料</p>
+		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
 </div>
 
@@ -220,6 +220,13 @@
 			myrefresh();
 		}
 
+		function closeArchiveModel() {
+			$('#updateMessage').css("display", "none");
+			var Archpageid = document.getElementById('pageid');
+			btnQuery();
+			Archpageid.addEventListener('click', switchPage);
+		}
+
 		// 取出所有的課程名稱
 		$.ajax({
 			type: "get",
@@ -228,6 +235,8 @@
 			success: (function (data) {
 				var option;
 				$('#cNumber').children("option").filter("[value != none]").remove();
+				option = `<option value="C9999">全部</option>`;
+				$('#cNumber').append(option);
 				data.forEach(function (x) {
 					//console.log("名稱: " + x.cName);
 					option = `<option value="${x.cNumber}">【${x.cNumber}】 ${x.cName}</option>`;
@@ -237,13 +246,13 @@
 		})
 
 		// 分頁功能
-		const pageid = document.getElementById('pageid');
+		var pageid = document.getElementById('pageid');
 		pageid.addEventListener('click', switchPage);
 		var nowpage;
 
 		function switchPage(n) {
 			n.preventDefault();
-			const nowpage = n.target.dataset.page; // nowpage = "data-page"
+			var nowpage = n.target.dataset.page; // nowpage = "data-page"
 			console.log("nowpage:" + nowpage);
 			pagination(jsonData, nowpage);
 		}
@@ -287,7 +296,7 @@
 			count = 0;
 			dataList.forEach(function (x) {
 				count++;
-				if(count>0){
+				if (count > 0) {
 					// 檢查是否有退款
 					var checkSID = x.sID;
 					//console.log("checkSID : " + checkSID);
@@ -341,7 +350,7 @@
 									term = "19:00 ~ 20:00";
 									break;
 								case 20:
-									term = "20: 00 ~21: 00";
+									term = "20:00 ~ 21:00";
 									break;
 								case 21:
 									term = "21:00 ~ 22:00";
@@ -352,25 +361,25 @@
 							var date = new Date(x.ctDate).toLocaleDateString();
 							var tableRow =
 								`
-								<tr class="result">
-									<td>${x.sNumber}</td>
-									<td>${x.sName}</td>
-									<td>${date}</td>
-									<td>${x.cName}</td>
-									<td>${term}</td>
-									<td>${x.roomName}</td>
-									<td>${x.cTotalLession}</td>
-									<td>${checkStatus}</td>
-									<td>
-										<button class="button" id="btnEdit" style="vertical-align:middle"   onclick=openEditModel(${x.cID},${x.sID}) >
-												<span>編輯</span>
-										</button>
-										<button class="button" id="btnDelete" style="vertical-align:middle"   onclick=openDeleteModel(${x.cID},${x.sID}) >
-												<span>刪除</span>
-										</button>
-									</td>
-								</tr>
-								`;
+										<tr class="result">
+											<td>${x.sNumber}</td>
+											<td>${x.sName}</td>
+											<td>${date}</td>
+											<td>${x.cName}</td>
+											<td>${term}</td>
+											<td>${x.roomName}</td>
+											<td>${x.cTotalLession}</td>
+											<td>${checkStatus}</td>
+											<td>
+												<button class="button" id="btnEdit" style="vertical-align:middle"   onclick=openEditModel(${x.cID},${x.sID}) >
+														<span>編輯</span>
+												</button>
+												<button class="button" id="btnDelete" style="vertical-align:middle"   onclick=openDeleteModel(${x.cID},${x.sID}) >
+														<span>刪除</span>
+												</button>
+											</td>
+										</tr>
+										`;
 							$('#Listbody').append(tableRow);
 						}
 					})
@@ -433,7 +442,7 @@
 			}
 			pageHtml += nextButton;
 			pagination.innerHTML = pageHtml;
-			if(totalPage!=0)
+			if (totalPage != 0)
 				document.querySelector("li[pagenumber='" + pageIndex + "']").classList.add('active');
 		}
 
@@ -451,39 +460,30 @@
 		// 查詢 會員編號
 		var mySid;
 		var count;
-		$('#btnQuery').click(function () {
+		function btnQuery() {
 			var sNumberinfo = $('#sNumber').val();
 			var cNumberinfo = $('#cNumber').val();
 
-			if (sNumberinfo == "" && cNumberinfo == null ) {
-				$('#errorMessage').css("display", "block");
-			}
-			else {
-				$("#Listbody").empty();
-				if (sNumberinfo == "") sNumberinfo = "S9999";
-				if (cNumberinfo == "") cNumberinfo = "C9999";
-
-				console.log(sNumberinfo);   //   S0001
-				console.log(cNumberinfo);   //   MY001
-
-				$.ajax({
-					type: "get",
-					// GET: api/ClassOrders/memList/AB001/S0001
-					url: "/api/ClassOrders/memList/" + cNumberinfo + "/" + sNumberinfo,
-					success: function (data) {
-						jsonData = data;
-						//console.log( jsonData);
-						pagination(jsonData, 1);
-						//沒有查到資料
-						if (count == 0) {
-							//alert("沒有查到相關資料");
-							$('#showNoDataModal').css("display", "block");
-						}
+			$("#Listbody").empty();
+			if (sNumberinfo == "") sNumberinfo = "S9999";
+			console.log(sNumberinfo);   //   S0001
+			console.log(cNumberinfo);   //   MY001
+			$.ajax({
+				type: "get",
+				// GET: api/ClassOrders/memList/AB001/S0001
+				url: "/api/ClassOrders/memList/" + cNumberinfo + "/" + sNumberinfo,
+				success: function (data) {
+					jsonData = data;
+					//console.log( jsonData);
+					pagination(jsonData, 1);
+					//沒有查到資料
+					if (count == 0) {
+						//alert("沒有查到相關資料");
+						$('#showNoDataModal').css("display", "block");
 					}
-				})
-
-			}
-		})
+				}
+			})
+		}
 
 
 		// editform 打開 編輯 單筆 Order
@@ -571,12 +571,12 @@
 			var Status2 = $('input[name=orderStatus]')[1].checked;
 			var Status3 = $('input[name=orderStatus]')[2].checked;
 			var UpdateCid, UpdateSid, endDate, mytoday;
-			var hidStatus =$('#hidden-oStatus').val();
-			if( hidStatus=="退款" ){
+			var hidStatus = $('#hidden-oStatus').val();
+			if (hidStatus == "退款") {
 				//alert("退款後不可更動，只能重新報名！");
 				$('#editModal').css("display", "none");
 				$('#hadRefundModal').css("display", "block");
-			}else{
+			} else {
 				//查看是否課程已上完
 				UpdateCid = $('#editCid').val();
 				$.ajax({
@@ -587,22 +587,22 @@
 						console.log(data)
 						endDate = new Date(data[0].endDate).getTime() + 8 * 3600 * 1000;
 						mytoday = new Date().getTime() + 8 * 3600 * 1000;
-						if( mytoday > endDate ){
+						if (mytoday > endDate) {
 							//console.log("該課程已經結束，不可更動");
 							$('#editModal').css("display", "none");
 							$('#endofClassModal').css("display", "block");
-						}else{
+						} else {
 							if (Status1 || Status2 || Status3) {
 								UpdateSid = $('#editSid').val();
 								UpdateCid = $('#editCid').val();
 								var UpdateTLession = parseInt($('#editTotalLession').val());
 								var UpdateEid = parseInt($('#editeID').val());
 								var UpdateStatus;
-								mytoday= new Date().getTime() + 8 * 3600 * 1000;
+								mytoday = new Date().getTime() + 8 * 3600 * 1000;
 								console.log(" mytoday2 : " + mytoday);
 								var Upatedate = new Date(mytoday).toJSON().slice(0, 19);
 								console.log("Upatedate2 : " + Upatedate);
-								if (Status1 || Status2 ) {
+								if (Status1 || Status2) {
 									if (Status1) UpdateStatus = "未付款";
 									if (Status2) UpdateStatus = "已付款";
 									console.log("UpdateStatus : " + UpdateStatus);
@@ -651,7 +651,7 @@
 									// 退款時，實際人數要減一
 									countSubtraction(UpdateCid);
 									console.log("UpdateStatus : " + UpdateStatus);
-										//取得orderID(有日期判斷)
+									//取得orderID(有日期判斷)
 									$.ajax({
 										type: "get",
 										//GET: api/ClassOrders/filter/12/1039
@@ -672,7 +672,7 @@
 												};
 												console.log(updateData);
 
-													//更改order的付款狀態
+												//更改order的付款狀態
 												$.ajax({
 													type: "PUT",
 													//PUT: api/ClassOrders/128
@@ -716,7 +716,7 @@
 							}
 						}
 					}
-				})	
+				})
 			}
 		})
 
@@ -828,8 +828,7 @@
 			})
 		}
 
-		function myrefresh()
-		{
+		function myrefresh() {
 			window.location.reload();
 		}
 

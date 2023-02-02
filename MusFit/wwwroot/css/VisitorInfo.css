@@ -146,7 +146,7 @@ input[type=text], select {
     height: 30px;
     padding: 2px 5px;
     outline: none;
-    width: 63%;
+    width: 65%;
 }
 
 input[type=text]:focus, input[type=date]:focus, select:focus {
@@ -157,12 +157,13 @@ input[type=text]:focus, input[type=date]:focus, select:focus {
 
 #create_gender_col {
     position: relative;
-    right: 30px;
+    right: 33px;
 }
+
 
 #gender_col {
     position: relative;
-    right: 18px;
+    right: 30px;
 }
 
 input[type=radio] {
@@ -264,8 +265,8 @@ form a {
     background-color: #9092AD;
 }
 
-.pagination a:hover{
-    background-color: #b4a9b9 !important;
+.pagination a:hover {
+    background-color: #666ea2 !important;
 }
 
 @media(max-width: 1170px){
@@ -280,6 +281,7 @@ form a {
     .row {margin: 3px;}
     .column{margin: 7px;}
     #gender_col {position:relative; left: -71px;}
+    #mail_col{position:relative; left: -3px;}
     #create_gender_col{ right: 68px;}
     #create_mail_col {right: 6px; }
     .createmodals {margin: auto;}

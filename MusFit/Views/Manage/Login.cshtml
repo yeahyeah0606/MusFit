@@ -1,24 +1,7 @@
 ﻿@{
-    Layout = "";
+    Layout = "~/Views/Shared/_Layout_Login.cshtml";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>登入 - 後台管理系統</title>
-    <link rel="icon" href="~/Images/MusFit_logo.png" type=image/png sizes="100x100">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/ManageLogin.css" />
-</head>
-<body>
-<div class="container">
-
-        @*-----------------title-----------------*@
-        <div class=logo-area>
-            <a href="#" class="logo">MusFit - 後台管理系統</a>
-        </div>
         @*-----------------content-----------------*@
         <div class="content">      
             <div class="login-container">
@@ -31,10 +14,10 @@
                      if (ViewBag.Message != null) {
                     <div id="popupdiv" style="color:red; display: none;">
                         @ViewBag.Message
-                    </div>
-                }
+                </div>
             }
-               
+        }
+
 
             <div class="login-form">
              <form action="/Manage/Login" method="post" onsubmit="return Encryption();">
@@ -42,25 +25,23 @@
                 <input type="password" id="password" name="password" placeholder="請輸入密碼" required>
                 <input type="hidden" id="encryptedPassword" name="encryptedPassword">
                 <input type="submit" id="submit" value="登入" class="submit">
+                <div id="forgetPwd">@Html.ActionLink("忘記密碼", "ForgetPwd", "Manage")</div>
+                        
             </form>
-        </div>
+            </div>
 </div>
         </div>
 
 
-</div>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    @section Scripts{
     <script src="https://kit.fontawesome.com/08ba26884c.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
-        <script>
-         $(document).ready(function () {
-             if ($('#popupdiv').html() != '') {
-                 $("#popupdiv").show();
-             }
-         });
+    <script>
+        $(document).ready(function () {
+            if ($('#popupdiv').html() != '') {
+                $("#popupdiv").show();
+            }
+        });
 
         // AES Encrypted Password
         function Encryption() {
@@ -76,10 +57,9 @@
                 });
             $('#encryptedPassword').val(encrypted);
         }
-        </script>
+    </script>
+    }
 
-</body>
-</html>
 
 
 

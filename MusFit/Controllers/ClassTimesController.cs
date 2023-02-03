@@ -32,7 +32,7 @@ namespace MusFit.Controllers
         {
             var obj = from ct in _context.ClassTimes
                       join t in _context.Terms on ct.TId equals t.TId
-                      where ct.CId == id
+                      where ct.CId == id && ct.CtDate > DateTime.Now
                       select new
                       {
                           classTimeId = ct.ClassTimeId,

@@ -1040,6 +1040,8 @@ input[type="radio"] {
 
 .card-body img {
     border: 2px solid #E3E3F1;
+    height: 200px;
+    width: 200px;
     border-radius: 50%;
     object-fit: cover;
 }

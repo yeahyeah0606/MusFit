@@ -55,6 +55,10 @@ h4 {
     color: #fff;
 }
 
+#query:focus{
+    outline: none;
+}
+
 #query:hover {
         opacity: 0.9;
 }
@@ -70,9 +74,9 @@ h4 {
     outline: none;
 }
 
-    #reset:hover {
-        opacity: 0.9;
-    }
+#reset:hover {
+    opacity: 0.9;
+}
 
 
 /*No Data Modal*/

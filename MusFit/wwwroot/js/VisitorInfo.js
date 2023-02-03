@@ -179,13 +179,14 @@
             data.forEach(function (o) {
                 var today = new Date();
                 var classDate = new Date(o.date);
+                var noAppointmentDate = "1/1/1";
                 var editStr;
                 date = new Date(o.date).toLocaleDateString();
                 weekday = o.weekday.substring(2);
                 dateInfo = `${date}(${weekday})`;
                 if (o.gender == false) { gender = '女'; } else { gender = '男'; }
                 if (o.timeID == 63) { o.className = "尚未預約"; dateInfo = "尚未預約"; }
-                if (classDate > today) { editStr = "編輯"; } else { editStr = "查看"; }
+                if (classDate > today || classDate.toLocaleDateString() ===noAppointmentDate) { editStr = "編輯"; } else { editStr = "查看"; }
                 tableRow += `<tr class="result">
                                         <td>${o.name}</td>
                                         <td class="gender">${gender}</td>
@@ -473,8 +474,9 @@
         function getVisitorReservationsInfo(x) {
             var today = new Date();
             var classDate = new Date(x[0].date);
+            var noAppointmentDate = "1/1/1";
             // if reservation date is expired
-            if (classDate <= today) {
+            if (classDate <= today && classDate.toLocaleDateString() !== noAppointmentDate) {
                 var date = new Date(x[0].date).toLocaleDateString();
                 var weekday = x[0].weekday.substring(2);
                 var classOp = `<option selected>${x[0].className}</option>`;
@@ -523,8 +525,7 @@
                 }
                 else {
                     // classID == 11 means no appointment yet
-                    if (c.cId != 11) {option = `<option value="${c.cName}">${c.cName}</option>`; }
-                    
+                    if (c.cId != 11) {option = `<option value="${c.cName}">${c.cName}</option>`; }                  
                 }
                 $('#className').append(option);
             })
@@ -582,6 +583,7 @@
                     // edit reservation order
                     myAJAX(AjaxType.PUT, "/api/classorders/" + orderId, null, "application/json", JSON.stringify(GetFormData($('#editOrder'))))
 
+                    console.log(JSON.stringify(classRecords));
                     // edit classorder's classtimeID
                     myAJAX(AjaxType.PUT, "/api/classrecords/" + crID, null, "application/json", JSON.stringify(classRecords));
 
@@ -648,13 +650,10 @@
             $('#classTimeId').val(data[0].classTimeId);
             data.forEach(function (t) {
                 var option;
-                var today = new Date();
-                var classDate = new Date(t.ctDate);
                 var date = new Date(t.ctDate).toLocaleDateString();
                 var weeday = t.weekday.substring(2);
-                if (classDate >= today) {
-                    option = `<option value="${t.ctDate}">${date}(${weeday}) ${t.startTime}~${t.endTime}</option>`;
-                }
+                option = `<option value="${t.ctDate}">${date}(${weeday}) ${t.startTime}~${t.endTime}</option>`;
+
                 $('#classDate').append(option);
                 $('#new_classDate').append(option);
             })

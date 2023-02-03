@@ -45,7 +45,7 @@
                         id: v.classId,
                         start: v.classStart,
                         end: v.classEnd,
-                        classNames: [v.roomNumber, v.className, v.weekday, v.classLession, v.studentNumber],
+                        classNames: [v.roomNumber, v.className, v.weekday, v.classLession, v.studentNumber, v.classStart, v.classEnd],
                         color: v.color
                     });
                     $('#eName').text(v.coachName+"的班表");
@@ -65,9 +65,20 @@
                 dayMaxEvents: true,
                 events: events,
                 eventClick: function (info) {
+                    var title = info.event.title;
                     var date = new Date(info.event.startStr).toLocaleDateString();
-                    $('#classTitle').html(`<strong>${info.event.title}</strong>`);
-                    $('#classInfo').html(`上課日期 : ${date}(${info.event.classNames[2].substring(2)})<br>課程代號 : ${info.event.id}<br>課程名稱 : ${info.event.classNames[1]}<br>課程堂數 : ${info.event.classNames[3]}<br>上課教室 : ${info.event.classNames[0]}<br>課程時間 : ${info.event.startStr.substring(11, 16)} ~ ${info.event.endStr.substring(11, 16)}<br>課程人數 : ${info.event.classNames[4]}人`);
+                    var weekday = info.event.classNames[2].substring(2);
+                    var classDate = `${date}(${weekday})`;
+                    var classNumber = info.event.id;
+                    var className = info.event.classNames[1];
+                    var classLession = info.event.classNames[3];
+                    var roomNumber = info.event.classNames[0];
+                    var classActualStudentNumber = info.event.classNames[4];
+                    var startTime = info.event.classNames[5].substring(11, 16);
+                    var endTime = info.event.classNames[6].substring(11, 16);
+
+                    $('#classTitle').html(`<strong>${title}</strong>`);
+                    $('#classInfo').html(`上課日期 : ${classDate}<br>課程代號 : ${classNumber}<br>課程名稱 : ${className}<br>課程堂數 : ${classLession}<br>上課教室 : ${roomNumber}<br>課程時間 : ${startTime} ~ ${endTime}<br>課程人數 : ${classActualStudentNumber}人`);
                     $('.modal').css('display', 'block');
                 }
             })

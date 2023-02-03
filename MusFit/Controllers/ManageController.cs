@@ -123,20 +123,20 @@ namespace MusFit.Controllers
                 var query = await _context.Employees.FirstOrDefaultAsync(x => x.EMail == employee.EMail);
                 if (query == null)
                 {
-                    ViewData["error"] = "此會員不存在，請重新查詢!";
+                    ViewData["error"] = "此員工信箱不存在，請重新查詢!";
                     return View();
                 }
                 else
                 {
                     var EmployeeResult = await _context.Employees.FirstOrDefaultAsync(x => x.EMail == employee.EMail);
 
-                    // 取得系統自定密鑰
+                    // get a key
                     string SecretKey = "myKey";
 
-                    // 產生帳號+時間驗證碼
+                    // generate a verification code with email and operation time
                     string sVerify = EmployeeResult.EMail + "|" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
 
-                    // 將驗證碼使用 3DES 加密
+                    // encrypt verfication code by 3DES
                     TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
                     MD5 md5 = new MD5CryptoServiceProvider();
                     byte[] buf = Encoding.UTF8.GetBytes(SecretKey);
@@ -146,29 +146,30 @@ namespace MusFit.Controllers
                     DES.Mode = CipherMode.ECB;
                     ICryptoTransform DESEncrypt = DES.CreateEncryptor();
                     byte[] Buffer = UTF8Encoding.UTF8.GetBytes(sVerify);
-                    sVerify = Convert.ToBase64String(DESEncrypt.TransformFinalBlock(Buffer, 0, Buffer.Length)); // 3DES 加密後驗證碼
+                    // encrypt verification
+                    sVerify = Convert.ToBase64String(DESEncrypt.TransformFinalBlock(Buffer, 0, Buffer.Length)); 
 
-                    // 將加密後密碼使用網址編碼處理
+                    // coding encrypt verification with HttpUtility
                     sVerify = HttpUtility.UrlEncode(sVerify);
 
-                    //網站網址
+                    // website url
                     string webPath = Request.Scheme + "://" + Request.Host + Url.Content("~/");
 
-                    // 從信件連結回到重設密碼頁面
+                    // go back to reset password page route from mail
                     string receivePage = "Manage/ResetPassword";
 
-                    // 信件內容範本
-                    string mailContent = "請點擊以下連結，返回網站重新設定密碼，逾期 30 分鐘後，此連結將會失效。<br><br>";
-                    mailContent = mailContent + "<a href='" + webPath + receivePage + "?verify=" + sVerify + "'  target='_blank'>點此連結</a>";
+                    // mail content
+                    string mailContent = "您好，請點擊以下連結，返回網站重新設定密碼，逾期 30 分鐘後，此連結將會失效。<br><br>";
+                    mailContent = mailContent + "<a href='" + webPath + receivePage + "?verify=" + sVerify + "'  target='_blank'>點此連結重設密碼</a>";
 
-                    // 信件主題
-                    string mailSubject = "重設密碼申請信";
+                    // mail title
+                    string mailSubject = "MusFit 女性瑜珈健身房 - 重設密碼申請信";
 
-                    // Google 發信帳號密碼
+                    // sending mail address and key
                     string GoogleMailUserID = "xc1120215@gmail.com";
                     string GoogleMailUserPwd = "igosdtssppcuelwd";
 
-                    // 使用 Google Mail Server 發信
+                    // send email by Google Mail Server
                     string SmtpServer = "smtp.gmail.com";
                     int SmtpPort = 587;
                     MailMessage mms = new MailMessage();
@@ -181,11 +182,11 @@ namespace MusFit.Controllers
                     using (SmtpClient client = new SmtpClient(SmtpServer, SmtpPort))
                     {
                         client.EnableSsl = true;
-                        client.Credentials = new NetworkCredential(GoogleMailUserID, GoogleMailUserPwd);//寄信帳密 
-                        client.Send(mms); //寄出信件
+                        client.Credentials = new NetworkCredential(GoogleMailUserID, GoogleMailUserPwd);
+                        client.Send(mms); 
                     }
 
-                    ViewData["message"] = "請至信箱查收重設密碼連結信件!!";
+                    ViewData["message"] = "已將重設密碼驗證信寄至您的信箱，請至信箱查收!!";
 
 
                     return View("ForgetPwd");
@@ -199,18 +200,18 @@ namespace MusFit.Controllers
 
         public IActionResult ResetPassword(string verify)
         {
-            // 由信件連結回來會帶參數 verify
+            // bring back verification code
             if (verify == "")
             {
                 ViewData["ErrorMsg"] = "缺少驗證碼";
                 return View();
             }
 
-            // 取得系統自定密鑰
+            // get a key
             string SecretKey = "myKey";
             try
             {
-                // 使用 3DES 解密驗證碼
+                // decrypt verification code by 3DES
                 TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
                 MD5 md5 = new MD5CryptoServiceProvider();
                 byte[] buf = Encoding.UTF8.GetBytes(SecretKey);
@@ -223,7 +224,7 @@ namespace MusFit.Controllers
                 byte[] Buffer = Convert.FromBase64String(verify);
                 string deCode = UTF8Encoding.UTF8.GetString(DESDecrypt.TransformFinalBlock(Buffer, 0, Buffer.Length));
 
-                verify = deCode; //解密後還原資料
+                verify = deCode;
             }
             catch (Exception ex)
             {
@@ -231,13 +232,13 @@ namespace MusFit.Controllers
                 return View();
             }
 
-            // 取出帳號
+            // get email
             string EMail = verify.Split('|')[0];
 
-            // 取得重設時間
+            // get reset time
             string ResetTime = verify.Split('|')[1];
 
-            // 檢查時間是否超過 30 分鐘
+            // check if 30 mins timeout
             DateTime dResetTime = Convert.ToDateTime(ResetTime);
             TimeSpan TS = new System.TimeSpan(DateTime.Now.Ticks - dResetTime.Ticks);
             double diff = Convert.ToDouble(TS.TotalMinutes);
@@ -246,7 +247,7 @@ namespace MusFit.Controllers
                 ViewData["ErrorMsg"] = "超過驗證碼有效時間，請重寄驗證碼";
                 return View();
             }
-            // 驗證碼檢查成功，加入 Session
+            // check verification code success, use session to bring it to page
             HttpContext.Session.SetString("EMail", EMail);
             return View();
         }
@@ -254,7 +255,6 @@ namespace MusFit.Controllers
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordModel password)
         {
-
             if (!ModelState.IsValid)
             {
                 return View("ResetPassword");
@@ -270,7 +270,7 @@ namespace MusFit.Controllers
                     }
                     else
                     {
-                        // 轉換 password -> sha2_256 比較 (轉使用者輸入的新密碼)
+                        // convert new password to SHA256
                         byte[] data = Encoding.GetEncoding(1252).GetBytes(password.NewPassword);
                         var sha = new SHA256Managed();
                         byte[] bytesEncode = sha.ComputeHash(data);
@@ -279,12 +279,12 @@ namespace MusFit.Controllers
 
                         var query = await _context.Employees.FirstOrDefaultAsync(x => x.EMail == EMail);
 
+                        // reset employee's password
                         query.EPassword = bytesEncode;
                         await _context.SaveChangesAsync();
 
                         return View("Login", query);
                     }
-
                 }
                 catch (System.Exception e)
                 {

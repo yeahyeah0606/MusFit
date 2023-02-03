@@ -23,6 +23,7 @@ namespace MusFit.Models
         public short CActual { get; set; }
         public short CExpect { get; set; }
         public short CTotalLession { get; set; }
+        public bool? CExict { get; set; }
 
         public virtual Employee EIdNavigation { get; set; }
         public virtual LessionCategory Lc { get; set; }

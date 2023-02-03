@@ -496,8 +496,8 @@
 					url: "/api/Classes/totalLession/" + classID,
 					success: function (data) {
 						data.forEach(function(x){
-							//console.log("classTimeID:" + x.cClassTimeId);
 							classTimeID = x.cClassTimeId;
+							console.log("classTimeID:" + classTimeID);
 							//進去刪classTime表
 							$.ajax({
 								type: "delete",

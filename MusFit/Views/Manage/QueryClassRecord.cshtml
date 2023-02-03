@@ -106,7 +106,7 @@
 			</div>
 			<div class="row">
 				<div class="column ">
-					<label for="editContent">課程內容</label>
+					<label for="editContent" onclick="putData()">課程內容</label>
 				</div>
 			</div>
 			<div class="row">
@@ -536,7 +536,10 @@
 		function myrefresh() {
 			window.location.reload();
 		}
-
+		// 一鍵寫入課程紀錄
+		function putData(){
+        $("#editContent").val("基本動作練習，表現良好");
+		}
 	</script>
 
 

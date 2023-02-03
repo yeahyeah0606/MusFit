@@ -46,7 +46,7 @@
                             <div class="from-group mb-4">
                                 <label asp-for="EPassword">密碼</label>
                                 <input asp-for="EPassword" class="form-control" type="text"
-                                        value="預設為生日" readonly>
+                                        value="預設為生日(ex.19931001)" readonly>
                             </div>
 
                             <div class="from-group mb-4">
@@ -168,13 +168,13 @@
                                         data-valmsg-replace="true" asp-validation-for="EEnrollDate"></span>
                             </div>
 
-                            <div class="from-group mb-4">
+                            @*<div class="from-group mb-4">
                                 <label asp-for="EResignDate" for="employeeResign">離職日期</label>
                                 <input asp-for="EResignDate" class="form-control" type="date" style="width:253px;">
                                 <span class="field-validation-valid text-danger mt-2" data-valmsg-for="EResignDate"
                                         data-valmsg-replace="true" asp-validation-for="EResignDate"></span>
                             </div>
-
+*@
                             <div class="from-group mb-4">
                                 <label asp-for="EContactor" for="employeeContactor">緊急聯絡人</label>
                                 <input asp-for="EContactor" class="form-control" type="text">
@@ -196,8 +196,8 @@
                                 <span class="field-validation-valid text-danger mt-2" data-valmsg-for="EExplain"
                                         data-valmsg-replace="true" asp-validation-for="EExplain"></span>
                             </div>
-
-                            <div class="col-6 from-group btn-edit">
+                            <div class="mb-5"></div>
+                            <div class="col-6 from-group mb-5 btn-edit">
                                 <button id="btnSave" type="submit" name="save">儲存</button>
                             </div>
                             

@@ -748,7 +748,7 @@ namespace MusFit.Models
             modelBuilder.Entity<Term>(entity =>
             {
                 entity.HasKey(e => e.TId)
-                    .HasName("PK__Term__DC1157070DCE5AF8");
+                    .HasName("PK__Term__DC115707128B5027");
 
                 entity.ToTable("Term");
 

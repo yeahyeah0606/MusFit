@@ -70,7 +70,7 @@
                             <div class="from-group mb-4">
                                 <label asp-for="SPassword">密碼</label>
                                 <input asp-for="SPassword" class="form-control" type="text"
-                                       value="預設為生日(19940213)" readonly>
+                                       value="預設為生日(ex.19940213)" readonly>
                             </div>
                         </div>
 
@@ -226,7 +226,7 @@
             var birth = new Date("1990-03-18");
             $('input[id="SBirth"]').val(birth.toISOString().split('T')[0]);
             $('input[id="SAddress"]').val('台中市西屯區西屯路三段150號');
-            $('input[id="SAccount"]').val('要調整');
+            $('input[id="SAccount"]').val('wendywang0820');
             $('input[id="SContactor"]').val('王忠明');
             $('input[id="SContactPhone"]').val('0963829109');
         }

@@ -24,7 +24,7 @@
 	<input type="date" class="dateEnd" id="dateEnd" min="2022-01-01" max="2030-12-31" />
 
 	<br><br>    &nbsp;&nbsp;&nbsp;
-	<label for="lcID">課程項目: </label>&nbsp;
+	<label for="lcID" onclick="putData()">課程項目: </label>&nbsp;
 	<select class="lession-select" name="lcID" id="lcID"> 
 		<option value="none" selected disabled hidden>請選擇</option>
 		<option value="1">飛輪</option>
@@ -98,7 +98,7 @@
 <div id="cannotDeleteModal" class="modal">
 	<div id="errorModal" class="modal-content">
 		<span class="close" onclick="closeModel()">&times;</span>
-		<p>該課程目前已經開課或有人報名，不可以刪除!!</p>
+		<p>該課程目前已經開課或有人報名，<br>不可以刪除!!</p>
 		<button class="btnConfirmMessage" onclick="closeModel()">確定</button>
 	</div>
 </div>
@@ -485,45 +485,49 @@
 			//確定 刪除
 			$('#btnDeleteConfirm').click(function () {
 				var classID = parseInt($('#deletecID').val());
-				var TotalLession = parseInt($('#deleteTotalLession').val());
+				//var TotalLession = parseInt($('#deleteTotalLession').val());
 
 				console.log("classID:" + classID);
-				console.log("堂數:" + TotalLession);
-				var classTimeID;
+				//console.log("堂數:" + TotalLession);
+				//var classTimeID;
+				// 找到該筆class所有資料
 				$.ajax({
 					type: "get",
-					// GET : api/Classes/totalLession/3
-					url: "/api/Classes/totalLession/" + classID,
-					success: function (data) {
-						data.forEach(function(x){
-							classTimeID = x.cClassTimeId;
-							console.log("classTimeID:" + classTimeID);
-							//進去刪classTime表
-							$.ajax({
-								type: "delete",
-								// DELETE: api/ClassTimes/57
-								url: "/api/ClassTimes/" + classTimeID,
-								success: function (e) {
-									console.log("classTimeID:" + x.cClassTimeId +"已經刪除");
-								}
-							})
-						})
-						// 進class表刪該課程
-						$.ajax({			
-							type: "delete",
-							// DELETE: api/Classes/12
+					// GET: api/Classes/5
+					url: "/api/Classes/" + classID,
+					success: function (x) {
+						var updateData = {
+							cId: x.cId,
+							cNumber: x.cNumber,
+							cName: x.cName,
+							lcId: x.lcId,
+							cprice: x.cprice,
+							eId: x.eId,
+							roomId: x.roomId,
+							cActual: x.cActual,
+							cExpect: x.cExpect,
+							cTotalLession: x.cId,
+							cExict: false
+						};
+						console.log(updateData);
+						// 進class表 改 cExict
+						$.ajax({
+							type: "PUT",
+							// PUT: api/Classes/5
 							url: "/api/Classes/" + classID,
+							dataType: "json",
+							contentType: "application/json",
+							data: JSON.stringify(updateData),
 							success: function (e) {
 								console.log("classID:" + classID + "已經刪除");
 								$('#deleteModal').css("display", "none");
 								$('#successMessage').css("display", "block");
 							}
 						})
+						//myrefresh();
 
 					}
 				})
-
-
 			})
 
 	function moveToEnd() {
@@ -535,6 +539,10 @@
 		window.location.reload();
 	}
 
-
+	// 一鍵寫入下半月開課的實際報名人數
+    function putData(){
+		$("#dateStart").val("2023-02-15");
+		$("#dateEnd").val("2023-02-28");
+    }
 	</script>
    }

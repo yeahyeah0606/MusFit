@@ -9,13 +9,13 @@
 <div class="record">
 	<div class="topQuery">
 		&nbsp;&nbsp;&nbsp;
-	<label for="dateStart">&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期: &nbsp;</label>
+		<label for="dateStart">&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期: &nbsp;</label>
 	<input type="date" class="dateStart" id="dateStart" min="2022-01-01" max="2023-12-31" onchange="moveToEnd()" required />
 	<label for="dateEnd">&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;</label>
 	<input type="date" class="dateEnd" id="dateEnd" min="2022-01-01" max="2023-12-31" />
 	<br><br>
 	&nbsp;&nbsp;&nbsp;
-	<label for="tID">&nbsp;&nbsp;時&nbsp;&nbsp;&nbsp;&nbsp;段: &nbsp;</label>&nbsp;
+		<label for="tID" onclick="putData()">&nbsp;&nbsp;時&nbsp;&nbsp;&nbsp;&nbsp;段: &nbsp;</label>&nbsp;
 	<select class="lession-select" name="tID" id="tID">
 		<option value="none" selected disabled hidden>請選擇  </option>
 		<option value="9">09:00 ~ 10:00</option>     <!-- &emsp;&emsp; -->
@@ -329,6 +329,13 @@
 	function moveToEnd() {
 		document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
 	}
+
+	// 一鍵寫入查詢教室使用狀況條件
+    function putData(){
+		$("#dateStart").val("2023-02-22");
+		$("#dateEnd").val("2023-03-08");
+		$("#tID").val(19);
+    }
 
 	</script>
    }

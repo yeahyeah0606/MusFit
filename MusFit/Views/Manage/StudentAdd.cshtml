@@ -36,7 +36,7 @@
                                       data-valmsg-replace="true" asp-validation-for="SPhone"></span>
                             </div>
                             <div class="from-group mb-4">
-                                <label asp-for="SName" onclick=NewStudent2()>會員姓名 </label>
+                                <label asp-for="SName" >會員姓名 </label>
                                 <input asp-for="SName" class="form-control" type="text"
                                        name="SName"><br>
                                 <span class="field-validation-valid text-danger mt-2" data-valmsg-for="SName"
@@ -211,10 +211,12 @@
         //一鍵加入
         function NewStudent1(){
             var birth = new Date("1989-11-04");
+            var join = new Date("2023-02-13");
             $('input[id="SPhone"]').val('0903225891');
-            $('input[id="SName"]').val('梁凱莉');
+            $('input[id="SName"]').val('梁文音');
             $("input[name=SGender][value='false']").prop('checked', true);
             $('input[id="SBirth"]').val(birth.toISOString().split('T')[0]);
+            $('input[id="SJoinDate"]').val(join.toISOString().split('T')[0]);
             $('input[id="SMail"]').val('Katherine1104@gmail.com');
             $('input[id="SAddress"]').val('台中市南屯區公益路二段38號');
             $('input[id="SAccount"]').val('Katherine1104');
@@ -222,14 +224,7 @@
             $('input[id="SContactPhone"]').val('0978334720');
         }
 
-        function NewStudent2(){
-            var birth = new Date("1990-03-18");
-            $('input[id="SBirth"]').val(birth.toISOString().split('T')[0]);
-            $('input[id="SAddress"]').val('台中市西屯區西屯路三段150號');
-            $('input[id="SAccount"]').val('wendywang0820');
-            $('input[id="SContactor"]').val('王忠明');
-            $('input[id="SContactPhone"]').val('0963829109');
-        }
+       
         
 
     </script>

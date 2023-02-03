@@ -717,6 +717,91 @@
 								contentType: "application/json",
 								data: JSON.stringify(addClassData),
 								success: function (data) {
+
+									//睿妤- 傳部分資料到課程介紹
+									//睿妤站存cId
+									var ClassIntroduce;
+									var ClassIntroduceTempId;
+									var todayDate= new Date();
+									todayDate.setHours(8,0,0,0);
+									//用cNumber取得cId
+									$.ajax({
+										type: "GET",
+										// GET: api/Classes/getid/AY003
+										url: "/api/Classes/getid/" + mylcNumber,
+										success: function (dataNum) {
+											dataNum.forEach(function (x,index) {
+
+												var categoryname;
+												switch(x.lcId){
+													case 1:
+													categoryname="飛輪"
+														break;
+													case 2:
+													categoryname='有氧泰拳'
+														break;
+													case 3:
+													categoryname='有氧拳擊'
+														break;
+													case 4:
+													categoryname='瑜珈'
+													break;	
+													case 5:
+														categoryname = '空中瑜珈'
+													break;	
+													case 6:
+														categoryname = '皮拉提斯'
+													break;
+
+
+													default:
+														console.log('no this class');
+												}
+
+												 ClassIntroduce={
+												inDate: todayDate,
+												inTitle:x.cName,
+												inContent: "",
+												inCategory: categoryname,
+												inPhoto: null,
+												eId: x.eId,
+												eIdNavigation: null,
+												cIdNavigation: null,
+												cId: x.cId,
+											};
+
+											});
+
+
+											$.ajax({
+												type: "Post",
+												url: "/api/ClassIntroduces",
+												dataType: "json",
+												contentType: "application/json",
+												data: JSON.stringify(ClassIntroduce),
+												success: function(){
+													console.log(ClassIntroduce)
+												},
+												error:function (){
+													console.log(ClassIntroduce)
+
+												}
+
+
+											});
+
+										},
+										error: function (){
+											console.log('no');
+										}
+									})
+
+									// 睿妤部分end
+
+
+
+
+
 									// 取得 cID
 									$.ajax({
 										type: "GET",

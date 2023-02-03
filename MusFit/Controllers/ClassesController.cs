@@ -32,7 +32,7 @@ namespace MusFit.Controllers
         {
 			var result = from c in _context.Classes
 						 join ct in _context.ClassTimes on c.CId equals ct.CId
-						 where ct.CtLession == c.CTotalLession && ct.CtDate > DateTime.Now
+						 where (ct.CtLession == c.CTotalLession && ct.CtDate > DateTime.Now) || c.CId == 11
 						 select c;
             return await result.ToListAsync();
         }

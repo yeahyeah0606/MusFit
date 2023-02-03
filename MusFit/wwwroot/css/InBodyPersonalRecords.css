@@ -56,6 +56,10 @@ button {
     outline: none;
 }
 
+button:focus{
+    outline: none;
+}
+
 button:hover {
         opacity: 0.9;
 }
@@ -67,6 +71,10 @@ button:hover {
 
 .delete {
     background-color: #ce7b7b;
+    outline: none;
+}
+
+.edit:focus, .delete:focus{
     outline: none;
 }
 
@@ -110,7 +118,7 @@ input {
 
 #btnconfirm, #btnconfirmdelete {
     color: #fff;
-    background: #9f249f;
+    background: #6B7BA7;
     padding: 5px 10px;
     margin: 0px 5px;
     border: none;
@@ -118,12 +126,17 @@ input {
     outline: none;
 }
 
-    #btnconfirm:hover, #btnconfirmdelete:hover, #btncanceldelete {
-        opacity: 0.9;
-    }
+#btnconfirm:focus, #btnconfirmdelete:focus{
+    outline: none;
+}
+
+
+#btnconfirm:hover, #btnconfirmdelete:hover, #btncanceldelete {
+    opacity: 0.9;
+}
 
 .cancel {
-    background-color: #c0bcbc;
+    background-color: #b0b9dd;
     outline: none;
 }
 
@@ -157,6 +170,10 @@ input {
 select{
     font-size: 16px;
     padding: 5px 2px;
+}
+
+select:focus{
+    outline: none;
 }
 
 select option{

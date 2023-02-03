@@ -34,6 +34,15 @@ namespace MusFit.Models
         public virtual DbSet<VwCoachSchedule> VwCoachSchedules { get; set; }
         public virtual DbSet<VwInBody> VwInBodies { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=.\\sqlexpress;Database=MusFit;Trusted_Connection=True;");
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Chinese_Taiwan_Stroke_CI_AS");
@@ -47,6 +56,8 @@ namespace MusFit.Models
                 entity.Property(e => e.CId).HasColumnName("cID");
 
                 entity.Property(e => e.CActual).HasColumnName("cActual");
+
+                entity.Property(e => e.CExict).HasColumnName("cExict");
 
                 entity.Property(e => e.CExpect).HasColumnName("cExpect");
 
@@ -745,7 +756,7 @@ namespace MusFit.Models
             modelBuilder.Entity<Term>(entity =>
             {
                 entity.HasKey(e => e.TId)
-                    .HasName("PK__Term__DC1157077EF9CCFC");
+                    .HasName("PK__Term__DC1157070DCE5AF8");
 
                 entity.ToTable("Term");
 

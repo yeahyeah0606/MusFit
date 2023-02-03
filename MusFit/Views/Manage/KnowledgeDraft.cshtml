@@ -10,7 +10,7 @@
         <span>新增草稿</span>
     </button>
 
-        <button class="btn" id="goback" type="button" onclick="goback()">
+    <button class="btn" id="goback" type="button" onclick="goback()">
         <span>返回知識專欄列表</span>
     </button>
 </div>
@@ -29,7 +29,7 @@
                     <div class="row" style="width:95%; margin-left:1%;">
                         <div class="col-2">
                             <label for="">草稿建立日期</label>
-                            <input type="date" name="kDate" class="postdate" id="addPostDate" />
+                            <input type="date" name="kDate" class="postdate" id="addPostDate" disabled />
                         </div>
                     </div>
 
@@ -575,7 +575,7 @@
 
 @section Scripts{
 
-   @* add emoji fetch*@
+    @* add emoji fetch*@
     <script>
         function addemojibox() {
 
@@ -626,6 +626,8 @@
     @*新增草稿*@
 
     <script>
+
+
         var draft = [];
         if (localStorage.getItem('draft')) {
             draft = JSON.parse(localStorage.getItem('draft'));
@@ -633,13 +635,11 @@
 
         addDraft();
 
-
+        document.getElementById('addPostDate').valueAsDate = new Date();
         function addDraft() {
 
             $('#draftlist').empty();
             draft.forEach((drafts, index) => {
-
-                var draftdata = JSON.stringify(drafts);
 
                 console.log(drafts)
                 $('#draftlist').append(`<tr><td>${drafts['kTitle']}</td> <td>${drafts['kDate']}</td> <td>${drafts['kContent']}</td> <td>${drafts['kAuthor']}</td> <td><button class="btn deletebtn" data-target="#deleteModal" data-toggle="modal" onclick="draftDeleteget(${index})">刪除</button> <button data-target="#editModal" data-toggle="modal" onclick="editModalget(${index})" class="btn editbtn">編輯</button> <button class="btn postbtn" data-target="#PostModal" data-toggle="modal" onclick="postget(${index})">發布</button></td>  </tr>`)
@@ -649,6 +649,7 @@
             })
         }
 
+       
         function addform1() {
             var newdraft = {
                 kTitle: $('#addModalTitle').val(),
@@ -705,9 +706,9 @@
             $('#editauthor').val(draftdata['kAuthor']);
             $('#editimage1').attr({ src: draftdata['kPhoto1'] });
 
-            if (draftdata['photo1'] != null && $('#editphoto1').length == 0) {
+            if (draftdata['kPhoto1'] != null && $('#editphoto1').length == 0) {
                 var editphotodiv1 = $('<div>').attr({ class: "editimagediv", style: "width:200px; height:200px; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px;display:inline-block", id: "editphoto1" });
-                var editphoto1 = $('<img>').attr({ src: draftdata['photo1'], onclick: "editcancelbutton()", class: "editimagebox", style: "width:100%; height:100%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px;", id: "editimage1" });
+                var editphoto1 = $('<img>').attr({ src: draftdata['kPhoto1'], onclick: "editcancelbutton()", class: "editimagebox", style: "width:100%; height:100%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px;", id: "editimage1" });
                 $(editphoto1).appendTo(editphotodiv1)
                 $(editphotodiv1).prependTo('#editModal .divtextarea');
 
@@ -718,9 +719,9 @@
             }
 
 
-            if (draftdata['photo2'] != null && $('#editphoto2').length == 0) {
+            if (draftdata['kPhoto2'] != null && $('#editphoto2').length == 0) {
                 var editphotodiv2 = $('<div>').attr({ class: "editimagediv", style: "width:200px; height:200px; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px;display:inline-block", id: "editphoto2" });
-                var editphoto2 = $('<img>').attr({ src: draftdata['photo2'], onclick: "editcancelbutton1()", class: "editimagebox", style: "width:100%; height:100%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px;", id: "editimage2" });
+                var editphoto2 = $('<img>').attr({ src: draftdata['kPhoto2'], onclick: "editcancelbutton1()", class: "editimagebox", style: "width:100%; height:100%; object-fit:contain; margin-left:2%; margin-top:2%; border-radius:5px;", id: "editimage2" });
                 $(editphoto2).appendTo(editphotodiv2)
                 $(editphotodiv2).prependTo('#editModal .divtextarea');
             } else {
@@ -815,27 +816,37 @@
 
                 }
 
-                $.ajax({
-                    type: "Post",
-                    url: "/api/KnowledgeColumns",
-                    dataType: "json",
-                    contentType: "application/json",
-                    data: JSON.stringify(draftpost),
-                    success: function () {
+                if (draftpostdata['kTitle'] != "") {
+                    if (draftpostdata['kContent'] != "") {
+                        if (draftpostdata['kAuthor'] != "") {
+                            $.ajax({
+                                type: "Post",
+                                url: "/api/KnowledgeColumns",
+                                dataType: "json",
+                                contentType: "application/json",
+                                data: JSON.stringify(draftpost),
+                                success: function () {
 
-                        draft.splice(draftpostid, 1)
-                        localStorage.setItem("draft", JSON.stringify(draft));
-                        addDraft();
-                        window.location = "/Manage/KnowledgeColumn"
+                                    draft.splice(draftpostid, 1)
+                                    localStorage.setItem("draft", JSON.stringify(draft));
+                                    addDraft();
+                                    window.location = "/Manage/KnowledgeColumn"
 
-                    },
+                                },
 
-                    error: function (xhr, textStatus, errorThrown) {
+                                error: function (xhr, textStatus, errorThrown) {
 
-                        console.log(draftpost)
+                                    console.log(draftpost)
 
-                    }
-                });
+                                }
+                            });
+                        } else {
+                            alert('作者不得為空')
+                        }
+                    } else { alert('內容不得為空') }
+                } else {
+                    alert('標題不得為空')
+                }
 
             }
 
@@ -843,8 +854,8 @@
     </script>
 
     <script>
-        function goback(){
-            window.location="/Manage/KnowledgeColumn";
+        function goback() {
+            window.location = "/Manage/KnowledgeColumn";
         }
     </script>
 

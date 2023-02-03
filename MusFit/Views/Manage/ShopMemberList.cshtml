@@ -128,11 +128,11 @@
 </div>
 
 @*success delete operation*@
-<div id="successMessage" class="modal">
+<div id="deleteMessage" class="modal">
 	<div id="successModal" class="modal-content">
 		<span class="close" onclick="closeSuccessModel()">&times;</span>
 		<p>已刪除</p>
-		<button class="btnConfirmMessage" onclick="closeSuccessModel()">確定</button>
+		<button class="btnConfirmMessage" onclick="closeDeleteModel()">確定</button>
 	</div>
 </div>
 
@@ -216,7 +216,8 @@
 		}
 
 		function closeSuccessModel() {
-			$('#successMessage').css("display", "none");
+			$('#deleteMessage').css("display", "none");
+			$('#updateMessage').css("display", "none");
 			myrefresh();
 		}
 
@@ -225,6 +226,11 @@
 			var Archpageid = document.getElementById('pageid');
 			btnQuery();
 			Archpageid.addEventListener('click', switchPage);
+		}
+
+		function closeDeleteModel() {
+			$('#updateMessage').css("display", "none");
+			myrefresh();
 		}
 
 		// 取出所有的課程名稱
@@ -772,7 +778,7 @@
 							success: function (e) {
 								//alert("已刪除Order囉");
 								$('#deleteModal').css("display", "none");
-								$('#successMessage').css("display", "block");
+								$('#deleteMessage').css("display", "block");
 							}
 						})
 					})

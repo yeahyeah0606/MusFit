@@ -1,0 +1,92 @@
+﻿@model MusFit.Models.Employee
+
+@{
+    var message = (string)ViewData["message"] ?? string.Empty;
+    var error = (string)ViewData["error"] ?? string.Empty;
+    Layout = "~/Views/Shared/_Layout_Login.cshtml";
+}
+
+
+        <div class="content">      
+            <div class="login-container">
+
+                    <div class="login-content reset">
+                            <h2>
+                                <a href="@Url.Action("ForgetPwd","Manage")">重設密碼</a>
+                            </h2>
+                    </div>  
+
+
+                    <div class="login-form">
+                            <form name="forget-password-form" method="post" action="@Url.Action("ForgetPwd", "Manage")">
+                                   <small class="d-block text-muted"> 
+                                       *輸入你登記的信箱，我們會以電子郵件寄送重設密碼的連結給你。
+                                   </small>
+                                   <input asp-for="EMail" type="text" name="EMail" id="mailInput" placeholder="輸入信箱...">
+                                    @{          
+                                               if(message != ""){
+                                                        <br />
+                                                        <div class="message" style="color:#f54e4e;"><b>@(message)</b></div>
+                                               }
+                                               if(error != ""){
+                                                        <br />
+                                                        <div class="message" style="color:#f54e4e;"><b>@(error)</b></div>      
+                                               }
+                                    }
+                                   
+                                   <button type="submit" class="submit" name="forget-password" value="forget-password" role="button" aria-pressed="true" onclick="SendMailToken()" style="font-family: 'GenSenRounded';">送出</button>                                
+                            </form>
+                     </div>
+            </div>
+        </div>
+
+
+        
+
+@section Scripts{
+    <script>
+        // 前端驗證權杖
+        function GetToken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+
+        // 寄送驗證碼
+        function SendMailToken() {
+            var self = this;
+
+            // 組合表單資料
+            var postData = {};
+            postData['SId'] = self.form.SId;
+
+            //宣告一個json格式的viewmodel傳過去GetStudentData
+            var viewModel = {
+                "EMail": $('input[id="EMail"]').val(),
+                __RequestVerificationToken: self.GetToken()
+            }
+
+            alert(self.GetToken());
+            // 使用 jQuery Ajax 傳送至後端
+            $.ajax({
+                url: '@Url.Action("ForgetPwd", "Manage")',
+                method: 'POST',
+                dataType: 'json',
+                data: viewModel,
+                success: function (data) {
+                    if (data.ErrMsg) {
+                        alert(data.ErrMsg);
+                        return;
+                    }
+                    alert(data.ResultMsg);
+                },
+                error: function (err) {
+                    $('#ErrorMsg').html(err.responseText);
+                    $('#ErrorAlert').modal('toggle');
+                }
+            });
+        }
+
+    </script>
+}
+

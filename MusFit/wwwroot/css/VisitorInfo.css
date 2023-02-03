@@ -46,6 +46,10 @@ button {
     outline: none;
 }
 
+button:focus{
+    outline: none;
+}
+
 button:hover {
         opacity: 0.9;
 }
@@ -67,13 +71,23 @@ button:hover {
     background-color: #6B7BA7;
 }
 
+#btnQuery:focus, #btnShowAll:focus {
+    outline: none;
+}
+
 .edit {
     background-color: #96ba9a;
-    outline: none;
 }
 
 .delete {
     background-color: #ce7b7b;
+}
+
+.edit:focus{
+    outline:none;
+}
+
+.delete:focus {
     outline: none;
 }
 
@@ -214,7 +228,7 @@ form a {
 
 
 #btnconfirm:hover, #btnconfirmdelete:hover, #btncanceldelete, #btnCreateReserveConfirm:hover,
-#btnCreateConfirm:hover{
+#btnCreateConfirm:hover {
     opacity: 0.9;
 }
 

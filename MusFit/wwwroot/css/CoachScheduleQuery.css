@@ -56,6 +56,10 @@ h4 {
     color: #fff;
 }
 
+#query:focus{
+    outline: none;
+}
+
 #query:hover {
         opacity: 0.9;
 }

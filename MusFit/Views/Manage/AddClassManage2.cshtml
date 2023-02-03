@@ -693,7 +693,7 @@
 							mylcNumber = mylcAbbrev + tempNum.toString() ;
 							console.log("mylcNumber: " + mylcNumber);
 							var myTotalLession = $('#addcTotalLession').val();
-
+							var mycExict = true;
 							var addClassData = {
 								cNumber: mylcNumber,
 								cName:  $('#addName').val(),
@@ -703,7 +703,8 @@
 								roomId: parseInt($('#roomID').val()),
 								cActual: 0,
 								cExpect: $('#addcExcept').val(),
-								cTotalLession: myTotalLession
+								cTotalLession: myTotalLession,
+								cExict: mycExict
 							};
 							console.log("addClassData: ");
 							console.log( addClassData);
@@ -759,7 +760,6 @@
 													}
 												})
 											}
-
 										}
 									})
 									sucInsertClass();	

@@ -15,7 +15,7 @@
         <form class="employee-edit-form justify-content-center" method="post" action="@Url.Action("EmployeeAdd","Manage")" enctype="multipart/form-data">
             <div class="card mb-6">
                 <div class="card-body text-center">
-                    <img src="" class="img-fluid rounded-circle" id="myPhoto" width="200" height="200">
+                    <img src="" class="img-fluid rounded-circle" id="myPhoto" width="200px" height="200px">
                     <div class="form-group photoFile">
                         <span>請選擇</span>
                         <input type="file" asp-for="EPhoto" id="EPhoto" accept=".png, .jpg, .jpeg" onchange='imgUploadCheck(this)' />

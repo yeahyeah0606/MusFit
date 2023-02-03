@@ -11,7 +11,7 @@
         <h6><b>請輸入下列任一資訊進行查詢</b></h6>
         <div class="form1">
             <label for="studentID">學員編號</label>
-            <input type="text" id="sId" />
+            <input type="text" id="sId" onclick="MagicFinger()" />
             <label for="studentName">學員姓名</label>
             <input type="text" id="name" />
             <label for="studentAccount">學員帳號</label>
@@ -129,6 +129,10 @@
                 })
             }
         })
+
+        function MagicFinger(){
+            $('#sId').val('S0001');
+        }
 
     </script>
 }

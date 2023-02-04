@@ -5,7 +5,6 @@
 
 #divnavlink {
     display: inline;
-
 }
 
 .mycontain {
@@ -105,29 +104,16 @@ textarea {
     height: 50px;
     font-size: 18px;
     border-radius: 5px;
+    margin-top:1%;
 }
 
-    .titleinput:focus {
-        outline: none;
-    }
 
-select {
-    border-style: solid;
-    border-color: #EFEFEF;
-    border-radius: 5px;
-    border-width: 0.5px;
-    padding: 5px;
-    height: 40px;
-    width: 100%;
-}
-
-    select:focus {
-        outline: none;
-    }
 
 #cardiodate {
-    border: none;
-    background-color: #EFEFEF;
+    border-style:solid ;
+    border-width:0.5px;
+    border-color:#7c707b;
+  
     border-radius: 5px;
     height: 50%
 }
@@ -187,3 +173,4 @@ select {
     background-color: #9092AD;
     color: #ffff;
 }
+

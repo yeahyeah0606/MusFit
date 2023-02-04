@@ -1556,24 +1556,26 @@ namespace MusFit.Controllers
 
         public IActionResult ClassIntroduce()
         {
-        
+
             var classtimemax = (from classtime in _context.ClassTimes
                                 group classtime by classtime.CId into grouping
                                 select new
                                 {
-                                    CId= grouping.Key,
-                                    CtDate= grouping.Max(x => x.CtDate),
+                                    CId = grouping.Key,
+                                    CtLastDate = grouping.Max(x => x.CtDate),
+                                    CtFirstDate = grouping.Min(x => x.CtDate),
                                 }
-                              );
+                             );
 
             var classjointime = (from classjoindata in _context.Classes
                                  join classtimequery in classtimemax on classjoindata.CId equals classtimequery.CId
-                                 select new 
+                                 select new
                                  {
                                      CId = classjoindata.CId,
                                      CNumber = classjoindata.CNumber,
                                      CName = classjoindata.CName,
-                                     MaxDate = classtimequery.CtDate,
+                                     MaxDate = classtimequery.CtLastDate,
+                                     MinDate = classtimequery.CtFirstDate,
                                      LcID = classjoindata.LcId
 
                                  }
@@ -1587,6 +1589,7 @@ namespace MusFit.Controllers
                              CNumber = classjoin.CNumber,
                              CName = classjoin.CName,
                              lastDate = classjoin.MaxDate,
+                             firstDate = classjoin.MinDate,
                              LcId = classjoin.LcID,
                              InTitle = Modeldata.InTitle,
                              InContent = Modeldata.InContent,

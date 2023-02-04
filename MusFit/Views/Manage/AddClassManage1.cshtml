@@ -117,7 +117,6 @@
                     var option;
                     $('#eID').children("option").filter("[value != none]").remove();
                     data.forEach(function (x) {
-                        //console.log("教練: "+x.coach);
                         option = `<option value="${x.eID}">${x.coach}</option>`;
                         $('#eID').append(option);
                     })

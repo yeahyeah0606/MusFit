@@ -195,17 +195,13 @@
 			const dataTotal = jsonData.length;
 			const perpage = 4;
 			const pageTotal = Math.ceil(dataTotal / perpage);
-
 			let currentPage = nowPage;
 			// 當"當前頁數"比"總頁數"大的時候，"當前頁數"就等於"總頁數"
 			if (currentPage > pageTotal) { currentPage = pageTotal; }
-
 			const minData = (currentPage * perpage) - perpage + 1;
 			const maxData = (currentPage * perpage);
-
 			// dynamic data array according to current page
 			const data = [];
-
 			jsonData.forEach((item, index) => {
 				const num = index + 1;
 				// 當 num 比 minData 大且又小於 maxData 就push進去新陣列。
@@ -300,8 +296,6 @@
 				let pagination = document.querySelector('#pageid');
 				var pageHtml = "", prevButton, nextButton;
 				let pageIndex = parseInt(nowPage);
-				//pageIndex =9;
-
 				console.log("裡面pageIndex : " + pageIndex);   // ok
 				if (page.hasPage) {
 					prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`;
@@ -363,7 +357,6 @@
 				url: "/api/Classes/classList",
 				success: function (data) {
 					jsonData = data;
-					console.log(jsonData);
 					pagination(jsonData, 1);
 				}
 			})
@@ -410,7 +403,6 @@
 
 			// 查詢  課程項目
 			var mydateStart, mydateEnd, myeID, mylcID, count;
-			//$('#btnQuery').click(function () {
 			function btnQuery(){
 				count = 0;
 				mydateStart = $('#dateStart').val();    //  xxxx-xx-xx
@@ -423,11 +415,6 @@
 				}
 				if ( mylcID == null )  mylcID = 99;
 				if ( myeID == null )   myeID = 99;
-				//console.log("mydateStart: " + mydateStart);
-				//console.log("mydateEnd: " + mydateEnd);
-				//console.log("mylcID: " + mylcID);
-				//console.log("myeID: " + myeID);
-
 				if (mydateStart == "2999-12-31" && mylcID == 99 && myeID == 99) {
 					$('#errorMessage').css("display", "block");
 					//alert("請設定查詢條件，至少需要選取一項");
@@ -458,18 +445,11 @@
 					// GET: api/Classes/classList/3
 					url: "/api/Classes/classList/" + cID,
 					success: function (data) {
-						console.log(data);
 						ActualNumber = data[0].cActual;
 						DeleteClassDate = new Date( data[0].ctDate).getTime();
 						var TodayDate = Date.now();
-						console.log("開課: " + DeleteClassDate);
-						console.log("今天: " + TodayDate);
-
 						$('#deletecID').val(cID);
 						$('#deleteTotalLession').val(data[0].cTotalLession);
-						console.log("課程: " + cID);
-						console.log("課程堂數: " + data[0].cTotalLession);
-						console.log("課程實際人數: " + ActualNumber);
 						if (ActualNumber != 0 || TodayDate>=DeleteClassDate) {
 							cannotDeleteModal.style.display = "block";
 						}else{
@@ -485,12 +465,6 @@
 			//確定 刪除
 			$('#btnDeleteConfirm').click(function () {
 				var classID = parseInt($('#deletecID').val());
-				//var TotalLession = parseInt($('#deleteTotalLession').val());
-
-				console.log("classID:" + classID);
-				//console.log("堂數:" + TotalLession);
-				//var classTimeID;
-				// 找到該筆class所有資料
 				$.ajax({
 					type: "get",
 					// GET: api/Classes/5
@@ -519,13 +493,10 @@
 							contentType: "application/json",
 							data: JSON.stringify(updateData),
 							success: function (e) {
-								console.log("classID:" + classID + "已經刪除");
 								$('#deleteModal').css("display", "none");
 								$('#successMessage').css("display", "block");
 							}
 						})
-						//myrefresh();
-
 					}
 				})
 			})

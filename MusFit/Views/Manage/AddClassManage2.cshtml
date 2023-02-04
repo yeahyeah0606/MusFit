@@ -162,15 +162,12 @@
 			</div>
 			<p>&emsp;確定要新增課程嗎?</p>
 			<br>
-			@*<input type="button" id="btnAddConfirm" value="確定" />*@
 		</form>
 		<div class="buttonRow">
 				<button id="btnAddConfirm" >確定</button>
 				<button class="cancel" id="cancelCreate">取消</button>
-			</div>
-
+		</div>
 	</div>
-
 </div>
 
 @*沒有開始日期*@
@@ -256,23 +253,18 @@
 		var dateStart, wNumber, c;
 		$('#btnInsert').click(function () {
 			dateStart = document.getElementById('dateStart').value;
-			console.log(dateStart); // xxxx-xx-xx  string
 			var myDate = Date2ymd(new Date(dateStart));
-			console.log(myDate);
 			var weekday = [];
 			$("input[type=checkbox]:checked").each(function () {
 				weekday.push($(this).val());
 			});
 			result = weekday.toString();
-			console.log(weekday);       //  ['星期一','星期四']
-
 		})
 
 		function ShowWday() {
 			c = 0;
 			dateStart = document.getElementById('dateStart').value;
 			var startWeekday = getChineseDay(new Date(dateStart));
-			console.log(startWeekday); 
 			document.getElementById("startwday").innerText = startWeekday + "   ";
 			wNumber = new Date(dateStart).getDay();
 			wFirstCheck(wNumber);
@@ -360,10 +352,8 @@
 		}
 		var result= [ ] ;
 		var quotient, remainder;
-		//var TotalLession = parseInt($('#cTotalLession').val());
 		$('#btnSelect').click(function () {
 			dateStart = document.getElementById('dateStart').value;
-			console.log("btnSelect裡的dateStart:  "+ dateStart); // xxxx-xx-xx  string
 			if(dateStart=="" ){
 				//alert("請先選擇開課日");
 				$('#noStartDateModal').css("display", "block");
@@ -372,7 +362,6 @@
 				var len = w.length;
 				var count = 0;
 				var TotalLession = parseInt($('#cTotalLession').val());
-
 				for (k = 0; k < len; k++) {
 					if (w[k].checked == true) {
 						if (k == 6)
@@ -388,7 +377,6 @@
 					//alert("請先選取兩個【星期】，再按【選取】");
 					$('#needTwoModal').css("display", "block");
 				}else{
-					console.log("TotalLession:"+TotalLession); 
 					quotient = Math.floor(TotalLession/2) ;
 					remainder = TotalLession%2 ;
 					document.getElementById("date-block").style.display = "";
@@ -413,7 +401,7 @@
 										<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</p>
 									</div>
 								</div>
-									`;
+								`;
 							$("#date-body").append(template);
 						}
 						var template3 =
@@ -469,11 +457,8 @@
 						$("#date-body").append(template3);
 					}
 
-					console.log(result);	 // 取得兩個
 					var diff1 = result[1] -result[0] ;
 					var diff2 = 7+ result[0] - result[1];
-
-
 					date1 = new Date(dateStart);
 					console.log("date1: "+date1);
 
@@ -513,19 +498,12 @@
 							console.log("days:"+days);
 						}
 						Allday[n] = JSON.stringify(date1.addDays(days));
-						//console.log(n + ": " + Allday[n]);
-						//console.log(typeof  Allday[n]);
 					}
 
-					console.log(Allday);
-					//console.log(typeof Allday);  //object
 					var myDayList = [ ];
 					for(var n=0; n<TotalLession; n++){
-				
 						myDayList[n] =  Allday[n].substr(1, 10) ;
-						//console.log("myDayList " + n +": " + myDayList[n]); //2023-01-24  string
 						var temp = "date"+ (n+1).toString();
-						//console.log(temp);
 						document.getElementById(temp).value ="";
 						document.getElementById(temp).value = myDayList[n];
 					}
@@ -539,9 +517,7 @@
 		// 完成日期選取--->改變room選擇
 		function btnDateClick() {
 			var roomSub = document.getElementById('tmpRoom').value;
-			console.log("roomSub: " + roomSub);
 			var option;
-			//$('#roomID').children("option").filter("[value=3]").remove();
 			$('#roomID').children("option").filter('[value="' + roomSub + '" ]').remove();
 
 			// 完成日期選取
@@ -561,10 +537,8 @@
 			if( btnDateClick=="Yes" ){
 				myContent = "";
 				mylcID = parseInt( $('#lcID').val() );
-				console.log("mylcID: "+ mylcID);
 				myterm = parseInt($('#tID').val());
 				myRoom = parseInt($('#roomID').val());
-				console.log("myRoom: " + myRoom);
 				var roomNaN = valueIsNaN(myRoom);;
 				console.log("myRoom 空值?: " + roomNaN);  //true
 				if( roomNaN ){
@@ -684,14 +658,11 @@
 						url: "/api/Classes/lcCount/" + mylcID,
 						success: function (datalc){
 							datalc.forEach(function(x){
-								console.log(x.cName);
 								lcCnt++;
 							})
 							lcCnt ++;  // 新課程編號要加 1
 						    var tempNum =padAbbr(lcCnt, 3);
-							console.log("tempNum: "+tempNum);
 							mylcNumber = mylcAbbrev + tempNum.toString() ;
-							console.log("mylcNumber: " + mylcNumber);
 							var myTotalLession = $('#addcTotalLession').val();
 							var mycExict = true;
 							var addClassData = {
@@ -706,8 +677,6 @@
 								cTotalLession: myTotalLession,
 								cExict: mycExict
 							};
-							console.log("addClassData: ");
-							console.log( addClassData);
 							//  新增 class
 							$.ajax({
 								type: "POST",
@@ -717,7 +686,6 @@
 								contentType: "application/json",
 								data: JSON.stringify(addClassData),
 								success: function (data) {
-
 									//睿妤- 傳部分資料到課程介紹
 									//睿妤站存cId
 									var ClassIntroduce;
@@ -731,7 +699,6 @@
 										url: "/api/Classes/getid/" + mylcNumber,
 										success: function (dataNum) {
 											dataNum.forEach(function (x,index) {
-
 												var categoryname;
 												switch(x.lcId){
 													case 1:
@@ -752,13 +719,11 @@
 													case 6:
 														categoryname = '皮拉提斯'
 													break;
-
-
 													default:
 														console.log('no this class');
 												}
 
-												 ClassIntroduce={
+											   ClassIntroduce={
 												inDate: todayDate,
 												inTitle:x.cName,
 												inContent: "",
@@ -768,10 +733,8 @@
 												eIdNavigation: null,
 												cIdNavigation: null,
 												cId: x.cId,
-											};
-
+												};
 											});
-
 
 											$.ajax({
 												type: "Post",
@@ -784,23 +747,14 @@
 												},
 												error:function (){
 													console.log(ClassIntroduce)
-
 												}
-
-
 											});
-
 										},
 										error: function (){
 											console.log('no');
 										}
 									})
-
 									// 睿妤部分end
-
-
-
-
 
 									// 取得 cID
 									$.ajax({
@@ -810,18 +764,12 @@
 										success: function (dataNum) {
 											dataNum.forEach(function (x) {
 												mycID = x.cId;
-												console.log("5. mycID:" + mycID);	
 											})
 											// 放進 classTime表
 											var ClassTimeData = [];
 											myterm = parseInt($('#tID').val());
-											console.log("6. mycID: " + mycID);
-
 											for (var n = 0; n < myTotalLession; n++) {
 												var temp = "date" + (n + 1).toString();
-												console.log("6. temp: ");
-												console.log(temp);
-												console.log(typeof temp);
 												myDayList2[n] = document.getElementById(temp).value ;
 												weekStr[n] = getChineseDay( new Date(myDayList2[n]) );
 
@@ -841,7 +789,6 @@
 													contentType: "application/json",
 													data: JSON.stringify(ClassTimeData[n]),
 													success: function (data) {
-														
 													}
 												})
 											}
@@ -867,7 +814,6 @@
 		function sucInsertClass(){
 			//alert("成功新增課程，請到課程頁面查詢");
 			$('#successInsertModal').css("display", "block");
-			//window.location = "/Manage/SignupClass1";
 		}
 
 		// 日期  時段  影響 教室選擇
@@ -877,24 +823,18 @@
 		function chgRoomSelect(){
 			mytID = $('#tID').val();
 			tLession = parseInt($('#cTotalLession').val());
-			console.log("tLession: " + tLession);
-			//console.log("mytID: " + mytID);
-
 			for(var n=0; n< tLession; n++){
 				temp = "date" + (n + 1).toString();
 				myDate3 = document.getElementById(temp).value;
-				console.log("myDate3: " + myDate3);
 				$.ajax({
 					type: "GET",
 					// GET: api/Rooms/available/2023-01-10/16
 					url: "/api/Rooms/available/" + myDate3 + "/" + mytID,
 					success: function (data) {
 						data.forEach(function(x){
-							//myRoom.push(x.roomName);
 							myRoom.push(x.roomID);
 						})
 						uniqueArr = [...new Set(myRoom)];
-						console.log("uniqueArr: " + uniqueArr);
 						$('#tmpRoom').val(uniqueArr);
 					}
 				})

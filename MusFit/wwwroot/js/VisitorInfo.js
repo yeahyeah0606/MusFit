@@ -94,7 +94,7 @@
             $('#messageModal').css("display", "none");
 
             // post new visitor's blank classorder and classrecord
-            if ($('#CreateName').val() != "") { myAJAX(AjaxType.GET, "/api/students/guestsName/" + $('#CreateName').val(), postEmptyClassOrderAndClassRecord);}
+            if (createFlag == true) { myAJAX(AjaxType.GET, "/api/students/guestsName/" + $('#CreateName').val(), postEmptyClassOrderAndClassRecord); }
             location.reload();
         }
         function postEmptyClassOrderAndClassRecord(x) {
@@ -106,7 +106,8 @@
             var classOrders = { sId: $('#visitorSId').val(), classTimeId: 63, orderTime: orderTime,orderStatus: '體驗',eId:1 };
             myAJAX(AjaxType.POST, "/api/classorders/", null, "application/json", JSON.stringify(classOrders));
             myAJAX(AjaxType.POST, "/api/classrecords/", null, "application/json", JSON.stringify(classRecords));
-}
+            createFlag = false;
+        }
 
         // get local datetime
         function addHours(date, hours) {
@@ -369,6 +370,7 @@
             })
         }
 
+        var createFlag;
         //create visitor
         $('#btnCreateConfirm').click(function () {
             var name = $('#CreateName').val().trim();
@@ -390,6 +392,7 @@
         })
         function createVisitorInformation(x) {
             if (x == false) {
+                createFlag = true;
                 myAJAX(AjaxType.POST, "/api/students/", showMessage("已存檔"), "application/json", JSON.stringify(GetFormData($('#createForm'))));
             } else {
                 validationMessage("訪客已存在，請勿重複建立!!");
@@ -435,6 +438,8 @@
             //get visitor reservation info
             myAJAX(AjaxType.GET, "/api/classorders/" + orderID, getVisitorReservationsInfo);
             editModal.style.display = "block";
+
+            console.log(orderID);
         }
      
         var classID;
@@ -583,7 +588,6 @@
                     // edit reservation order
                     myAJAX(AjaxType.PUT, "/api/classorders/" + orderId, null, "application/json", JSON.stringify(GetFormData($('#editOrder'))))
 
-                    console.log(JSON.stringify(classRecords));
                     // edit classorder's classtimeID
                     myAJAX(AjaxType.PUT, "/api/classrecords/" + crID, null, "application/json", JSON.stringify(classRecords));
 

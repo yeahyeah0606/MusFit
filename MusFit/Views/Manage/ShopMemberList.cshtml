@@ -107,8 +107,6 @@
 					<input type="radio" id="allPay" name="orderStatus" />已付款
 					<input type="radio" id="refund" name="orderStatus" />退款
 				</div>
-				@*				<div class="column">
-				</div>*@
 			</div>
 			<p>確定要更改付款狀態嗎?</p>
 			<input type="button" id="btnEditConfirm" value="確定" />
@@ -244,7 +242,6 @@
 				option = `<option value="C9999">全部</option>`;
 				$('#cNumber').append(option);
 				data.forEach(function (x) {
-					//console.log("名稱: " + x.cName);
 					option = `<option value="${x.cNumber}">【${x.cNumber}】 ${x.cName}</option>`;
 					$('#cNumber').append(option);
 				})
@@ -259,22 +256,18 @@
 		function switchPage(n) {
 			n.preventDefault();
 			var nowpage = n.target.dataset.page; // nowpage = "data-page"
-			console.log("nowpage:" + nowpage);
 			pagination(jsonData, nowpage);
 		}
 
 		// 計算分頁數
 		var page;
 		function pagination(jsonData, nowPage) {
-
 			const dataTotal = jsonData.length;
 			const perpage = 4;
 			const pageTotal = Math.ceil(dataTotal / perpage);
-
 			let currentPage = nowPage;
 			// 當"當前頁數"比"總頁數"大的時候，"當前頁數"就等於"總頁數"
 			if (currentPage > pageTotal) { currentPage = pageTotal; }
-
 			const minData = (currentPage * perpage) - perpage + 1;
 			const maxData = (currentPage * perpage);
 			// dynamic data array according to current page
@@ -305,9 +298,7 @@
 				if (count > 0) {
 					// 檢查是否有退款
 					var checkSID = x.sID;
-					//console.log("checkSID : " + checkSID);
 					var checkCID = x.cID;
-					//console.log("checkCID : " + checkCID);
 					var checkcnt = 0, term, attendance, content, checkStatus;
 					$('.result').remove();
 					$.ajax({
@@ -318,10 +309,7 @@
 							dataCheck.forEach(function (k) {
 								checkcnt++;
 							})
-							//console.log("checkcnt : " + checkcnt);
 							if (checkcnt > 0) { checkStatus = "退款"; } else { checkStatus = x.oOrderStatus; }
-							//console.log("checkStatus : " + checkStatus);
-
 							if (x.crAttendance == true) { attendance = "Y"; } else { attendance = "N"; }
 							if (x.crContent == null) { content = ""; } else { content = x.crContent; }
 							switch (x.tID) {
@@ -367,25 +355,25 @@
 							var date = new Date(x.ctDate).toLocaleDateString();
 							var tableRow =
 								`
-										<tr class="result">
-											<td>${x.sNumber}</td>
-											<td>${x.sName}</td>
-											<td>${date}</td>
-											<td>${x.cName}</td>
-											<td>${term}</td>
-											<td>${x.roomName}</td>
-											<td>${x.cTotalLession}</td>
-											<td>${checkStatus}</td>
-											<td>
-												<button class="button" id="btnEdit" style="vertical-align:middle"   onclick=openEditModel(${x.cID},${x.sID}) >
-														<span>編輯</span>
-												</button>
-												<button class="button" id="btnDelete" style="vertical-align:middle"   onclick=openDeleteModel(${x.cID},${x.sID}) >
-														<span>刪除</span>
-												</button>
-											</td>
-										</tr>
-										`;
+								<tr class="result">
+									<td>${x.sNumber}</td>
+									<td>${x.sName}</td>
+									<td>${date}</td>
+									<td>${x.cName}</td>
+									<td>${term}</td>
+									<td>${x.roomName}</td>
+									<td>${x.cTotalLession}</td>
+									<td>${checkStatus}</td>
+									<td>
+										<button class="button" id="btnEdit" style="vertical-align:middle"   onclick=openEditModel(${x.cID},${x.sID}) >
+												<span>編輯</span>
+										</button>
+										<button class="button" id="btnDelete" style="vertical-align:middle"   onclick=openDeleteModel(${x.cID},${x.sID}) >
+												<span>刪除</span>
+										</button>
+									</td>
+								</tr>
+								`;
 							$('#Listbody').append(tableRow);
 						}
 					})
@@ -480,7 +468,6 @@
 				url: "/api/ClassOrders/memList/" + cNumberinfo + "/" + sNumberinfo,
 				success: function (data) {
 					jsonData = data;
-					//console.log( jsonData);
 					pagination(jsonData, 1);
 					//沒有查到資料
 					if (count == 0) {
@@ -499,10 +486,8 @@
 				// GET: api/ClassOrders/order/1/5
 				url: "/api/ClassOrders/order/" + cID + "/" + sID,
 				success: function (data) {
-					console.log(data);
 					data.forEach(function (x) {
 						var date = new Date(x.ctDate).toLocaleDateString();
-						//console.log(Status);
 						var term;
 						switch (x.tID) {
 							case 9:
@@ -542,7 +527,6 @@
 								term = "21:00 ~ 22:00";
 								break;
 							default:
-							//term = typeof (x.tID);
 						}
 						if (x.coOrderStatus == "已付款") {
 							$('input[name="orderStatus"]')[1].checked = true;
@@ -562,9 +546,7 @@
 						$('#editTerm').val(term);
 						$('#editTotalLession').val(x.cTotalLession);
 						$('#hidden-oStatus').val(x.coOrderStatus);
-
 					})
-
 				}
 			})
 			editModal.style.display = "block";
@@ -572,7 +554,6 @@
 
 		//確定編輯
 		$('#btnEditConfirm').click(function () {
-			//console.log("確定編輯");
 			var Status1 = $('input[name=orderStatus]')[0].checked;
 			var Status2 = $('input[name=orderStatus]')[1].checked;
 			var Status3 = $('input[name=orderStatus]')[2].checked;
@@ -590,7 +571,6 @@
 					// GET: api/ClassTimes/endDate/1
 					url: "/api/ClassTimes/endDate/" + UpdateCid,
 					success: function (data) {
-						console.log(data)
 						endDate = new Date(data[0].endDate).getTime() + 8 * 3600 * 1000;
 						mytoday = new Date().getTime() + 8 * 3600 * 1000;
 						if (mytoday > endDate) {
@@ -605,13 +585,10 @@
 								var UpdateEid = parseInt($('#editeID').val());
 								var UpdateStatus;
 								mytoday = new Date().getTime() + 8 * 3600 * 1000;
-								console.log(" mytoday2 : " + mytoday);
 								var Upatedate = new Date(mytoday).toJSON().slice(0, 19);
-								console.log("Upatedate2 : " + Upatedate);
 								if (Status1 || Status2) {
 									if (Status1) UpdateStatus = "未付款";
 									if (Status2) UpdateStatus = "已付款";
-									console.log("UpdateStatus : " + UpdateStatus);
 									//取得orderID(有日期判斷)
 									$.ajax({
 										type: "get",
@@ -619,10 +596,8 @@
 										url: "/api/ClassOrders/orderIDall/" + UpdateCid + "/" + UpdateSid,
 										success: function (data) {
 											data.forEach(function (x) {
-												console.log("orderID:" + x.oorderID);
 												var orderID = x.oorderID;
 												var UpdatectID = x.classTimeID;
-
 												var updateData = {
 													orderId: orderID,
 													sId: UpdateSid,
@@ -631,7 +606,6 @@
 													eID: UpdateEid,
 													classTimeId: UpdatectID
 												};
-												console.log(updateData);
 												//更改order的付款狀態
 												$.ajax({
 													type: "PUT",
@@ -641,12 +615,10 @@
 													contentType: "application/json",
 													data: JSON.stringify(updateData),
 													success: function (data) {
-														console.log("Status3 : " + Status3);
 														$('#editModal').css("display", "none");
 														$('#updateMessage').css("display", "block");
 													}
 												})
-												//myrefresh();
 											})
 
 										}
@@ -656,7 +628,6 @@
 									UpdateStatus = "退款";
 									// 退款時，實際人數要減一
 									countSubtraction(UpdateCid);
-									console.log("UpdateStatus : " + UpdateStatus);
 									//取得orderID(有日期判斷)
 									$.ajax({
 										type: "get",
@@ -664,10 +635,8 @@
 										url: "/api/ClassOrders/filter/" + UpdateCid + "/" + UpdateSid,
 										success: function (data) {
 											data.forEach(function (x) {
-												console.log("orderID:" + x.oorderID);
 												var orderID = x.oorderID;
 												var UpdatectID = x.classTimeID;
-
 												var updateData = {
 													orderId: orderID,
 													sId: UpdateSid,
@@ -676,7 +645,6 @@
 													eID: UpdateEid,
 													classTimeId: UpdatectID
 												};
-												console.log(updateData);
 
 												//更改order的付款狀態
 												$.ajax({
@@ -688,12 +656,10 @@
 													data: JSON.stringify(updateData),
 													success: function (data) {
 														//alert("已更動Order囉");
-														console.log("Status3 : " + Status3);
 														$('#editModal').css("display", "none");
 														$('#updateMessage').css("display", "block");
 													}
 												})
-												//myrefresh();
 											})
 										}
 									})
@@ -705,7 +671,6 @@
 										success: function (data) {
 											console.log(data);
 											data.forEach(function (x) {
-												console.log("crID : " + x.crID);
 												var crID = x.crID;
 												//開始刪除 classRecord
 												$.ajax({
@@ -744,9 +709,7 @@
 				// GET: api/ClassRecords/getcrID/18/1039
 				url: "/api/ClassRecords/getcrID/" + cID + "/" + sID,
 				success: function (data) {
-					console.log(data);
 					data.forEach(function (x) {
-						console.log("crID : " + x.crID);
 						var crID = x.crID;
 						//開始刪除 classRecord
 						$.ajax({
@@ -766,9 +729,7 @@
 				// GET: api/ClassOrders/orderIDall/1/5
 				url: "/api/ClassOrders/orderIDall/" + cID + "/" + sID,
 				success: function (data) {
-					console.log(data);
 					data.forEach(function (x) {
-						console.log("orderID:" + x.oorderID);
 						var orderID = x.oorderID;
 						// 刪除order紀錄
 						$.ajax({
@@ -799,12 +760,8 @@
 				success: function (data) {
 					DatacId = data.cId;
 					DatacActual = data.cActual;
-					console.log(data);
-					console.log("1.實際人數 : " + DatacActual);
 					DatacActual = DatacActual - 1;
-					console.log("1.減1後 實際人數 : " + DatacActual);
 					if (DatacActual < 0) DatacActual = 0;
-					console.log("1.更新進去的實際人數 : " + DatacActual);
 					var classData = {
 						cId: DatacId,
 						cNumber: data.cNumber,
@@ -815,9 +772,9 @@
 						roomId: data.roomId,
 						cActual: DatacActual,
 						cExpect: data.cExpect,
-						cTotalLession: data.cTotalLession
+						cTotalLession: data.cTotalLession,
+						cExict: data.cExict
 					};
-					console.log(classData);
 
 					//  更新class 人數
 					$.ajax({

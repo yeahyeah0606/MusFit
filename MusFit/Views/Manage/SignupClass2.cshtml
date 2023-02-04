@@ -11,14 +11,14 @@
 	<title>查詢、報名課程</title>
 </head>
 
-<h1>&nbsp;&nbsp;&nbsp;查詢、報名課程</h1>
+<h1 onclick="putData1()">&nbsp;&nbsp;&nbsp;查詢、報名課程</h1>
 <hr><br>
-<h3>&nbsp;&nbsp;&nbsp;請輸入要報名的會員編號或會員姓名</h3>
+<h3 onclick="putData2()">&nbsp;&nbsp;&nbsp;請輸入要報名的會員編號或會員姓名</h3>
 	&nbsp;&nbsp;&nbsp;
 <label for="sNumber">會員編號:</label>
 <input type="text" class="memberID-input" id="sNumber" />
 	&nbsp;&nbsp;&nbsp;
-<label for="sName">會員姓名: </label>&nbsp;
+<label for="sName" onclick="putData3()">會員姓名: </label>&nbsp;
 <input type="text" class="memberID-input" id="sName" />
 	&nbsp;&nbsp;&nbsp;
 <button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
@@ -197,7 +197,6 @@
 
 		// 取單一課程資料
 		var Singlecid = @ViewData["CID"];
-		console.log(Singlecid);
 		var dataList = [];
 		$.ajax({
 			type: "get",
@@ -205,7 +204,6 @@
 			success: function (e) {
 				$("#Listbody").empty();
 				dataList = e;
-				console.log(e);
 				dataList.forEach(function (x) {
 					console.log(x.cName);
 					var term, attendance, content;
@@ -251,16 +249,16 @@
 					var date = new Date(x.ctDate).toLocaleDateString();
 					var template =
 						`
-									<tr class="result">
-											<td>${x.cNumber}</td>
-											<td>${x.cName}</td>
-											<td>${date}</td>
-											<td>${term}</td>
-											<td>${x.eEngName}</td>
-											<td>${x.roomName}</td>
-											<td>${x.cTotalLession}</td>
-									</tr>
-									`;
+						<tr class="result">
+								<td>${x.cNumber}</td>
+								<td>${x.cName}</td>
+								<td>${date}</td>
+								<td>${term}</td>
+								<td>${x.eEngName}</td>
+								<td>${x.roomName}</td>
+								<td>${x.cTotalLession}</td>
+						</tr>
+						`;
 					$("#Listbody").append(template);
 				})
 			}
@@ -331,7 +329,6 @@
 								})
 							}
 						})
-						console.log("count: " + count);
 						//沒有查到資料
 						if (count == 0) {
 							//alert("沒有查到相關資料");
@@ -352,7 +349,6 @@
 				success: function (data) {
 					if (data.cActual < data.cExpect) {
 						// 檢查該會員是否已經報名過
-						console.log( "該會員編號: "  + $('#signupNumber').val());
 						var singleMember = $('#signupNumber').val();
 						var mySNum = [ ], SNumcnt  ;
 						$.ajax({
@@ -363,15 +359,9 @@
 								SNumcnt = 0;
 								data.forEach(function(x){
 									if(x.sNumber == singleMember ){
-										console.log("x.sNumber:" + x.sNumber);
 										SNumcnt++; 
-									 console.log("1. SNumcnt:" + SNumcnt);
-
 									}
-									console.log("2. SNumcnt:" + SNumcnt);
-
 								})
-								console.log("3. SNumcnt:" + SNumcnt);
 								if (SNumcnt != 0) {
 									//alert("該會員已報名過，不可重複報名");
 									$('#hadSignupModal').css("display", "block");
@@ -389,10 +379,7 @@
 										if (Status1) { UpdateStatus = "未付款"; } else { UpdateStatus = "已付款"; }
 
 										var mydate = new Date(new Date().getTime() + 8 * 3600 * 1000);
-										//console.log("mydate: "+mydate);
 										mydate = mydate.toJSON().slice(0, 19);
-										//console.log(mydate);
-
 										var arr = [];
 										var cnt = 0;
 										var updateData = [];
@@ -403,17 +390,14 @@
 											url: "/api/Classes/totalLession/" + Singlecid,
 											success: function (dataList) {
 												console.log("堂數有進");
-												//console.log(dataList);
 												dataList.forEach(function (x) {
-													//console.log(x.cClassTimeId);
 													arr[cnt] = x.cClassTimeId;
 													cnt++;
-													UpdateEid = x.eID;	// 會做六次  沒有影響但可以更好的寫法
+													UpdateEid = x.eID;	
 												})
 												console.log("ClassTimeId:" + arr);
 												console.log("2.教練:" + UpdateEid);
 												for (var k = 0; k < arr.length; k++) {
-													//console.log(arr[k]);
 													updateData[k] = {
 														sId: UpdateSid,
 														orderTime: mydate,
@@ -429,16 +413,11 @@
 														crContent: "",
 													};
 												}
-												//console.log("裡面updateData:");  //有取到
 												console.log(JSON.stringify(updateData[0]));
-												//{"upSid":6,"upOrderTime":"2023-01-10","upStatus":"已付款","upEid":3,"upClassTimeID":7}
 												console.log(JSON.stringify(recordData[0]));
-												//{"classTimeId":29,"sId":14,"crAttendance":false,"crContent":""}
 
 												//放入 order
 												for (var n = 0; n < updateData.length; n++) {
-													console.log("for裡面updateData:");
-													console.log(updateData[n]);
 													$.ajax({
 														type: "POST",
 														//POST: api/ClassOrders
@@ -447,18 +426,11 @@
 														contentType: "application/json",
 														data: JSON.stringify(updateData[n]),
 														success: function (data) {
-															console.log("ClassOrders IN");
 														}
 													})
 												}
 
 												//放入 record
-												console.log(recordData);
-												console.log("typeof recordData: " + typeof recordData);
-												//var recordDataArr = [];
-												//for (elem in recordData) {
-												//	recordDataArr.push(recordData[elem]);
-												//}
 												$.ajax({
 													type: "POST",
 													// POST: api/ClassRecords/Many
@@ -467,8 +439,6 @@
 													contentType: "application/json",
 													data: JSON.stringify(recordData),
 													success: function (data) {
-														console.log("ClassRecords2 IN");
-														console.log("Singlecid : " + Singlecid);
 														countAddition(Singlecid);
 														successSignup();
 													}
@@ -500,9 +470,7 @@
 				url: "/api/Classes/" + cID,
 				success: function (data) {
 					DatacActual = data.cActual;
-					console.log("1.實際人數:" + DatacActual);  //有取到實際人數
 					DatacActual = DatacActual + 1;
-					console.log("1.加1後 實際人數:" + DatacActual);
 					var classData = {
 						cId: data.cId,
 						cNumber: data.cNumber,
@@ -513,9 +481,9 @@
 						roomId: data.roomId,
 						cActual: DatacActual,
 						cExpect: data.cExpect,
-						cTotalLession: data.cTotalLession
+						cTotalLession: data.cTotalLession,
+						cExict: data.cExict
 					};
-					console.log("更新後的: " + classData);
 
 					//  更新class 人數
 					$.ajax({
@@ -543,5 +511,17 @@
 			window.location = "/Manage/SignupClass2?id=" + Singlecid;
 			//console.log(Singlecid);
 		}
+
+	// 一鍵寫入鄧紫棋
+	function putData1(){
+        $("#sName").val("鄧紫棋");
+    }
+	function putData2() {
+		$("#sName").val("謝金燕");
+	}
+	function putData3() {
+		$("#sName").val("梁文音");
+	}
+
 	</script>
 }

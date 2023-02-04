@@ -9,13 +9,13 @@
 <div class="record">
 	<div class="topQuery">
 		&nbsp;&nbsp;&nbsp;
-	<label for="dateStart">&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期: &nbsp;</label>
+		<label for="dateStart">&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期: &nbsp;</label>
 	<input type="date" class="dateStart" id="dateStart" min="2022-01-01" max="2023-12-31" onchange="moveToEnd()" required />
 	<label for="dateEnd">&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;</label>
 	<input type="date" class="dateEnd" id="dateEnd" min="2022-01-01" max="2023-12-31" />
 	<br><br>
 	&nbsp;&nbsp;&nbsp;
-	<label for="tID">&nbsp;&nbsp;時&nbsp;&nbsp;&nbsp;&nbsp;段: &nbsp;</label>&nbsp;
+		<label for="tID" onclick="putData()">&nbsp;&nbsp;時&nbsp;&nbsp;&nbsp;&nbsp;段: &nbsp;</label>&nbsp;
 	<select class="lession-select" name="tID" id="tID">
 		<option value="none" selected disabled hidden>請選擇  </option>
 		<option value="9">09:00 ~ 10:00</option>     <!-- &emsp;&emsp; -->
@@ -93,15 +93,12 @@
 
 @section Scripts{
 	<script>
-	
 		function closeModel() {
 			errorMessage.style.display = "none";
 			showNoDataModal.style.display = "none";
 		}
-
 		function closeSuccessModel() {
 			$('#successMessage').css("display", "none");
-				//myrefresh();
 		}
 
 		// 分頁功能
@@ -119,21 +116,16 @@
 		// 計算分頁數
 		var page;
 		function pagination(jsonData, nowPage) {
-
 			const dataTotal = jsonData.length;
 			const perpage = 5;
 			const pageTotal = Math.ceil(dataTotal / perpage);
-
 			let currentPage = nowPage;
 			// 當"當前頁數"比"總頁數"大的時候，"當前頁數"就等於"總頁數"
 			if (currentPage > pageTotal) { currentPage = pageTotal; }
-
 			const minData = (currentPage * perpage) - perpage + 1;
 			const maxData = (currentPage * perpage);
-
 			// dynamic data array according to current page
 			const data = [];
-
 			jsonData.forEach((item, index) => {
 				const num = index + 1;
 				// 當 num 比 minData 大且又小於 maxData 就push進去新陣列。
@@ -150,7 +142,6 @@
 			console.log(`全部資料:${dataTotal} 每一頁顯示:${perpage}筆 總頁數:${pageTotal}`);
 			document.getElementById("dataNum").innerText = `全部 :  共 ${dataTotal} 筆`;
 		}
-
 
 		function displayData(data) {
 			var tableRow;
@@ -209,7 +200,6 @@
 										`;
 				count++;
 			})
-			
 			$('.result').remove();
 			$('#Listbody').append(tableRow);
 		}
@@ -299,11 +289,6 @@
 			}
 			if (mytID == null) mytID = 99;
 			if (myroomID == null) myroomID = 99;
-			console.log("mydateStart: " + mydateStart);
-			console.log("mydateEnd: " + mydateEnd);
-			console.log("mytID: " + mytID);
-			console.log("myroomID: " + myroomID);
-
 			if (mydateStart == "2999-12-31" && mytID == 99 && myroomID == 99) {
 				//alert("請設定查詢條件，至少需要選取一項");
 				$('#errorMessage').css("display", "block");
@@ -329,6 +314,13 @@
 	function moveToEnd() {
 		document.getElementById("dateEnd").value = document.getElementById("dateStart").value;
 	}
+
+	// 一鍵寫入查詢教室使用狀況條件
+    function putData(){
+		$("#dateStart").val("2023-02-22");
+		$("#dateEnd").val("2023-03-08");
+		$("#tID").val(19);
+    }
 
 	</script>
    }

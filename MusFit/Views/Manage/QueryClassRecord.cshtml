@@ -66,7 +66,6 @@
 
 @*編輯 information*@
 <div id="editModal" class="modal">
-
 	<div class="modal-content">
 		<span class="close" id="leaveCreate">&times;</span>
 		<form id="editForm">
@@ -106,7 +105,7 @@
 			</div>
 			<div class="row">
 				<div class="column ">
-					<label for="editContent">課程內容</label>
+					<label for="editContent" onclick="putData()">課程內容</label>
 				</div>
 			</div>
 			<div class="row">
@@ -121,7 +120,6 @@
 			<button class="cancel" id="cancelCreate" onclick="closeModel()">取消</button>
 		</form>
 	</div>
-
 </div>
 
 @*query No Data*@
@@ -248,21 +246,16 @@
 		// 計算分頁數
 		var page;
 		function pagination(jsonData, nowPage) {
-
 			const dataTotal = jsonData.length;
 			const perpage = 5;
 			const pageTotal = Math.ceil(dataTotal / perpage);
-
 			let currentPage = nowPage;
 			// 當"當前頁數"比"總頁數"大的時候，"當前頁數"就等於"總頁數"
 			if (currentPage > pageTotal) { currentPage = pageTotal; }
-
 			const minData = (currentPage * perpage) - perpage + 1;
 			const maxData = (currentPage * perpage);
-
 			// dynamic data array according to current page
 			const data = [];
-
 			jsonData.forEach((item, index) => {
 				const num = index + 1;
 				// 當 num 比 minData 大且又小於 maxData 就push進去新陣列。
@@ -329,26 +322,25 @@
 				var date = new Date(x.ctDate).toLocaleDateString();
 				tableRow +=
 					`
-										<tr class="result">
-											<td>${x.sNumber}</td>
-											<td>${x.sName}</td>
-											<td>${date}</td>
-											<td>${x.lcType}</td>
-											<td>${x.cName}</td>
-											<td>${term}</td>
-											<td>${x.ctLession}</td>
-											<td>${attendance}</td>
-											<td>${content}</td>
-											<td>
-												<button class="button" id="btnEdit" style="vertical-align:middle"  onclick=openEditModel(${x.crID}) >
-												<span>編輯</span>
-												</button>
-												</td>
-										</tr>
-										`;
+					<tr class="result">
+						<td>${x.sNumber}</td>
+						<td>${x.sName}</td>
+						<td>${date}</td>
+						<td>${x.lcType}</td>
+						<td>${x.cName}</td>
+						<td>${term}</td>
+						<td>${x.ctLession}</td>
+						<td>${attendance}</td>
+						<td>${content}</td>
+						<td>
+							<button class="button" id="btnEdit" style="vertical-align:middle"  onclick=openEditModel(${x.crID}) >
+							<span>編輯</span>
+							</button>
+							</td>
+					</tr>
+					`;
 				count++;
 			})
-
 			$('.result').remove();
 			$('#crbody').append(tableRow);
 		}
@@ -358,7 +350,6 @@
 			let pagination = document.querySelector('#pageid');
 			var pageHtml = "", prevButton, nextButton;
 			let pageIndex = parseInt(nowPage);
-
 			if (page.hasPage) {
 				prevButton = `<li class='list-items' id='btnPrev'><a class="page-link" href="#" data-page="${Number(page.currentPage) - 1}">&laquo;</a></li>`;
 			} else {
@@ -429,9 +420,7 @@
 			mycID = $('#cID').val();
 			myctLession = $('#ctLession').val();
 			mysName = $('#sName').val();
-
 			if (mycID == "9999") mycID = 9999;
-
 			if (mysName == "") mysName = "沒填姓名";
 			if (myctLession == "99") myctLession = 99;
 			$.ajax({
@@ -458,7 +447,6 @@
 				// GET: api/ClassRecords/crID/1
 				url: "/api/ClassRecords/crID/" + crID,
 				success: function (data) {
-					console.log(data);
 					data.forEach(function (x) {
 						var date = new Date(x.ctDate).toLocaleDateString();
 						if (x.crAttendance == true) {
@@ -484,7 +472,6 @@
 
 		//確定編輯
 		$('#btnEditConfirm').click(function (SingleCrID) {
-			console.log("確定編輯");
 			var Attend1 = $('input[name=editAttend]')[0].checked;
 			var Attend2 = $('input[name=editAttend]')[1].checked;
 			if (Attend1 || Attend2) {
@@ -492,14 +479,8 @@
 				var UpdatectID = parseInt($('#editctID').val());
 				var UpdateSid = parseInt($('#editsID').val());
 				var UpdateContent = $('#editContent').val();
-				console.log(UpdatecrID);
-				console.log(UpdatectID);
-				console.log(UpdateSid);
-				console.log(UpdateContent);
-
 				var UpdateAttend;
 				if (Attend1) { UpdateAttend = true; } else { UpdateAttend = false; }
-				console.log(UpdateAttend);
 
 				var updateData = {
 					crId: UpdatecrID,
@@ -520,12 +501,8 @@
 						$('#editModal').css("display", "none");
 						//alert("有成功更改");
 						$('#updateMessage').css("display", "block");
-						//myrefresh();
 					}
 				})
-
-
-
 			}
 		})
 
@@ -536,7 +513,10 @@
 		function myrefresh() {
 			window.location.reload();
 		}
-
+		// 一鍵寫入課程紀錄
+		function putData(){
+        $("#editContent").val("基本動作練習，表現良好");
+		}
 	</script>
 
 

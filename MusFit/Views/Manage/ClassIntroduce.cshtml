@@ -476,13 +476,13 @@
                     $('#yogaTitle').val(data.inTitle)
                     $('#yogatextarea').val(data.inContent)
                     $('#yogaId').val(data.inId)
-                    if (data.inCategory.match(/瑜珈.*/) || data.inCategory.match(/皮拉提斯.*/)) {
-                        $("#yogabigcategory").val(2)
-                        $('#yogayogasubcategory').attr('hidden', false)
-                        $('#yogacardiosubcategory').attr('hidden', true)
-                    }
                     $('#yogaInCategory').val(data.inCategory)
 
+                    if (data.inPhoto == null) {
+                        $('#yogaimage').hide()
+                    } else {
+                        $('#yogaimage').attr({ src: data.inPhoto, style: "width:30%; height:40%; object-fit:contain; margin-right:95%; margin-top:2%; border-radius:1%; border:none; " })
+                    }
 
                     $('#yogadate').val(data.inDate.replace("T00:00:00", ""))
                     console.log(data.inDate)
@@ -549,16 +549,7 @@
                 yogaphotodata = yoga64String;
             }
 
-            var yogacategorydata;
-            var yogabigcategory = $('#yogabigcategory').val()
-            if (yogabigcategory == 1) {
-                yogacategorydata = $('#yogacardiosubcategory .categoryselect').val()
-                console.log($('#yogacardiosubcategory .categoryselect').val())
-            } else {
-                yogacategorydata = $('#yogayogasubcategory .categoryselect').val()
-                console.log($('#yogayogasubcategory .categoryselect').val())
-            }
-
+           
             var yogadate = new Date($("#yogadate").val())
 
 
@@ -567,7 +558,7 @@
                 inDate: yogadate,
                 inTitle: $('#yogaTitle').val(),
                 inContent: $('#yogatextarea').val(),
-                inCategory: yogacategorydata,
+                inCategory: $('#yogaInCategory').val(),
                 inPhoto: yogaphotodata,
                 eId: $('#yogaeId').val(),
                 eIdNavigation: null,

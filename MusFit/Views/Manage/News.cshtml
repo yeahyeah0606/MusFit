@@ -36,6 +36,7 @@
 
                         </div>
                         </div>*@
+                        <div> <a style="border:none; background-color:white; color:white;" class="showdata" onclick="showdata()">a</a></div>
                         <div class="row" style="width:95%; margin-left:2%;">
                             <div class="col-3">
                                 <label id="addModallabel" for="addModalCategory">分類</label>
@@ -1993,6 +1994,15 @@
     }
 
 
+</script>
+
+@*showdata*@
+<script>
+    function showdata() {
+        $('#addModal .titleinput').val('健身房參加者須完成第3劑疫苗措施')
+        $('#addModal #editor1').val('中央流行疫情指揮中心(下稱疫情指揮中心)於111年4月15日宣布，為保護國人健康及維護防疫安全，自111年4月22日起，符合接種年齡之進入健身房參加者需完成COVID-19 疫苗追加劑(第3劑)接種，始得進入。教育部體育署表示，健身房的定義為有設置健身器材（如重訓、跑步有氧器材等），並對外開放經營者。而學校所設置的健身房，如有對外開放經營者，也屬於本次需完成施打3劑疫苗之規範對象；另外，針對國民運動中心，其規範範圍僅為運動中心內設置的健身房，其他空間不屬於本次規範對象。')
+        $('#addEId').val(3)
+    }
 </script>
 
 

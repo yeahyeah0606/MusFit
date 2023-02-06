@@ -27,7 +27,7 @@
             </div>
             <div class="modal-body">
                 <form>
-
+                    <div> <a style="border:none; background-color:white; color:white;" class="showdata" onclick="showdata()">a</a></div>
                     <div class="row" style="width:95%; margin-left:1%;">
                         <div class="col-2">
                             <label for="">發布日期</label>
@@ -151,7 +151,7 @@
             <thead>
                 <tr>
                     <th>
-                        <input type="checkbox">
+                        編號
                     </th>
                     <th>專欄標題</th>
                     <th> 發布時間</th>
@@ -162,18 +162,18 @@
                 @{
                     foreach (var item in Model)
                     {
-                                                    <tr>
-                                                        <td>
-                                                            @item.KColumnId
-                                                        </td>
-                                                        <td>@item.KTitle</td>
-                                                        <td>@item.KDate</td>
-                                                        <td>
-                                                            <button class="btn editbtn" type="button" data-target="#editModal" data-toggle="modal" onclick="getbutton(@item.KColumnId)">編輯</button>
-                                                            <button class="btn deletebtn" type="button" data-target="#deleteModal" data-toggle="modal" onclick="deletebtn(@item.KColumnId)">刪除</button>
-                                                        </td>
+                        <tr>
+                            <td>
+                                @item.KColumnId
+                            </td>
+                            <td>@item.KTitle</td>
+                            <td>@item.KDate</td>
+                            <td>
+                                <button class="btn editbtn" type="button" data-target="#editModal" data-toggle="modal" onclick="getbutton(@item.KColumnId)">編輯</button>
+                                <button class="btn deletebtn" type="button" data-target="#deleteModal" data-toggle="modal" onclick="deletebtn(@item.KColumnId)">刪除</button>
+                            </td>
 
-                                                    </tr>
+                        </tr>
                     }
                 }
 
@@ -221,9 +221,9 @@
 
                             <div class="col-12">
                                 <div class="contenteditorbar">
-                                     <div style="margin-right:85%;">
+                                    <div style="margin-right:85%;">
 
-                                        <label class="uploadlabel" for="edituploadfile" >
+                                        <label class="uploadlabel" for="edituploadfile">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
                                                 <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
                                                 <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
@@ -238,8 +238,8 @@
                                             </svg>
                                         </a>
 
-                                     </div>
-                                   
+                                    </div>
+
 
                                 </div>
 
@@ -262,57 +262,57 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
 
 
 
-               
 
-                <div class="row" style="width:95%; margin-top:1%;">
-                    <div class="col-4">
-                        <input type="text" class="author" placeholder="請輸入作者名(必填)">
+
+                        <div class="row" style="width:95%; margin-top:1%;">
+                            <div class="col-4">
+                                <input type="text" class="author" placeholder="請輸入作者名(必填)">
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn cancelbtn" onclick="back()">取消</button>
+                    <button class="btn surebtn" onclick="editform()">確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* delete modal*@
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <input type="hidden" id="deleteid">
+                <div class="modal-body">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16" style="color:#D65C67; margin-left:40%; margin-top:5%;">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                    </svg>
+                    <br>
+                    <br>
+                    <h5 class="deleteword">確定要刪除嗎?</h5>
+                    <p class="deletedescribe">刪除後紀錄則永久刪除</p>
+
+                    <div class="Modaldeletebtndiv">
+                        <button class="Modaldeletebtn btn" onclick="back()">取消</button>
+                        <button class="Modaldeletebtn btn" onclick="deleteokbtn()">確定</button>
                     </div>
-                </div>
 
-                </form>
-         
-            </div>
-            <div class="modal-footer">
-                <button class="btn cancelbtn" onclick="back()">取消</button>
-                <button class="btn surebtn" onclick="editform()">確定</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-@* delete modal*@
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-
-<div class="modal-dialog">
-        <div class="modal-content">
-
-            <input type="hidden" id="deleteid">
-            <div class="modal-body">
-                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16" style="color:#D65C67; margin-left:40%; margin-top:5%;">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                </svg>
-                <br>
-                <br>
-                <h5 class="deleteword">確定要刪除嗎?</h5>
-                <p class="deletedescribe">刪除後紀錄則永久刪除</p>
-
-                <div class="Modaldeletebtndiv">
-                    <button class="Modaldeletebtn btn" onclick="back()">取消</button>
-                    <button class="Modaldeletebtn btn" onclick="deleteokbtn()">確定</button>
                 </div>
 
             </div>
-
         </div>
     </div>
-</div>
 </div>
 
 
@@ -727,7 +727,7 @@
                 alert($('#editimage1').attr('src'))
             } else {
                 putphotodata1 = putphoto1;
-                alert(putphoto1)
+    
             }
         } else {
             putphotodata1 = null;
@@ -848,7 +848,7 @@
     <script>
         var addtextarea = document.getElementById('addcontent');
         var emojiList = document.getElementById('addemojiList');
-        fetch('/*https://emoji-api.com/emojis?access_key=884f4afa230b3e2e7325a5c6b8951d53f5b28d5e*/')
+        fetch('https://emoji-api.com/emojis?access_key=884f4afa230b3e2e7325a5c6b8951d53f5b28d5e')
             .then(response => response.json())
 
             .then(data => loadEmoji(data))
@@ -870,7 +870,7 @@
 
     </script>
 
-    
+
     @*edit表情箱顯示*@
     <script>
         function editemojibox() {
@@ -891,7 +891,7 @@
     <script>
         var edittextarea = document.getElementById('edittextarea');
         var editemojiList = document.getElementById('editemojiList');
-        fetch('/*https://emoji-api.com/emojis?access_key=884f4afa230b3e2e7325a5c6b8951d53f5b28d5e*/')
+        fetch('https://emoji-api.com/emojis?access_key=884f4afa230b3e2e7325a5c6b8951d53f5b28d5e')
             .then(response => response.json())
 
             .then(data => edirloadEmoji(data))
@@ -913,10 +913,10 @@
 
     </script>
 
-   @* 儲存草稿*@
+    @* 儲存草稿*@
     <script>
-        var draft=[];
-             if (localStorage.getItem('draft')) {
+        var draft = [];
+        if (localStorage.getItem('draft')) {
             draft = JSON.parse(localStorage.getItem('draft'));
         }
 
@@ -943,8 +943,17 @@
 
     @*前往草稿列表*@
     <script>
-        function godraft(){
-            window.location="/Manage/KnowledgeDraft";
+        function godraft() {
+            window.location = "/Manage/KnowledgeDraft";
+        }
+    </script>
+
+    @*showdata*@
+    <script>
+        function showdata() {
+            $('#addModal .titleinput').val('運動瘦身前該了解的4個小常識')
+            $('#addModal #addcontent').val('想要達到理想中的身材或健康，就趕快動起身子吧！熱身顧名思義就是讓身體熱起來，主要是要活動我們身體的關節，使血液流向即將要運動的部位。\r\n 女孩們在運動前可以依照健身房伸展區的解說圖伸展全身的肌肉，或是利用跑步機慢走讓身體熱起來。千萬不要小看熱身，熱身做好不但可以更有效率的達到瘦身效果，而且還能避免受傷噢！')
+            $('#addModal .author').val('瑞秋')
         }
     </script>
  }

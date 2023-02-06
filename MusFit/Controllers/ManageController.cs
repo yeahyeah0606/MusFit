@@ -330,6 +330,8 @@ namespace MusFit.Controllers
             return View();
         }
 
+        [Authentication]
+
         public IActionResult News()
         {
             var myquery2 = (from myemployee1 in _context.Employees select myemployee1).ToList();
@@ -1487,6 +1489,8 @@ namespace MusFit.Controllers
 
         }
 
+        [Authentication]
+
         public IActionResult KnowledgeColumn()
         {
             var viewModel = _context.KnowledgeColumns.ToList();
@@ -1552,7 +1556,8 @@ namespace MusFit.Controllers
         }
 
         //---------------------------------------------------------  君 END  ------------------------------------------------------------
-    
+
+        [Authentication]
 
         public IActionResult ClassIntroduce()
         {
@@ -1629,6 +1634,7 @@ namespace MusFit.Controllers
 
         }
 
+        [Authentication]
 
         public IActionResult KnowledgeDraft()
         {

@@ -11,14 +11,14 @@
 	<title>查詢、報名課程</title>
 </head>
 
-<h1 onclick="putData1()">&nbsp;&nbsp;&nbsp;查詢、報名課程</h1>
+<h1>&nbsp;&nbsp;&nbsp;查詢、報名課程</h1>
 <hr><br>
-<h3 onclick="putData2()">&nbsp;&nbsp;&nbsp;請輸入要報名的會員編號或會員姓名</h3>
+<h3 onclick="putData1()">&nbsp;&nbsp;&nbsp;請輸入要報名的會員編號或會員姓名</h3>
 	&nbsp;&nbsp;&nbsp;
 <label for="sNumber">會員編號:</label>
 <input type="text" class="memberID-input" id="sNumber" />
 	&nbsp;&nbsp;&nbsp;
-<label for="sName" onclick="putData3()">會員姓名: </label>&nbsp;
+<label for="sName" onclick="putData2()">會員姓名: </label>&nbsp;
 <input type="text" class="memberID-input" id="sName" />
 	&nbsp;&nbsp;&nbsp;
 <button class="button" style="vertical-align:middle" id="btnQuery"><span>查詢</span> </button>
@@ -518,9 +518,6 @@
     }
 	function putData2() {
 		$("#sName").val("謝金燕");
-	}
-	function putData3() {
-		$("#sName").val("梁文音");
 	}
 
 	</script>

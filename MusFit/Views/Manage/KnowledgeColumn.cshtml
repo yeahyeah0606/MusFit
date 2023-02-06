@@ -28,6 +28,7 @@
             <div class="modal-body">
                 <form>
                     <div> <a style="border:none; background-color:white; color:white;" class="showdata" onclick="showdata()">a</a></div>
+                    <div> <a style="border:none; background-color:white; color:lightgray;" class="showdata" onclick="showdata1()">a</a></div>
                     <div class="row" style="width:95%; margin-left:1%;">
                         <div class="col-2">
                             <label for="">發布日期</label>
@@ -724,7 +725,7 @@
             console.log($('#editphoto1').length)
             if (putphoto1 == null) {
                 putphotodata1 = $('#editimage1').attr('src')
-                alert($('#editimage1').attr('src'))
+
             } else {
                 putphotodata1 = putphoto1;
     
@@ -954,6 +955,15 @@
             $('#addModal .titleinput').val('運動瘦身前該了解的4個小常識')
             $('#addModal #addcontent').val('想要達到理想中的身材或健康，就趕快動起身子吧！熱身顧名思義就是讓身體熱起來，主要是要活動我們身體的關節，使血液流向即將要運動的部位。\r\n 女孩們在運動前可以依照健身房伸展區的解說圖伸展全身的肌肉，或是利用跑步機慢走讓身體熱起來。千萬不要小看熱身，熱身做好不但可以更有效率的達到瘦身效果，而且還能避免受傷噢！')
             $('#addModal .author').val('瑞秋')
+        }
+    </script>
+
+    @*showdata1*@
+    <script>
+        function showdata1() {
+            $('#addModal .titleinput').val('女性健身房 享受專屬「妳」的時光')
+            $('#addModal #addcontent').val('女性專屬健身房，不分國內外正夯\r\n日本高齡社會消費研究權威村田裕之，2003年協助女性健身中心Curves可爾姿引進日本，打造專屬女性的運動空間，如今已有超過1000家分店，會員人數衝破50萬，可見女性健身市場的熱潮。\r\n近幾年，國內也吹起一股女性運動風，根據教育部體育署調查，2016年規律運動的女性人口比例達29.2％，10年成長近1倍，較男性的0.65倍高。運動場所部分，也能看到不少女性專用的健身房。到底女性健身房有著什麼樣的魅力？')
+            $('#addModal .author').val('')
         }
     </script>
  }

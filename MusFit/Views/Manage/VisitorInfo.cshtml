@@ -9,7 +9,7 @@
     <hr>
     <div class="row d-flex">
         <div class="searchArea">
-            <input id="queryinfo" type="text" placeholder="請輸入訪客姓名或手機..." />  
+            <input id="queryinfo" type="text" onclick="MagicFinger()" ondblclick="MagicDbFinger()" placeholder="請輸入訪客姓名或手機..." />
             <input type="date" id="startDate" placeholder="體驗日期起..." onchange="this.className=(this.value!=''?'has-value':'');queryStartDateChange(this);"/> <span>~</span>
             <input type="date" id="endDate" onchange="this.className=(this.value!=''?'has-value':'')" placeholder="體驗日期迄..." />
             <button id="btnQuery">查詢</button>
@@ -131,7 +131,7 @@
             <div class="row">
                 <div class="column">
                     <label for="name">姓&emsp;名<span class="star"> * </span></label>
-                    <input type="text" id="CreateName" name="sName" placeholder="ex. 李昀蓁"/>
+                    <input type="text" id="CreateName" name="sName" onclick="MagicFinger()" placeholder=" ex. 李昀蓁" />
                 </div>
                 <div id="create_gender_col"class="column">
                     <label for="name">性&emsp;別<span class="star"> * </span></label>
@@ -174,7 +174,7 @@
             <div class="row">
                 <div class="column">
                     <label for="visitorPhone">訪客手機<span class="star"> * </span></label>
-                    <input type="text" onchange="visitorSelect()" id="visitorPhone" placeholder="請輸入手機查詢...">
+                    <input type="text" onchange="visitorSelect()" id="visitorPhone" onclick="MagicFinger()" placeholder="請輸入手機查詢...">
 
                 </div>
                 <div class="column">
@@ -277,6 +277,19 @@
         function AddStudent() {
             var student = $('#phone').val();
             window.location.href = '@Url.Action("SAdd", "Manage")?SPhone=' + student;
+        }
+
+        function MagicFinger(){
+            $('#CreateName').val("林育勤");
+            $("#createForm input[name='sGender'][value='false']").attr("checked", true);
+            $('#CreatePhone').val('0933565128');
+            $('#CreateMail').val('hostinglim@gmail.com');
+            $('#visitorPhone').val('0933565128');
+            $('#queryinfo').val('0910362953');
+        }
+
+        function MagicDbFinger(){
+            $('#queryinfo').val('0919362956');
         }
 
     </script>

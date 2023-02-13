@@ -13,7 +13,7 @@
             <label for="employeeID">員工編號</label>
             <input type="text" id="eId" value="" />
             <label for="employeeName">員工姓名</label>
-            <input type="text" id="name" value="" />
+            <input type="text" id="name" value="" onclick="MagicFinger()" />
             <label for="employeeAccount">員工帳號</label>
             <input type="text" id="account" value="" />
             <button type="button" onclick="query()" id="query">查詢</button>
@@ -100,6 +100,11 @@
                 })
             }
         })
+
+        function MagicFinger(){
+            $('#name').val('葉凡君');
+            console.log('ok');
+        }
 
     </script>
     }
